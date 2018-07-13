@@ -3,7 +3,7 @@ import datetime
 
 class CvItem:
     def __init__(self):
-        raise NotImplementedError()
+        pass
 
     def __str__(self):
         raise NotImplementedError()
