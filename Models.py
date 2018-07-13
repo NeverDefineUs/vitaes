@@ -33,6 +33,16 @@ class CvLocation:
         pass
 
 
+class CvInstitution(CvItem):
+    def __init__(self, name: str, location: CvLocation):
+        CvItem.__init__(self)
+        self.name = name
+        self.location = location
+
+    def __str__(self):
+        pass
+
+
 class CvWorkExperienceItem(CvItem):
     def __init__(self, 
                  company: str,
