@@ -45,8 +45,8 @@ class CvInstitution:
 class CvExperienceItem(CvItem):
     def __init__(self,
                  institution: CvInstitution,
-                 location: CvLocation = None,
                  start_date: date,
+                 location: CvLocation = None,
                  finish_date: date = None,
                  description: str = None):
         CvItem.__init__(self)
@@ -63,8 +63,8 @@ class CvExperienceItem(CvItem):
 class CvWorkExperienceItem(CvExperienceItem):
     def __init__(self, 
                  institution: CvInstitution,
+                 start_date: date,
                  location: CvLocation = None,
-                 start_date: date = None,
                  finish_date: date = None,
                  description: str = None,
                  role: str = None
@@ -79,11 +79,12 @@ class CvWorkExperienceItem(CvExperienceItem):
 class CvEducationalExperienceItem(CvExperienceItem):
     def __init__(self,
                  institution: CvInstitution,
-                 location: CvLocation = None,
                  start_date: date,
+                 course: str,
+                 location: CvLocation = None,
                  finish_date: date = None,
                  description: str = None,
-                 course: str):
+                 ):
         CvExperienceItem.__init__(self, institution, location, start_date, finish_date, description)
         self.course = course
 
@@ -149,12 +150,12 @@ class CvAcademicProjectItem(CvProjectItem):
 class CvCourseProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
+                 start_date: date,
                  description: str = None,
                  location: CvLocation = None,
                  institution: CvInstitution = None,
                  certification_link: str = None,
                  course_link: str = None,
-                 start_date: date,
                  end_date: date = None
                  ):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
@@ -168,12 +169,12 @@ class CvCourseProjectItem(CvProjectItem):
 class CvAchievementProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
+                 start_date: date,
                  description: str = None,
                  institution: CvInstitution = None,
                  location: CvLocation = None,
                  place: str = '',
                  competitors: int = 0,
-                 start_date: date,
                  end_date: date = None,
                  certification_link: str = None
                  ):
