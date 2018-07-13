@@ -9,7 +9,8 @@ class CvItem:
         x = "{ "
         for var in vars(self):
             if getattr(self, var) is not None:
-                x += str(var) + ": " + str(getattr(self, var)) + ", "
+                var_str = str(getattr(self, var))
+                x += str(var) + ": " + var_str + ", "
         x += "}"
         return x
 
@@ -173,3 +174,4 @@ class CvHeaderItem(CvItem):
         self.linkedin = linkedin
         self.github = github
         self.address = address
+        self.birthday = birthday
