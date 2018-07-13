@@ -43,22 +43,45 @@ class CvInstitution(CvItem):
         pass
 
 
-class CvWorkExperienceItem(CvItem):
+class CvExperience(CvItem):
+    def __init__(self,
+                 institution: CvInstitution,
+                 location: CvLocation,
+                 start_date: date,
+                 finish_date: date,
+                 description: str):
+        CvItem.__init__()
+
+    def __str__(self):
+        pass
+
+
+class CvWorkExperience(CvExperience):
     def __init__(self, 
-                 company: str,
+                 institution: CvInstitution,
                  location: CvLocation,
                  start_date: date = None,
                  finish_date: date = None,
                  description: str = None,
                  role: str = None
                  ):
-        CvItem.__init__(self)
-        self.company = company
-        self.location = location
-        self.start_date = start_date
-        self.finish_date = finish_date
-        self.description = description
+        CvExperience.__init__(self, institution, location, start_date, finish_date, description)
         self.role = role
+
+    def __str__(self):
+        pass
+
+
+class CvEducationalExperience(CvExperience):
+    def __init__(self,
+                 institution: CvInstitution,
+                 location: CvLocation,
+                 start_date: date,
+                 finish_date: date,
+                 description: str,
+                 course: str):
+        CvExperience.__init__(self, institution, location, start_date, finish_date, description)
+        self.course = course
 
     def __str__(self):
         pass
@@ -89,11 +112,13 @@ class CvImplementationProject(CvProjectItem):
                  description: str,
                  location: CvLocation,
                  language: str,
+                 repository_link: str,
                  start_date: date,
                  end_date: date = None
                  ):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
         self.language = language
+        self.repository_link = repository_link
 
     def __str__(self):
         pass
