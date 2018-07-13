@@ -25,6 +25,7 @@ class CvLanguageItem(CvItem):
 
 class CvLocationItem(CvItem):
     def __init__(self, country: str, state: str, city: str):
+        CvItem.__init__(self)
         self.country = country
         self.state = state
         self.city = city
@@ -50,7 +51,7 @@ class CvExperienceItem(CvItem):
                  start_date: date,
                  finish_date: date,
                  description: str):
-        CvItem.__init__()
+        CvItem.__init__(self)
         self.institution = institution
         self.location = location
         self.start_date = start_date
@@ -124,6 +125,60 @@ class CvImplementationProject(CvProjectItem):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
         self.language = language
         self.repository_link = repository_link
+
+    def __str__(self):
+        pass
+
+
+class CvAcademicProject(CvProjectItem):
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 location: CvLocationItem,
+                 article_link: str,
+                 start_date: date,
+                 end_date: date = None
+                 ):
+        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        self.article_link = article_link
+
+    def __str__(self):
+        pass
+
+
+class CvCourseProject(CvProjectItem):
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 location: CvLocationItem,
+                 certification_link: str,
+                 course_link: str,
+                 start_date: date,
+                 end_date: date = None
+                 ):
+        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        self.certification_link = certification_link
+        self.course_link = course_link
+
+    def __str__(self):
+        pass
+
+
+class CvAchievementProject(CvProjectItem):
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 location: CvLocationItem,
+                 place: str,
+                 competitors: int,
+                 start_date: date,
+                 end_date: date = None,
+                 certification_link: str = None
+                 ):
+        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        self.place = place
+        self.competitors = competitors
+        self.certification_link = certification_link
 
     def __str__(self):
         pass
