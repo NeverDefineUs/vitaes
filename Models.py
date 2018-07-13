@@ -1,4 +1,4 @@
-import datetime
+from datetime import date
 
 
 class CvItem:
@@ -23,12 +23,12 @@ class CvLanguageItem(CvItem):
         )
 
 
-class CvWorkExperience(CvItem):
+class CvWorkExperienceItem(CvItem):
     def __init__(self, 
                  company: str,
                  location: str = None,
-                 start_date: datetime = None,
-                 finish_date: datetime = None,
+                 start_date: date = None,
+                 finish_date: date = None,
                  description: str = None,
                  role: str = None
                  ):
@@ -44,3 +44,46 @@ class CvWorkExperience(CvItem):
         pass
 
 
+class CvLocation:
+    def __init__(self, country: str, state: str, city: str):
+        self.country = country
+        self.state = state
+        self.city = city
+
+    def __str__(self):
+        pass
+
+
+class CvProjectItem(CvItem):
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 location: CvLocation,
+                 start_date: date,
+                 end_date: date = None
+                 ):
+        CvItem.__init__(self)
+        self.name = name
+        self.description = description
+        self.start_date = start_date
+        self.end_date = end_date
+        self.location = location
+
+    def __str__(self):
+        pass
+
+
+class CvImplementationProject(CvProjectItem):
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 location: CvLocation,
+                 language: str,
+                 start_date: date,
+                 end_date: date = None
+                 ):
+        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        self.language = language
+
+    def __str__(self):
+        pass
