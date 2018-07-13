@@ -127,3 +127,19 @@ class CvImplementationProject(CvProjectItem):
 
     def __str__(self):
         pass
+
+
+class CvHeader(CvItem):
+    def __init__(self,
+                 email: str,
+                 phone: str,
+                 linkedin: str,
+                 github: str):
+        CvItem.__init__(self)
+        self.email = email
+        self.phone = phone
+        self.linkedin = linkedin
+        self.github = github
+
+    def __str__(self):
+        pass
