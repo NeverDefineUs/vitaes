@@ -3,15 +3,24 @@ from Models import *
 
 class CurriculumVitae:
     def __init__(self):
-        self.work_experience = []
-        self.languages = []
-        self.projects = []
+        self.items = {}
+        self.header = None
+        self.item_types = []
+
+    def __str__(self):
+        x = "{ "
+        for var in vars(self):
+            if getattr(self, var) is not None:
+                x += str(var) + ": " + str(getattr(self, var)) + ", "
+        x += "}"
+        return x
 
     def add(self, item: CvItem):
-        if type(item) is CvWorkExperienceItem:
-            self.work_experience.append(item)
-        elif type(item) is CvLanguageItem:
-            self.languages.append(item)
-        elif type(item) is CvProjectItem:
-            self.projects.append(item)
+        if type(item) is CvHeaderItem:
+            self.header = item
+            return
+        if type(item) not in self.item_types:
+            self.item_types.append(type(item))
+            self.items[type(item)] = []
+        self.items[type(item)].append(item)
         

@@ -6,7 +6,12 @@ class CvItem:
         pass
 
     def __str__(self):
-        raise NotImplementedError()
+        x = "{ "
+        for var in vars(self):
+            if getattr(self, var) is not None:
+                x += str(var) + ": " + str(getattr(self, var)) + ", "
+        x += "}"
+        return x
 
 
 class CvLanguageItem(CvItem):
@@ -15,13 +20,6 @@ class CvLanguageItem(CvItem):
         self.language = language
         self.level = level
 
-    def __str__(self):
-        return "{class_name} :{{ {language}: {level} }}".format(
-            level=self.level, 
-            language=self.language,
-            class_name=self.__class__.__name__
-        )
-
 
 class CvLocation:
     def __init__(self, country: str, state: str = None, city: str = None):
@@ -29,17 +27,11 @@ class CvLocation:
         self.state = state
         self.city = city
 
-    def __str__(self):
-        pass
-
 
 class CvInstitution:
     def __init__(self, name: str, location: CvLocation = None):
         self.name = name
         self.location = location
-
-    def __str__(self):
-        pass
 
 
 class CvExperienceItem(CvItem):
@@ -56,9 +48,6 @@ class CvExperienceItem(CvItem):
         self.finish_date = finish_date
         self.description = description
 
-    def __str__(self):
-        pass
-
 
 class CvWorkExperienceItem(CvExperienceItem):
     def __init__(self, 
@@ -72,9 +61,6 @@ class CvWorkExperienceItem(CvExperienceItem):
         CvExperienceItem.__init__(self, institution, location, start_date, finish_date, description)
         self.role = role
 
-    def __str__(self):
-        pass
-
 
 class CvEducationalExperienceItem(CvExperienceItem):
     def __init__(self,
@@ -87,9 +73,6 @@ class CvEducationalExperienceItem(CvExperienceItem):
                  ):
         CvExperienceItem.__init__(self, institution, location, start_date, finish_date, description)
         self.course = course
-
-    def __str__(self):
-        pass
 
 
 class CvProjectItem(CvItem):
@@ -107,9 +90,6 @@ class CvProjectItem(CvItem):
         self.end_date = end_date
         self.location = location
 
-    def __str__(self):
-        pass
-
 
 class CvImplementationProjectItem(CvProjectItem):
     def __init__(self,
@@ -124,9 +104,6 @@ class CvImplementationProjectItem(CvProjectItem):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
         self.language = language
         self.repository_link = repository_link
-
-    def __str__(self):
-        pass
 
 
 class CvAcademicProjectItem(CvProjectItem):
@@ -143,9 +120,6 @@ class CvAcademicProjectItem(CvProjectItem):
         self.article_link = article_link
         self.institution = institution
 
-    def __str__(self):
-        pass
-
 
 class CvCourseProjectItem(CvProjectItem):
     def __init__(self,
@@ -161,9 +135,6 @@ class CvCourseProjectItem(CvProjectItem):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
         self.certification_link = certification_link
         self.course_link = course_link
-
-    def __str__(self):
-        pass
 
 
 class CvAchievementProjectItem(CvProjectItem):
@@ -183,9 +154,6 @@ class CvAchievementProjectItem(CvProjectItem):
         self.competitors = competitors
         self.certification_link = certification_link
 
-    def __str__(self):
-        pass
-
 
 class CvHeaderItem(CvItem):
     def __init__(self,
@@ -194,14 +162,14 @@ class CvHeaderItem(CvItem):
                  phone: str = None,
                  linkedin: str = None,
                  github: str = None,
-                 address: str = None):
+                 address: str = None,
+                 birthday: date = None,
+                 ):
         CvItem.__init__(self)
+        assert(name is not None)
         self.name = name
         self.email = email
         self.phone = phone
         self.linkedin = linkedin
         self.github = github
         self.address = address
-
-    def __str__(self):
-        pass
