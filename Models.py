@@ -23,10 +23,20 @@ class CvLanguageItem(CvItem):
         )
 
 
+class CvLocation:
+    def __init__(self, country: str, state: str, city: str):
+        self.country = country
+        self.state = state
+        self.city = city
+
+    def __str__(self):
+        pass
+
+
 class CvWorkExperienceItem(CvItem):
     def __init__(self, 
                  company: str,
-                 location: str = None,
+                 location: CvLocation,
                  start_date: date = None,
                  finish_date: date = None,
                  description: str = None,
@@ -39,16 +49,6 @@ class CvWorkExperienceItem(CvItem):
         self.finish_date = finish_date
         self.description = description
         self.role = role
-
-    def __str__(self):
-        pass
-
-
-class CvLocation:
-    def __init__(self, country: str, state: str, city: str):
-        self.country = country
-        self.state = state
-        self.city = city
 
     def __str__(self):
         pass
