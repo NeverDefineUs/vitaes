@@ -23,9 +23,8 @@ class CvLanguageItem(CvItem):
         )
 
 
-class CvLocationItem(CvItem):
-    def __init__(self, country: str, state: str, city: str):
-        CvItem.__init__(self)
+class CvLocation:
+    def __init__(self, country: str, state: str = None, city: str = None):
         self.country = country
         self.state = state
         self.city = city
@@ -34,9 +33,8 @@ class CvLocationItem(CvItem):
         pass
 
 
-class CvInstitutionItem(CvItem):
-    def __init__(self, name: str, location: CvLocationItem):
-        CvItem.__init__(self)
+class CvInstitution:
+    def __init__(self, name: str, location: CvLocation = None):
         self.name = name
         self.location = location
 
@@ -46,11 +44,11 @@ class CvInstitutionItem(CvItem):
 
 class CvExperienceItem(CvItem):
     def __init__(self,
-                 institution: CvInstitutionItem,
-                 location: CvLocationItem,
+                 institution: CvInstitution,
+                 location: CvLocation = None,
                  start_date: date,
-                 finish_date: date,
-                 description: str):
+                 finish_date: date = None,
+                 description: str = None):
         CvItem.__init__(self)
         self.institution = institution
         self.location = location
@@ -62,10 +60,10 @@ class CvExperienceItem(CvItem):
         pass
 
 
-class CvWorkExperience(CvExperienceItem):
+class CvWorkExperienceItem(CvExperienceItem):
     def __init__(self, 
-                 institution: CvInstitutionItem,
-                 location: CvLocationItem,
+                 institution: CvInstitution,
+                 location: CvLocation = None,
                  start_date: date = None,
                  finish_date: date = None,
                  description: str = None,
@@ -78,13 +76,13 @@ class CvWorkExperience(CvExperienceItem):
         pass
 
 
-class CvEducationalExperience(CvExperienceItem):
+class CvEducationalExperienceItem(CvExperienceItem):
     def __init__(self,
-                 institution: CvInstitutionItem,
-                 location: CvLocationItem,
+                 institution: CvInstitution,
+                 location: CvLocation = None,
                  start_date: date,
-                 finish_date: date,
-                 description: str,
+                 finish_date: date = None,
+                 description: str = None,
                  course: str):
         CvExperienceItem.__init__(self, institution, location, start_date, finish_date, description)
         self.course = course
@@ -96,9 +94,9 @@ class CvEducationalExperience(CvExperienceItem):
 class CvProjectItem(CvItem):
     def __init__(self,
                  name: str,
-                 description: str,
-                 location: CvLocationItem,
-                 start_date: date,
+                 description: str = None,
+                 location: CvLocation = None,
+                 start_date: date = None,
                  end_date: date = None
                  ):
         CvItem.__init__(self)
@@ -112,14 +110,14 @@ class CvProjectItem(CvItem):
         pass
 
 
-class CvImplementationProject(CvProjectItem):
+class CvImplementationProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
-                 description: str,
-                 location: CvLocationItem,
-                 language: str,
-                 repository_link: str,
-                 start_date: date,
+                 description: str = None,
+                 location: CvLocation = None,
+                 language: str = None,
+                 repository_link: str = None,
+                 start_date: date = None,
                  end_date: date = None
                  ):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
@@ -130,29 +128,32 @@ class CvImplementationProject(CvProjectItem):
         pass
 
 
-class CvAcademicProject(CvProjectItem):
+class CvAcademicProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
                  description: str,
-                 location: CvLocationItem,
-                 article_link: str,
-                 start_date: date,
+                 institution: CvInstitution = None,
+                 location: CvLocation = None,
+                 article_link: str = None,
+                 start_date: date = None,
                  end_date: date = None
                  ):
         CvProjectItem.__init__(self, name, description, location, start_date, end_date)
         self.article_link = article_link
+        self.institution = institution
 
     def __str__(self):
         pass
 
 
-class CvCourseProject(CvProjectItem):
+class CvCourseProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
-                 description: str,
-                 location: CvLocationItem,
-                 certification_link: str,
-                 course_link: str,
+                 description: str = None,
+                 location: CvLocation = None,
+                 institution: CvInstitution = None,
+                 certification_link: str = None,
+                 course_link: str = None,
                  start_date: date,
                  end_date: date = None
                  ):
@@ -164,13 +165,14 @@ class CvCourseProject(CvProjectItem):
         pass
 
 
-class CvAchievementProject(CvProjectItem):
+class CvAchievementProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
-                 description: str,
-                 location: CvLocationItem,
-                 place: str,
-                 competitors: int,
+                 description: str = None,
+                 institution: CvInstitution = None,
+                 location: CvLocation = None,
+                 place: str = '',
+                 competitors: int = 0,
                  start_date: date,
                  end_date: date = None,
                  certification_link: str = None
@@ -184,17 +186,21 @@ class CvAchievementProject(CvProjectItem):
         pass
 
 
-class CvHeader(CvItem):
+class CvHeaderItem(CvItem):
     def __init__(self,
-                 email: str,
-                 phone: str,
-                 linkedin: str,
-                 github: str):
+                 name: str,
+                 email: str = None,
+                 phone: str = None,
+                 linkedin: str = None,
+                 github: str = None,
+                 address: str = None):
         CvItem.__init__(self)
+        self.name = name
         self.email = email
         self.phone = phone
         self.linkedin = linkedin
         self.github = github
+        self.address = address
 
     def __str__(self):
         pass
