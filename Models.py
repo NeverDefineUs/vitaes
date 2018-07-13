@@ -12,10 +12,11 @@ class cv_language_item(cv_item):
         self.level = level
 
     def __str__(self):
-        return """CvLanguage :{
-    "language" : {language}
-    "level" : {level}
-}""".format(level=self.level, language=self.language)
+        return "{class_name} :{{ {language}: {level} }}".format(
+            level=self.level, 
+            language=self.language,
+            class_name=self.__class__.__name__
+        )
 
 class cv_work_experience_item(cv_item):
     def __init__(self, 
