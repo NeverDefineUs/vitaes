@@ -54,28 +54,35 @@ class CvLocation:
 
 
 class CvProjectItem(CvItem):
-    def __init__(self, name: str,
+    def __init__(self,
+                 name: str,
                  description: str,
+                 location: CvLocation,
                  start_date: date,
-                 end_date: date,
-                 language: str,
-                 location: CvLocation
+                 end_date: date = None
                  ):
         CvItem.__init__(self)
         self.name = name
         self.description = description
         self.start_date = start_date
         self.end_date = end_date
-        self.language = language
         self.location = location
 
     def __str__(self):
         pass
 
 
-class ImplementedProject:
-    def __init__(self, projects: [CvProjectItem]):
-        self.projects = projects
+class CvImplementationProject(CvProjectItem):
+    def __init__(self,
+                 name: str,
+                 description: str,
+                 location: CvLocation,
+                 language: str,
+                 start_date: date,
+                 end_date: date = None
+                 ):
+        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        self.language = language
 
     def __str__(self):
         pass
