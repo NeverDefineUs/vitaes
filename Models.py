@@ -51,6 +51,11 @@ class CvExperience(CvItem):
                  finish_date: date,
                  description: str):
         CvItem.__init__()
+        self.institution = institution
+        self.location = location
+        self.start_date = start_date
+        self.finish_date = finish_date
+        self.description = description
 
     def __str__(self):
         pass
