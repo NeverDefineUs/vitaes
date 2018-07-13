@@ -1,19 +1,13 @@
-class CvItem:
+import datetime
+
+class cv_item:
     def __init__(self):
         raise NotImplementedError()
     def __str__(self):
         raise NotImplementedError()
 
-class CvLanguage:
-    def __init__(self, languageName: str):
-        self.languageName = languageName
-    
-class CvLanguageLevel:
-    def __init__(self, levelName):
-        self.levelName = levelName
-
-class CvLanguageItem(CvItem):
-    def __init__(self, language: Language, level: LanguageLevel):
+class cv_language_item(cv_item):
+    def __init__(self, language: str, level: str = None):
         self.language = language
         self.level = level
 
@@ -22,4 +16,21 @@ class CvLanguageItem(CvItem):
     "language" : {language}
     "level" : {level}
 }""".format(level=self.level, language=self.language)
+
+class cv_work_experience_item(cv_item):
+    def __init__(self, 
+        company: str, 
+        location: str = None,
+        start_date: datetime = None, 
+        finish_date: datetime = None, 
+        description:str = None, 
+        role: str = None
+    ):
+        self.company = company
+        self.location = location
+        self.start_date = start_date
+        self.finish_date = finish_date
+        self.description = description
+        self.role = role
+
 
