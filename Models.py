@@ -1,13 +1,17 @@
 import datetime
 
-class cv_item:
+
+class CvItem:
     def __init__(self):
         raise NotImplementedError()
+
     def __str__(self):
         raise NotImplementedError()
 
-class cv_language_item(cv_item):
+
+class CvLanguageItem(CvItem):
     def __init__(self, language: str, level: str = None):
+        CvItem.__init__(self)
         self.language = language
         self.level = level
 
@@ -18,20 +22,25 @@ class cv_language_item(cv_item):
             class_name=self.__class__.__name__
         )
 
-class cv_work_experience_item(cv_item):
+
+class CvWorkExperience(CvItem):
     def __init__(self, 
-        company: str, 
-        location: str = None,
-        start_date: datetime = None, 
-        finish_date: datetime = None, 
-        description:str = None, 
-        role: str = None
-    ):
+                 company: str,
+                 location: str = None,
+                 start_date: datetime = None,
+                 finish_date: datetime = None,
+                 description: str = None,
+                 role: str = None
+                 ):
+        CvItem.__init__(self)
         self.company = company
         self.location = location
         self.start_date = start_date
         self.finish_date = finish_date
         self.description = description
         self.role = role
+
+    def __str__(self):
+        pass
 
 
