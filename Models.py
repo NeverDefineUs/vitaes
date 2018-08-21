@@ -165,6 +165,7 @@ class CvHeaderItem(CvItem):
                  github: str = None,
                  address: str = None,
                  birthday: date = None,
+                 homepage: str = None
                  ):
         CvItem.__init__(self)
         assert(name is not None)
@@ -175,3 +176,4 @@ class CvHeaderItem(CvItem):
         self.github = github
         self.address = address
         self.birthday = birthday
+        self.homepage = homepage

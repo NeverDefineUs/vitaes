@@ -5,33 +5,6 @@ from Models import *
 
 app = Flask(__name__)
 
-dummy = {
-    'CvHeaderItem': {
-        'name': 'Ramon de Saboya Gomes',
-        'email': 'rsg3@cin.ufpe.br',
-        'github': 'RamonSaboya',
-    },
-    'CvLanguageItem': {
-        'language': 'Java',
-        'level': '2',
-    },
-}
-
-cv = CurriculumVitae()
-
-for cv_key in dummy.keys():
-    req_key = dummy[cv_key]
-
-    gen_cv_item = '('
-    for key, value in req_key.items():
-        gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
-    gen_cv_item = gen_cv_item + ')'
-
-    cv_item = eval(cv_key + gen_cv_item)
-    cv.add(cv_item)
-
-print(cv.__str__())
-
 def get_field_or_none(req, field_name):
     if field_name in req.keys():
         return req[field_name]
