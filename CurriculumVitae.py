@@ -3,10 +3,9 @@ from Models import *
 
 class CurriculumVitae:
     def __init__(self):
-        self.items = {}
         self.header = None
-        self.languages = []
-        self.work_experience = []
+
+        self.items = {}
         self.item_types = []
 
     def __str__(self):
@@ -27,14 +26,10 @@ class CurriculumVitae:
         if type(item) is CvHeaderItem:
             self.header = item
             return
-        if type(item) is CvLanguageItem:
-            self.languages.append(item)
-            return
-        if type(item) is CvWorkExperienceItem:
-            self.work_experience.append(item)
-            return
+
         if type(item) not in self.item_types:
             self.item_types.append(type(item))
             self.items[type(item)] = []
+
         self.items[type(item)].append(item)
         

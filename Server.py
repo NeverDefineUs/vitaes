@@ -5,6 +5,33 @@ from Models import *
 
 app = Flask(__name__)
 
+dummy = {
+    'CvHeaderItem': {
+        'name': 'Ramon de Saboya Gomes',
+        'email': 'rsg3@cin.ufpe.br',
+        'github': 'RamonSaboya',
+    },
+    'CvLanguageItem': {
+        'language': 'Java',
+        'level': '2',
+    },
+}
+
+cv = CurriculumVitae()
+
+for cv_key in dummy.keys():
+    req_key = dummy[cv_key]
+
+    gen_cv_item = '('
+    for key, value in req_key.items():
+        gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
+    gen_cv_item = gen_cv_item + ')'
+
+    cv_item = eval(cv_key + gen_cv_item)
+    cv.add(cv_item)
+
+print(cv.__str__())
+
 def get_field_or_none(req, field_name):
     if field_name in req.keys():
         return req[field_name]
@@ -21,32 +48,23 @@ def process_curr():
     cv = CurriculumVitae()
     req = request.json
     ret = ""
+
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
     else:
         abort(503)
-    if 'header' in req_cv.keys():
-        req_header = req_cv['header']
-        header = CvHeaderItem(
-            name = req_header['name'],
-            email = get_field_or_none(req_header, "email"),
-            github = get_field_or_none(req_header, "github"),
-            linkedin = get_field_or_none(req_header, "linkedin"),
-            phone = get_field_or_none(req_header, "phone"),
-            address = get_field_or_none(req_header, "address"),
-            birthday =  get_date_field_or_none(req_header, "birthday")
-        )
-        cv.add(header)
-    if 'languages' in req_cv.keys():
-        for req_language in req_cv['languages']:
-            language = CvLanguageItem(
-                language = get_field_or_none(req_language, 'language'),
-                level = get_field_or_none(req_language, 'level'),
-            )
-            cv.add(language)
-    if 'work_experience' in req_cv.keys():
-        for req_experience in req_cv['work_experience']:
-            
-            cv.add(req_experience)
+
+    for cv_key in req_cv.keys():
+        req_key = req_cv[cv_key]
+
+        gen_cv_item = '('
+        for key, value in req_key.items():
+            gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
+        gen_cv_item = gen_cv_item + ')'
+
+        cv_item = eval(cv_key + gen_cv_item)
+        cv.add(cv_item)
+
     print(cv.__str__())
+
     return ""
