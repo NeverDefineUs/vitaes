@@ -21,32 +21,36 @@ def process_curr():
     cv = CurriculumVitae()
     req = request.json
     ret = ""
+
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
     else:
-        abort(503)
-    if 'header' in req_cv.keys():
-        req_header = req_cv['header']
-        header = CvHeaderItem(
-            name = req_header['name'],
-            email = get_field_or_none(req_header, "email"),
-            github = get_field_or_none(req_header, "github"),
-            linkedin = get_field_or_none(req_header, "linkedin"),
-            phone = get_field_or_none(req_header, "phone"),
-            address = get_field_or_none(req_header, "address"),
-            birthday =  get_date_field_or_none(req_header, "birthday")
-        )
-        cv.add(header)
-    if 'languages' in req_cv.keys():
-        for req_language in req_cv['languages']:
-            language = CvLanguageItem(
-                language = get_field_or_none(req_language, 'language'),
-                level = get_field_or_none(req_language, 'level'),
-            )
-            cv.add(language)
-    if 'work_experience' in req_cv.keys():
-        for req_experience in req_cv['work_experience']:
-            
-            cv.add(req_experience)
-    print(cv.__str__())
+        abort(400, "Missing 'curriculum_vitae' data")
+
+    if 'CvHeaderItem' not in req_cv.keys():
+        abort(400, "Missing header")
+
+    for cv_key in req_cv.keys():
+        req_key = req_cv[cv_key]
+
+        items = []
+
+        if cv_key == 'CvHeaderItem':
+            items.append(req_key)
+        else:
+            items = req_key
+
+        for item in items:
+            gen_cv_item = '('
+            for key, value in item.items():
+                gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
+            gen_cv_item = gen_cv_item + ')'
+
+            try:
+                cv_item = eval(cv_key + gen_cv_item)
+            except TypeError as err:
+                abort(400, err)
+
+            cv.add(cv_item)
+
     return ""

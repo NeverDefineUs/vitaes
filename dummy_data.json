@@ -1,0 +1,28 @@
+{
+    "curriculum_vitae": {
+        "CvHeaderItem": {
+            "name": "Tato Ruim no Tetris",
+            "email": "loser@tetris.com",
+            "phone": "6969-2424",
+            "linkedin": "percoatenosmash",
+            "github": "poxarossideixaeuganharpelomenosnomariokart",
+            "address": "casa de Rossi, numero 4",
+            "birthday": "1969-04-24",
+            "homepage": "so.perco.em.tudo"
+        },
+        "CvLanguageItem": [
+            {
+                "language": "tetris",
+                "level": "-40"
+            },
+            {
+                "language": "smash",
+                "level": "-1"
+            },
+            {
+                "language": "mario kart",
+                "level": "-10"
+            }
+        ]
+    }
+}

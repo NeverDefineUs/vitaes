@@ -3,7 +3,7 @@ from datetime import date
 
 class CvItem:
     def __init__(self):
-        pass
+        self.item_type = self.__class__.__name__
 
     def __str__(self):
         x = "{ "
