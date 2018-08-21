@@ -25,19 +25,32 @@ def process_curr():
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
     else:
-        abort(503)
+        abort(400, "Missing 'curriculum_vitae' data")
+
+    if 'CvHeaderItem' not in req_cv.keys():
+        abort(400, "Missing header")
 
     for cv_key in req_cv.keys():
         req_key = req_cv[cv_key]
 
-        gen_cv_item = '('
-        for key, value in req_key.items():
-            gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
-        gen_cv_item = gen_cv_item + ')'
+        items = []
 
-        cv_item = eval(cv_key + gen_cv_item)
-        cv.add(cv_item)
+        if cv_key == 'CvHeaderItem':
+            items.append(req_key)
+        else:
+            items = req_key
 
-    print(cv.__str__())
+        for item in items:
+            gen_cv_item = '('
+            for key, value in item.items():
+                gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
+            gen_cv_item = gen_cv_item + ')'
+
+            try:
+                cv_item = eval(cv_key + gen_cv_item)
+            except TypeError as err:
+                abort(400, err)
+
+            cv.add(cv_item)
 
     return ""
