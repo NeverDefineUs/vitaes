@@ -28,6 +28,14 @@ class CvLocation:
         self.state = state
         self.city = city
 
+    def __str__(self):
+        ans = self.country
+        if self.state != None:
+            ans += ', ' + self.state
+        if self.city != None:
+            ans += ', ' + self.city
+        return ans
+
 
 class CvInstitution:
     def __init__(self, name: str, location: CvLocation = None):
@@ -59,7 +67,7 @@ class CvWorkExperienceItem(CvExperienceItem):
                  description: str = None,
                  role: str = None
                  ):
-        CvExperienceItem.__init__(self, institution, location, start_date, finish_date, description)
+        CvExperienceItem.__init__(self, institution=institution, location=location, start_date=start_date, finish_date=finish_date, description=description)
         self.role = role
 
 
@@ -71,8 +79,8 @@ class CvEducationalExperienceItem(CvExperienceItem):
                  location: CvLocation = None,
                  finish_date: date = None,
                  description: str = None,
-                 ):
-        CvExperienceItem.__init__(self, institution, location, start_date, finish_date, description)
+                 ):       
+        CvExperienceItem.__init__(self, institution=institution, location=location, start_date=start_date, finish_date=finish_date, description=description)
         self.course = course
 
 
@@ -102,7 +110,7 @@ class CvImplementationProjectItem(CvProjectItem):
                  start_date: date = None,
                  end_date: date = None
                  ):
-        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.language = language
         self.repository_link = repository_link
 
@@ -117,7 +125,7 @@ class CvAcademicProjectItem(CvProjectItem):
                  start_date: date = None,
                  end_date: date = None
                  ):
-        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.article_link = article_link
         self.institution = institution
 
@@ -133,7 +141,7 @@ class CvCourseProjectItem(CvProjectItem):
                  course_link: str = None,
                  end_date: date = None
                  ):
-        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.certification_link = certification_link
         self.course_link = course_link
 
@@ -150,7 +158,7 @@ class CvAchievementProjectItem(CvProjectItem):
                  end_date: date = None,
                  certification_link: str = None
                  ):
-        CvProjectItem.__init__(self, name, description, location, start_date, end_date)
+        CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.place = place
         self.competitors = competitors
         self.certification_link = certification_link
