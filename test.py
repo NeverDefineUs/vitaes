@@ -18,6 +18,7 @@ coursera_mines = Models.CvInstitution("Coursera, Mines-Telecom")
 inloco = Models.CvInstitution("Inloco")
 ms = Models.CvInstitution("Microsoft")
 facebook = Models.CvInstitution("Facebook")
+harvardx = Models.CvInstitution("Edx, Harvard")
 
 #BSC
 cv.add(Models.CvEducationalExperienceItem(course="Computer Science BSc", institution=ufpe, location=recife, start_date=datetime.date(2015,3,1), end_date=datetime.date(2019,7,1)))
@@ -53,7 +54,5 @@ cv.add(Models.CvEducationalExperienceItem(course="Unicamp ICPC Summer School", t
 cv.add(Models.CvEducationalExperienceItem(course="Encryption I", teacher="Dan Boneh", institution=coursera_stanford, start_date=datetime.date(2017,1,14), end_date=datetime.date(2017,1,14)))
 cv.add(Models.CvEducationalExperienceItem(course="Machine Learning", teacher="Andrew Ng", institution=coursera_stanford, start_date=datetime.date(2016,12,20), end_date=datetime.date(2016,12,20)))
 cv.add(Models.CvEducationalExperienceItem(course="Getting started with Augmented Reality", institution=coursera_mines, start_date=datetime.date(2016,11,30), end_date=datetime.date(2016,11,30)))
-"""
-\cventry{2014}{Fundamentals of Neuroscience I}{David Cox}{Edx, Harvard}{}{}%79
-"""
-print(Renders.CvRenderTex.render(cv))
+cv.add(Models.CvEducationalExperienceItem(course="Fundamentals of Neuroscience I", institution=harvardx, start_date=datetime.date(2014,9,24), end_date=datetime.date(2014,9,24)))
+print(Renders.CvRenderTexToPdf.render(cv, baseFolder="cv_7"))

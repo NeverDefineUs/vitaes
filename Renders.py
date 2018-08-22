@@ -1,4 +1,7 @@
 import CurriculumVitae, Models, datetime, time
+import string, random, os
+import subprocess
+
 def date_comparer(x):
     end_date=x.end_date
     start_date=x.start_date
@@ -140,6 +143,28 @@ class CvRenderTex(CvRenderBase):
         texString += "\\end{document}\n"
         return texString
 
+class CvRenderTexToPdf(CvRenderBase):    
+    def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
+        return ''.join(random.choice(chars) for _ in range(size))
+    
+    def render(cv: CurriculumVitae, cvRender: CvRenderBase=CvRenderTex, baseFolder: str=None, path: str=None):
+        if path == None:
+            path=CvRenderTexToPdf.id_gen()
+        os.system("mkdir Output/" + path)
+        if baseFolder != None:
+            os.system("cp Templates/" + baseFolder + "/* Output/" + path + "/")
+        os.system("touch Output/" + path + "/main.tex")
+        cv = cvRender.render(cv)
+        file = open("Output/" + path + "/main.tex","w") 
+        file.write(cv)
+        file.close()
+        p = subprocess.Popen(["pdflatex","main.tex"], cwd="Output/" + path)
+        p.wait()
+        os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
+        os.system("rm -r Output/" + path + "/")
+
+
+    
 
 
 
