@@ -6,3 +6,7 @@ Run `pip3 install -r requirements.txt`(You need pip and python for it), then dow
 Ramon Saboya is about to tell you
 # Types
 The types are divided in two types of types, the Items, and the non-Items, and Item is something that will be added to your curriculum, as opposed to the Non-Items, that represent dependencies you curriculum has such as places and institutions.
+## Non Items
+TODO
+## Items
+TODO
