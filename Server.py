@@ -1,7 +1,8 @@
 from datetime import date, datetime
-from flask import Flask, request, abort
+from flask import Flask, request, abort, send_file
 from CurriculumVitae import CurriculumVitae
 from Models import *
+import Renders
 
 app = Flask(__name__)
 
@@ -52,5 +53,5 @@ def process_curr():
                 abort(400, err)
 
             cv.add(cv_item)
-
-    return ""
+    path = Renders.CvRenderTexToPdf.render(cv)
+    return send_file("Output/" + path + ".pdf")
