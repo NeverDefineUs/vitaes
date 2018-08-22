@@ -55,30 +55,5 @@ cv.add(Models.CvEducationalExperienceItem(course="Encryption I", teacher="Dan Bo
 cv.add(Models.CvEducationalExperienceItem(course="Machine Learning", teacher="Andrew Ng", institution=coursera_stanford, start_date=datetime.date(2016,12,20), end_date=datetime.date(2016,12,20)))
 cv.add(Models.CvEducationalExperienceItem(course="Getting started with Augmented Reality", institution=coursera_mines, start_date=datetime.date(2016,11,30), end_date=datetime.date(2016,11,30)))
 cv.add(Models.CvEducationalExperienceItem(course="Fundamentals of Neuroscience I", institution=harvardx, start_date=datetime.date(2014,9,24), end_date=datetime.date(2014,9,24)))
-#print(Renders.CvRenderTexToPdf.render(cv, baseFolder="cv_7"))
-def extract_item(x):
-    dic = {}
-    for varname in vars(x):
-        var = eval('x.' + varname)
-        if var == None:
-            continue
-        elif var.__class__.__name__[0:2] == "Cv":
-            var = {var.__class__.__name__: extract_item(var)}
-        elif var.__class__.__name__ == "date":
-            var = var.strftime("%y-%m-%d")
-        dic[varname] = var
-    return dic
-def extract_list(raw_arr):
-    arr = []
-    for elem in raw_arr:
-        arr.append(extract_item(elem))
-    return arr
-def cv_to_dict(x):
-    dic = {}
-    dic['CvHeaderItem'] = extract_item(cv.header)
-    for item in cv.items:
-        dic[item.__name__] = extract_list(cv.items[item])
-    return dic
-import json
-from pprint import pprint
-print(json.dumps(cv_to_dict(cv), indent=2))
+print(Renders.CvRenderTexToPdf.render(cv, baseFolder="cv_7"))
+print(Renders.CvRenderJsonRequest.render(cv))
