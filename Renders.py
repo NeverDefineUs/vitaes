@@ -1,17 +1,17 @@
 import CurriculumVitae, Models, datetime, time
 def date_comparer(x):
-    finish_date=x.finish_date
+    end_date=x.end_date
     start_date=x.start_date
-    if finish_date == None:
-        finish_date = datetime.date(2100, 10, 10)
-    return (finish_date, start_date)
+    if end_date == None:
+        end_date = datetime.date(2100, 10, 10)
+    return (end_date, start_date)
 
 def date_comparer_2(x):
-    finish_date=x.end_date
+    end_date=x.end_date
     start_date=x.start_date
-    if finish_date == None:
-        finish_date = datetime.date(2100, 10, 10)
-    return (finish_date, start_date)
+    if end_date == None:
+        end_date = datetime.date(2100, 10, 10)
+    return (end_date, start_date)
     
 class CvRenderBase:
     def render(cv: CurriculumVitae):
@@ -50,10 +50,10 @@ class CvRenderTex(CvRenderBase):
             educationalExperience.sort(key = date_comparer, reverse = True)
             for elem in educationalExperience:
                 texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
-                if elem.finish_date == None:
+                if elem.end_date == None:
                     texString += "now"
-                else:
-                    texString += elem.finish_date.strftime("%b/%y")
+                elif elem.start_date.strftime("%b/%y") != elem.end_date.strftime("%b/%y"):
+                    texString += elem.end_date.strftime("%b/%y")
                 texString += "}{" + elem.course + "}{" + elem.institution.name + "}{"
                 if elem.location != None:
                     texString += str(elem.location)
@@ -67,10 +67,10 @@ class CvRenderTex(CvRenderBase):
             workExperience.sort(key = date_comparer, reverse = True)
             for elem in workExperience:
                 texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
-                if elem.finish_date == None:
+                if elem.end_date == None:
                     texString += "now"
                 else:
-                    texString += elem.finish_date.strftime("%b/%y")
+                    texString += elem.end_date.strftime("%b/%y")
                 texString += "}{" + elem.role + "}{" + elem.institution.name + "}{"
                 if elem.location != None:
                     texString += str(elem.location)
@@ -123,7 +123,21 @@ class CvRenderTex(CvRenderBase):
                 if elem.description != None:
                     texString += elem.description
                 texString += "}\n"
-
+        if Models.CvCourseProjectItem in cv.items:
+            texString += "\\section{Courses}\n"
+            courses = cv.items[Models.CvCourseProjectItem]
+            courses.sort(key = date_comparer_2, reverse = True)
+            for course in courses:
+                if course.end_date != None:
+                    texString += "\\cvitem{" + course.end_date.strftime("%b/%Y") + "}{" + course.name + "}\n"
+                else:
+                    texString += "\\cvitem{" + course.start_date.strftime("%b/%Y") + "}{" + course.name + "(In Progress)}\n"
+        if Models.CvLanguageItem in cv.items:
+            texString += "\\section{Languages}\n"
+            languages = cv.items[Models.CvLanguageItem]
+            for language in languages:
+                texString += "\\cvitem{" + language.language + "}{" + language.level + "}\n"
+        texString += "\\end{document}\n"
         return texString
 
 

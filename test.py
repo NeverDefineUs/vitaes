@@ -9,20 +9,22 @@ cv.add(Models.CvHeaderItem(name="Arthur Costa", address="Avenida Bernardo Vieira
 recife = Models.CvLocation(country="Brazil", city="Recife")
 seattle = Models.CvLocation(country="USA", city="Seattle")
 london = Models.CvLocation(country="United Kingdom", city="London")
+saopaulo = Models.CvLocation(country="Brazil", city="Sao Paulo")
 
 ufpe = Models.CvInstitution("UFPE")
+unicamp = Models.CvInstitution("Unicamp")
 inloco = Models.CvInstitution("Inloco")
 ms = Models.CvInstitution("Microsoft")
 facebook = Models.CvInstitution("Facebook")
 
 #BSC
-cv.add(Models.CvEducationalExperienceItem(course="Computer Science BSc", institution=ufpe, location=recife, start_date=datetime.date(2014,3,1), finish_date=datetime.date(2019,7,1)))
+cv.add(Models.CvEducationalExperienceItem(course="Computer Science BSc", institution=ufpe, location=recife, start_date=datetime.date(2015,3,1), end_date=datetime.date(2019,7,1)))
 #Inloco
-cv.add(Models.CvWorkExperienceItem(role="Junior Researcher", institution=inloco, location=recife, start_date=datetime.date(2017,5,1), finish_date=datetime.date(2017,9,1), description="Worked on the algorithms of wifi-based location and visit detection."))
+cv.add(Models.CvWorkExperienceItem(role="Junior Researcher", institution=inloco, location=recife, start_date=datetime.date(2017,5,1), end_date=datetime.date(2017,9,1), description="Worked on the algorithms of wifi-based location and visit detection."))
 #Microsoft
-cv.add(Models.CvWorkExperienceItem(role="Software Engineer Intern", institution=ms, location=seattle, start_date=datetime.date(2017,12,11), finish_date=datetime.date(2018,3,2), description="Worked on the windows accessibility tools."))
+cv.add(Models.CvWorkExperienceItem(role="Software Engineer Intern", institution=ms, location=seattle, start_date=datetime.date(2017,12,11), end_date=datetime.date(2018,3,2), description="Worked on the windows accessibility tools."))
 #Facebook
-cv.add(Models.CvWorkExperienceItem(role="Software Engineer Intern", institution=facebook, location=london, start_date=datetime.date(2018,5,14), finish_date=datetime.date(2018,8,3), description="Worked on the security of the internal network devices."))
+cv.add(Models.CvWorkExperienceItem(role="Software Engineer Intern", institution=facebook, location=london, start_date=datetime.date(2018,5,14), end_date=datetime.date(2018,8,3), description="Worked on the security of the internal network devices."))
 #Icpc
 cv.add(Models.CvAchievementProjectItem(name="3rd Place in ACM-ICPC Brazilian Regionals", competitors=816, start_date=datetime.date(2017,9,9), end_date=datetime.date(2017,9,9)))
 cv.add(Models.CvAchievementProjectItem(name="4th Place in ACM-ICPC South America Regionals", competitors=440, start_date=datetime.date(2017,11,11), end_date=datetime.date(2017,11,11)))
@@ -42,4 +44,16 @@ cv.add(Models.CvImplementationProjectItem(name="CVCS", language="Python", start_
 #Algorithms
 cv.add(Models.CvAcademicProjectItem(name="Algorithms Teacher Assistant", institution=ufpe, start_date=datetime.date(2016,3,1), end_date=datetime.date(2017,12,1), description="Gave lectures about Algorithms and Data Structures such as BFS, AVL trees to classrooms of over 50 students each semester"))
 
+cv.add(Models.CvLanguageItem(language="Portuguese", level="Native"))
+cv.add(Models.CvLanguageItem(language="English", level="Fluent"))
+cv.add(Models.CvEducationalExperienceItem(course="Unicamp ICPC Summer School", teacher="Maxim Akhmendov and Mike Mirzayanaov", institution=unicamp, location=saopaulo, start_date=datetime.date(2017,1,1), end_date=datetime.date(2017,1,1)))
+cv.add(Models.CvEducationalExperienceItem(course="Encryption I", teacher="Dan Boneh", institution=unicamp, start_date=datetime.date(2017,1,1), end_date=datetime.date(2017,1,1)))
+"""
+
+\cventry{2017}{Encryption I}{Dan Boneh}{Coursera, Stanford}{}{}%not yet
+\cventry{2016}{Machine Learning}{Andrew Ng}{Coursera, Stanford}{}{}%not yet
+\cventry{2016}{Getting started with AR}{}{Coursera, Mines-Telecom}{}{}%augmented reality
+\cventry{2014}{Fundamentals of Neuroscience I}{David Cox}{Edx, Harvard}{}{}%79
+\cventry{2014}{First Cambridge Exam}{}{}{}{}%71
+"""
 print(Renders.CvRenderTex.render(cv))
