@@ -13,6 +13,8 @@ saopaulo = Models.CvLocation(country="Brazil", city="Sao Paulo")
 
 ufpe = Models.CvInstitution("UFPE")
 unicamp = Models.CvInstitution("Unicamp")
+coursera_stanford = Models.CvInstitution("Coursera, Stanford")
+coursera_mines = Models.CvInstitution("Coursera, Mines-Telecom")
 inloco = Models.CvInstitution("Inloco")
 ms = Models.CvInstitution("Microsoft")
 facebook = Models.CvInstitution("Facebook")
@@ -43,17 +45,15 @@ cv.add(Models.CvImplementationProjectItem(name="Contributions on Codepit and Jas
 cv.add(Models.CvImplementationProjectItem(name="CVCS", language="Python", start_date=datetime.date(2018,7,13), description="Created an open source tool for creating resumes for computer science students, works by creating a abstract tree from a json with the fields, and then generates the CV using any of the renders avaliable. Github: https://github.com/Arthurlpgc/CVCS"))
 #Algorithms
 cv.add(Models.CvAcademicProjectItem(name="Algorithms Teacher Assistant", institution=ufpe, start_date=datetime.date(2016,3,1), end_date=datetime.date(2017,12,1), description="Gave lectures about Algorithms and Data Structures such as BFS, AVL trees to classrooms of over 50 students each semester"))
-
+#Languages
 cv.add(Models.CvLanguageItem(language="Portuguese", level="Native"))
 cv.add(Models.CvLanguageItem(language="English", level="Fluent"))
+#Courses
 cv.add(Models.CvEducationalExperienceItem(course="Unicamp ICPC Summer School", teacher="Maxim Akhmendov and Mike Mirzayanaov", institution=unicamp, location=saopaulo, start_date=datetime.date(2017,1,1), end_date=datetime.date(2017,1,1)))
-cv.add(Models.CvEducationalExperienceItem(course="Encryption I", teacher="Dan Boneh", institution=unicamp, start_date=datetime.date(2017,1,1), end_date=datetime.date(2017,1,1)))
+cv.add(Models.CvEducationalExperienceItem(course="Encryption I", teacher="Dan Boneh", institution=coursera_stanford, start_date=datetime.date(2017,1,14), end_date=datetime.date(2017,1,14)))
+cv.add(Models.CvEducationalExperienceItem(course="Machine Learning", teacher="Andrew Ng", institution=coursera_stanford, start_date=datetime.date(2016,12,20), end_date=datetime.date(2016,12,20)))
+cv.add(Models.CvEducationalExperienceItem(course="Getting started with Augmented Reality", institution=coursera_mines, start_date=datetime.date(2016,11,30), end_date=datetime.date(2016,11,30)))
 """
-
-\cventry{2017}{Encryption I}{Dan Boneh}{Coursera, Stanford}{}{}%not yet
-\cventry{2016}{Machine Learning}{Andrew Ng}{Coursera, Stanford}{}{}%not yet
-\cventry{2016}{Getting started with AR}{}{Coursera, Mines-Telecom}{}{}%augmented reality
 \cventry{2014}{Fundamentals of Neuroscience I}{David Cox}{Edx, Harvard}{}{}%79
-\cventry{2014}{First Cambridge Exam}{}{}{}{}%71
 """
 print(Renders.CvRenderTex.render(cv))
