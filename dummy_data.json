@@ -23,6 +23,25 @@
                 "language": "mario kart",
                 "level": "-10"
             }
+        ],
+        "CvWorkExperienceItem": [
+            {
+                "description": "Worked on the algorithms of wifi-based location and visit detection.",
+                "institution": {
+                    "CvInstitution": {
+                        "name": "Inloco"
+                    }
+                },
+                "role": "Junior Researcher",
+                "location": {
+                    "CvLocation": {
+                        "city": "Recife",
+                        "country": "Brazil"
+                    }
+                },
+                "start_date": "2017-05-01",
+                "end_date": "2017-09-01"
+            }
         ]
     }
 }

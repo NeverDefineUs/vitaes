@@ -55,5 +55,6 @@ cv.add(Models.CvEducationalExperienceItem(course="Encryption I", teacher="Dan Bo
 cv.add(Models.CvEducationalExperienceItem(course="Machine Learning", teacher="Andrew Ng", institution=coursera_stanford, start_date=datetime.date(2016,12,20), end_date=datetime.date(2016,12,20)))
 cv.add(Models.CvEducationalExperienceItem(course="Getting started with Augmented Reality", institution=coursera_mines, start_date=datetime.date(2016,11,30), end_date=datetime.date(2016,11,30)))
 cv.add(Models.CvEducationalExperienceItem(course="Fundamentals of Neuroscience I", institution=harvardx, start_date=datetime.date(2014,9,24), end_date=datetime.date(2014,9,24)))
-print(Renders.CvRenderTexToPdf.render(cv, baseFolder="cv_7"))
+
+#print(Renders.CvRenderTexToPdf.render(cv, baseFolder="cv_7"))
 print(Renders.CvRenderJsonRequest.render(cv))
