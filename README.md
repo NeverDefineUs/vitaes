@@ -23,7 +23,22 @@ Fields:
 * location(_CvLocation_, Optional): Where the institution is located at.
 ## Items
 ### CvLanguageItem
+Represents a language (not a programming language).
+
+Fields:
+* language(_str_): States the name of it.
+* level(_str_, Optional): The level associated with the language (eg. Intermediate, Fluent, Native...).
 ### CvEducationalExperienceItem
+Represents an experience in an education institution whether is presencial or online
+
+Fields:
+* institution(_CvInstitution_): What is the institution.
+* start_date(_datetime_): When the experience started.
+* location(_CvLocation_, Optional): Where the institution is located at.
+* end_date(_datetime_, Optional): When the experience ended. ("present" if ommited)
+* description(_str_, Optional): The description of the experience.
+* teacher(_str_, Optional): Name of the teacher/orienter.
+
 ### CvWorkExperienceItem
 ### CvImplementationProjectItem
 ### CvAcademicProjectItem

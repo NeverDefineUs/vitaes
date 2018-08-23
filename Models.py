@@ -74,12 +74,12 @@ class CvWorkExperienceItem(CvExperienceItem):
 class CvEducationalExperienceItem(CvExperienceItem):
     def __init__(self,
                  institution: CvInstitution,
-                 start_date: date,
+                 start_date: datetime,
                  course: str,
                  location: CvLocation = None,
                  end_date: datetime = None,
                  description: str = None,
-                 teacher:str = None,
+                 teacher: str = None,
                  ):       
         CvExperienceItem.__init__(self, institution=institution, location=location, start_date=start_date, end_date=end_date, description=description)
         self.course = course
@@ -135,7 +135,7 @@ class CvCourseProjectItem(CvProjectItem):
     # Instable still
     def __init__(self,
                  name: str,
-                 start_date: date,
+                 start_date: datetime,
                  description: str = None,
                  location: CvLocation = None,
                  institution: CvInstitution = None,
@@ -151,7 +151,7 @@ class CvCourseProjectItem(CvProjectItem):
 class CvAchievementProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
-                 start_date: date,
+                 start_date: datetime,
                  description: str = None,
                  institution: CvInstitution = None,
                  location: CvLocation = None,
