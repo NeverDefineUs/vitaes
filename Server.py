@@ -3,6 +3,7 @@ from flask import Flask, request, abort, send_file
 from CurriculumVitae import CurriculumVitae
 from Models import *
 import Renders
+import json
 
 app = Flask(__name__)
 
@@ -16,6 +17,31 @@ def get_date_field_or_none(req, field_name):
     if field is None:
         return None
     return datetime.strptime(field, '%Y-%m-%d').date()
+
+def get_parse_string(cv_key, item):
+    gen_cv_item = cv_key + '('
+
+    for key, value in item.items():
+        gen_cv_item = gen_cv_item + "{0}=".format(key)
+        if type(value) is dict:
+            for in_key, in_value in value.items():
+                inside_item = get_parse_string(in_key, in_value)
+                gen_cv_item = gen_cv_item + "{0},".format(inside_item)
+                break
+        else:
+            gen_cv_item = gen_cv_item + "'{0}',".format(value)
+
+    gen_cv_item = gen_cv_item + ')'
+
+    return gen_cv_item
+
+def parse_item(cv_key, item):
+    try:
+        cv_item = eval(get_parse_string(cv_key, item))
+    except TypeError as err:
+        abort(400, err)
+
+    return cv_item
 
 @app.route('/CV/', methods=['POST'])
 def process_curr():
@@ -42,16 +68,7 @@ def process_curr():
             items = req_key
 
         for item in items:
-            gen_cv_item = '('
-            for key, value in item.items():
-                gen_cv_item = gen_cv_item + "{key}='{value}',".format(key=key, value=value)
-            gen_cv_item = gen_cv_item + ')'
-
-            try:
-                cv_item = eval(cv_key + gen_cv_item)
-            except TypeError as err:
-                abort(400, err)
-
+            cv_item = parse_item(cv_key, item)
             cv.add(cv_item)
 
     path = Renders.CvRenderTexToPdf.render(cv)
