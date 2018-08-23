@@ -1,6 +1,10 @@
 import CurriculumVitae, Models, datetime, time
 import string, random, os
 import subprocess, json
+import timestring
+
+def parse_date(str):
+    return timestring.Date(str).date
 
 def date_comparer(x):
     end_date=x.end_date
@@ -70,11 +74,11 @@ class CvRenderTex(CvRenderBase):
             workExperience = cv.items[Models.CvWorkExperienceItem]
             workExperience.sort(key = date_comparer, reverse = True)
             for elem in workExperience:
-                texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
+                texString += "\\cventry{" + parse_date(elem.start_date).strftime("%b/%y") + " "
                 if elem.end_date == None:
                     texString += "now"
                 else:
-                    texString += elem.end_date.strftime("%b/%y")
+                    texString += parse_date(elem.end_date).strftime("%b/%y")
                 texString += "}{" + elem.role + "}{" + elem.institution.name + "}{"
                 if elem.location != None:
                     texString += str(elem.location)
