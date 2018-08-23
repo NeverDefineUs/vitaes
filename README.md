@@ -20,6 +20,12 @@ Represents a institution, such as a place you studied or worked on(Can represent
 
 Fields:
 * name(_str_): States the name of it.
-* location(CvLocation, Optional): Where the institution is located at.
+* location(_CvLocation_, Optional): Where the institution is located at.
 ## Items
-TODO
+### CvLanguageItem
+### CvEducationalExperienceItem
+### CvWorkExperienceItem
+### CvImplementationProjectItem
+### CvAcademicProjectItem
+### CvAchievementProjectItem
+### CvHeaderItem

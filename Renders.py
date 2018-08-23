@@ -1,6 +1,6 @@
 import CurriculumVitae, Models, datetime, time
 import string, random, os
-import subprocess
+import subprocess, json
 
 def date_comparer(x):
     end_date=x.end_date
@@ -19,6 +19,7 @@ def date_comparer_2(x):
 class CvRenderBase:
     def render(cv: CurriculumVitae):
         raise NotImplementedError
+
 class CvRenderTex(CvRenderBase):
     def render(cv: CurriculumVitae):
         texString = """\\documentclass[11pt,a4paper,sans]{moderncv} 
@@ -164,6 +165,32 @@ class CvRenderTexToPdf(CvRenderBase):
         os.system("rm -r Output/" + path + "/")
         return path
 
+class CvRenderJsonRequest(CvRenderBase):
+    def extract_item(x):
+        dic = {}
+        for varname in vars(x):
+            var = eval('x.' + varname)
+            if var == None:
+                continue
+            elif var.__class__.__name__[0:2] == "Cv":
+                var = {var.__class__.__name__: CvRenderJsonRequest.extract_item(var)}
+            elif var.__class__.__name__ == "date":
+                var = var.strftime("%y-%m-%d")
+            dic[varname] = var
+        return dic
+    def extract_list(raw_arr):
+        arr = []
+        for elem in raw_arr:
+            arr.append(CvRenderJsonRequest.extract_item(elem))
+        return arr
+    def cv_to_dict(cv):
+        dic = {}
+        dic['CvHeaderItem'] = CvRenderJsonRequest.extract_item(cv.header)
+        for item in cv.items:
+            dic[item.__name__] = CvRenderJsonRequest.extract_list(cv.items[item])
+        return dic
+    def render(cv):
+        return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=2)
 
     
 
