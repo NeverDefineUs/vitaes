@@ -53,7 +53,9 @@ def process_curr():
                 abort(400, err)
 
             cv.add(cv_item)
+
     path = Renders.CvRenderTexToPdf.render(cv)
+
     return send_file("Output/" + path + ".pdf")
 
 if __name__ == "__main__":
