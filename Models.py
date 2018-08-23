@@ -1,6 +1,27 @@
 from datetime import date
 
 
+class CvLocation:
+    def __init__(self, country: str, state: str = None, city: str = None):
+        self.country = country
+        self.state = state
+        self.city = city
+
+    def __str__(self):
+        ans = self.country
+        if self.state != None:
+            ans += ', ' + self.state
+        if self.city != None:
+            ans += ', ' + self.city
+        return ans
+
+
+class CvInstitution:
+    def __init__(self, name: str, location: CvLocation = None):
+        self.name = name
+        self.location = location
+
+
 class CvItem:
     def __init__(self):
         self.item_type = self.__class__.__name__
@@ -20,21 +41,6 @@ class CvLanguageItem(CvItem):
         CvItem.__init__(self)
         self.language = language
         self.level = level
-
-
-class CvLocation:
-    def __init__(self, country: str, state: str = None, city: str = None):
-        self.country = country
-        self.state = state
-        self.city = city
-
-    def __str__(self):
-        ans = self.country
-        if self.state != None:
-            ans += ', ' + self.state
-        if self.city != None:
-            ans += ', ' + self.city
-        return ans
 
 
 class CvExperienceItem(CvItem):
@@ -181,9 +187,3 @@ class CvHeaderItem(CvItem):
         self.address = address
         self.birthday = birthday
         self.homepage = homepage
-
-
-class CvInstitution:
-    def __init__(self, name: str, location: CvLocation = None):
-        self.name = name
-        self.location = location
