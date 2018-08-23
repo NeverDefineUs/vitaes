@@ -170,7 +170,7 @@ class CvRenderJsonRequest(CvRenderBase):
         dic = {}
         for varname in vars(x):
             var = eval('x.' + varname)
-            if var == None:
+            if var is None or varname == "item_type":
                 continue
             elif var.__class__.__name__[0:2] == "Cv":
                 var = {var.__class__.__name__: CvRenderJsonRequest.extract_item(var)}
@@ -190,7 +190,7 @@ class CvRenderJsonRequest(CvRenderBase):
             dic[item.__name__] = CvRenderJsonRequest.extract_list(cv.items[item])
         return dic
     def render(cv):
-        return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=2)
+        return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 
     
 
