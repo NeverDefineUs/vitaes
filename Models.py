@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 
 
 class CvLocation:
@@ -46,9 +46,9 @@ class CvLanguageItem(CvItem):
 class CvExperienceItem(CvItem):
     def __init__(self,
                  institution: CvInstitution,
-                 start_date: date,
+                 start_date: datetime,
                  location: CvLocation = None,
-                 end_date: date = None,
+                 end_date: datetime = None,
                  description: str = None):
         CvItem.__init__(self)
         self.institution = institution
@@ -61,9 +61,9 @@ class CvExperienceItem(CvItem):
 class CvWorkExperienceItem(CvExperienceItem):
     def __init__(self, 
                  institution: CvInstitution,
-                 start_date: date,
+                 start_date: datetime,
                  location: CvLocation = None,
-                 end_date: date = None,
+                 end_date: datetime = None,
                  description: str = None,
                  role: str = None,
                  ):
@@ -77,7 +77,7 @@ class CvEducationalExperienceItem(CvExperienceItem):
                  start_date: date,
                  course: str,
                  location: CvLocation = None,
-                 end_date: date = None,
+                 end_date: datetime = None,
                  description: str = None,
                  teacher:str = None,
                  ):       
@@ -90,8 +90,8 @@ class CvProjectItem(CvItem):
                  name: str,
                  description: str = None,
                  location: CvLocation = None,
-                 start_date: date = None,
-                 end_date: date = None
+                 start_date: datetime = None,
+                 end_date: datetime = None
                  ):
         CvItem.__init__(self)
         self.name = name
@@ -108,8 +108,8 @@ class CvImplementationProjectItem(CvProjectItem):
                  location: CvLocation = None,
                  language: str = None,
                  repository_link: str = None,
-                 start_date: date = None,
-                 end_date: date = None
+                 start_date: datetime = None,
+                 end_date: datetime = None
                  ):
         CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.language = language
@@ -123,8 +123,8 @@ class CvAcademicProjectItem(CvProjectItem):
                  institution: CvInstitution = None,
                  location: CvLocation = None,
                  article_link: str = None,
-                 start_date: date = None,
-                 end_date: date = None
+                 start_date: datetime = None,
+                 end_date: datetime = None
                  ):
         CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.article_link = article_link
@@ -141,7 +141,7 @@ class CvCourseProjectItem(CvProjectItem):
                  institution: CvInstitution = None,
                  certification_link: str = None,
                  course_link: str = None,
-                 end_date: date = None
+                 end_date: datetime = None
                  ):
         CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.certification_link = certification_link
@@ -157,7 +157,7 @@ class CvAchievementProjectItem(CvProjectItem):
                  location: CvLocation = None,
                  place: str = '',
                  competitors: int = 0,
-                 end_date: date = None,
+                 end_date: datetime = None,
                  certification_link: str = None
                  ):
         CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
@@ -174,7 +174,7 @@ class CvHeaderItem(CvItem):
                  linkedin: str = None,
                  github: str = None,
                  address: str = None,
-                 birthday: date = None,
+                 birthday: datetime = None,
                  homepage: str = None
                  ):
         CvItem.__init__(self)

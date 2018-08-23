@@ -1,24 +1,19 @@
 import CurriculumVitae, Models, datetime, time
 import string, random, os
 import subprocess, json
-import timestring
-
-def parse_date(str):
-    print(str)
-    return timestring.Date(str).date
 
 def date_comparer(x):
-    end_date=parse_date(x.end_date)
-    start_date=parse_date(x.start_date)
+    end_date=x.end_date
+    start_date=x.start_date
     if end_date == None:
-        end_date = datetime.date(2100, 10, 10)
+        end_date = datetime.datetime(2100, 10, 10, 1, 1, 1)
     return (end_date, start_date)
 
 def date_comparer_2(x):
-    end_date=parse_date(x.end_date)
-    start_date=parse_date(x.start_date)
+    end_date=x.end_date
+    start_date=x.start_date
     if end_date == None:
-        end_date = datetime.date(2100, 10, 10)
+        end_date = datetime.datetime(2100, 10, 10, 1, 1, 1)
     return (end_date, start_date)
     
 class CvRenderBase:
@@ -58,11 +53,11 @@ class CvRenderTex(CvRenderBase):
             educationalExperience = cv.items[Models.CvEducationalExperienceItem]
             educationalExperience.sort(key = date_comparer, reverse = True)
             for elem in educationalExperience:
-                texString += "\\cventry{" + parse_date(elem.start_date).strftime("%b/%y") + " "
+                texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
                 if elem.end_date == None:
                     texString += "now"
-                elif parse_date(elem.start_date).strftime("%b/%y") != parse_date(elem.end_date).strftime("%b/%y"):
-                    texString += parse_date(elem.end_date).strftime("%b/%y")
+                elif elem.start_date.strftime("%b/%y") != elem.end_date.strftime("%b/%y"):
+                    texString += elem.end_date.strftime("%b/%y")
                 texString += "}{" + elem.course + "}{" + elem.institution.name + "}{"
                 if elem.location != None:
                     texString += str(elem.location)
@@ -75,11 +70,11 @@ class CvRenderTex(CvRenderBase):
             workExperience = cv.items[Models.CvWorkExperienceItem]
             workExperience.sort(key = date_comparer, reverse = True)
             for elem in workExperience:
-                texString += "\\cventry{" + parse_date(elem.start_date).strftime("%b/%y") + " "
+                texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
                 if elem.end_date == None:
                     texString += "now"
                 else:
-                    texString += parse_date(elem.end_date).strftime("%b/%y")
+                    texString += elem.end_date.strftime("%b/%y")
                 texString += "}{" + elem.role + "}{" + elem.institution.name + "}{"
                 if elem.location != None:
                     texString += str(elem.location)
@@ -92,7 +87,7 @@ class CvRenderTex(CvRenderBase):
             achievements = cv.items[Models.CvAchievementProjectItem]
             achievements.sort(key = date_comparer_2, reverse = True)
             for elem in achievements:
-                texString += "\\cvitem{" + parse_date(elem.start_date).strftime("%d/%b/%Y") + "}{" + elem.name
+                texString += "\\cvitem{" + elem.start_date.strftime("%d/%b/%Y") + "}{" + elem.name
                 if elem.competitors > 0:
                     texString += "(Out of " + str(elem.competitors) + ")"
                 texString += "}\n"
@@ -101,10 +96,10 @@ class CvRenderTex(CvRenderBase):
             projects = cv.items[Models.CvImplementationProjectItem]
             projects.sort(key = date_comparer_2, reverse = True)
             for elem in projects:
-                start_date = parse_date(elem.start_date).strftime("%b/%Y")
+                start_date = elem.start_date.strftime("%b/%Y")
                 texString += "\\cventry{" + start_date
                 if elem.end_date != None:
-                    end_date = parse_date(elem.end_date).strftime("%b/%Y")
+                    end_date = elem.end_date.strftime("%b/%Y")
                     if end_date != start_date:
                         texString += " " + end_date
                 texString += "}{" + elem.name + "}{" 
@@ -119,10 +114,10 @@ class CvRenderTex(CvRenderBase):
             projects = cv.items[Models.CvAcademicProjectItem]
             projects.sort(key = date_comparer_2, reverse = True)
             for elem in projects:
-                start_date = parse_date(elem.start_date).strftime("%b/%Y")
+                start_date = elem.start_date.strftime("%b/%Y")
                 texString += "\\cventry{" + start_date
                 if elem.end_date != None:
-                    end_date = parse_date(elem.end_date).strftime("%b/%Y")
+                    end_date = elem.end_date.strftime("%b/%Y")
                     if end_date != start_date:
                         texString += " " + end_date
                 texString += "}{" + elem.name + "}{" 

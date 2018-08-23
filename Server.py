@@ -4,6 +4,11 @@ from CurriculumVitae import CurriculumVitae
 from Models import *
 import Renders
 import json
+import timestring
+
+def parse_date(str):
+    print(str)
+    return timestring.Date(str).date
 
 app = Flask(__name__)
 
@@ -28,6 +33,8 @@ def get_parse_string(cv_key, item):
                 inside_item = get_parse_string(in_key, in_value)
                 gen_cv_item = gen_cv_item + "{0},".format(inside_item)
                 break
+        elif key[-4:] == "date":
+            gen_cv_item = gen_cv_item + "parse_date('{0}'),".format(value)
         else:
             gen_cv_item = gen_cv_item + "'{0}',".format(value)
 
