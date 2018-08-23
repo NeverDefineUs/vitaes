@@ -29,11 +29,11 @@ def generate():
     #Facebook
     cv.add(Models.CvWorkExperienceItem(role="Software Engineer Intern", institution=facebook, location=london, start_date="2018-5-14", end_date="2018-8-3", description="Worked on the security of the internal network devices."))
     #Icpc
-    cv.add(Models.CvAchievementProjectItem(name="3rd Place in ACM-ICPC Brazilian Regionals", competitors=816, start_date="2017-9-9", end_date="2017-9-9"))
-    cv.add(Models.CvAchievementProjectItem(name="4th Place in ACM-ICPC South America Regionals", competitors=440, start_date="2017-11-11", end_date="2017-11-11"))
-    cv.add(Models.CvAchievementProjectItem(name="104th Place in ACM-ICPC World Finals", competitors=140, start_date="2018-4-19", end_date="2018-4-19"))
+    cv.add(Models.CvAchievementItem(name="3rd Place in ACM-ICPC Brazilian Regionals", competitors=816, start_date="2017-9-9", end_date="2017-9-9"))
+    cv.add(Models.CvAchievementItem(name="4th Place in ACM-ICPC South America Regionals", competitors=440, start_date="2017-11-11", end_date="2017-11-11"))
+    cv.add(Models.CvAchievementItem(name="104th Place in ACM-ICPC World Finals", competitors=140, start_date="2018-4-19", end_date="2018-4-19"))
     #ms3c
-    cv.add(Models.CvAchievementProjectItem(name="2nd Place at Microsoft College Coding Competition at UFPE", competitors=54, start_date="2017-4-5", end_date="2017-4-5"))
+    cv.add(Models.CvAchievementItem(name="2nd Place at Microsoft College Coding Competition at UFPE", competitors=54, start_date="2017-4-5", end_date="2017-4-5"))
     #raytracer
     cv.add(Models.CvImplementationProjectItem(name="Quadrics and Bezier surfaces Raytracer", language="C++", start_date="2016-11-1", end_date="2016-11-1"))
     #TA
