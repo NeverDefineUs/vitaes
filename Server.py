@@ -49,10 +49,9 @@ def process_curr():
     req = request.json
     ret = ""
 
+    req_cv = req
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
-    else:
-        abort(400, "Missing 'curriculum_vitae' data")
 
     if 'CvHeaderItem' not in req_cv.keys():
         abort(400, "Missing header")
