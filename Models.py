@@ -37,12 +37,6 @@ class CvLocation:
         return ans
 
 
-class CvInstitution:
-    def __init__(self, name: str, location: CvLocation = None):
-        self.name = name
-        self.location = location
-
-
 class CvExperienceItem(CvItem):
     def __init__(self,
                  institution: CvInstitution,
@@ -187,3 +181,9 @@ class CvHeaderItem(CvItem):
         self.address = address
         self.birthday = birthday
         self.homepage = homepage
+
+
+class CvInstitution:
+    def __init__(self, name: str, location: CvLocation = None):
+        self.name = name
+        self.location = location
