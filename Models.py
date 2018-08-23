@@ -162,7 +162,7 @@ class CvAchievementProjectItem(CvProjectItem):
                  ):
         CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
         self.place = place
-        self.competitors = competitors
+        self.competitors = int(competitors)
         self.certification_link = certification_link
 
 

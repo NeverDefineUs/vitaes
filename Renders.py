@@ -93,7 +93,7 @@ class CvRenderTex(CvRenderBase):
             achievements.sort(key = date_comparer_2, reverse = True)
             for elem in achievements:
                 texString += "\\cvitem{" + parse_date(elem.start_date).strftime("%d/%b/%Y") + "}{" + elem.name
-                if int(elem.competitors) > 0:
+                if elem.competitors > 0:
                     texString += "(Out of " + str(elem.competitors) + ")"
                 texString += "}\n"
         if Models.CvImplementationProjectItem in cv.items:
