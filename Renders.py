@@ -82,9 +82,9 @@ class CvRenderTex(CvRenderBase):
                 if elem.description != None:
                     texString += elem.description
                 texString += "}\n"
-        if Models.CvAchievementProjectItem in cv.items:
+        if Models.CvAchievementItem in cv.items:
             texString += "\\section{Achievements}\n"
-            achievements = cv.items[Models.CvAchievementProjectItem]
+            achievements = cv.items[Models.CvAchievementItem]
             achievements.sort(key = date_comparer_2, reverse = True)
             for elem in achievements:
                 texString += "\\cvitem{" + elem.start_date.strftime("%d/%b/%Y") + "}{" + elem.name

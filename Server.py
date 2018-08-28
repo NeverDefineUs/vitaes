@@ -56,6 +56,8 @@ def process_curr():
     req = request.json
     ret = ""
 
+    print("REQUEST")
+
     req_cv = req
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
@@ -82,4 +84,4 @@ def process_curr():
     return send_file("Output/" + path + ".pdf")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
