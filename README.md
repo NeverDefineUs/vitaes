@@ -1,7 +1,7 @@
 # CVCS
 CVCS is a project that creates an Abstract Tree of your CV so you can compile it in multiple formats automatically.
 # How to set up
-Run `pip3 install -r requirements.txt`(You need pip and python for it), then download and install the version that pdflatex that matches your operating system.
+Install docker and run `docker build . -t cvcs` and `docker run -i -t -p 5000:5000 cvcs`
 # How to use it
 Ramon Saboya is about to tell you
 # Types
