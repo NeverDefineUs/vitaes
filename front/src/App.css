@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #222;
+  height: 30px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+  margin-left: 240px
+}
+
+.App-sidenav {
+  height: 100%; 
+  width: 240px; 
+  position: fixed; 
+  z-index: 1; 
+  top: 60px; 
+  left: 0;
+  background-color: #EEE; 
+  overflow-x: hidden; 
+  padding-top: 10px;
+}
+
+.App-sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #222;
+  display: block;
+}
+
+.App-sidenav a:hover {
+  color: #f1f1f1;
+}
