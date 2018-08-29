@@ -8,7 +8,6 @@ class App extends Component {
     this.state = {tab: 1}
   }
   render() {
-    console.log(this.state)
     return (
       <div className="App">
         <header className="App-header">
