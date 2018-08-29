@@ -3,7 +3,7 @@ CVCS is a project that creates an Abstract Tree of your CV so you can compile it
 # How to set up
 Install docker and run `docker build . -t cvcs` and `docker run -i -t -p 5000:5000 cvcs`
 # How to use it
-Ramon Saboya is about to tell you
+While running the docker run `curl -d @Sample/Input/Sample1/data.json -H "Content-Type:application/json" -X POST http://localhost:5000/CV/ > Sample.pdf` 
 # Types
 The types are divided in two types of types, the Items, and the non-Items, and Item is something that will be added to your curriculum, as opposed to the Non-Items, that represent dependencies you curriculum has such as places and institutions.
 ## Non Items
@@ -77,7 +77,7 @@ Fields:
 * start_date(_datetime_, Optional): When the project started.
 * end_date(_datetime_, Optional): When the project ended.
 
-### CvAchievementProjectItem
+### CvAchievementItem
 Represents an achievement earned by you or a project of yours.
 
 Fields:
