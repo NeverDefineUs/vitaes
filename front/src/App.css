@@ -1,5 +1,14 @@
+html{
+  min-height:100%;
+  position:relative;
+}
+body{
+  height:100%; 
+}
+
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-header {
@@ -20,11 +29,12 @@
 }
 
 .App-sidenav {
-  height: stretch; 
+  height: 100%; 
   width: 240px; 
   position: absolute; 
   z-index: 1; 
   top: 60px; 
+  bottom: 0;
   left: 0;
   background-color: #EEE; 
   overflow-x: hidden; 

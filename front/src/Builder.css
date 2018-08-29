@@ -43,7 +43,7 @@
   padding-right: 15px;
   color: #fff;
   position: relative;
-  left: 90%;
+  float: right;
   background-color: #000;
 }
 .Base-button a:hover {
@@ -55,7 +55,8 @@
   border-radius: 2px;
   flex-grow: 100;
   border: 1px;
-  height: 1.5em;
+  font-size: 1em;
+  height: 1.2em;
   border-style: solid;
   border-color: #ddd;
 }
