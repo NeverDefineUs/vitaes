@@ -69,6 +69,14 @@
   height: 1.2em;
 }
 
+.Base-form {
+  background-color: #EEE;
+  margin-bottom: 5px;
+  padding: 1em;
+  padding-bottom: 3em;
+  border-radius: 1em;
+}
+
 .Base-item-close {
   display: inline;
 }
