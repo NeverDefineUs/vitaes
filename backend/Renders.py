@@ -75,6 +75,8 @@ class CvRenderTex(CvRenderBase):
                     texString += "now"
                 else:
                     texString += elem.end_date.strftime("%b/%y")
+                if elem.role is None:
+                    elem.role = ""
                 texString += "}{" + elem.role + "}{" + elem.institution.name + "}{"
                 if elem.location != None:
                     texString += str(elem.location)
