@@ -159,8 +159,7 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
-      console.log("oie")
-      fetch('http://localhost:5000/CV/', {
+      fetch('http://18.237.88.116:5000/CV/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
