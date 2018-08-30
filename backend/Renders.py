@@ -55,7 +55,7 @@ class CvRenderTex(CvRenderBase):
             for elem in educationalExperience:
                 texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
                 if elem.end_date == None:
-                    texString += "now"
+                    texString += "Present"
                 elif elem.start_date.strftime("%b/%y") != elem.end_date.strftime("%b/%y"):
                     texString += elem.end_date.strftime("%b/%y")
                 texString += "}{" + elem.course + "}{" + elem.institution.name + "}{"
@@ -72,7 +72,7 @@ class CvRenderTex(CvRenderBase):
             for elem in workExperience:
                 texString += "\\cventry{" + elem.start_date.strftime("%b/%y") + " "
                 if elem.end_date == None:
-                    texString += "now"
+                    texString += "Present"
                 else:
                     texString += elem.end_date.strftime("%b/%y")
                 if elem.role is None:
