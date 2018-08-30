@@ -36,6 +36,7 @@ Represents an experience in an education institution whether is presencial or on
 
 Fields:
 * institution(_CvInstitution_): What is the institution.
+* course(_str_): Course taken.
 * start_date(_datetime_): When the experience started.
 * location(_CvLocation_, Optional): Where the institution is located at.
 * end_date(_datetime_, Optional): When the experience ended. ("present" if ommited)

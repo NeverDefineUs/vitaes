@@ -119,7 +119,7 @@ class CvImplementationProjectItem(CvProjectItem):
 class CvAcademicProjectItem(CvProjectItem):
     def __init__(self,
                  name: str,
-                 description: str,
+                 description: str = None,
                  institution: CvInstitution = None,
                  location: CvLocation = None,
                  article_link: str = None,
