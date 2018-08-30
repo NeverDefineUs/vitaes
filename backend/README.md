@@ -62,7 +62,7 @@ Fields:
 * location(_CvLocation_, Optional): Where the project was developed.
 * language(_str_, Optional): States the core programming language used in the project.
 * repository_link(_str_, Optional): States the url to access the repository.
-* start_date(_datetime_, Optional): When the project started.
+* start_date(_datetime_): When the project started.
 * end_date(_datetime_, Optional): When the project ended.
 
 ### CvAcademicProjectItem
@@ -74,7 +74,7 @@ Fields:
 * institution(_CvInstitution_, Optional): What is the institution where the project was developed.
 * location(_CvLocation_, Optional): Where the project was developed.
 * article_link(_str_, Optional): States the url to access the article.
-* start_date(_datetime_, Optional): When the project started.
+* start_date(_datetime_): When the project started.
 * end_date(_datetime_, Optional): When the project ended.
 
 ### CvAchievementItem
@@ -82,7 +82,7 @@ Represents an achievement earned by you or a project of yours.
 
 Fields:
 * name(_str_): States the name of the achievement.
-* start_date(_datetime_, Optional): When the competition that earned the achievement started.
+* start_date(_datetime_): When the competition that earned the achievement started.
 * description(_str_, Optional): States the description of the achievement.
 * institution(_CvInstitution_, Optional): States the host institution of the event.
 * location(_CvLocation_, Optional): Where the competition happened.
