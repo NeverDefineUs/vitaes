@@ -44,6 +44,7 @@
   color: #fff;
   position: relative;
   float: right;
+  margin-left: 0.5em;
   background-color: #000;
 }
 .Base-button a:hover {

@@ -5,12 +5,14 @@ from Models import *
 import Renders
 import json
 import timestring
+from flask_cors import CORS
 
 def parse_date(str):
     print(str)
     return timestring.Date(str).date
 
 app = Flask(__name__)
+CORS(app)
 
 def get_field_or_none(req, field_name):
     if field_name in req.keys():

@@ -137,8 +137,11 @@ class Builder extends Component {
       this.state = {curriculum: testCv, chosenLabel: ""}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
+      this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
       this.setCv = this.setCv.bind(this)
       this.setLabel = this.setLabel.bind(this)
+      this.startFilePicker = this.startFilePicker.bind(this)
+      this.uploadJSON = this.uploadJSON.bind(this)
     }
 
     handleChangeHeader(event) {
@@ -148,11 +151,29 @@ class Builder extends Component {
     }
 
     downloadCvAsJson() {
-      var element = document.createElement("a");
-      var file = new Blob([JSON.stringify(this.state.curriculum)], {type: 'text/plain'});
-      element.href = URL.createObjectURL(file);
-      element.download = "cv.json";
-      element.click();
+      var element = document.createElement("a")
+      var file = new Blob([JSON.stringify(this.state.curriculum)], {type: 'text/plain'})
+      element.href = URL.createObjectURL(file)
+      element.download = "cv.json"
+      element.click()
+    }
+
+    downloadCvAsPDF() {
+      console.log("oi")
+      fetch('http://localhost:5000/CV/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state.curriculum)
+      }).then(response => {
+        var file = response.body.Blob()
+        var element = document.createElement("a")
+        element.href = URL.createObjectURL(file)
+        element.download = "cv.json"
+        element.click()
+      })
     }
 
     setCv(cv) {
@@ -161,6 +182,21 @@ class Builder extends Component {
 
     setLabel(label) {
       this.setState({chosenLabel: label})
+    }
+
+    startFilePicker(e) {
+      this.refs.fileUploader.click()
+    }
+
+    uploadJSON(selectorFiles)
+    {
+      var fr = new FileReader()
+      fr.onload = function(e) {
+        var json = fr.result;
+        this.setState({curriculum: JSON.parse(json)})
+
+      }.bind(this)
+      fr.readAsText(selectorFiles[0])
     }
 
     render() {
@@ -182,7 +218,12 @@ class Builder extends Component {
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Projects" cvkey="CvImplementationProjectItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name"]} optFields={["description", "language", "country", "state", "city", "repository_link", "start_date", "end_date"]}/>
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Languages" cvkey="CvLanguageItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["language", "level"]}/>
                   <br/>
-                  <div className="Base-button"><a onClick={this.downloadCvAsJson}>Json Download</a></div><br/>
+                  <div className="Base-button"><a onClick={this.startFilePicker}>
+                    <input type="file" id="file" ref="fileUploader" onChange={(e) => this.uploadJSON(e.target.files)} style={{display: "none"}}/>
+                    Upload Json
+                  </a></div>
+                  <div className="Base-button"><a onClick={this.downloadCvAsJson}>Json Download</a></div>
+                  <div className="Base-button"><a onClick={this.downloadCvAsPDF}>CV download</a></div><br/>
               </div>
        }
  }
