@@ -57,7 +57,7 @@ Fields:
 Represents an implementation project.
 
 Fields:
-* name(_CvInstitution_): States the name of the project.
+* name(_str_): States the name of the project.
 * description(_str_, Optional): States the description of the project.
 * location(_CvLocation_, Optional): Where the project was developed.
 * language(_str_, Optional): States the core programming language used in the project.
@@ -69,7 +69,7 @@ Fields:
 Represents an academic project (eg. Teaching Assistant, Scientific Research...)
 
 Fields:
-* name(_CvInstitution_): States the name of the project.
+* name(_str_): States the name of the project.
 * description(_str_, Optional): States the description of the project.
 * institution(_CvInstitution_, Optional): What is the institution where the project was developed.
 * location(_CvLocation_, Optional): Where the project was developed.
