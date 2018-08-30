@@ -18,16 +18,44 @@ class HeaderField extends Component {
 }
 
 class CvItemForm extends Component {
-  // label, hidden
+  // label, hide, curriculum, cvkey, stateChanger
+  constructor(props) {
+    super(props)
+    this.getEventDeleter = this.getEventDeleter.bind(this)
+  }
+
+  getEventDeleter(index) {
+    return () => {
+      var cv = this.props.curriculum
+      cv[this.props.cvkey].splice(index, 1)
+      this.props.stateChanger(cv)
+    }
+  }
+
   render() {
+    var nodes = [<div className="Base-subtitle" key={-2}>{this.props.label}:</div>, <br key={-1}/>]
+    let x = this
+    if (this.props.curriculum[this.props.cvkey] !== undefined) {
+      this.props.curriculum[this.props.cvkey].forEach(function(item, index) {
+        var name = ""
+        if (item.name !== undefined) {
+          name = item.name
+        } else if (item.institution !== undefined) {
+          name = item.institution.CvInstitution.name
+        } else {
+          name = item.language
+        }
+        nodes.push(<div className="Base-item" key={index}>{name} <div className="Base-item-close" onClick={x.getEventDeleter(index)}><a>Delete</a></div></div>)
+      })
+    }
     if (this.props.hide){
       return  <div>
-                <div className="Base-subtitle">Work:</div><br/>
+                {nodes}
                 <div className="Base-button"><a>Add</a></div><br/>
               </div>
     } else {
       return  <div>
-                <div className="Base-subtitle">Worky:</div><br/>
+                {nodes}
                 <div className="Base-button"><a>Add</a></div><br/>
               </div>
     }
@@ -37,8 +65,22 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: 
-        { "CvHeaderItem": 
+      let testCv = 
+      {
+          "CvHeaderItem": {
+              "name": ""
+          },
+          "CvWorkExperienceItem": [],
+          "CvAcademicProjectItem": [],
+          "CvImplementationProjectItem": [],
+          "CvAchievementItem": [],
+          "CvEducationalExperienceItem": [],
+          "CvLanguageItem": []
+      }
+      this.state = {curriculum: testCv}
+      let a={curriculum: 
+        { 
+          "CvHeaderItem": 
           {
             "name": "Your Name", 
           }
@@ -46,6 +88,7 @@ class Builder extends Component {
       }
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
+      this.setCv = this.setCv.bind(this)
     }
 
     handleChangeHeader(event) {
@@ -61,6 +104,11 @@ class Builder extends Component {
       element.download = "cv.json";
       element.click();
     }
+
+    setCv(cv) {
+      this.setState({curriculum: cv})
+    }
+
     render() {
        return <div className="Base">
                   <div className="Base-title">Curriculum Vitae:</div><br/>
@@ -73,17 +121,13 @@ class Builder extends Component {
                   <HeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="homepage" mandatory={false}/>
                   <HeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="Address" mandatory={false}/>
                   <HeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="Birthday" mandatory={false}/>
-                  <CvItemForm hide={true}/>
-                  <div className="Base-subtitle">Education:</div><br/>
-                  <div className="Base-button"><a>Add</a></div><br/>
-                  <div className="Base-subtitle">Languages:</div><br/>
-                  <div className="Base-button"><a>Add</a></div><br/>
-                  <div className="Base-subtitle">Academic:</div><br/>
-                  <div className="Base-button"><a>Add</a></div><br/>
-                  <div className="Base-subtitle">Project:</div><br/>
-                  <div className="Base-button"><a>Add</a></div><br/>
-                  <div className="Base-subtitle">Achievements:</div><br/>
-                  <div className="Base-button"><a>Add</a></div><br/><br/>
+                  <CvItemForm hide={true} label="Work" cvkey="CvWorkExperienceItem" curriculum={this.state.curriculum} stateChanger={this.setCv}/>
+                  <CvItemForm hide={true} label="Education" cvkey="CvEducationalExperienceItem" curriculum={this.state.curriculum} stateChanger={this.setCv}/>
+                  <CvItemForm hide={true} label="Academic" cvkey="CvAcademicProjectItem" curriculum={this.state.curriculum} stateChanger={this.setCv}/>
+                  <CvItemForm hide={true} label="Achievements" cvkey="CvAchievementItem" curriculum={this.state.curriculum} stateChanger={this.setCv}/>
+                  <CvItemForm hide={true} label="Projects" cvkey="CvImplementationProjectItem" curriculum={this.state.curriculum} stateChanger={this.setCv}/>
+                  <CvItemForm hide={true} label="Languages" cvkey="CvLanguageItem" curriculum={this.state.curriculum} stateChanger={this.setCv}/>
+                  <br/>
                   <div className="Base-button"><a onClick={this.downloadCvAsJson}>Json Download</a></div><br/>
               </div>
        }

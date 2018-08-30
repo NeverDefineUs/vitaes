@@ -51,7 +51,7 @@
   color: #EEE;
 }
 
-.Base-inputfield{
+.Base-inputfield {
   border-radius: 2px;
   flex-grow: 100;
   border: 1px;
@@ -59,4 +59,28 @@
   height: 1.2em;
   border-style: solid;
   border-color: #ddd;
+}
+
+.Base-item {
+  background-color: #EEE;
+  padding: 5px;
+  padding-left: 10px; 
+  margin-bottom: 5px;
+  height: 1.2em;
+}
+
+.Base-item-close {
+  display: inline;
+}
+.Base-item-close a {
+  background-color: #BBB;
+  float: right;
+  height: 1.2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 0.75em;
+}
+
+.Base-item-close a:hover {
+  background-color: #AAA;
 }
