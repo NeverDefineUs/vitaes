@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './Builder.css';
+const capitalize = (word) => {
+  word = word.replace('_', ' ')
+  return word.charAt(0).toUpperCase() + word.slice(1)
+}
 
 class CvHeaderField extends Component {
   // label, mandatory, curriculum, stateChanger
-  capitalize(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1)
-  }
   render() {
     return <div className="Base-field">
-            <div className="Base-label">{this.capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label === "birthday" ? " [YYYY-MM-DD]" : ""}:</div>
+            <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label === "birthday" ? " [YYYY-MM-DD]" : ""}:</div>
             <input type="text" name={this.props.label} value={this.props.curriculum["CvHeaderItem"][this.props.label]} 
               className="Base-inputfield" 
               onChange={this.props.stateChanger}
@@ -19,12 +20,9 @@ class CvHeaderField extends Component {
 
 class CvField extends Component {
   // label, mandatory, toAdd, stateChanger
-  capitalize(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1)
-  }
   render() {
     return <div className="Base-field">
-            <div className="Base-label">{this.capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:</div>
+            <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:</div>
             <input type="text" name={this.props.label} value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]} 
               className="Base-inputfield" 
               onChange={this.props.stateChanger}
