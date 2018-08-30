@@ -56,7 +56,8 @@
   flex-grow: 100;
   border: 1px;
   font-size: 1em;
-  height: 1.2em;
+  min-height: 1.2em;
+  height: fit-content;
   border-style: solid;
   border-color: #ddd;
 }
