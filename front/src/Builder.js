@@ -78,14 +78,6 @@ class Builder extends Component {
           "CvLanguageItem": []
       }
       this.state = {curriculum: testCv}
-      let a={curriculum: 
-        { 
-          "CvHeaderItem": 
-          {
-            "name": "Your Name", 
-          }
-        }
-      }
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.setCv = this.setCv.bind(this)
