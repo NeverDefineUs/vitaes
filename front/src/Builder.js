@@ -159,7 +159,7 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
-      console.log("oi")
+      console.log("oie")
       fetch('http://localhost:5000/CV/', {
         method: 'POST',
         headers: {
@@ -168,11 +168,14 @@ class Builder extends Component {
         },
         body: JSON.stringify(this.state.curriculum)
       }).then(response => {
-        var file = response.body.Blob()
-        var element = document.createElement("a")
-        element.href = URL.createObjectURL(file)
-        element.download = "cv.json"
-        element.click()
+        var file = response.blob()
+        
+        file.then(file => {
+          var element = document.createElement("a")
+          element.href = URL.createObjectURL(file)
+          element.download = "cv.pdf"
+          element.click()
+        })
       })
     }
 
