@@ -173,14 +173,18 @@ class Builder extends Component {
         },
         body: JSON.stringify(this.state.curriculum)
       }).then(response => {
-        var file = response.blob()
-        
-        file.then(file => {
-          var element = document.createElement("a")
-          element.href = URL.createObjectURL(file)
-          element.download = "cv.pdf"
-          element.click()
-        })
+        if (response.ok) {
+          var file = response.blob()
+          file.then(file => {
+            var element = document.createElement("a")
+            element.href = URL.createObjectURL(file)
+            element.download = "cv.pdf"
+            element.click()
+          })
+        } else {
+          var textPromise = response.text()
+          textPromise.then(text => alert("Error:" + text))
+        }
       })
     }
 
