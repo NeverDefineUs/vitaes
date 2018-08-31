@@ -159,7 +159,7 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
-      fetch('http://18.237.88.116:5000/CV/', {
+      fetch('http://' + window.location.hostname + ':5000/CV/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
