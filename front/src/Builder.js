@@ -19,13 +19,19 @@ class CvHeaderField extends Component {
 }
 
 class CvField extends Component {
-  // label, mandatory, toAdd, stateChanger
+  // label, mandatory, toAdd, stateChanger, addField
   render() {
     return <div className="Base-field">
             <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:</div>
             <input type="text" name={this.props.label} value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]} 
               className="Base-inputfield" 
               onChange={this.props.stateChanger}
+              onKeyPress = {(e) => {
+                  if(e.key === 'Enter'){
+                    this.props.addField()
+                  }
+                }
+              }
             />
           </div>
   }
@@ -57,6 +63,12 @@ class CvItemForm extends Component {
       this.props.stateChanger(cv)
       if (toAdd["institution"] !== undefined) {
         toAdd["institution"] = toAdd["institution"]["CvInstitution"]["name"]
+      }
+      if (toAdd["location"] !== undefined) {
+        toAdd["country"] = toAdd["location"]["CvLocation"]["country"]
+        toAdd["city"] = toAdd["location"]["CvLocation"]["city"]
+        toAdd["state"] = toAdd["location"]["CvLocation"]["state"]
+        toAdd["location"] = undefined
       }
       this.setState({toAdd: toAdd})
       this.props.labelChanger(this.props.label)
@@ -122,12 +134,12 @@ class CvItemForm extends Component {
       var formNodes = []
       if (this.props.fields !== undefined) {
         this.props.fields.forEach((field, index) =>{
-          formNodes.push(<CvField stateChanger={this.handleChange} toAdd={this.state.toAdd} label={field} mandatory={true}/>)
+          formNodes.push(<CvField stateChanger={this.handleChange} toAdd={this.state.toAdd} addField={this.addField} label={field} mandatory={true}/>)
         })
       }
       if (this.props.optFields !== undefined) {
         this.props.optFields.forEach((field, index) =>{
-          formNodes.push(<CvField stateChanger={this.handleChange} toAdd={this.state.toAdd} label={field} mandatory={false}/>)
+          formNodes.push(<CvField stateChanger={this.handleChange} toAdd={this.state.toAdd} addField={this.addField} label={field} mandatory={false}/>)
         })
       }
       return  <div>
