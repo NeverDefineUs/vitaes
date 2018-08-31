@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import './Builder.css';
+import React, { Component } from 'react'
+import './Builder.css'
+import firebase from 'firebase'
+
 const capitalize = (word) => {
   word = word.replace('_', ' ')
   return word.charAt(0).toUpperCase() + word.slice(1)
@@ -10,7 +12,7 @@ class CvHeaderField extends Component {
   render() {
     return <div className="Base-field">
             <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label === "birthday" ? " [YYYY-MM-DD]" : ""}:</div>
-            <input type="text" name={this.props.label} value={this.props.curriculum["CvHeaderItem"][this.props.label]} 
+            <input type="text" name={this.props.label} value={this.props.curriculum["CvHeaderItem"][this.props.label] === undefined ? "" : this.props.curriculum["CvHeaderItem"][this.props.label]} 
               className="Base-inputfield" 
               onChange={this.props.stateChanger}
             />
@@ -55,6 +57,7 @@ class CvItemForm extends Component {
       this.props.stateChanger(cv)
     }
   }
+
   getEventExpander(index) {
     return () => {
       var cv = this.props.curriculum
@@ -103,6 +106,9 @@ class CvItemForm extends Component {
       toAdd["country"] = undefined
       toAdd["state"] = undefined
     }
+    if (cv[this.props.cvkey] === undefined) {
+      cv[this.props.cvkey] = []
+    }
     cv[this.props.cvkey].push(toAdd)
     this.props.stateChanger(cv)
     this.setState({toAdd: {}})
@@ -110,7 +116,7 @@ class CvItemForm extends Component {
   }
 
   render() {
-    var nodes = [<div className="Base-linemarker"/>,<div className="Base-subtitle" key={-2}>{this.props.label}:</div>, <br key={-1}/>]
+    var nodes = [<div className="Base-linemarker" key={-3}/>,<div className="Base-subtitle" key={-2}>{this.props.label}:</div>, <br key={-1}/>]
     let x = this
     if (this.props.curriculum[this.props.cvkey] !== undefined) {
       this.props.curriculum[this.props.cvkey].forEach(function(item, index) {
@@ -157,22 +163,11 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      let testCv = 
-      {
-          "CvHeaderItem": {
-              "name": ""
-          },
-          "CvWorkExperienceItem": [],
-          "CvAcademicProjectItem": [],
-          "CvImplementationProjectItem": [],
-          "CvAchievementItem": [],
-          "CvEducationalExperienceItem": [],
-          "CvLanguageItem": []
-      }
-      this.state = {curriculum: testCv, chosenLabel: ""}
+      this.state = {curriculum: this.props.cv, chosenLabel: ""}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
+      this.saveOnAccount = this.saveOnAccount.bind(this)
       this.setCv = this.setCv.bind(this)
       this.setLabel = this.setLabel.bind(this)
       this.startFilePicker = this.startFilePicker.bind(this)
@@ -180,17 +175,17 @@ class Builder extends Component {
     }
 
     handleChangeHeader(event) {
-      var aux = this.state.curriculum
+      var aux = this.props.cv
       aux["CvHeaderItem"][event.target.name] = event.target.value
       if (aux["CvHeaderItem"][event.target.name] === "") {
         aux["CvHeaderItem"][event.target.name] = undefined
       }
-      this.setState({curriculum: aux})
+      this.setCv(aux)
     }
 
     downloadCvAsJson() {
       var element = document.createElement("a")
-      var file = new Blob([JSON.stringify(this.state.curriculum)], {type: 'text/plain'})
+      var file = new Blob([JSON.stringify(this.props.cv)], {type: 'text/plain'})
       element.href = URL.createObjectURL(file)
       element.download = "cv.json"
       element.click()
@@ -203,7 +198,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.state.curriculum)
+        body: JSON.stringify(this.props.cv)
       }).then(response => {
         if (response.ok) {
           var file = response.blob()
@@ -220,8 +215,16 @@ class Builder extends Component {
       })
     }
 
+    saveOnAccount() {
+      var user = firebase.auth().currentUser
+      if (user !== null){
+        var db = firebase.database().ref("cvs").child(user.uid)
+        db.set(this.props.cv)
+      }
+    }
+
     setCv(cv) {
-      this.setState({curriculum: cv})
+      this.props.cvSetter(cv)
     }
 
     setLabel(label) {
@@ -237,7 +240,7 @@ class Builder extends Component {
       var fr = new FileReader()
       fr.onload = function(e) {
         var json = fr.result;
-        this.setState({curriculum: JSON.parse(json)})
+        this.setCv(JSON.parse(json))
 
       }.bind(this)
       fr.readAsText(selectorFiles[0])
@@ -247,27 +250,28 @@ class Builder extends Component {
        return <div className="Base">
                   <div className="Base-title">Curriculum Vitae:</div><br/>
                   <div className="Base-subtitle">Header:</div><br/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="name" mandatory={true}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="email" mandatory={false}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="phone" mandatory={false}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="linkedin" mandatory={false}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="github" mandatory={false}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="homepage" mandatory={false}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="address" mandatory={false}/>
-                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.state.curriculum} label="birthday" mandatory={false}/>
-                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Work" cvkey="CvWorkExperienceItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["institution", "start_date"]} optFields={["end_date", "country", "state", "city", "description", "role"]}/>
-                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Education" cvkey="CvEducationalExperienceItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["institution", "course", "start_date"]} optFields={["end_date", "country", "state", "city", "description", "teacher"]}/>
-                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Academic Projects" cvkey="CvAcademicProjectItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name", "start_date"]} optFields={["end_date", "description", "institution", "country", "state", "city", "article_link"]}/>
-                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Achievements" cvkey="CvAchievementItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel}  fields={["name", "start_date"]} optFields={["end_date", "description", "institution", "country", "state", "city", "place", "certification_link"]}/>
-                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Projects" cvkey="CvImplementationProjectItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name", "start_date"]} optFields={["end_date", "description", "language", "country", "state", "city", "repository_link"]}/>
-                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Languages" cvkey="CvLanguageItem" curriculum={this.state.curriculum} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["language", "level"]}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="name" mandatory={true}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="email" mandatory={false}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="phone" mandatory={false}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="linkedin" mandatory={false}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="github" mandatory={false}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="homepage" mandatory={false}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="address" mandatory={false}/>
+                  <CvHeaderField stateChanger={this.handleChangeHeader} curriculum={this.props.cv} label="birthday" mandatory={false}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Work" cvkey="CvWorkExperienceItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["institution", "start_date"]} optFields={["end_date", "country", "state", "city", "description", "role"]}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Education" cvkey="CvEducationalExperienceItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["institution", "course", "start_date"]} optFields={["end_date", "country", "state", "city", "description", "teacher"]}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Academic Projects" cvkey="CvAcademicProjectItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name", "start_date"]} optFields={["end_date", "description", "institution", "country", "state", "city", "article_link"]}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Achievements" cvkey="CvAchievementItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel}  fields={["name", "start_date"]} optFields={["end_date", "description", "institution", "country", "state", "city", "place", "certification_link"]}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Projects" cvkey="CvImplementationProjectItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name", "start_date"]} optFields={["end_date", "description", "language", "country", "state", "city", "repository_link"]}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Languages" cvkey="CvLanguageItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["language", "level"]}/>
                   <br/>
                   <div className="Base-button"><a onClick={this.startFilePicker}>
                     <input type="file" id="file" ref="fileUploader" onChange={(e) => this.uploadJSON(e.target.files)} style={{display: "none"}}/>
                     Upload Json
                   </a></div>
                   <div className="Base-button"><a onClick={this.downloadCvAsJson}>Json Download</a></div>
-                  <div className="Base-button"><a onClick={this.downloadCvAsPDF}>CV download</a></div><br/>
+                  <div className="Base-button"><a onClick={this.downloadCvAsPDF}>CV download</a></div>
+                  <div className="Base-button"><a onClick={this.saveOnAccount}>Save on account</a></div><br/>
               </div>
        }
  }
