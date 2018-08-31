@@ -61,6 +61,12 @@ class CvItemForm extends Component {
   addField() {
     var cv = this.props.curriculum
     var toAdd = this.state.toAdd;
+    for (var item of this.props.fields) {
+      if (toAdd[item] === undefined) {
+        alert("Needed Field: " + item)
+        return
+      }
+    }
     if (toAdd["institution"] !== undefined) {
      var institution = {"CvInstitution": {"name": toAdd["institution"]}}
      toAdd["institution"] = institution
