@@ -32,10 +32,11 @@ class CvField extends Component {
 }
 
 class CvItemForm extends Component {
-  // label, chosenLabel, curriculum, cvkey, stateChanger, fields, optFields
+  // label, chosenLabel, curriculum, cvkey, stateChanger, fields, optFields, labelChanger
   constructor(props) {
     super(props)
     this.getEventDeleter = this.getEventDeleter.bind(this)
+    this.getEventExpander = this.getEventExpander.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.addField = this.addField.bind(this)
     this.state = {toAdd: {}}
@@ -46,6 +47,19 @@ class CvItemForm extends Component {
       var cv = this.props.curriculum
       cv[this.props.cvkey].splice(index, 1)
       this.props.stateChanger(cv)
+    }
+  }
+  getEventExpander(index) {
+    return () => {
+      var cv = this.props.curriculum
+      var toAdd = cv[this.props.cvkey][index]
+      cv[this.props.cvkey].splice(index, 1)
+      this.props.stateChanger(cv)
+      if (toAdd["institution"] !== undefined) {
+        toAdd["institution"] = toAdd["institution"]["CvInstitution"]["name"]
+      }
+      this.setState({toAdd: toAdd})
+      this.props.labelChanger(this.props.label)
     }
   }
 
@@ -96,7 +110,7 @@ class CvItemForm extends Component {
         } else {
           name = item.language
         }
-        nodes.push(<div className="Base-item" key={index}>{name} <div className="Base-item-close" onClick={x.getEventDeleter(index)}><a>Delete</a></div></div>)
+        nodes.push(<div className="Base-item" key={index}><span onClick={x.getEventExpander(index)}>{name}</span> <div className="Base-item-close" onClick={x.getEventDeleter(index)}><a>Delete</a></div></div>)
       })
     }
     if (this.props.chosenLabel !== this.props.label){
