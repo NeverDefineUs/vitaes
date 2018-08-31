@@ -52,6 +52,9 @@ class CvItemForm extends Component {
   handleChange(event) {
     var aux = this.state.toAdd
     aux[event.target.name] = event.target.value
+    if (aux[event.target.name] === "") {
+      aux[event.target.name] = undefined
+    }
     this.setState({toAdd: aux})
   }
 
@@ -147,6 +150,9 @@ class Builder extends Component {
     handleChangeHeader(event) {
       var aux = this.state.curriculum
       aux["CvHeaderItem"][event.target.name] = event.target.value
+      if (aux["CvHeaderItem"][event.target.name] === "") {
+        aux["CvHeaderItem"][event.target.name] = undefined
+      }
       this.setState({curriculum: aux})
     }
 
