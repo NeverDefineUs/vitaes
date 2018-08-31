@@ -15,8 +15,7 @@ class App extends Component {
         </header>
         <div className="App-sidenav">
           <a onClick={() => { this.setState({tab: 1}) }}>Test Me</a>
-          <a onClick={() => { this.setState({tab: 2}) }}>Log in (Later)</a>
-          <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
+          <a href="https://github.com/Arthurlpgc/CVCS" onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
         </div>
         <div className="App-intro">
           { this.state.tab === 1 ? <Builder> </Builder> : null }
