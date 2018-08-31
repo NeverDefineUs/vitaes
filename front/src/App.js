@@ -79,7 +79,7 @@ class App extends Component {
           <a href="https://github.com/Arthurlpgc/CVCS" onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
         </div>
         <div className="App-intro">
-          { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter}> </Builder> : null }
+          { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
         </div>
       </div>
     );

@@ -216,7 +216,7 @@ class Builder extends Component {
     }
 
     saveOnAccount() {
-      var user = firebase.auth().currentUser
+      var user = this.props.user
       if (user !== null){
         var db = firebase.database().ref("cvs").child(user.uid)
         db.set(this.props.cv)
@@ -271,7 +271,7 @@ class Builder extends Component {
                   </a></div>
                   <div className="Base-button"><a onClick={this.downloadCvAsJson}>Json Download</a></div>
                   <div className="Base-button"><a onClick={this.downloadCvAsPDF}>CV download</a></div>
-                  <div className="Base-button"><a onClick={this.saveOnAccount}>Save on account</a></div><br/>
+                  {this.props.user !== null ? <div className="Base-button"><a onClick={this.saveOnAccount}>Save on account</a></div> : null}<br/>
               </div>
        }
  }
