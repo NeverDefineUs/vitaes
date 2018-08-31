@@ -94,3 +94,11 @@
 .Base-item-close a:hover {
   background-color: #AAA;
 }
+
+.Base-linemarker {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  background-color: #CCC;
+  width: stretch;
+  height: 1px;
+}

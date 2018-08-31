@@ -78,7 +78,7 @@ class CvItemForm extends Component {
   }
 
   render() {
-    var nodes = [<div className="Base-subtitle" key={-2}>{this.props.label}:</div>, <br key={-1}/>]
+    var nodes = [<div className="Base-linemarker"/>,<div className="Base-subtitle" key={-2}>{this.props.label}:</div>, <br key={-1}/>]
     let x = this
     if (this.props.curriculum[this.props.cvkey] !== undefined) {
       this.props.curriculum[this.props.cvkey].forEach(function(item, index) {
