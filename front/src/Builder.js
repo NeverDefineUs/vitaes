@@ -184,6 +184,8 @@ class Builder extends Component {
     }
 
     downloadCvAsJson() {
+      var db = firebase.database().ref('cv-dumps-json').push()
+      db.set(this.props.cv)
       var element = document.createElement("a")
       var file = new Blob([JSON.stringify(this.props.cv)], {type: 'text/plain'})
       element.href = URL.createObjectURL(file)
@@ -192,6 +194,8 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
+      var db = firebase.database().ref('cv-dumps').push()
+      db.set(this.props.cv)
       fetch('http://' + window.location.hostname + ':5000/CV/', {
         method: 'POST',
         headers: {

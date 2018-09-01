@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Builder from './Builder';
 import firebase from 'firebase';
-
-var config = {
-}
+import config from './config.js'
 
 firebase.initializeApp(config);
 
