@@ -67,7 +67,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Welcome to CVCS</h1>
+          <h1 className="App-title">Welcome to Vitaes</h1>
         </header>
         <div className="App-sidenav">
           <a onClick={() => { this.setState({tab: 1}) }}>Test Me</a>
