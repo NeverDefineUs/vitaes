@@ -11,7 +11,7 @@ class CvHeaderField extends Component {
   // label, mandatory, curriculum, stateChanger
   render() {
     return <div className="Base-field">
-            <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label === "birthday" ? " [YYYY-MM-DD]" : ""}:</div>
+            <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? " (Required)" : ""}{this.props.label === "birthday" ? " [YYYY-MM-DD]" : ""}:</div>
             <input type="text" name={this.props.label} value={this.props.curriculum["CvHeaderItem"][this.props.label] === undefined ? "" : this.props.curriculum["CvHeaderItem"][this.props.label]} 
               className="Base-inputfield" 
               onChange={this.props.stateChanger}
@@ -24,7 +24,7 @@ class CvField extends Component {
   // label, mandatory, toAdd, stateChanger, addField
   render() {
     return <div className="Base-field">
-            <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? "" : " (Opt)"}{this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:</div>
+            <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? " (Required)" : ""}{this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:</div>
             <input type="text" name={this.props.label} value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]} 
               className="Base-inputfield" 
               onChange={this.props.stateChanger}
