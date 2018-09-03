@@ -160,7 +160,7 @@ class CvRenderTexToPdf(CvRenderBase):
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
         os.system("touch Output/" + path + "/main.tex")
         cv = cvRender.render(cv)
-        file = open("Output/" + path + "/main.tex","w") 
+        file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cv)
         file.close()
         p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path)
@@ -218,7 +218,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
                 ret.append(itemDict)
         return ret
     def render(cv: CurriculumVitae, baseFolder: str="awesome"):
-        file = open("Templates/" + baseFolder + "/main.tex", "r")
+        file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
         file.close()
         cvDict = {}
