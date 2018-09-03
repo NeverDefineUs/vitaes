@@ -6,6 +6,7 @@ const capitalize = (word) => {
   word = word.replace('_', ' ')
   return word.charAt(0).toUpperCase() + word.slice(1)
 }
+const locFields = ["country", "state", "city"]
 
 class CvHeaderField extends Component {
   // label, mandatory, curriculum, stateChanger
@@ -68,9 +69,11 @@ class CvItemForm extends Component {
         toAdd["institution"] = toAdd["institution"]["CvInstitution"]["name"]
       }
       if (toAdd["location"] !== undefined) {
-        toAdd["country"] = toAdd["location"]["CvLocation"]["country"]
-        toAdd["city"] = toAdd["location"]["CvLocation"]["city"]
-        toAdd["state"] = toAdd["location"]["CvLocation"]["state"]
+        for (var locField of locFields){
+          if (toAdd["location"]["CvLocation"][locField] != undefined) {
+            toAdd[locField] = toAdd["location"]["CvLocation"][locField]
+          }
+        }
         delete toAdd["location"]
       }
       this.setState({toAdd: toAdd})
@@ -101,10 +104,16 @@ class CvItemForm extends Component {
      toAdd["institution"] = institution
     }
     if (toAdd["country"] !== undefined || toAdd["state"] !== undefined || toAdd["city"] !== undefined){
-      toAdd["location"] = {"CvLocation": {"country": toAdd["country"], "city": toAdd["city"], "state": toAdd["state"]}}
-      delete toAdd["city"]
-      delete toAdd["country"]
-      delete toAdd["state"]
+      var cvLocation = {}
+      for (var field of locFields) {
+        if (toAdd[field] != undefined) {
+          cvLocation[field] = toAdd[field]
+        }
+      }
+      toAdd["location"] = {"CvLocation": cvLocation}
+      for (var field of locFields) {
+        delete toAdd[field]
+      }
     }
     if (cv[this.props.cvkey] === undefined) {
       cv[this.props.cvkey] = []
