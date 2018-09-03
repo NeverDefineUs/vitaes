@@ -70,7 +70,7 @@ class CvItemForm extends Component {
       }
       if (toAdd["location"] !== undefined) {
         for (var locField of locFields){
-          if (toAdd["location"]["CvLocation"][locField] != undefined) {
+          if (toAdd["location"]["CvLocation"][locField] !== undefined) {
             toAdd[locField] = toAdd["location"]["CvLocation"][locField]
           }
         }
@@ -105,14 +105,14 @@ class CvItemForm extends Component {
     }
     if (toAdd["country"] !== undefined || toAdd["state"] !== undefined || toAdd["city"] !== undefined){
       var cvLocation = {}
-      for (var field of locFields) {
-        if (toAdd[field] != undefined) {
-          cvLocation[field] = toAdd[field]
+      for (var locField of locFields) {
+        if (toAdd[locField] !== undefined) {
+          cvLocation[locField] = toAdd[locField]
         }
       }
       toAdd["location"] = {"CvLocation": cvLocation}
-      for (var field of locFields) {
-        delete toAdd[field]
+      for (locField of locFields) {
+        delete toAdd[locField]
       }
     }
     if (cv[this.props.cvkey] === undefined) {
