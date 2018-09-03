@@ -71,7 +71,7 @@ class CvItemForm extends Component {
         toAdd["country"] = toAdd["location"]["CvLocation"]["country"]
         toAdd["city"] = toAdd["location"]["CvLocation"]["city"]
         toAdd["state"] = toAdd["location"]["CvLocation"]["state"]
-        toAdd["location"] = undefined
+        delete toAdd["location"]
       }
       this.setState({toAdd: toAdd})
       this.props.labelChanger(this.props.label)
@@ -82,7 +82,7 @@ class CvItemForm extends Component {
     var aux = this.state.toAdd
     aux[event.target.name] = event.target.value
     if (aux[event.target.name] === "") {
-      aux[event.target.name] = undefined
+      delete aux[event.target.name]
     }
     this.setState({toAdd: aux})
   }
@@ -102,9 +102,9 @@ class CvItemForm extends Component {
     }
     if (toAdd["country"] !== undefined || toAdd["state"] !== undefined || toAdd["city"] !== undefined){
       toAdd["location"] = {"CvLocation": {"country": toAdd["country"], "city": toAdd["city"], "state": toAdd["state"]}}
-      toAdd["city"] = undefined
-      toAdd["country"] = undefined
-      toAdd["state"] = undefined
+      delete toAdd["city"]
+      delete toAdd["country"]
+      delete toAdd["state"]
     }
     if (cv[this.props.cvkey] === undefined) {
       cv[this.props.cvkey] = []
@@ -178,7 +178,7 @@ class Builder extends Component {
       var aux = this.props.cv
       aux["CvHeaderItem"][event.target.name] = event.target.value
       if (aux["CvHeaderItem"][event.target.name] === "") {
-        aux["CvHeaderItem"][event.target.name] = undefined
+        delete aux["CvHeaderItem"][event.target.name]
       }
       this.setCv(aux)
     }
@@ -280,4 +280,4 @@ class Builder extends Component {
        }
  }
 
-export default Builder;
+export default Builder
