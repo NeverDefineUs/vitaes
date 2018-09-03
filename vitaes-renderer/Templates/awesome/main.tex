@@ -84,23 +84,80 @@
 % Print the footer with 3 arguments(<left>, <center>, <right>)
 % Leave any of these blank if they are not needed
 \makecvfooter
-  {\today}
+  {}
   {$name ~~~·~~~Curriculum Vitae}
-  {\thepage}
+  {}
+
+#if $education_array
+\cvsection{Education}
+\begin{cventries}
+#for $education in $education_array
+  \cventry
+    {$education['course']} % Degree
+    {$education['institution']} % Institution
+    {
+#if 'country' in $education
+  $education['country']
+#end if
+#if 'city' in $education
+  , $education['city']
+#end if
+    } % Location
+    { $education['start_date'] - 
+#if 'end_date' in $education
+  $education['end_date']
+#else
+  Present
+#end if
+    } % Date(s)
+    {
+#if 'description' in $education   
+      $education['description']
+#end if
+    }    
 
 
-%-------------------------------------------------------------------------------
-%	CV/RESUME CONTENT
-%	Each section is imported separately, open each file in turn to modify content
-%-------------------------------------------------------------------------------
-\input{cv/education.tex}
-\input{cv/skills.tex}
-\input{cv/experience.tex}
-\input{cv/extracurricular.tex}
-\input{cv/honors.tex}
-\input{cv/presentation.tex}
-\input{cv/writing.tex}
-\input{cv/committees.tex}
+#end for
+%---------------------------------------------------------
+\end{cventries}
+#end if
+%% \input{cv/skills.tex} Pending
+#if $work_array
+\cvsection{Experience}
+
+
+\begin{cventries}
+
+#for $work in $work_array
+  \cventry
+    {$work['role']} % Job title
+    {$work['institution']} % Organization
+    {
+#if 'city' in $work
+$work['city']
+#if 'country' in $work
+, $work['country']
+#end if
+#end if
+    } % Location
+    { $work['start_date'] - 
+#if 'end_date' in $work
+  $work['end_date']
+#else
+  Present
+#end if
+} % Date(s)
+    {
+#if 'description' in $work
+  $work['description']
+#end if
+    }
+
+
+#end for
+\end{cventries}
+#end if
+% \input{cv/honors.tex}
 
 
 %-------------------------------------------------------------------------------

@@ -152,18 +152,18 @@ class CvRenderTexToPdf(CvRenderBase):
     def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
     
-    def render(cv: CurriculumVitae, cvRender: CvRenderBase=CvRenderTex, baseFolder: str="cv_7", path: str=None):
+    def render(cv: CurriculumVitae, cvRender: CvRenderBase=CvRenderTex, baseFolder: str="cv_7", path: str=None, command: str="pdflatex"):
         if path == None:
             path=CvRenderTexToPdf.id_gen()
         os.system("mkdir Output/" + path)
         if baseFolder != None:
-            os.system("cp Templates/" + baseFolder + "/* Output/" + path + "/")
+            os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
         os.system("touch Output/" + path + "/main.tex")
         cv = cvRender.render(cv)
         file = open("Output/" + path + "/main.tex","w") 
         file.write(cv)
         file.close()
-        p = subprocess.Popen(["pdflatex","main.tex"], cwd="Output/" + path)
+        p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path)
         p.wait()
         os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
         os.system("rm -r Output/" + path + "/")
@@ -203,6 +203,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
             for item in cv.items[key]:
                 itemDict = {}
                 for var in vars(item):
+                    if eval("item." + var) == None:
+                        continue
                     if var == "item_type":
                         continue
                     if var == "location":
@@ -226,9 +228,14 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["lastname"] = cv.header.name.split(' ')[-1]
         for var in headerVars:
             cvDict[var] = eval("cv.header." + var)
-        cvDict["works"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvWorkExperienceItem)
+        cvDict["work_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvWorkExperienceItem)
+        cvDict["education_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvEducationalExperienceItem)
+        cvDict["academic_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvAcademicProjectItem)
+        cvDict["language_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvLanguageItem)
+        cvDict["project_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvImplementationProjectItem)
+        cvDict["achievement_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvAchievementItem)
         template = Template(templateString, cvDict)
-        return template
+        return str(template)
 
 
 

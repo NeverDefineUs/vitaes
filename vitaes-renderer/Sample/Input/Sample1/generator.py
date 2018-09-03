@@ -56,4 +56,4 @@ def generate():
     cv.add(Models.CvEducationalExperienceItem(course="Getting started with Augmented Reality", institution=coursera_mines, start_date="2016-11-30", end_date="2016-11-30"))
     cv.add(Models.CvEducationalExperienceItem(course="Fundamentals of Neuroscience I", institution=harvardx, start_date="2014-9-24", end_date="2014-9-24"))
 
-    print(Renders.CvRenderJsonRequest.render(cv))
+    print(Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex"))
