@@ -1,6 +1,7 @@
 import CurriculumVitae, Models, datetime, time
 import string, random, os
 import subprocess, json
+from Cheetah.Template import Template
 
 def date_comparer(x):
     end_date=x.end_date
@@ -192,10 +193,42 @@ class CvRenderJsonRequest(CvRenderBase):
         for item in cv.items:
             dic[item.__name__] = CvRenderJsonRequest.extract_list(cv.items[item])
         return dic
-    def render(cv):
+    def render(cv: CurriculumVitae):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 
-    
+class CvRenderCheetahTemplate(CvRenderBase):
+    def genericMethodName(cv: CurriculumVitae, key):
+        ret = []
+        if key in cv.items:
+            for item in cv.items[key]:
+                itemDict = {}
+                for var in vars(item):
+                    if var == "item_type":
+                        continue
+                    if var == "location":
+                        itemDict["country"] = eval("item." + var).country
+                        itemDict["city"] = eval("item." + var).city
+                        itemDict["state"] = eval("item." + var).state
+                    elif var == "institution": 
+                        itemDict[var] = item.institution.name
+                    else:
+                        itemDict[var] = eval("item." + var)
+                ret.append(itemDict)
+        return ret
+    def render(cv: CurriculumVitae, baseFolder: str="awesome"):
+        file = open("Templates/" + baseFolder + "/main.tex", "r")
+        templateString = file.read()
+        file.close()
+        cvDict = {}
+        headerVars = ["name", "address", "github", "linkedin", "email", "phone", "birthday", "homepage"]
+        cvDict["firstname"] = cv.header.name.split(' ')[0]
+        cvDict["surname"] = ' '.join(cv.header.name.split(' ')[1:])
+        cvDict["lastname"] = cv.header.name.split(' ')[-1]
+        for var in headerVars:
+            cvDict[var] = eval("cv.header." + var)
+        cvDict["works"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvWorkExperienceItem)
+        template = Template(templateString, cvDict)
+        return template
 
 
 
