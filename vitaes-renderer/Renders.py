@@ -1,6 +1,7 @@
 import CurriculumVitae, Models, datetime, time
 import string, random, os
 import subprocess, json
+import timestring
 from Cheetah.Template import Template
 
 def date_comparer(x):
@@ -197,6 +198,17 @@ class CvRenderJsonRequest(CvRenderBase):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 
 class CvRenderCheetahTemplate(CvRenderBase):
+#formats:
+#mon_day: Mar, 31
+#full_year: 1997
+#mon_year: Mar, 1997
+    def addDates(itemDict, key, baseDate: datetime):
+        baseDate = timestring.Date(baseDate).date
+        itemDict[key + "_mon_day"] = baseDate.strftime("%b, %d")
+        itemDict[key + "_full_year"] = baseDate.strftime("%Y")
+        itemDict[key + "_mon_year"] = baseDate.strftime("%b, %Y")
+        itemDict[key] = baseDate
+        return itemDict
     def genericMethodName(cv: CurriculumVitae, key):
         ret = []
         if key in cv.items:
@@ -213,6 +225,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
                         itemDict["state"] = eval("item." + var).state
                     elif var == "institution": 
                         itemDict[var] = item.institution.name
+                    elif var[-4:] == "date":
+                        itemDict = CvRenderCheetahTemplate.addDates(itemDict, var, eval("item." + var))
                     else:
                         itemDict[var] = eval("item." + var)
                 ret.append(itemDict)
@@ -228,6 +242,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["lastname"] = cv.header.name.split(' ')[-1]
         for var in headerVars:
             cvDict[var] = eval("cv.header." + var)
+        if cv.header.birthday != None:
+            cvDict["birthday"] = cv.header.birthday.strftime("%B %d, %Y")
         cvDict["work_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvWorkExperienceItem)
         cvDict["education_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvEducationalExperienceItem)
         cvDict["academic_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvAcademicProjectItem)

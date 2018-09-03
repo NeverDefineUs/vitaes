@@ -103,9 +103,9 @@
   , $education['city']
 #end if
     } % Location
-    { $education['start_date'] - 
-#if 'end_date' in $education
-  $education['end_date']
+    { $education['start_date_mon_day'] - 
+#if 'end_date' in $education and $education['end_date'] != $education['start_date']
+  $education['end_date_mon_day']
 #else
   Present
 #end if
@@ -140,9 +140,9 @@ $work['city']
 #end if
 #end if
     } % Location
-    { $work['start_date'] - 
+    { $work['start_date_mon_day'] - 
 #if 'end_date' in $work
-  $work['end_date']
+  $work['end_date_mon_day']
 #else
   Present
 #end if
@@ -157,8 +157,27 @@ $work['city']
 #end for
 \end{cventries}
 #end if
-% \input{cv/honors.tex}
+#if $achievement_array
+\cvsection{Achievements}
 
+\begin{cvhonors}
+#for $achievement in $achievement_array
 
-%-------------------------------------------------------------------------------
+%---------------------------------------------------------
+  \cvhonor
+    {$achievement['name']} % Award
+    {} % Event
+    {
+#if 'city' in $achievement
+#if 'country' in $achievement
+$achievement['city'], $achievement['country']
+#end if
+#end if
+    } % Location
+    {$achievement['start_date_full_year']} % Date(s)
+#end for
+
+\end{cvhonors}
+#end if
+
 \end{document}
