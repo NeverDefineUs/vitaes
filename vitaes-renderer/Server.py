@@ -51,11 +51,17 @@ def parse_item(cv_key, item):
         abort(400, err)
 
     return cv_item
-
 render_map = {
     "modern_cv": lambda cv: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
     "modern_cv_large": lambda cv: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.9"}),
-    "awesome": lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-red"})
+    'awesome-emerald': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-emerald"}),
+    'awesome-skyblue': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-skyblue"}),
+    'awesome-red': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-red"}),
+    'awesome-pink': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-pink"}),
+    'awesome-orange': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-orange"}),
+    'awesome-nephritis': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-nephritis"}),
+    'awesome-concrete': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-concrete"}),
+    'awesome-darknight': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-darknight"})
 }
 
 @app.route('/CV/', methods=['POST'])
@@ -68,7 +74,7 @@ def process_curr():
 
     req_cv = req
 
-    render_key = "awesome"
+    render_key = "awesome-emerald"
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
         if 'render_key' in req.keys():
