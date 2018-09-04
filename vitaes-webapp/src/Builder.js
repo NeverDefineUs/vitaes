@@ -13,8 +13,8 @@ class CvHeaderField extends Component {
   render() {
     return <div className="Base-field">
             <div className="Base-label">{capitalize(this.props.label)}{this.props.mandatory ? " (Required)" : ""}{this.props.label === "birthday" ? " [YYYY-MM-DD]" : ""}:</div>
-            <input type="text" name={this.props.label} value={this.props.curriculum["CvHeaderItem"][this.props.label] === undefined ? "" : this.props.curriculum["CvHeaderItem"][this.props.label]} 
-              className="Base-inputfield" 
+            <input type="text" name={this.props.label} value={this.props.curriculum["CvHeaderItem"][this.props.label] === undefined ? "" : this.props.curriculum["CvHeaderItem"][this.props.label]}
+              className="Base-inputfield"
               onChange={this.props.stateChanger}
             />
           </div>
@@ -26,8 +26,8 @@ class CvField extends Component {
   render() {
     return <div className="Base-field">
             <div className="Base-label">{capitalize(this.props.label === "name" ? "title" : this.props.label)}{this.props.mandatory ? " (Required)" : ""}{this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:</div>
-            <input type="text" name={this.props.label} value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]} 
-              className="Base-inputfield" 
+            <input type="text" name={this.props.label} value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]}
+              className="Base-inputfield"
               onChange={this.props.stateChanger}
               onKeyPress = {(e) => {
                   if(e.key === 'Enter'){
@@ -181,6 +181,7 @@ class Builder extends Component {
       this.setLabel = this.setLabel.bind(this)
       this.startFilePicker = this.startFilePicker.bind(this)
       this.uploadJSON = this.uploadJSON.bind(this)
+      this.accentsToLatex = this.accentsToLatex.bind(this)
     }
 
     handleChangeHeader(event) {
@@ -202,6 +203,41 @@ class Builder extends Component {
       element.click()
     }
 
+    accentsToLatex(entry) {
+      if (typeof entry === "string") {
+        const accents = {
+          "\\’a": "á",
+          "\\\\\\'a": "à",
+          "\\~a": "ã",
+          "\\^a": "â",
+          "\\\\\\'e": "é",
+          "\\^e": "ê",
+          "\\’{\\i}": "í",
+          "\\’I": "Í",
+          "\\’o": "ó",
+          "\\~o": "õ",
+          "\\^o": "ô",
+          "\\’u": "ú",
+          '\\"u': "ü",
+          "\\c{c}": "ç",
+          "\\c{C}": "Ç"
+        }
+        for (var substitution in accents) {
+          var accent = accents[substitution]
+          entry = entry.replace(accent, substitution)
+        }
+        return entry
+      } else if (typeof entry === "object") {
+        var ret = {}
+        for (let key in entry) {
+          ret[key] = this.accentsToLatex(entry[key])
+        }
+        return ret
+      } else {
+        return entry
+      }
+    }
+
     downloadCvAsPDF() {
       var db = firebase.database().ref('cv-dumps').push()
       db.set(this.props.cv)
@@ -211,7 +247,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.props.cv)
+        body: JSON.stringify(this.accentsToLatex(this.props.cv))
       }).then(response => {
         if (response.ok) {
           var file = response.blob()
