@@ -227,6 +227,12 @@ class Builder extends Component {
           entry = entry.replace(accent, substitution)
         }
         return entry
+      } else if (Array.isArray(entry)) {
+        var ret = []
+        for (let key in entry) {
+          ret.push(this.accentsToLatex(entry[key]))
+        }
+        return ret
       } else if (typeof entry === "object") {
         var ret = {}
         for (let key in entry) {
