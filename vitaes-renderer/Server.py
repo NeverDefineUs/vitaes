@@ -52,6 +52,12 @@ def parse_item(cv_key, item):
 
     return cv_item
 
+render_map = {
+    "modern_cv": lambda cv: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
+    "modern_cv_large": lambda cv: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.9"}),
+    "awesome": lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-red"})
+}
+
 @app.route('/CV/', methods=['POST'])
 def process_curr():
     cv = CurriculumVitae()
@@ -61,8 +67,12 @@ def process_curr():
     print("REQUEST")
 
     req_cv = req
+
+    render_key = "awesome"
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
+        if 'render_key' in req.keys():
+            render_key = req['render_key']
 
     if 'CvHeaderItem' not in req_cv.keys():
         abort(400, "Missing header")
@@ -81,7 +91,7 @@ def process_curr():
             cv_item = parse_item(cv_key, item)
             cv.add(cv_item)
 
-    path = Renders.CvRenderTexToPdf.render(cv)
+    path = render_map[render_key](cv)
 
     return send_file("Output/" + path + ".pdf")
 

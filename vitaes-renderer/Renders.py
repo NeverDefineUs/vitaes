@@ -23,12 +23,12 @@ class CvRenderBase:
         raise NotImplementedError
 
 class CvRenderTex(CvRenderBase):
-    def render(cv: CurriculumVitae):
+    def render(cv: CurriculumVitae, params={}):
         texString = """\\documentclass[11pt,a4paper,sans]{moderncv} 
 \\moderncvstyle{casual}
 \\moderncvcolor{blue} 
 \\usepackage{lipsum}
-\\usepackage[scale=0.75]{geometry} 
+\\usepackage[scale=""" + params["scale"] + """]{geometry} 
 """
         if cv.header == None:
             return -1
@@ -148,14 +148,14 @@ class CvRenderTexToPdf(CvRenderBase):
     def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
     
-    def render(cv: CurriculumVitae, cvRender: CvRenderBase=CvRenderTex, baseFolder: str="cv_7", path: str=None, command: str="pdflatex"):
+    def render(cv: CurriculumVitae, cvRender: CvRenderBase=CvRenderTex, baseFolder: str="cv_7", path: str=None, command: str="pdflatex", params={}):
         if path == None:
             path=CvRenderTexToPdf.id_gen()
         os.system("mkdir Output/" + path)
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
         os.system("touch Output/" + path + "/main.tex")
-        cv = cvRender.render(cv)
+        cv = cvRender.render(cv, params=params)
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cv)
         file.close()
@@ -219,7 +219,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
                         itemDict[var] = eval("item." + var)
                 ret.append(itemDict)
         return ret
-    def render(cv: CurriculumVitae, baseFolder: str="awesome"):
+    def render(cv: CurriculumVitae, baseFolder: str="awesome", params={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
         file.close()
@@ -238,6 +238,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["language_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvLanguageItem)
         cvDict["project_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvImplementationProjectItem)
         cvDict["achievement_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvAchievementItem)
+        cvDict["params"] = params
         template = Template(templateString, cvDict)
         return str(template)
 
