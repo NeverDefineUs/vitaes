@@ -131,23 +131,6 @@ class CvAcademicProjectItem(CvProjectItem):
         self.institution = institution
 
 
-class CvCourseProjectItem(CvProjectItem):
-    # Instable still
-    def __init__(self,
-                 name: str,
-                 start_date: datetime,
-                 description: str = None,
-                 location: CvLocation = None,
-                 institution: CvInstitution = None,
-                 certification_link: str = None,
-                 course_link: str = None,
-                 end_date: datetime = None
-                 ):
-        CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
-        self.certification_link = certification_link
-        self.course_link = course_link
-
-
 class CvAchievementItem(CvItem):
     def __init__(self,
                  name: str,

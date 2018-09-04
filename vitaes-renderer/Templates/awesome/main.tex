@@ -103,11 +103,13 @@
   , $education['city']
 #end if
     } % Location
-    { $education['start_date_mon_day'] - 
-#if 'end_date' in $education and $education['end_date'] != $education['start_date']
-  $education['end_date_mon_day']
+    { $education['start_date'].strftime("%b, %Y") 
+#if 'end_date' in $education 
+#if $education['end_date'].strftime("%b, %Y") != $education['start_date'].strftime("%b, %Y")
+  - $education['end_date'].strftime("%b, %Y")
+#end if
 #else
-  Present
+  - Present
 #end if
     } % Date(s)
     {
@@ -140,11 +142,13 @@ $work['city']
 #end if
 #end if
     } % Location
-    { $work['start_date_mon_day'] - 
+    { $work['start_date'].strftime("%b, %Y") 
 #if 'end_date' in $work
-  $work['end_date_mon_day']
+#if $work['start_date'].strftime("%b, %Y") != $work['end_date'].strftime("%b, %Y")
+  - $work['end_date'].strftime("%b, %Y")
+#end if
 #else
-  Present
+  - Present
 #end if
 } % Date(s)
     {
@@ -174,10 +178,93 @@ $achievement['city'], $achievement['country']
 #end if
 #end if
     } % Location
-    {$achievement['start_date_full_year']} % Date(s)
+    {$achievement['start_date'].strftime("%Y")} % Date(s)
 #end for
 
 \end{cvhonors}
 #end if
+#if $project_array
+\cvsection{Projects}
+
+
+\begin{cventries}
+
+#for $project in $project_array
+  \cventry
+    {
+#if $project['language']
+      $project['language']
+#end if
+}
+    {$project['name']} % Organization
+    {
+#if 'city' in $project
+$project['city']
+#if 'country' in $project
+, $project['country']
+#end if
+#end if
+    } % Location
+    { $project['start_date'].strftime("%b, %Y") 
+#if 'end_date' in $project
+#if $project['start_date'].strftime("%b, %Y") != $project['end_date'].strftime("%b, %Y")
+  - $project['end_date'].strftime("%b, %Y")
+#end if
+#else
+  - Present
+#end if
+} % Date(s)
+    {
+#if 'description' in $project
+  $project['description']
+#end if
+    }
+
+
+#end for
+\end{cventries}
+#end if
+#if $academic_array
+\cvsection{Academic Experience}
+
+
+\begin{cventries}
+
+#for $academic in $academic_array
+  \cventry
+    {
+#if $academic['institution']
+      $academic['institution']
+#end if
+}
+    {$academic['name']} % Organization
+    {
+#if 'city' in $academic
+$academic['city']
+#if 'country' in $academic
+, $academic['country']
+#end if
+#end if
+    } % Location
+    { $academic['start_date'].strftime("%b, %Y") 
+#if 'end_date' in $academic
+#if $academic['start_date'].strftime("%b, %Y") != $academic['end_date'].strftime("%b, %Y")
+  - $academic['end_date'].strftime("%b, %Y")
+#end if
+#else
+  - Present
+#end if
+} % Date(s)
+    {
+#if 'description' in $project
+  $academic['description']
+#end if
+    }
+
+
+#end for
+\end{cventries}
+#end if
+
 
 \end{document}

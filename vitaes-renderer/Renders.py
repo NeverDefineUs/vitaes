@@ -107,6 +107,8 @@ class CvRenderTex(CvRenderBase):
                     end_date = elem.end_date.strftime("%b/%Y")
                     if end_date != start_date:
                         texString += " " + end_date
+                else:
+                    texString += " Present"
                 texString += "}{" + elem.name + "}{" 
                 if elem.language != None:
                     texString += elem.language
@@ -125,6 +127,8 @@ class CvRenderTex(CvRenderBase):
                     end_date = elem.end_date.strftime("%b/%Y")
                     if end_date != start_date:
                         texString += " " + end_date
+                else:
+                    texString += " Present"
                 texString += "}{" + elem.name + "}{" 
                 if elem.institution != None:
                     texString += elem.institution.name
@@ -132,15 +136,6 @@ class CvRenderTex(CvRenderBase):
                 if elem.description != None:
                     texString += elem.description
                 texString += "}\n"
-        if Models.CvCourseProjectItem in cv.items:
-            texString += "\\section{Courses}\n"
-            courses = cv.items[Models.CvCourseProjectItem]
-            courses.sort(key = date_comparer_2, reverse = True)
-            for course in courses:
-                if course.end_date != None:
-                    texString += "\\cvitem{" + course.end_date.strftime("%b/%Y") + "}{" + course.name + "}\n"
-                else:
-                    texString += "\\cvitem{" + course.start_date.strftime("%b/%Y") + "}{" + course.name + "(In Progress)}\n"
         if Models.CvLanguageItem in cv.items:
             texString += "\\section{Languages}\n"
             languages = cv.items[Models.CvLanguageItem]
@@ -198,15 +193,8 @@ class CvRenderJsonRequest(CvRenderBase):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 
 class CvRenderCheetahTemplate(CvRenderBase):
-#formats:
-#mon_day: Mar, 31
-#full_year: 1997
-#mon_year: Mar, 1997
     def addDates(itemDict, key, baseDate: datetime):
         baseDate = timestring.Date(baseDate).date
-        itemDict[key + "_mon_day"] = baseDate.strftime("%b, %d")
-        itemDict[key + "_full_year"] = baseDate.strftime("%Y")
-        itemDict[key + "_mon_year"] = baseDate.strftime("%b, %Y")
         itemDict[key] = baseDate
         return itemDict
     def genericMethodName(cv: CurriculumVitae, key):
