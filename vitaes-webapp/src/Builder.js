@@ -204,6 +204,7 @@ class Builder extends Component {
     }
 
     accentsToLatex(entry) {
+      var ret = entry
       if (typeof entry === "string") {
         const accents = {
           "\\’a": "á",
@@ -226,22 +227,19 @@ class Builder extends Component {
           var accent = accents[substitution]
           entry = entry.replace(accent, substitution)
         }
-        return entry
+        ret = entry
       } else if (Array.isArray(entry)) {
-        var ret = []
+        ret = []
         for (let key in entry) {
           ret.push(this.accentsToLatex(entry[key]))
         }
-        return ret
       } else if (typeof entry === "object") {
-        var ret = {}
+        ret = {}
         for (let key in entry) {
           ret[key] = this.accentsToLatex(entry[key])
         }
-        return ret
-      } else {
-        return entry
-      }
+      } 
+      return ret
     }
 
     downloadCvAsPDF() {
