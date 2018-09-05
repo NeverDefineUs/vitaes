@@ -91,5 +91,11 @@
 \cvitem{$achievement['start_date'].strftime("%d/%b/%Y")}{$achievement['name']}
 #end for
 #end if
+#if $section == "language" and $language_array
+\section{Languages}
+#for $language in $language_array
+\cvitem{$language['language']}{$language['level']}
+#end for
+#end if
 #end for
 \end{document}
