@@ -1,0 +1,58 @@
+\documentclass[11pt,a4paper,sans]{moderncv} 
+\moderncvstyle{casual}
+\moderncvcolor{$params['color']} 
+\usepackage{lipsum}
+\usepackage[scale=$params["scale"]]{geometry}
+\firstname{$firstname}
+\familyname{$surname}
+\title{Curriculum Vitae}
+#if $address
+\address{$address}
+#end if
+#if $phone
+\phone{$phone}
+#end if
+#if $email
+\email{$email}
+#end if
+#if $homepage
+\homepage{$homepage}
+#else if $github
+\homepage{$github}
+#else if $linkedin
+\homepage{$linkedin}
+#end if
+
+\begin{document}
+
+
+\makecvtitle
+#for $section in $params['section_order']
+#if $section == 'education' and $education_array
+\section{Education}
+#for $education in $education_array
+\cventry{
+    $education['start_date'].strftime("%b/%y")
+#if 'end_date' not in $education
+    Present
+#else if $education['start_date'].strftime("%b/%y") != $education['end_date'].strftime("%b/%y")
+    $education['end_date'].strftime("%b/%y")
+#end if
+}{$education['course']}{$education['institution']}{
+#if 'country' in $education and 'city' in $education
+$education['city'], $education['country']
+#end if
+}{
+#if 'teacher' in $education
+$education['teacher']
+#end if
+}{
+#if 'teacher' in $education
+$education['description']
+#end if
+}
+
+#end for
+#end if
+#end for
+\end{document}
