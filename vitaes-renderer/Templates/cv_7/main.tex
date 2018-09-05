@@ -85,6 +85,29 @@
 #end if
 #end for
 #end if
+#if $section == "academic" and $academic_array
+\section{Academic Experience}
+#for $academic in $academic_array
+\cventry{$academic['start_date'].strftime("%b/%Y")
+#if 'end_date' not in $academic
+    Present
+#else if $academic['start_date'].strftime("%b/%Y") != $academic['end_date'].strftime("%b/%Y")
+     $academic['end_date'].strftime("%b/%Y")
+#end if
+}{$academic['name']}
+#if 'institution' in $academic
+{$academic['institution']}
+#else
+{}
+#end if
+{}{}
+#if 'description' in $academic
+{$academic['description']}
+#else
+{}
+#end if
+#end for
+#end if
 #if $section == "achievement" and $achievement_array
 \section{Achievements}
 #for $achievement in $achievement_array
