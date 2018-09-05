@@ -95,7 +95,11 @@ class CvItemForm extends Component {
     var toAdd = this.state.toAdd;
     for (var item of this.props.fields) {
       if (toAdd[item] === undefined) {
-        alert("Needed Field: " + item)
+        if (item === "name") {
+          alert("Needed Field: Title")
+        } else {
+          alert("Needed Field: " + capitalize(item))
+        }
         return
       }
     }
