@@ -226,9 +226,9 @@ class CvRenderCheetahTemplate(CvRenderBase):
     def extract_skills(cv):
         skills = {}
         if Models.CvLanguageItem in cv.items and cv.items[Models.CvLanguageItem] != []:
-            skills["languages"] = []
+            skills["Languages"] = []
             for language in cv.items[Models.CvLanguageItem]:
-                skills["languages"].append(language)
+                skills["Languages"].append(language.language)
         if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
             for skill in cv.items[Models.CvSkillItem]:
                 if str(skill.skill_type) not in skills:
@@ -254,7 +254,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["language_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvLanguageItem)
         cvDict["project_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvImplementationProjectItem)
         cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAchievementItem)
-        cvDict["skill_array"] = CvRenderCheetahTemplate.extract_skills(cv)
+        cvDict["skill_dict"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
         template = Template(templateString, cvDict)
         return str(template)

@@ -265,6 +265,18 @@ $academic['city']
 #end for
 \end{cventries}
 #end if
+#if $skill_dict != {}
+\cvsection{Skills}
 
 
+\begin{cvskills}
+
+#for $skill in $skill_dict.keys()
+  \cvskill
+    {$skill} % Category
+    {${', '.join($skill_dict[$skill])}} % Skills
+
+#end for
+\end{cvskills}
+#end if
 \end{document}
