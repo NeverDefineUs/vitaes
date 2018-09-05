@@ -178,7 +178,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "modern_cv"}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "modern_cv_blue", cv_models: ["modern_cv_blue", "modern_cv_large_blue"]}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -188,6 +188,24 @@ class Builder extends Component {
       this.startFilePicker = this.startFilePicker.bind(this)
       this.uploadJSON = this.uploadJSON.bind(this)
       this.accentsToLatex = this.accentsToLatex.bind(this)
+      fetch('http://' + window.location.hostname + ':5000/CVTYPES/', {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then(response => {
+        if (response.ok) {
+          var jsonPromise = response.json()
+          jsonPromise.then(json => {
+            json.sort()
+            this.setState({cv_models: json}
+          )})
+        } else {
+          var textPromise = response.text()
+          textPromise.then(text => alert("Error:" + text))
+        }
+      })
     }
 
     handleChangeHeader(event) {
@@ -306,6 +324,10 @@ class Builder extends Component {
     }
 
     render() {
+       var cv_model_options = []
+       for (let cv_model of this.state.cv_models) {
+        cv_model_options.push(<option key={cv_model} value={cv_model}>{capitalize(cv_model)}</option>)
+       }
        return <div className="Base">
                   <div className="Base-title">Curriculum Vitae:</div><br/>
                   <div className="Base-subtitle">Header:</div><br/>
@@ -326,16 +348,7 @@ class Builder extends Component {
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Skills" cvkey="CvSkillItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["skill_name", "skill_type"]}/>
                   <br/>
                   <select className="Base-select" onChange={(e) =>  this.setState({render_key: e.target.value})}>
-                    <option value="awesome-red">Awesome Red</option>
-                    <option value="awesome-skyblue">Awesome Blue</option>
-                    <option value="awesome-emerald">Awesome Soft Green</option>
-                    <option value="awesome-pink">Awesome Pink</option>
-                    <option value="awesome-orange">Awesome Orange</option>
-                    <option value="awesome-nephritis">Awesome Green</option>
-                    <option value="awesome-concrete">Awesome Grey</option>
-                    <option value="awesome-darknight">Awesome Plain</option>
-                    <option selected value="modern_cv">Modern Cv</option>
-                    <option  value="modern_cv_large">Modern Cv Large</option>
+                    {cv_model_options}
                   </select>
                   <br/>
                   <br/>
