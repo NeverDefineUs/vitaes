@@ -95,6 +95,14 @@
   background-color: #AAA;
 }
 
+.Base-select {
+  float: right;
+  height: 2em;
+  margin: 0;
+  width: 30em;
+  background-color: #fff;
+}
+
 .Base-linemarker {
   margin-top: 1.5em;
   margin-bottom: 1.5em;

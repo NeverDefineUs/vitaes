@@ -172,7 +172,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: ""}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "modern_cv"}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -251,7 +251,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(this.accentsToLatex(this.props.cv))
+        body: JSON.stringify({"curriculum_vitae": this.accentsToLatex(this.props.cv), "render_key": this.state.render_key})
       }).then(response => {
         if (response.ok) {
           var file = response.blob()
@@ -317,6 +317,20 @@ class Builder extends Component {
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Achievements" cvkey="CvAchievementItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel}  fields={["name", "start_date"]} optFields={["end_date", "description", "institution", "country", "state", "city", "place", "certification_link"]}/>
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Projects" cvkey="CvImplementationProjectItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name", "start_date"]} optFields={["end_date", "description", "language", "country", "state", "city", "repository_link"]}/>
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Languages" cvkey="CvLanguageItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["language", "level"]}/>
+                  <br/>
+                  <select className="Base-select" onChange={(e) =>  this.setState({render_key: e.target.value})}>
+                    <option value="awesome-red">Awesome Red</option>
+                    <option value="awesome-skyblue">Awesome Blue</option>
+                    <option value="awesome-emerald">Awesome Soft Green</option>
+                    <option value="awesome-pink">Awesome Pink</option>
+                    <option value="awesome-orange">Awesome Orange</option>
+                    <option value="awesome-nephritis">Awesome Green</option>
+                    <option value="awesome-concrete">Awesome Grey</option>
+                    <option value="awesome-darknight">Awesome Plain</option>
+                    <option selected value="modern_cv">Modern Cv</option>
+                    <option  value="modern_cv_large">Modern Cv Large</option>
+                  </select>
+                  <br/>
                   <br/>
                   <div className="Base-button"><a onClick={this.startFilePicker}>
                     <input type="file" id="file" ref="fileUploader" onChange={(e) => this.uploadJSON(e.target.files)} style={{display: "none"}}/>
