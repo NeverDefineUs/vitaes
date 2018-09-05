@@ -7,7 +7,7 @@
 \familyname{$surname}
 \title{Curriculum Vitae}
 #if $address
-\address{$address}
+\address{$address}{}
 #end if
 #if $phone
 \phone{$phone}
@@ -78,8 +78,8 @@
 #else
 {}
 #end if
-#if 'description' in $education
-{$education['description']}
+#if 'description' in $work
+{$work['description']}
 #else
 {}
 #end if

@@ -37,8 +37,10 @@ def get_parse_string(cv_key, item):
                 break
         elif key[-4:] == "date":
             gen_cv_item = gen_cv_item + "parse_date('{0}'),".format(value)
-        else:
+        elif type(value) is str:
             gen_cv_item = gen_cv_item + "'{0}',".format(value.replace("'","\\'"))
+        else:
+            gen_cv_item = gen_cv_item + "'{0}',".format(value)
 
     gen_cv_item = gen_cv_item + ')'
 
