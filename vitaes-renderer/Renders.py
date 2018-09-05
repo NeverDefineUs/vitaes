@@ -28,7 +28,7 @@ class CvRenderTexToPdf(CvRenderBase):
     def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
     
-    def render(cv: CurriculumVitae, cvRender: CvRenderBase=CvRenderTex, baseFolder: str="cv_7", path: str=None, command: str="pdflatex", params={}):
+    def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str="cv_7", path: str=None, command: str="pdflatex", params={}):
         if path == None:
             path=CvRenderTexToPdf.id_gen()
         os.system("mkdir Output/" + path)

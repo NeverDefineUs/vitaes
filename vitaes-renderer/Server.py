@@ -80,7 +80,12 @@ render_map = {
  #% style options are 'casual' (default), 'classic', 'oldstyle' and 'banking'
 @app.route('/CVTYPES/', methods=['GET'])
 def get_cv_types():
-    return render_map.keys()
+    response = app.response_class(
+        response=json.dumps(list(render_map.keys())),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 @app.route('/CV/', methods=['POST'])
 def process_curr():
