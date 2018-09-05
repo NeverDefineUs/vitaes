@@ -16,11 +16,11 @@
 \email{$email}
 #end if
 #if $homepage
-\homepage{$homepage}
+\homepage{$homepage}{$homepage}
 #else if $github
-\homepage{$github}
+\homepage{$github}{$github}
 #else if $linkedin
-\homepage{$linkedin}
+\homepage{$linkedin}{$linkedin}
 #end if
 
 \begin{document}
@@ -38,19 +38,23 @@
 #else if $education['start_date'].strftime("%b/%y") != $education['end_date'].strftime("%b/%y")
     $education['end_date'].strftime("%b/%y")
 #end if
-}{$education['course']}{$education['institution']}{
-#if 'country' in $education and 'city' in $education
-$education['city'], $education['country']
+}{$education['course']}{$education['institution']}
+#if 'country' in $education and 'city' in $education and $education['city'] != '' and $education['country'] != ''
+{$education['city'], $education['country']}
+#else
+{}
 #end if
-}{
 #if 'teacher' in $education
-$education['teacher']
+{$education['teacher']}
+#else
+{}
 #end if
-}{
-#if 'teacher' in $education
-$education['description']
+#if 'description' in $education
+{$education['description']}
+#else
+{}
 #end if
-}
+
 
 #end for
 #end if
