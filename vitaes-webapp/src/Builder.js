@@ -178,7 +178,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "modern_cv_blue", cv_models: ["modern_cv_blue", "modern_cv_large_blue"]}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "awesome-concrete", cv_models: ["modern_cv_casual_blue", "modern_cv_large_blue"]}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -231,21 +231,7 @@ class Builder extends Component {
       var ret = entry
       if (typeof entry === "string") {
         const accents = {
-          "\\’a": "á",
-          "\\\\\\'a": "à",
-          "\\~a": "ã",
-          "\\^a": "â",
-          "\\\\\\'e": "é",
-          "\\^e": "ê",
-          "\\’{\\i}": "í",
-          "\\’I": "Í",
-          "\\’o": "ó",
-          "\\~o": "õ",
-          "\\^o": "ô",
-          "\\’u": "ú",
-          '\\"u': "ü",
-          "\\c{c}": "ç",
-          "\\c{C}": "Ç"
+          
         }
         for (var substitution in accents) {
           var accent = accents[substitution]
