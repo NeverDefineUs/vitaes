@@ -52,16 +52,16 @@ def parse_item(cv_key, item):
 
     return cv_item
 render_map = {
-    "modern_cv": lambda cv: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
-    "modern_cv_large": lambda cv: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.9"}),
-    'awesome-emerald': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-emerald"}),
-    'awesome-skyblue': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-skyblue"}),
-    'awesome-red': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-red"}),
-    'awesome-pink': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-pink"}),
-    'awesome-orange': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-orange"}),
-    'awesome-nephritis': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-nephritis"}),
-    'awesome-concrete': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-concrete"}),
-    'awesome-darknight': lambda cv: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-darknight"})
+    "modern_cv": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
+    "modern_cv_large": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.9"}),
+    'awesome-emerald': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-emerald", "section_order": section_order}),
+    'awesome-skyblue': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-skyblue", "section_order": section_order}),
+    'awesome-red': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-red", "section_order": section_order}),
+    'awesome-pink': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-pink", "section_order": section_order}),
+    'awesome-orange': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-orange", "section_order": section_order}),
+    'awesome-nephritis': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-nephritis", "section_order": section_order}),
+    'awesome-concrete': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-concrete", "section_order": section_order}),
+    'awesome-darknight': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-darknight", "section_order": section_order})
 }
 
 @app.route('/CV/', methods=['POST'])
@@ -75,10 +75,13 @@ def process_curr():
     req_cv = req
 
     render_key = "awesome-emerald"
+    section_order = ['work', 'education', 'achievement', 'project', 'academic', 'language']
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
         if 'render_key' in req.keys():
             render_key = req['render_key']
+        if 'section_order' in req.keys():
+            section_order = req['section_order']
 
     if 'CvHeaderItem' not in req_cv.keys():
         abort(400, "Missing header")
@@ -97,7 +100,7 @@ def process_curr():
             cv_item = parse_item(cv_key, item)
             cv.add(cv_item)
 
-    path = render_map[render_key](cv)
+    path = render_map[render_key](cv, section_order)
 
     return send_file("Output/" + path + ".pdf")
 
