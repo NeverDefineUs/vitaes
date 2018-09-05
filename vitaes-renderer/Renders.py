@@ -157,7 +157,7 @@ class CvRenderTexToPdf(CvRenderBase):
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
         os.system("touch Output/" + path + "/main.tex")
-        cv = cvRender.render(cv, params=params)
+        cv = cvRender.render(cv, params=params, baseFolder=baseFolder)
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cv)
         file.close()
