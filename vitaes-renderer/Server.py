@@ -52,7 +52,7 @@ def parse_item(cv_key, item):
 
     return cv_item
 render_map = {
-    "modern_cv_old": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
+    "modern_cv": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
     "modern_cv_large": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.9"}),
     'awesome-emerald': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-emerald", "section_order": section_order}),
     'awesome-skyblue': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-skyblue", "section_order": section_order}),
@@ -62,7 +62,7 @@ render_map = {
     'awesome-nephritis': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-nephritis", "section_order": section_order}),
     'awesome-concrete': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-concrete", "section_order": section_order}),
     'awesome-darknight': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-darknight", "section_order": section_order}),
-    'modern_cv': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "blue", "scale":"0.75", "section_order": section_order})
+    'modern_cv_blue': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "blue", "scale":"0.75", "section_order": section_order})
 }
 
 @app.route('/CV/', methods=['POST'])
