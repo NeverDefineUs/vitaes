@@ -54,8 +54,6 @@ def parse_item(cv_key, item):
 
     return cv_item
 render_map = {
-    "modern_cv_old": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.75"}),
-    "modern_cv_large": lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, params={"scale": "0.9"}),
     'awesome-emerald': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-emerald", "section_order": section_order}),
     'awesome-skyblue': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-skyblue", "section_order": section_order}),
     'awesome-red': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-red", "section_order": section_order}),
@@ -64,8 +62,25 @@ render_map = {
     'awesome-nephritis': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-nephritis", "section_order": section_order}),
     'awesome-concrete': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-concrete", "section_order": section_order}),
     'awesome-darknight': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="awesome", command="xelatex", params={"color": "awesome-darknight", "section_order": section_order}),
-    'modern_cv': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "blue", "scale":"0.75", "section_order": section_order})
+    'modern_cv_blue': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "blue", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_blue': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "blue", "scale":"0.9", "section_order": section_order, "style": "casual"}),
+    'modern_cv_green': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "green", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_green': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "green", "scale":"0.9", "section_order": section_order, "style": "casual"}),
+    'modern_cv_orange': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "orange", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_orange': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "orange", "scale":"0.9", "section_order": section_order, "style": "casual"}),
+    'modern_cv_red': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "red", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_red': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "red", "scale":"0.9", "section_order": section_order, "style": "casual"}),
+    'modern_cv_purple': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "purple", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_purple': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "purple", "scale":"0.9", "section_order": section_order, "style": "casual"}),
+    'modern_cv_grey': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "grey", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_grey': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "grey", "scale":"0.9", "section_order": section_order, "style": "casual"}),
+    'modern_cv_black': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "black", "scale":"0.75", "section_order": section_order, "style": "casual"}),
+    'modern_cv_large_black': lambda cv, section_order: Renders.CvRenderTexToPdf.render(cv, cvRender=Renders.CvRenderCheetahTemplate, baseFolder="cv_7", command="pdflatex", params={"color": "black", "scale":"0.9", "section_order": section_order, "style": "casual"}),
 }
+ #% style options are 'casual' (default), 'classic', 'oldstyle' and 'banking'
+@app.route('/CVTYPES/', methods=['GET'])
+def get_cv_types():
+    return render_map.keys()
 
 @app.route('/CV/', methods=['POST'])
 def process_curr():

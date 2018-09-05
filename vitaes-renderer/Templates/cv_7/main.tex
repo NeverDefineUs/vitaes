@@ -1,5 +1,5 @@
 \documentclass[11pt,a4paper,sans]{moderncv} 
-\moderncvstyle{casual}
+\moderncvstyle{$params['style']}
 \moderncvcolor{$params['color']} 
 \usepackage{lipsum}
 \usepackage[scale=$params["scale"]]{geometry}
@@ -80,6 +80,29 @@
 #end if
 #if 'description' in $work
 {$work['description']}
+#else
+{}
+#end if
+#end for
+#end if
+#if $section == "project" and $project_array
+\section{Projects}
+#for $project in $project_array
+\cventry{$project['start_date'].strftime("%b/%Y")
+#if 'end_date' not in $project
+    Present
+#else if $project['start_date'].strftime("%b/%Y") != $project['end_date'].strftime("%b/%Y")
+    $project['end_date'].strftime("%b/%Y")
+#end if
+}{$project['name']}
+#if 'language' in $project
+{project['language']}
+#else
+{}
+#end if
+{}{}
+#if 'description' in $project
+{$project['description']}
 #else
 {}
 #end if
