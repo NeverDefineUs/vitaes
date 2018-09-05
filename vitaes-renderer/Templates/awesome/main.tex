@@ -192,7 +192,7 @@ $achievement['city'], $achievement['country']
 #for $project in $project_array 
   \cventry
     {
-#if $project['language']
+#if 'language' in $project
       $project['language']
 #end if
 }
@@ -233,7 +233,7 @@ $project['city']
 #for $academic in $academic_array
   \cventry
     {
-#if $academic['institution']
+#if 'institution' in $academic
       $academic['institution']
 #end if
 }
