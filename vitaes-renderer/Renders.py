@@ -73,6 +73,8 @@ class CvRenderJsonRequest(CvRenderBase):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 import sys
 def text_clean(text):
+    if text == None:
+        return text
     text=str(text)
     print(text,file=sys.stderr)
     accents = {
