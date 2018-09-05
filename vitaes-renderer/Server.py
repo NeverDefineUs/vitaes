@@ -75,7 +75,7 @@ def process_curr():
     req_cv = req
 
     render_key = "awesome-emerald"
-    section_order = ['work', 'education', 'achievement', 'project', 'academic', 'language']
+    section_order = ['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill']
     if 'curriculum_vitae' in req.keys():
         req_cv = req['curriculum_vitae']
         if 'render_key' in req.keys():
