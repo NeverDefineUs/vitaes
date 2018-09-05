@@ -88,7 +88,8 @@
   {$name ~~~·~~~Curriculum Vitae}
   {}
 
-#if $education_array
+#for $section in $params['section_order']
+#if $education_array and $section == 'education'
 \cvsection{Education}
 \begin{cventries}
 #for $education in $education_array
@@ -123,8 +124,7 @@
 %---------------------------------------------------------
 \end{cventries}
 #end if
-%% \input{cv/skills.tex} Pending
-#if $work_array
+#if $work_array and $section == 'work'
 \cvsection{Experience}
 
 
@@ -161,7 +161,7 @@ $work['city']
 #end for
 \end{cventries}
 #end if
-#if $achievement_array
+#if $achievement_array and $section == 'achievement'
 \cvsection{Achievements}
 
 \begin{cvhonors}
@@ -183,13 +183,13 @@ $achievement['city'], $achievement['country']
 
 \end{cvhonors}
 #end if
-#if $project_array
+#if $project_array and $section == 'project'
 \cvsection{Projects}
 
 
 \begin{cventries}
 
-#for $project in $project_array
+#for $project in $project_array 
   \cventry
     {
 #if $project['language']
@@ -224,7 +224,7 @@ $project['city']
 #end for
 \end{cventries}
 #end if
-#if $academic_array
+#if $academic_array and $section == 'academic'
 \cvsection{Academic Experience}
 
 
@@ -256,7 +256,7 @@ $academic['city']
 #end if
 } % Date(s)
     {
-#if 'description' in $project
+#if 'description' in $academic
   $academic['description']
 #end if
     }
@@ -265,7 +265,7 @@ $academic['city']
 #end for
 \end{cventries}
 #end if
-#if $skill_dict != {}
+#if $skill_dict != {} and $section == 'skill'
 \cvsection{Skills}
 
 
@@ -279,4 +279,5 @@ $academic['city']
 #end for
 \end{cvskills}
 #end if
+#end for
 \end{document}
