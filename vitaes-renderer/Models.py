@@ -43,6 +43,13 @@ class CvLanguageItem(CvItem):
         self.level = level
 
 
+class CvSkillItem(CvItem):
+    def __init__(self, skill_name: str, skill_type: str = None):
+        CvItem.__init__(self)
+        self.skill_name = skill_name
+        self.skill_type = skill_type
+
+
 class CvExperienceItem(CvItem):
     def __init__(self,
                  institution: CvInstitution,

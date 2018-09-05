@@ -31,6 +31,13 @@ Fields:
 * language(_str_): States the name of it.
 * level(_str_, Optional): The level associated with the language (eg. Intermediate, Fluent, Native...).
 
+### CvSkillItem
+Represents a skill.
+
+Fields:
+* skill_name(_str_): States the name of it.
+* skill_type(_str_, Optional): Represents the type of the skill(Programming, Web ...).
+
 ### CvEducationalExperienceItem
 Represents an experience in an education institution whether is presencial or online
 
