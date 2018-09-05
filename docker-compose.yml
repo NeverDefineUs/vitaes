@@ -2,9 +2,11 @@ version: '3'
 services:
   webapp:
     build: vitaes-webapp/.
-    ports:
-    - "80:3000"
   renderer:
     build: vitaes-renderer/.
     ports:
     - "5000:5000"
+  nginx:
+    build: vitaes-nginx/.
+    ports:
+    - "80:80"
