@@ -54,8 +54,35 @@
 #else
 {}
 #end if
-
-
+#end for
+#end if
+#if $section == 'work' and $work_array
+\section{Work Experience}
+#for $work in $work_array
+\cventry{
+    $work['start_date'].strftime("%b/%y")
+#if 'end_date' not in $work
+    Present
+#else if $work['start_date'].strftime("%b/%y") != $work['end_date'].strftime("%b/%y")
+    $work['end_date'].strftime("%b/%y")
+#end if
+}
+#if 'role' in $work
+{$work['role']}{$work['institution']}
+#else
+{$work['institution']}{}
+#end if
+{}
+#if 'country' in $work and 'city' in $work and $work['city'] != '' and $work['country'] != ''
+{$work['city'], $work['country']}
+#else
+{}
+#end if
+#if 'description' in $education
+{$education['description']}
+#else
+{}
+#end if
 #end for
 #end if
 #end for

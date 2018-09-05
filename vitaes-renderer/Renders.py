@@ -25,7 +25,7 @@ class CvRenderBase:
         raise NotImplementedError
 
 class CvRenderTex(CvRenderBase):
-    def render(cv: CurriculumVitae, params={}):
+    def render(cv: CurriculumVitae, params={}, baseFolder=""):
         texString = """\\documentclass[11pt,a4paper,sans]{moderncv} 
 \\moderncvstyle{casual}
 \\moderncvcolor{blue} 
