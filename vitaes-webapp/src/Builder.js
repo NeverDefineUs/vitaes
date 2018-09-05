@@ -134,8 +134,10 @@ class CvItemForm extends Component {
           name = item.name
         } else if (item.institution !== undefined) {
           name = item.institution.CvInstitution.name
-        } else {
+        } else if (item.language !== undefined) {
           name = item.language
+        } else {
+          name = item.skill_type + ": " + item.skill_name
         }
         nodes.push(<div className="Base-item" key={index}><span onClick={x.getEventExpander(index)}>{name}</span> <div className="Base-item-close" onClick={x.getEventDeleter(index)}><a>Delete</a></div></div>)
       })
@@ -317,6 +319,7 @@ class Builder extends Component {
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Achievements" cvkey="CvAchievementItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel}  fields={["name", "start_date"]} optFields={["end_date", "description", "institution", "country", "state", "city", "place", "certification_link"]}/>
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Projects" cvkey="CvImplementationProjectItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["name", "start_date"]} optFields={["end_date", "description", "language", "country", "state", "city", "repository_link"]}/>
                   <CvItemForm chosenLabel={this.state.chosenLabel} label="Languages" cvkey="CvLanguageItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["language", "level"]}/>
+                  <CvItemForm chosenLabel={this.state.chosenLabel} label="Skills" cvkey="CvSkillItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={["skill_name", "skill_type"]}/>
                   <br/>
                   <select className="Base-select" onChange={(e) =>  this.setState({render_key: e.target.value})}>
                     <option value="awesome-red">Awesome Red</option>
