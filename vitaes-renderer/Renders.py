@@ -12,9 +12,11 @@ def date_comparer(x):
     return (end_date, start_date)
 
 def date_comparer_2(x):
-    end_date=x.end_date
-    start_date=x.start_date
-    if end_date == None:
+    end_date = ""
+    start_date = x['start_date']
+    if 'end_date' in x:
+        end_date = x['end_date']
+    else:
         end_date = datetime.datetime(2100, 10, 10, 1, 1, 1)
     return (end_date, start_date)
     
@@ -90,7 +92,7 @@ class CvRenderTex(CvRenderBase):
         if Models.CvAchievementItem in cv.items:
             texString += "\\section{Achievements}\n"
             achievements = cv.items[Models.CvAchievementItem]
-            achievements.sort(key = date_comparer_2, reverse = True)
+            achievements.sort(key = date_comparer, reverse = True)
             for elem in achievements:
                 texString += "\\cvitem{" + elem.start_date.strftime("%d/%b/%Y") + "}{" + elem.name
                 if elem.competitors > 0:
@@ -99,7 +101,7 @@ class CvRenderTex(CvRenderBase):
         if Models.CvImplementationProjectItem in cv.items:
             texString += "\\section{Projects}\n"
             projects = cv.items[Models.CvImplementationProjectItem]
-            projects.sort(key = date_comparer_2, reverse = True)
+            projects.sort(key = date_comparer, reverse = True)
             for elem in projects:
                 start_date = elem.start_date.strftime("%b/%Y")
                 texString += "\\cventry{" + start_date
@@ -119,7 +121,7 @@ class CvRenderTex(CvRenderBase):
         if Models.CvAcademicProjectItem in cv.items:
             texString += "\\section{Academic Experience}\n"
             projects = cv.items[Models.CvAcademicProjectItem]
-            projects.sort(key = date_comparer_2, reverse = True)
+            projects.sort(key = date_comparer, reverse = True)
             for elem in projects:
                 start_date = elem.start_date.strftime("%b/%Y")
                 texString += "\\cventry{" + start_date
@@ -193,11 +195,11 @@ class CvRenderJsonRequest(CvRenderBase):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 
 class CvRenderCheetahTemplate(CvRenderBase):
-    def addDates(itemDict, key, baseDate: datetime):
+    def add_dates(itemDict, key, baseDate: datetime):
         baseDate = timestring.Date(baseDate).date
         itemDict[key] = baseDate
         return itemDict
-    def genericMethodName(cv: CurriculumVitae, key):
+    def extract_item(cv: CurriculumVitae, key):
         ret = []
         if key in cv.items:
             for item in cv.items[key]:
@@ -214,11 +216,25 @@ class CvRenderCheetahTemplate(CvRenderBase):
                     elif var == "institution": 
                         itemDict[var] = item.institution.name
                     elif var[-4:] == "date":
-                        itemDict = CvRenderCheetahTemplate.addDates(itemDict, var, eval("item." + var))
+                        itemDict = CvRenderCheetahTemplate.add_dates(itemDict, var, eval("item." + var))
                     else:
                         itemDict[var] = eval("item." + var)
                 ret.append(itemDict)
+        if ret != [] and 'start_date' in ret[0]:
+            ret.sort(key = date_comparer_2, reverse = True)
         return ret
+    def extract_skills(cv):
+        skills = {}
+        if Models.CvLanguageItem in cv.items and cv.items[Models.CvLanguageItem] != []:
+            skills["languages"] = []
+            for language in cv.items[Models.CvLanguageItem]:
+                skills["languages"].append(language)
+        if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
+            for skill in cv.items[Models.CvSkillItem]:
+                if str(skill.skill_type) not in skills:
+                    skills[str(skill.skill_type)] = []
+                skills[str(skill.skill_type)].append(language)
+        return skills
     def render(cv: CurriculumVitae, baseFolder: str="awesome", params={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
@@ -232,12 +248,13 @@ class CvRenderCheetahTemplate(CvRenderBase):
             cvDict[var] = eval("cv.header." + var)
         if cv.header.birthday != None:
             cvDict["birthday"] = cv.header.birthday.strftime("%B %d, %Y")
-        cvDict["work_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvWorkExperienceItem)
-        cvDict["education_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvEducationalExperienceItem)
-        cvDict["academic_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvAcademicProjectItem)
-        cvDict["language_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvLanguageItem)
-        cvDict["project_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvImplementationProjectItem)
-        cvDict["achievement_array"] = CvRenderCheetahTemplate.genericMethodName(cv, Models.CvAchievementItem)
+        cvDict["work_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvWorkExperienceItem)
+        cvDict["education_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvEducationalExperienceItem)
+        cvDict["academic_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAcademicProjectItem)
+        cvDict["language_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvLanguageItem)
+        cvDict["project_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvImplementationProjectItem)
+        cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAchievementItem)
+        cvDict["skill_array"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
         template = Template(templateString, cvDict)
         return str(template)
