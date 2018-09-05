@@ -85,5 +85,11 @@
 #end if
 #end for
 #end if
+#if $section == "achievement" and $achievement_array
+\section{Achievements}
+#for $achievement in $achievement_array
+\cvitem{$achievement['start_date'].strftime("%d/%b/%Y")}{$achievement['name']}
+#end for
+#end if
 #end for
 \end{document}
