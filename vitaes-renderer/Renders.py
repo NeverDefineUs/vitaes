@@ -71,7 +71,32 @@ class CvRenderJsonRequest(CvRenderBase):
         return dic
     def render(cv: CurriculumVitae):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
+import sys
+def text_clean(text):
+    text=str(text)
+    print(text,file=sys.stderr)
+    accents = {
+        "\\`a": "à",
+        "\\'a": "á",
+        "\\~a": "ã",
+        "\\^a": "â",
+        "\\'e": "é",
+        "\\^e": "ê",
+        "\\’{\\i}": "í",
+        "\\’I": "Í",
+        "\\’o": "ó",
+        "\\~o": "õ",
+        "\\^o": "ô",
+        "\\’u": "ú",
+        '\\"u': "ü",
+        "\\c{c}": "ç",
+        "\\c{C}": "Ç"
+    }
+    for x in accents.keys():
+        text = text.replace(accents[x], x)
+    print(text,file=sys.stderr)
 
+    return text
 class CvRenderCheetahTemplate(CvRenderBase):
     def add_dates(itemDict, key, baseDate: datetime):
         baseDate = timestring.Date(baseDate).date
@@ -95,6 +120,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
                         itemDict[var] = item.institution.name
                     elif var[-4:] == "date":
                         itemDict = CvRenderCheetahTemplate.add_dates(itemDict, var, eval("item." + var))
+                    elif type(eval("item." + var)) == str:
+                        itemDict[var] = text_clean(eval("item." + var))
                     else:
                         itemDict[var] = eval("item." + var)
                 ret.append(itemDict)
@@ -106,12 +133,12 @@ class CvRenderCheetahTemplate(CvRenderBase):
         if Models.CvLanguageItem in cv.items and cv.items[Models.CvLanguageItem] != []:
             skills["Languages"] = []
             for language in cv.items[Models.CvLanguageItem]:
-                skills["Languages"].append(language.language)
+                skills["Languages"].append(text_clean(language.language))
         if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
             for skill in cv.items[Models.CvSkillItem]:
-                if str(skill.skill_type) not in skills:
-                    skills[str(skill.skill_type)] = []
-                skills[str(skill.skill_type)].append(language)
+                if text_clean(skill.skill_type) not in skills:
+                    skills[text_clean(skill.skill_type)] = []
+                skills[text_clean(skill.skill_type)].append(text_clean(skill.skill_name))
         return skills
     def render(cv: CurriculumVitae, baseFolder: str="awesome", params={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
@@ -119,13 +146,13 @@ class CvRenderCheetahTemplate(CvRenderBase):
         file.close()
         cvDict = {}
         headerVars = ["name", "address", "github", "linkedin", "email", "phone", "birthday", "homepage"]
-        cvDict["firstname"] = cv.header.name.split(' ')[0]
-        cvDict["surname"] = ' '.join(cv.header.name.split(' ')[1:])
-        cvDict["lastname"] = cv.header.name.split(' ')[-1]
+        cvDict["firstname"] = text_clean(cv.header.name.split(' ')[0])
+        cvDict["surname"] = text_clean(' '.join(cv.header.name.split(' ')[1:]))
+        cvDict["lastname"] = text_clean(cv.header.name.split(' ')[-1])
         for var in headerVars:
-            cvDict[var] = eval("cv.header." + var)
+            cvDict[var] = text_clean(eval("cv.header." + var))
         if cv.header.birthday != None:
-            cvDict["birthday"] = cv.header.birthday.strftime("%B %d, %Y")
+            cvDict["birthday"] = timestring.Date(cv.header.birthday).date
         cvDict["work_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvWorkExperienceItem)
         cvDict["education_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvEducationalExperienceItem)
         cvDict["academic_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAcademicProjectItem)
