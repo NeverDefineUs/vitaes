@@ -178,7 +178,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "awesome-concrete", cv_models: ["modern_cv_casual_blue", "modern_cv_large_blue"]}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "awesome-concrete", cv_models: ["awesome-concrete"]}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
