@@ -9,5 +9,8 @@ services:
   nginx:
     build: vitaes-nginx/.
     ports:
-    - "80:80"
     - "443:443"
+  nginx-http:
+    build: vitaes-nginx-http/.
+    ports:
+    - "80:80"
