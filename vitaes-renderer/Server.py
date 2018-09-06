@@ -38,6 +38,8 @@ def get_parse_string(cv_key, item):
         elif key[-4:] == "date":
             gen_cv_item = gen_cv_item + "parse_date('{0}'),".format(value)
         elif type(value) is str:
+            if len(value) > 0 and value[-1] == "\\":
+                abort(406, "Finishing fields with \\ is NOT acceptable")
             gen_cv_item = gen_cv_item + "'{0}',".format(value.replace("'","\\'"))
         else:
             gen_cv_item = gen_cv_item + "'{0}',".format(value)
