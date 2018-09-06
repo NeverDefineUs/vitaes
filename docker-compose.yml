@@ -10,3 +10,5 @@ services:
     build: vitaes-nginx/.
     ports:
     - "80:80"
+    volumes:
+    - /etc/letsencrypt/live/vitaes.io/:/etc/letsencrypt/live/vitaes.io/
