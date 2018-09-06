@@ -192,7 +192,7 @@ class Builder extends Component {
       if (this.hostname == 'vitaes.io:5000') {
         this.hostname = 'renderer.vitaes.io'
       }
-      fetch('http://' + this.hostname + '/CVTYPES/', {
+      fetch( window.location.protocol + '//' + this.hostname + '/CVTYPES/', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -259,7 +259,7 @@ class Builder extends Component {
     downloadCvAsPDF() {
       var db = firebase.database().ref('cv-dumps').push()
       db.set(this.props.cv)
-      fetch('http://' + this.hostname + '/CV/', {
+      fetch( window.location.protocol + '//' + this.hostname + '/CV/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
