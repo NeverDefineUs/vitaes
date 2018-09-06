@@ -10,3 +10,4 @@ services:
     build: vitaes-nginx/.
     ports:
     - "80:80"
+    - "443:443"
