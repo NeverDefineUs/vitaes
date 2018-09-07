@@ -2,10 +2,13 @@ version: '3'
 services:
   webapp:
     build: vitaes-webapp/.
-  renderer:
+  server:
     build: vitaes-renderer/.
     ports:
     - "5000:5000"
+  renderer:
+    build: vitaes-renderer/.
+    command: python3 Consumer.py
   nginx:
     build: vitaes-nginx/.
     ports:
@@ -14,3 +17,7 @@ services:
     build: vitaes-nginx-http/.
     ports:
     - "80:80"
+  rabbitmq:
+    image: rabbitmq:alpine
+  redis:
+    image: redis
