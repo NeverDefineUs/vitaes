@@ -3,7 +3,9 @@ import string, random, os
 import subprocess, json
 import timestring
 from Cheetah.Template import Template
-from Common import id_gen
+
+def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def date_comparer(x):
     end_date=x.end_date
