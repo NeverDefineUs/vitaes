@@ -115,14 +115,14 @@ def render_from_cv_dict(req):
 
     render_key = "awesome-emerald"
     section_order = ['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill']
-    if 'curriculum_vitae' in req.keys():
+    if 'curriculum_vitae' in req:
         req_cv = req['curriculum_vitae']
-        if 'render_key' in req.keys():
+        if 'render_key' in req:
             render_key = req['render_key']
-        if 'section_order' in req.keys():
+        if 'section_order' in req:
             section_order = req['section_order']
 
-    if 'CvHeaderItem' not in req_cv.keys():
+    if 'CvHeaderItem' not in req_cv:
         abort(400, "Missing header")
 
     for cv_key in req_cv.keys():
