@@ -1,5 +1,5 @@
 from datetime import date, datetime
-import time, string
+import time, string, random
 from flask import Flask, request, abort, send_file
 from CurriculumVitae import CurriculumVitae
 from Models import *

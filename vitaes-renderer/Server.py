@@ -10,6 +10,10 @@ import redis
 app = Flask(__name__)
 CORS(app)
 db = redis.Redis(host='redis')
+time.sleep(25)
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
+channel = connection.channel()
+channel.queue_declare(queue='cv_requests')
 
 @app.route('/CVTYPES/', methods=['GET'])
 def get_cv_types():
