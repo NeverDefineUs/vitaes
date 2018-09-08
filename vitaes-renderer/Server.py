@@ -3,7 +3,7 @@ import time
 from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
-from Common import render_map, render_from_cv_dict
+from Common import render_map, render_from_cv_dict, id_gen
 import pika
 import redis
 
@@ -29,7 +29,9 @@ def process_curr():
 @app.route('/CVQUEUE/', methods=['POST'])
 def process_curr_delayed():
     req = request.json
+    req['path'] = id_gen(size=10)
     channel.basic_publish(exchange='',routing_key='cv_requests', body=json.dumps(req))
+    return req['path']
 
 
 @app.route('/CVGET/<cvid>/', methods=['GET'])

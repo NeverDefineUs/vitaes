@@ -3,6 +3,7 @@ import string, random, os
 import subprocess, json
 import timestring
 from Cheetah.Template import Template
+from Common import id_gen
 
 def date_comparer(x):
     end_date=x.end_date
@@ -24,13 +25,10 @@ class CvRenderBase:
     def render(cv: CurriculumVitae):
         raise NotImplementedError
 
-class CvRenderTexToPdf(CvRenderBase):    
-    def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
-        return ''.join(random.choice(chars) for _ in range(size))
-    
+class CvRenderTexToPdf(CvRenderBase):   
     def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str="cv_7", path: str=None, command: str="pdflatex", params={}):
         if path == None:
-            path=CvRenderTexToPdf.id_gen()
+            path=id_gen()
         os.system("mkdir Output/" + path)
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
