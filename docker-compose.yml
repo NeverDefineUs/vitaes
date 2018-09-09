@@ -1,6 +1,8 @@
 version: '3'
 services:
   webapp:
+    volumes: 
+    - ./vitaes-webapp/src:/project/src
     build: vitaes-webapp/.
   server:
     build: vitaes-renderer/.
