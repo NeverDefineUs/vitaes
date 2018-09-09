@@ -27,6 +27,16 @@ class App extends Component {
     this.googleLogout = this.googleLogout.bind(this)
     this.cvSetter = this.cvSetter.bind(this)
     let app = this
+    var dbErrors = firebase.database().ref("errors")
+    dbErrors.on("value", function(snapshot) {
+      if (snapshot.val() !== null) {
+        for (let msg of snapshot.val()) {
+          if (msg !== undefined) {
+            alert(msg)
+          }
+        }
+      }
+    })
     firebase.auth().getRedirectResult().then(function(result) {
       var user = firebase.auth().currentUser
       var db = firebase.database().ref("cvs").child(user.uid)
