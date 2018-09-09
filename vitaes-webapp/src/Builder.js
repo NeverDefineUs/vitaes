@@ -114,9 +114,9 @@ class CvItemForm extends Component {
   addField() {
     var cv = this.props.curriculum
     var toAdd = this.state.toAdd;
-    for (var item of this.props.fields) {
-      if (toAdd[item] === undefined) {
-        if (item === "name") {
+    for (var item of this.props.fields) {        
+      if (toAdd[item[0]] === undefined) {
+        if (item[0] === "name") {
           alert("Needed Field: Title")
         } else {
           alert("Needed Field: " + capitalize(item[0]))
@@ -128,18 +128,21 @@ class CvItemForm extends Component {
      var institution = {"CvInstitution": {"name": toAdd["institution"]}}
      toAdd["institution"] = institution
     }
+    console.log(toAdd)
+    console.log('aaaa')
     if (toAdd["country"] !== undefined || toAdd["state"] !== undefined || toAdd["city"] !== undefined){
       var cvLocation = {}
       for (var locField of locFields) {
-        if (toAdd[locField] !== undefined) {
-          cvLocation[locField] = toAdd[locField]
+        if (toAdd[locField[0]] !== undefined) {
+          cvLocation[locField[0]] = toAdd[locField[0]]
         }
       }
       toAdd["location"] = {"CvLocation": cvLocation}
       for (locField of locFields) {
-        delete toAdd[locField]
+        delete toAdd[locField[0]]
       }
     }
+    console.log(toAdd)
     if (cv[this.props.cvkey] === undefined) {
       cv[this.props.cvkey] = []
     }
