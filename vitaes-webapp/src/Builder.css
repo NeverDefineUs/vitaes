@@ -58,9 +58,20 @@
   border: 1px;
   font-size: 1em;
   min-height: 1.2em;
-  height: fit-content;
   border-style: solid;
   border-color: #ddd;
+}
+
+.Base-textareafield {
+  border-radius: 2px;
+  flex-grow: 100;
+  border: 1px;
+  font-size: 1em;
+  min-height: 1.2em;
+  border-style: solid;
+  border-color: #ddd;
+  height: fit-content;
+  resize: none; 
 }
 
 .Base-item {

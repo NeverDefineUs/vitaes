@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Builder.css'
 import firebase from 'firebase'
+import TextareaAutosize from 'react-autosize-textarea'
 
 const capitalize = (word) => {
   word = word.replace('_', ' ')
@@ -33,14 +34,18 @@ class CvHeaderField extends Component {
 
 class CvField extends Component {
   // label, placeholder, mandatory, toAdd, stateChanger, addField
+  constructor(props){
+    super(props)
+    this.changeHeightAndField = this.changeHeightAndField.bind(this)
+  }
+  changeHeightAndField(event) {
+    console.log(event)
+    this.props.stateChanger(event)
+  }
   render() {
-    return (
-      <div className="Base-field">
-        <div className="Base-label">
-          {capitalize(this.props.label === "name" ? "title" : this.props.label)}
-          {this.props.mandatory ? " (Required)" : ""}
-          {this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:
-        </div>
+    var inputField
+    if (this.props.label !== "description") {
+      inputField = 
         <input 
           type="text" 
           name={this.props.label} 
@@ -56,6 +61,27 @@ class CvField extends Component {
             }
           }
         />
+    } else {
+      inputField =
+      <TextareaAutosize 
+        type="text" 
+        name={this.props.label} 
+        value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]}
+        className="Base-textareafield"
+        onChange={this.changeHeightAndField}
+        placeholder={this.props.placeholder}
+        rows={1}
+      />
+    }
+    
+    return (
+      <div className="Base-field">
+        <div className="Base-label">
+          {capitalize(this.props.label === "name" ? "title" : this.props.label)}
+          {this.props.mandatory ? " (Required)" : ""}
+          {this.props.label.endsWith("date")?" [YYYY-MM-DD]":""}:
+        </div>
+        {inputField}
       </div>
     )
   }

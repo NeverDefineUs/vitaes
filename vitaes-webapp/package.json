@@ -6,6 +6,7 @@
     "@material-ui/core": "",
     "firebase": "^5.4.2",
     "react": "^16.4.2",
+    "react-autosize-textarea": "",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.5"
   },
