@@ -119,7 +119,7 @@ class CvItemForm extends Component {
         if (item === "name") {
           alert("Needed Field: Title")
         } else {
-          alert("Needed Field: " + capitalize(item))
+          alert("Needed Field: " + capitalize(item[0]))
         }
         return
       }
@@ -128,7 +128,7 @@ class CvItemForm extends Component {
      var institution = {"CvInstitution": {"name": toAdd["institution"]}}
      toAdd["institution"] = institution
     }
-    if (toAdd[["country", "Country name"]] !== undefined || toAdd[["state", "State name"]] !== undefined || toAdd[["city", "City name"]] !== undefined){
+    if (toAdd["country"] !== undefined || toAdd["state"] !== undefined || toAdd["city"] !== undefined){
       var cvLocation = {}
       for (var locField of locFields) {
         if (toAdd[locField] !== undefined) {
