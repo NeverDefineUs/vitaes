@@ -70,7 +70,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to Vitaes</h1>
         </header>
         <div className="App-sidenav">
-          <a onClick={() => { this.setState({tab: 1}) }}>Test Me</a>
+          <a onClick={() => { this.setState({tab: 1}) }}>Create your CV</a>
           {this.state.user === null ?
           <a onClick={this.googleLogin}>Google Login</a> :
           <a onClick={this.googleLogout}>Google Logout</a>}
