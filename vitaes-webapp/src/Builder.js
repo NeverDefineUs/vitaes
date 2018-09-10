@@ -36,7 +36,6 @@ class CvField extends Component {
   // label, placeholder, mandatory, toAdd, stateChanger, addField
   constructor(props){
     super(props)
-    this.changeHeightAndField = this.changeHeightAndField.bind(this)
   }
   render() {
     var inputField
@@ -104,6 +103,11 @@ class CvItemForm extends Component {
 
   getEventExpander(index) {
     return () => {
+      if (this.props.label === this.props.chosenLabel) {
+        if (!this.addField()) {
+          return
+        }
+      }
       var cv = this.props.curriculum
       var toAdd = cv[this.props.cvkey][index]
       cv[this.props.cvkey].splice(index, 1)
@@ -143,7 +147,7 @@ class CvItemForm extends Component {
         } else {
           alert("Needed Field: " + capitalize(item[0]))
         }
-        return
+        return false
       }
     }
     if (toAdd["institution"] !== undefined) {
@@ -169,6 +173,7 @@ class CvItemForm extends Component {
     this.props.stateChanger(cv)
     this.setState({toAdd: {}})
     this.props.labelChanger("")
+    return true
   }
 
   render() {
