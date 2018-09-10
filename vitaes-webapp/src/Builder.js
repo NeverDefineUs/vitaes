@@ -245,7 +245,6 @@ class Builder extends Component {
       this.setLabel = this.setLabel.bind(this)
       this.startFilePicker = this.startFilePicker.bind(this)
       this.uploadJSON = this.uploadJSON.bind(this)
-      this.accentsToLatex = this.accentsToLatex.bind(this)
       this.hostname = window.location.hostname + ':5000'
       if (this.hostname === 'vitaes.io:5000') {
         this.hostname = 'renderer.vitaes.io'
@@ -298,31 +297,6 @@ class Builder extends Component {
       element.click()
     }
 
-    accentsToLatex(entry) {
-      var ret = entry
-      if (typeof entry === "string") {
-        const accents = {
-          
-        }
-        for (var substitution in accents) {
-          var accent = accents[substitution]
-          entry = entry.replace(accent, substitution)
-        }
-        ret = entry
-      } else if (Array.isArray(entry)) {
-        ret = []
-        for (let key in entry) {
-          ret.push(this.accentsToLatex(entry[key]))
-        }
-      } else if (typeof entry === "object") {
-        ret = {}
-        for (let key in entry) {
-          ret[key] = this.accentsToLatex(entry[key])
-        }
-      } 
-      return ret
-    }
-
     downloadCvAsPDF() {
       var db = firebase.database().ref('cv-dumps').push()
       db.set(this.props.cv)
@@ -332,7 +306,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"curriculum_vitae": this.accentsToLatex(this.props.cv), "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
+        body: JSON.stringify({"curriculum_vitae": this.props.cv, "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
       }).then(response => {
         if (response.ok) {
           var file = response.blob()
