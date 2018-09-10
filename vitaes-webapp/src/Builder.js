@@ -38,10 +38,6 @@ class CvField extends Component {
     super(props)
     this.changeHeightAndField = this.changeHeightAndField.bind(this)
   }
-  changeHeightAndField(event) {
-    console.log(event)
-    this.props.stateChanger(event)
-  }
   render() {
     var inputField
     if (this.props.label !== "description") {
@@ -63,15 +59,15 @@ class CvField extends Component {
         />
     } else {
       inputField =
-      <TextareaAutosize 
-        type="text" 
-        name={this.props.label} 
-        value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]}
-        className="Base-textareafield"
-        onChange={this.changeHeightAndField}
-        placeholder={this.props.placeholder}
-        rows={1}
-      />
+        <TextareaAutosize 
+          type="text" 
+          name={this.props.label} 
+          value={this.props.toAdd[this.props.label] === undefined ? "" : this.props.toAdd[this.props.label]}
+          className="Base-textareafield"
+          onChange={this.props.stateChanger}
+          placeholder={this.props.placeholder}
+          rows={1}
+        />
     }
     
     return (
@@ -154,8 +150,6 @@ class CvItemForm extends Component {
      var institution = {"CvInstitution": {"name": toAdd["institution"]}}
      toAdd["institution"] = institution
     }
-    console.log(toAdd)
-    console.log('aaaa')
     if (toAdd["country"] !== undefined || toAdd["state"] !== undefined || toAdd["city"] !== undefined){
       var cvLocation = {}
       for (var locField of locFields) {
@@ -168,7 +162,6 @@ class CvItemForm extends Component {
         delete toAdd[locField[0]]
       }
     }
-    console.log(toAdd)
     if (cv[this.props.cvkey] === undefined) {
       cv[this.props.cvkey] = []
     }
@@ -243,7 +236,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", render_key: "awesome-concrete", cv_models: ["awesome-concrete"]}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", user_cv_detail: "concrete", cv_models: {"awesome":["concrete"]}}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -268,7 +261,16 @@ class Builder extends Component {
           var jsonPromise = response.json()
           jsonPromise.then(json => {
             json.sort()
-            this.setState({cv_models: json}
+            var cv_models = {}
+            for (let cv_model_full of json) {
+              let cv_model = cv_model_full.split('-')[0]
+              let cv_detail = cv_model_full.split('-')[1]
+              if (cv_models[cv_model] === undefined) {
+                cv_models[cv_model] = []
+              }
+              cv_models[cv_model].push(cv_detail)
+            }
+            this.setState({cv_models: cv_models}
           )})
         } else {
           var textPromise = response.text()
@@ -330,7 +332,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"curriculum_vitae": this.accentsToLatex(this.props.cv), "render_key": this.state.render_key})
+        body: JSON.stringify({"curriculum_vitae": this.accentsToLatex(this.props.cv), "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
       }).then(response => {
         if (response.ok) {
           var file = response.blob()
@@ -380,8 +382,16 @@ class Builder extends Component {
 
     render() {
       var cv_model_options = []
-      for (let cv_model of this.state.cv_models) {
+      for (let cv_model in this.state.cv_models) {
         cv_model_options.push(<option key={cv_model} value={cv_model}>{capitalize(cv_model)}</option>)
+      }
+      var cv_detail_options = []
+      for (let cv_detail of this.state.cv_models[this.state.user_cv_model]) {
+        if (this.state.user_cv_detail === cv_detail) {
+          cv_detail_options.push(<option selected key={cv_detail} value={cv_detail}>{capitalize(cv_detail)}</option>)
+        } else {
+          cv_detail_options.push(<option key={cv_detail} value={cv_detail}>{capitalize(cv_detail)}</option>)
+        }
       }
       return (
         <div className="Base">
@@ -410,12 +420,27 @@ class Builder extends Component {
           <CvItemForm chosenLabel={this.state.chosenLabel} label="Languages" cvkey="CvLanguageItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={[["language", "Language name (e.g. English)"], ["level", "Level of knowledge (e.g. Advanced)"]]}/>
           <CvItemForm chosenLabel={this.state.chosenLabel} label="Skills" cvkey="CvSkillItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={[["skill_name", "Skill name"], ["skill_type", "Description of the skill"]]}/>
           {/* YEAH ME ^^^^ */}
+          <div className="Base-linemarker"/>
           <br/>
+          <div className="Base-label">
+            Model:
+          </div>
           <select 
             className="Base-select" 
-            onChange={(e) => this.setState({render_key: e.target.value})}
+            onChange={(e) => this.setState({user_cv_model: e.target.value, user_cv_detail: this.state.cv_models[e.target.value][0]})}
           >
-            {cv_model_options}
+          {cv_model_options}
+          </select>
+          <br/>
+          <br/>
+          <div className="Base-label">
+            Detail:
+          </div>
+          <select 
+            className="Base-select" 
+            onChange={(e) => this.setState({user_cv_detail: e.target.value})}
+          >
+            {cv_detail_options}
           </select>
           <br/>
           <br/>
