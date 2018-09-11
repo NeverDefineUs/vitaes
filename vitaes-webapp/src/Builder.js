@@ -150,6 +150,14 @@ class CvItemForm extends Component {
         return false
       }
     }
+    for (let item in toAdd) {
+      if (item.endsWith("date") && toAdd[item]) {
+        if (!toAdd[item].match(/^\d{4}\-\d{2}\-\d{2}$/)) {
+          alert("Wrong format:" + item)
+          return false
+        }
+      }
+    }
     if (toAdd["institution"] !== undefined) {
      var institution = {"CvInstitution": {"name": toAdd["institution"]}}
      toAdd["institution"] = institution
