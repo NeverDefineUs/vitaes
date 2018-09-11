@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Builder from './Builder';
+import About from './About';
 import firebase from 'firebase';
 import config from './config.js'
 
@@ -84,10 +85,11 @@ class App extends Component {
           {this.state.user === null ?
           <a onClick={this.googleLogin}>Google Login</a> :
           <a onClick={this.googleLogout}>Google Logout</a>}
-          <a href="https://github.com/Arthurlpgc/CVCS" onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
+          <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
         </div>
         <div className="App-intro">
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
+          { this.state.tab === 3 ? <About /> : null}
         </div>
       </div>
     );
