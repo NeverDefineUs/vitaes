@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Builder.css'
-import Arthurlpgc from './profile/Arthurlpgc.jpg'
-import RamonSaboya from './profile/RamonSaboya.jpg'
+import Arthurlpgc from './Profile/Arthurlpgc.jpg'
+import RamonSaboya from './Profile/RamonSaboya.jpg'
 
 class About extends Component {
     constructor(props) {
