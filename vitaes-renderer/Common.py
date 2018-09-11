@@ -13,7 +13,6 @@ def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 def parse_date(str):
-    print(str)
     return timestring.Date(str).date
 
 def get_field_or_none(req, field_name):
@@ -40,7 +39,7 @@ def get_parse_string(cv_key, item):
         elif key[-4:] == "date":
             gen_cv_item = gen_cv_item + "parse_date('{0}'),".format(value)
         elif type(value) is str:
-            gen_cv_item = gen_cv_item + "'{0}',".format(value.replace("'","\\'"))
+            gen_cv_item = gen_cv_item + "\"\"\"{0}\"\"\",".format(value.replace("\"","\\\""))
         else:
             gen_cv_item = gen_cv_item + "'{0}',".format(value)
 
@@ -105,8 +104,6 @@ render_map = {
 def render_from_cv_dict(req):
     cv = CurriculumVitae()
     ret = ""
-
-    print("REQUEST")
 
     req_cv = req
     path = None

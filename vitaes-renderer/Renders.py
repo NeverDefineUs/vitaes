@@ -76,7 +76,6 @@ def text_clean(text):
     if text == None:
         return text
     text=str(text)
-    print(text,file=sys.stderr)
     accents = {
         "\\`a": "à",
         "\\'a": "á",
@@ -123,8 +122,6 @@ def text_clean(text):
     }
     for x in accents.keys():
         text = text.replace(accents[x], x)
-    print(text,file=sys.stderr)
-
     return text
 class CvRenderCheetahTemplate(CvRenderBase):
     def add_dates(itemDict, key, baseDate: datetime):
@@ -169,6 +166,32 @@ class CvRenderCheetahTemplate(CvRenderBase):
                     skills[text_clean(skill.skill_type)] = []
                 skills[text_clean(skill.skill_type)].append(text_clean(skill.skill_name))
         return skills
+
+    def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix=""):
+        lines = description.split('\n')
+        while len(lines) > 0 and lines[-1].strip() == '':
+            lines = lines[:-1]
+        lines.append('')
+        depth = 0
+        retLines = []
+        for line in lines:
+            lineDepth = 0
+            while len(line) > lineDepth and line[lineDepth] == '*':
+                lineDepth += 1
+            while depth < lineDepth:
+                depth += 1
+                if header != None:
+                    retLines.append(header)
+            while depth > lineDepth:
+                depth -= 1
+                if bottom != None:
+                    retLines.append(bottom)
+            if depth > 0:
+                retLines.append(itemPrefix + line[depth:] + itemSuffix)
+            else: 
+                retLines.append(line)
+        return '\n'.join(retLines)
+
     def render(cv: CurriculumVitae, baseFolder: str="awesome", params={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
@@ -190,6 +213,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAchievementItem)
         cvDict["skill_dict"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
+        cvDict["break_into_items"] = CvRenderCheetahTemplate.break_into_items
         template = Template(templateString, cvDict)
         return str(template)
 

@@ -50,7 +50,7 @@
 {}
 #end if
 #if 'description' in $education
-{$education['description']}
+{$break_into_items($education['description'], header="\\begin{itemize}", bottom="\\end{itemize}", itemPrefix="\\item ")}
 #else
 {}
 #end if
@@ -79,7 +79,7 @@
 {}
 #end if
 #if 'description' in $work
-{$work['description']}
+{$break_into_items($work['description'], header="\\begin{itemize}", bottom="\\end{itemize}", itemPrefix="\\item ")}
 #else
 {}
 #end if
@@ -102,7 +102,7 @@
 #end if
 {}{}
 #if 'description' in $project
-{$project['description']}
+{$break_into_items($project['description'], header="\\begin{itemize}", bottom="\\end{itemize}", itemPrefix="\\item ")}
 #else
 {}
 #end if
@@ -125,7 +125,7 @@
 #end if
 {}{}
 #if 'description' in $academic
-{$academic['description']}
+{$break_into_items($academic['description'], header="\\begin{itemize}", bottom="\\end{itemize}", itemPrefix="\\item ")}
 #else
 {}
 #end if
