@@ -3,7 +3,8 @@ import './Builder.css'
 import CvOrder from './CvOrder.js'
 import firebase from 'firebase'
 import TextareaAutosize from 'react-autosize-textarea'
-import {arrayMove} from 'react-sortable-hoc';
+import {arrayMove} from 'react-sortable-hoc'
+import fetch from 'fetch-retry'
 
 const capitalize = (word) => {
   word = word.replace('_', ' ')
@@ -315,7 +316,7 @@ class Builder extends Component {
     downloadCvAsPDF() {
       var db = firebase.database().ref('cv-dumps').push()
       db.set(this.props.cv)
-      fetch( window.location.protocol + '//' + this.hostname + '/CV/', {
+      fetch( window.location.protocol + '//' + this.hostname + '/CVQUEUE/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -324,13 +325,28 @@ class Builder extends Component {
         body: JSON.stringify({"curriculum_vitae": this.props.cv, "section_order": this.state.cv_order, "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
       }).then(response => {
         if (response.ok) {
-          var file = response.blob()
-          file.then(file => {
-            var element = document.createElement("a")
-            element.href = URL.createObjectURL(file)
-            element.download = "cv.pdf"
-            element.click()
+          var idPromise = response.text()
+          idPromise.then(id => {
+            fetch( window.location.protocol + '//' + this.hostname + '/CVGET/' + id + '/', {
+              method: 'GET',
+              retries: 20,
+              retryDelay: 1000,
+              retryOn: [404]
+            }).then(response => {
+              if (response.ok) {
+                var file = response.blob()
+                file.then(file => {
+                  var element = document.createElement("a")
+                  element.href = URL.createObjectURL(file)
+                  element.download = "cv.pdf"
+                  element.click()
+                })
+              } else {
+                alert("Error processing file")
+              }
+            })
           })
+         
         } else {
           var textPromise = response.text()
           textPromise.then(text => alert("Error:" + text))

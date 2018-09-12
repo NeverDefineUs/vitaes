@@ -9,7 +9,8 @@
     "react-autosize-textarea": "",
     "react-dom": "^16.4.2",
     "react-scripts": "1.1.5",
-    "react-sortable-hoc": ""
+    "react-sortable-hoc": "",
+    "fetch-retry": ""
   },
   "scripts": {
     "start": "react-scripts start",
