@@ -86,6 +86,10 @@
   height: 1.2em;
 }
 
+.Base-orderlist {
+  list-style-type: none;
+}
+
 .Base-form {
   background-color: #EEE;
   margin-bottom: 5px;

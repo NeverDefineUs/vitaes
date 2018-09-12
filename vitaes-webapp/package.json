@@ -8,7 +8,8 @@
     "react": "^16.4.2",
     "react-autosize-textarea": "",
     "react-dom": "^16.4.2",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "react-sortable-hoc": ""
   },
   "scripts": {
     "start": "react-scripts start",

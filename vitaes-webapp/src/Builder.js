@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import './Builder.css'
+import CvOrder from './CvOrder.js'
 import firebase from 'firebase'
 import TextareaAutosize from 'react-autosize-textarea'
+import {arrayMove} from 'react-sortable-hoc';
 
 const capitalize = (word) => {
   word = word.replace('_', ' ')
@@ -249,7 +251,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", user_cv_detail: "concrete", cv_models: {"awesome":["concrete"]}}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", user_cv_detail: "concrete", cv_models: {"awesome":["concrete"]}, cv_order:['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill']}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -319,7 +321,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"curriculum_vitae": this.props.cv, "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
+        body: JSON.stringify({"curriculum_vitae": this.props.cv, "section_order": this.state.cv_order, "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
       }).then(response => {
         if (response.ok) {
           var file = response.blob()
@@ -408,6 +410,11 @@ class Builder extends Component {
           <CvItemForm chosenLabel={this.state.chosenLabel} label="Skills" cvkey="CvSkillItem" curriculum={this.props.cv} stateChanger={this.setCv} labelChanger={this.setLabel} fields={[["skill_name", "Skill name"], ["skill_type", "Description of the skill"]]}/>
           {/* YEAH ME ^^^^ */}
           <div className="Base-linemarker"/>
+          <div className="Base-subtitle">
+            Reorder CV areas:
+          </div>
+          <br />
+          <CvOrder setOrder={({oldIndex, newIndex})=>this.setState({cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex)})} cvOrder={this.state.cv_order}/>
           <br/>
           <div className="Base-label">
             Model:
