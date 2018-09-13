@@ -9,6 +9,4 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 COPY . .
 EXPOSE 5000
-ENV FLASK_DEBUG=1
-ENV FLASK_APP=name-of-your-python-file-here.py
 CMD python3 Server.py
