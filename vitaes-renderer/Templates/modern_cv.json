@@ -1,0 +1,40 @@
+{
+    "name": "modern_cv",
+    "base_folder": "modern_cv",
+    "command": "pdflatex",
+    "fixed_params": {},
+    "params": [
+        {
+            "name": "color",
+            "pretty_name": "color",
+            "mapped_options": {
+                "blue": "blue",
+                "green": "green",
+                "orange": "orange",
+                "red": "red",
+                "purple": "purple",
+                "black": "black",
+                "grey": "grey"
+            }
+        },
+        {
+            "name": "style",
+            "pretty_name": "style",
+            "mapped_options": {
+                "casual": "casual",
+                "classic": "classic",
+                "oldstyle": "oldstyle",
+                "banking": "banking"
+            }
+        },
+        {
+            "name": "scale",
+            "pretty_name": "size",
+            "mapped_options": {
+                "normal": "0.75",
+                "large": "0.8",
+                "extra large": "0.9"
+            }
+        }
+    ]
+}

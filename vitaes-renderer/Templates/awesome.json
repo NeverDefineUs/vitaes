@@ -1,0 +1,22 @@
+{
+    "name": "awesome",
+    "base_folder": "awesome",
+    "command": "xelatex",
+    "fixed_params": {},
+    "params": [
+        {
+            "name": "color",
+            "pretty_name": "color",
+            "mapped_options": {
+                "emerald": "awesome-emerald",
+                "skyblue": "awesome-skyblue",
+                "red": "awesome-red",
+                "pink": "awesome-pink",
+                "orange": "awesome-orange",
+                "nephritis": "awesome-nephritis",
+                "concrete": "awesome-concrete",
+                "darknight": "awesome-darknight"
+            }
+        }
+    ]
+}
