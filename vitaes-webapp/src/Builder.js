@@ -314,7 +314,7 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
-      var db = firebase.database().ref('cv-dumps').push()
+      var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace('.','_dot_'):''))).push()
       db.set(this.props.cv)
       fetch( window.location.protocol + '//' + this.hostname + '/CVQUEUE/', {
         method: 'POST',
