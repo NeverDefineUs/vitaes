@@ -13,13 +13,17 @@ channel.queue_declare(queue='cv_requests')
 db = redis.Redis(host='redis')
 
 def get_cv_queue(ch, method, properties, body):
-    body=body.decode('utf-8')
-    dic = json.loads(body)
-    ans = render_from_cv_dict(dic)
-    file = open('Output/' + ans + '.pdf', 'rb')
-    ansb = file.read()
-    file.close()
-    db.set(name=ans, value=ansb, ex=600)
+    ans = None
+    try:
+        body=body.decode('utf-8')
+        dic = json.loads(body)
+        ans = render_from_cv_dict(dic)
+        file = open('Output/' + ans + '.pdf', 'rb')
+        ansb = file.read()
+        file.close()
+        db.set(name=ans, value=ansb, ex=600)
+    except:
+        print("Error on ", ans)
 
 channel.basic_consume(get_cv_queue,
                       queue='cv_requests',

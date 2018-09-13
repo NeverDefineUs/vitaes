@@ -11,9 +11,6 @@ app = Flask(__name__)
 CORS(app)
 db = redis.Redis(host='redis')
 time.sleep(10)
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
-channel = connection.channel()
-channel.queue_declare(queue='cv_requests')
 
 @app.route('/CVTYPES/', methods=['GET'])
 def get_cv_types():
@@ -34,6 +31,9 @@ def process_curr():
 def process_curr_delayed():
     req = request.json
     req['path'] = id_gen(size=10)
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
+    channel = connection.channel()
+    channel.queue_declare(queue='cv_requests')
     channel.basic_publish(exchange='',routing_key='cv_requests', body=json.dumps(req))
     return req['path']
 
