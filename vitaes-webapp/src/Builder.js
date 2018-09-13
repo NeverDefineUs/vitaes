@@ -392,11 +392,7 @@ class Builder extends Component {
       }
       var cv_detail_options = []
       for (let cv_detail of this.state.cv_models[this.state.user_cv_model]) {
-        if (this.state.user_cv_detail === cv_detail) {
-          cv_detail_options.push(<option selected key={cv_detail} value={cv_detail}>{capitalize(cv_detail)}</option>)
-        } else {
           cv_detail_options.push(<option key={cv_detail} value={cv_detail}>{capitalize(cv_detail)}</option>)
-        }
       }
       return (
         <div className="Base">
@@ -436,6 +432,7 @@ class Builder extends Component {
             Model:
           </div>
           <select 
+            defaultValue={this.state.user_cv_model}
             className="Base-select" 
             onChange={(e) => this.setState({user_cv_model: e.target.value, user_cv_detail: this.state.cv_models[e.target.value][0]})}
           >
@@ -447,6 +444,7 @@ class Builder extends Component {
             Detail:
           </div>
           <select 
+            defaultValue={this.state.user_cv_detail}
             className="Base-select" 
             onChange={(e) => this.setState({user_cv_detail: e.target.value})}
           >

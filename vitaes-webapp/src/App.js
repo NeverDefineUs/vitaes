@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Builder from './Builder';
 import About from './About';
+import Builder from './Builder';
+import Login from './Login';
 import firebase from 'firebase';
 import config from './config.js'
 
@@ -23,7 +24,7 @@ let testCv =
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {tab: 1, cv: testCv, user: null}
+    this.state = {tab: -1, cv: testCv, user: null}
     this.googleLogin = this.googleLogin.bind(this)
     this.googleLogout = this.googleLogout.bind(this)
     this.cvSetter = this.cvSetter.bind(this)
@@ -41,7 +42,7 @@ class App extends Component {
     firebase.auth().getRedirectResult().then(function(result) {
       var user = firebase.auth().currentUser
       var db = firebase.database().ref("cvs").child(user.uid)
-      app.setState({user: user})
+      app.setState({user: user, tab: 1})
       console.log(user)
       db.on("value", function(snapshot) {
         var snap = snapshot.val()
@@ -54,6 +55,7 @@ class App extends Component {
         console.log(errorObject)
       })
     }).catch(function(error) {
+      app.setState({tab: 0})
     })
   }
 
@@ -71,7 +73,7 @@ class App extends Component {
 
   googleLogout() {
     firebase.auth().signOut()
-    this.setState({user: null})
+    this.setState({user: null, tab: 0})
   }
 
   render() {
@@ -81,13 +83,19 @@ class App extends Component {
           <h1 className="App-title">Welcome to Vitaes</h1>
         </header>
         <div className="App-sidenav">
-          <a onClick={() => { this.setState({tab: 1}) }}>Create your CV</a>
-          {this.state.user === null ?
-          <a onClick={this.googleLogin}>Google Login</a> :
-          <a onClick={this.googleLogout}>Google Logout</a>}
+          {this.state.tab > 0 ?
+          [
+            <a onClick={() => { this.setState({tab: 1}) }}>Create your CV</a>,
+            
+          ]
+          : null}
+          {this.state.user !== null ?
+            <a onClick={this.googleLogout}>Sign Out</a>
+          : <a onClick={this.googleLogin}>Sign in</a>}
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
         </div>
         <div className="App-intro">
+          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1})}} googleLogin={this.googleLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 3 ? <About /> : null}
         </div>

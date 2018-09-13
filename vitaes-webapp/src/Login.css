@@ -1,0 +1,40 @@
+.Login {
+  margin: 20px;
+  border: 2px;
+  border-color: #FAFAFA;
+  background-color: #FBFBFB;
+  border-style: solid;
+  margin-left: 35%;
+  margin-right: 35%;
+  border-radius: 20px;
+  padding: 2em;
+  text-align: center;
+}
+
+.Login-title {
+  font-size: 1.5em;
+}
+
+.Login-button {
+  width: 100%;
+}
+
+.Login-button a {
+  background-color: #000;
+  text-decoration: none;
+  font-size: 1em;
+  border-radius: 6px;
+  padding: 6px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #fff;
+  background-color: #000;
+}
+
+.Login-button a:hover {
+  background-color: #888;
+  color: #EEE;
+}
+.Login-google a {
+  background-color: #4285F4;
+}
