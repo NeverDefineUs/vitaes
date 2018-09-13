@@ -17,9 +17,11 @@
 
 .Login-button {
   width: 100%;
+  display: flex;
 }
 
 .Login-button a {
+  flex: 80;
   background-color: #000;
   text-decoration: none;
   font-size: 1em;
@@ -35,6 +37,11 @@
   background-color: #888;
   color: #EEE;
 }
+
 .Login-google a {
   background-color: #4285F4;
+}
+
+.Login-google a:hover {
+  background-color: #3275E4;
 }
