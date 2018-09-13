@@ -86,7 +86,6 @@ class App extends Component {
           {this.state.tab > 0 ?
           [
             <a onClick={() => { this.setState({tab: 1}) }}>Create your CV</a>,
-            
           ]
           : null}
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>

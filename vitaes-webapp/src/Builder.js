@@ -304,7 +304,7 @@ class Builder extends Component {
     }
 
     downloadCvAsJson() {
-      var db = firebase.database().ref('cv-dumps-json').push()
+      var db = firebase.database().ref('cv-dumps-json').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace('.','_dot_'):''))).push()
       db.set(this.props.cv)
       var element = document.createElement("a")
       var file = new Blob([JSON.stringify(this.props.cv)], {type: 'text/plain'})
