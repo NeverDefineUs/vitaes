@@ -89,10 +89,10 @@ class App extends Component {
             
           ]
           : null}
+          <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
           {this.state.user !== null ?
             <a onClick={this.googleLogout}>Sign Out</a>
           : <a onClick={this.googleLogin}>Sign in</a>}
-          <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
         </div>
         <div className="App-intro">
           { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1})}} googleLogin={this.googleLogin} /> : null}
