@@ -155,7 +155,7 @@ class CvItemForm extends Component {
     }
     for (let item in toAdd) {
       if (item.endsWith("date") && toAdd[item]) {
-        if (!toAdd[item].match(/^\d{4}\-\d{2}\-\d{2}$/)) {
+        if (!toAdd[item].match(/^\d{4}-\d{2}-\d{2}$/)) {
           alert("Wrong format:" + item)
           return false
         }
@@ -252,7 +252,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", user_cv_detail: "concrete", cv_models: {"awesome":["concrete"]}, cv_order:['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill']}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", cv_models: {}, cv_order:['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill'], params:{}}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -275,17 +275,7 @@ class Builder extends Component {
         if (response.ok) {
           var jsonPromise = response.json()
           jsonPromise.then(json => {
-            json.sort()
-            var cv_models = {}
-            for (let cv_model_full of json) {
-              let cv_model = cv_model_full.split('-')[0]
-              let cv_detail = cv_model_full.split('-')[1]
-              if (cv_models[cv_model] === undefined) {
-                cv_models[cv_model] = []
-              }
-              cv_models[cv_model].push(cv_detail)
-            }
-            this.setState({cv_models: cv_models}
+            this.setState({cv_models: json}
           )})
         } else {
           var textPromise = response.text()
@@ -304,7 +294,7 @@ class Builder extends Component {
     }
 
     downloadCvAsJson() {
-      var db = firebase.database().ref('cv-dumps-json').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace('.','_dot_'):''))).push()
+      var db = firebase.database().ref('cv-dumps-json').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
       var element = document.createElement("a")
       var file = new Blob([JSON.stringify(this.props.cv)], {type: 'text/plain'})
@@ -314,7 +304,7 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
-      var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace('.','_dot_'):''))).push()
+      var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
       fetch( window.location.protocol + '//' + this.hostname + '/CVQUEUE/', {
         method: 'POST',
@@ -322,7 +312,7 @@ class Builder extends Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"curriculum_vitae": this.props.cv, "section_order": this.state.cv_order, "render_key": this.state.user_cv_model + '-' + this.state.user_cv_detail})
+        body: JSON.stringify({"curriculum_vitae": this.props.cv, "section_order": this.state.cv_order, "render_key": this.state.user_cv_model, params: this.state.params})
       }).then(response => {
         if (response.ok) {
           var idPromise = response.text()
@@ -387,12 +377,30 @@ class Builder extends Component {
 
     render() {
       var cv_model_options = []
-      for (let cv_model in this.state.cv_models) {
-        cv_model_options.push(<option key={cv_model} value={cv_model}>{capitalize(cv_model)}</option>)
+      for (let cv_model_name in this.state.cv_models) {
+        var cv_model = this.state.cv_models[cv_model_name]
+        cv_model_options.push(<option key={cv_model['name']} value={cv_model['name']}>{capitalize(cv_model['name'])}</option>)
       }
-      var cv_detail_options = []
-      for (let cv_detail of this.state.cv_models[this.state.user_cv_model]) {
-          cv_detail_options.push(<option key={cv_detail} value={cv_detail}>{capitalize(cv_detail)}</option>)
+      var cv_model_suboptions = []
+      if (this.state.cv_models[this.state.user_cv_model] !== undefined) {
+        for (let cv_suboption of this.state.cv_models[this.state.user_cv_model]['params']) {
+          var cv_model_suboptions_items = []
+          for (let opt in cv_suboption['mapped_options']) {
+            cv_model_suboptions_items.push(<option key={opt} value={cv_suboption['mapped_options'][opt]}>{capitalize(opt)}</option>)
+          }
+          cv_model_suboptions = cv_model_suboptions.concat([<br/>,
+          <br/>,
+          <div className="Base-label">
+            {cv_suboption['pretty_name']}:
+          </div>,
+          <select 
+            value={this.state.params[cv_suboption['name']]}
+            className="Base-select" 
+            onChange={(e) => {}}
+          >
+            {cv_model_suboptions_items}
+          </select>])
+        }
       }
       return (
         <div className="Base">
@@ -432,24 +440,15 @@ class Builder extends Component {
             Model:
           </div>
           <select 
-            defaultValue={this.state.user_cv_model}
+            value={this.state.user_cv_model}
             className="Base-select" 
-            onChange={(e) => this.setState({user_cv_model: e.target.value, user_cv_detail: this.state.cv_models[e.target.value][0]})}
+            onChange={(e) => {
+              this.setState({user_cv_model: e.target.value, params: this.state.cv_models[e.target.value]['fixed_params']})
+            }}
           >
           {cv_model_options}
           </select>
-          <br/>
-          <br/>
-          <div className="Base-label">
-            Detail:
-          </div>
-          <select 
-            defaultValue={this.state.user_cv_detail}
-            className="Base-select" 
-            onChange={(e) => this.setState({user_cv_detail: e.target.value})}
-          >
-            {cv_detail_options}
-          </select>
+          {cv_model_suboptions}
           <br/>
           <br/>
           <div className="Base-button">

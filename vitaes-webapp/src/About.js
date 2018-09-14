@@ -4,9 +4,6 @@ import Arthurlpgc from './Profile/Arthurlpgc.jpg'
 import RamonSaboya from './Profile/RamonSaboya.jpg'
 
 class About extends Component {
-    constructor(props) {
-      super(props)
-    }
     render() {
       return (
         <div className="Base">
