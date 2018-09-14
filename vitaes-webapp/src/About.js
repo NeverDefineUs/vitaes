@@ -20,14 +20,14 @@ class About extends Component {
           <br/>
           <h3> Arthurlpgc</h3>
           <br/>
-          <img src={Arthurlpgc} className="Base-profile"/>
+          <img src={Arthurlpgc} alt="" className="Base-profile"/>
           <br/>
           Contact Email: latache@vitaes.io
           <br/>
           <br/>
           <h3> RamonSaboya</h3>
           <br/>
-          <img src={RamonSaboya} className="Base-profile"/>
+          <img src={RamonSaboya} alt="" className="Base-profile"/>
           <br/>
           Contact Email: saboya@vitaes.io
           <br/>
