@@ -1,11 +1,11 @@
 from datetime import date, datetime
 import time
-import json
+import json, sys
 from Common import render_map, render_from_cv_dict
 import pika
 import redis
 
-time.sleep(25)
+time.sleep(10)
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
 channel = connection.channel()
 channel.queue_declare(queue='cv_requests')
