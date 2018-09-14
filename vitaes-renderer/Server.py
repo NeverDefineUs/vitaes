@@ -3,7 +3,7 @@ import time
 from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
-from Common import render_map, render_from_cv_dict, id_gen
+from Common import render_map, render_from_cv_dict, id_gen, refresh_render_map
 import pika
 import redis
 
@@ -14,8 +14,9 @@ time.sleep(10)
 
 @app.route('/CVTYPES/', methods=['GET'])
 def get_cv_types():
+    refresh_render_map()
     response = app.response_class(
-        response=json.dumps(list(render_map.keys())),
+        response=json.dumps(render_map),
         status=200,
         mimetype='application/json'
     )

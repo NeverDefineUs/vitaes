@@ -2,7 +2,11 @@
     "name": "modern_cv",
     "base_folder": "modern_cv",
     "command": "pdflatex",
-    "fixed_params": {},
+    "fixed_params": {
+        "color": "blue",
+        "scale": "0.75",
+        "style": "casual"
+    },
     "params": [
         {
             "name": "color",

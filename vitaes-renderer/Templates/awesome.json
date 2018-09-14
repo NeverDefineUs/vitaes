@@ -2,7 +2,9 @@
     "name": "awesome",
     "base_folder": "awesome",
     "command": "xelatex",
-    "fixed_params": {},
+    "fixed_params": {
+        "color": "awesome-red"
+    },
     "params": [
         {
             "name": "color",
