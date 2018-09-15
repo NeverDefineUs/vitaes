@@ -396,7 +396,11 @@ class Builder extends Component {
           <select 
             value={this.state.params[cv_suboption['name']]}
             className="Base-select" 
-            onChange={(e) => {}}
+            onChange={(e) => {
+              var params = this.state.params
+              params[cv_suboption['name']] = e.target.value
+              this.setState({params: params})
+            }}
           >
             {cv_model_suboptions_items}
           </select>])
