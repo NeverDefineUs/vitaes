@@ -473,7 +473,7 @@ class Builder extends Component {
           </div>
           <div className="Base-button">
             <a onClick={this.downloadCvAsPDF}>
-              CV download
+              Download CV
             </a>
           </div>
           {this.props.user !== null ? 
