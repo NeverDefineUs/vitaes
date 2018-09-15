@@ -24,7 +24,7 @@ let testCv =
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {tab: -1, cv: testCv, user: null}
+    this.state = {tab: -1, cv: testCv, user: null, hide_options: true}
     this.googleLogin = this.googleLogin.bind(this)
     this.googleLogout = this.googleLogout.bind(this)
     this.cvSetter = this.cvSetter.bind(this)
@@ -42,7 +42,7 @@ class App extends Component {
     firebase.auth().getRedirectResult().then(function(result) {
       var user = firebase.auth().currentUser
       var db = firebase.database().ref("cvs").child(user.uid)
-      app.setState({user: user, tab: 1})
+      app.setState({user: user, tab: 1, hide_options: false})
       console.log(user)
       db.on("value", function(snapshot) {
         var snap = snapshot.val()
@@ -73,7 +73,7 @@ class App extends Component {
 
   googleLogout() {
     firebase.auth().signOut()
-    this.setState({user: null, tab: 0})
+    this.setState({user: null, tab: 0, hide_options: true})
   }
 
   render() {
@@ -83,7 +83,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to Vitaes</h1>
         </header>
         <div className="App-sidenav">
-          {this.state.tab > 0 ?
+          {this.state.hide_options === false ?
           [
             <a onClick={() => { this.setState({tab: 1}) }}>Create your CV</a>,
           ]
@@ -91,10 +91,10 @@ class App extends Component {
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
           {this.state.user !== null ?
             <a onClick={this.googleLogout}>Sign Out</a>
-          : <a onClick={this.googleLogin}>Sign in</a>}
+          : <a onClick={() => this.setState({tab: 0})}>Sign in</a>}
         </div>
         <div className="App-intro">
-          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1})}} googleLogin={this.googleLogin} /> : null}
+          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 3 ? <About /> : null}
         </div>
