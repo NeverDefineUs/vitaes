@@ -4,11 +4,18 @@ import json, sys
 from Common import render_map, render_from_cv_dict
 import pika
 import redis
-
-time.sleep(10)
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
-channel = connection.channel()
-channel.queue_declare(queue='cv_requests')
+tries = 0
+connection = None
+channel = None
+while tries < 10:
+    time.sleep(10)
+    try:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
+        channel = connection.channel()
+        channel.queue_declare(queue='cv_requests')
+        break
+    except:
+        tries += 1
 
 db = redis.Redis(host='redis')
 
