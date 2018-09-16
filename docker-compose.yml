@@ -11,6 +11,8 @@ services:
   renderer:
     build: vitaes-renderer/.
     command: python3 Consumer.py
+    depends_on:
+    - rabbitmq
   nginx:
     build: vitaes-nginx/.
     ports:
@@ -23,3 +25,21 @@ services:
     image: rabbitmq:alpine
   redis:
     image: redis
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: vitaes
+    volumes:
+    - ./db:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+    - 8081:8081
+    depends_on:
+    - mongo 
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: vitaes
