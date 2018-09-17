@@ -8,6 +8,8 @@ import json
 import timestring
 from flask_cors import CORS
 import pika
+import gridfs
+import pymongo 
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -57,13 +59,12 @@ def parse_item(cv_key, item):
 
 render_map = {}
 def refresh_render_map():
-    for model in os.listdir("Templates/"):
-        print(model)
-        if model[-5:] == '.json':
-            file = open('Templates/' + model, 'r')
-            data = json.loads(file.read())
-            file.close()
-            render_map[data['name']] = data
+    db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
+    client = db.template_info
+    for model in client.find():
+        data = model.copy()
+        del data['_id']
+        render_map[data['name']] = data
 
 def render_from_cv_dict(req):
     refresh_render_map()
