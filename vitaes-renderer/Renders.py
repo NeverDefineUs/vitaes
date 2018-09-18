@@ -41,6 +41,9 @@ class CvRenderTexToPdf(CvRenderBase):
         file.close()
         p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path)
         p.wait()
+        if command == "xelatex":
+            # Force wait as xelatex seems to be async
+            time.sleep(4)
         os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
         os.system("rm -r Output/" + path + "/")
         return path
