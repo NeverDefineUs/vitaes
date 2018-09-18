@@ -20,10 +20,12 @@ services:
     build: vitaes-nginx/.
     ports:
     - "443:443"
+    image: vitaes/nginx
   nginx-http:
     build: vitaes-nginx-http/.
     ports:
     - "80:80"
+    image: vitaes/nginxhttp
   rabbitmq:
     image: rabbitmq:alpine
   redis:
