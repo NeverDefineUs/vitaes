@@ -4,13 +4,16 @@ services:
     volumes: 
     - ./vitaes-webapp/src:/project/src
     build: vitaes-webapp/.
+    image: vitaes/webapp
   server:
     build: vitaes-renderer/.
+    image: vitaes/server
     ports:
     - "5000:5000"
   renderer:
     build: vitaes-renderer/.
     command: python3 Consumer.py
+    image: vitaes/renderer
     depends_on:
     - rabbitmq
   nginx:
