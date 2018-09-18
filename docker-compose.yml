@@ -37,7 +37,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: vitaes
     volumes:
-    - ./db:/data/db
+    - mongodb:/data/db
   mongo-express:
     image: mongo-express
     restart: always
@@ -48,3 +48,6 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: vitaes
+volumes:
+  mongodb:
+    external: true
