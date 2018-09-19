@@ -5,17 +5,33 @@ services:
     - ./vitaes-webapp/src:/project/src
     build: vitaes-webapp/.
     image: vitaes/webapp
+    links:
+    - nginx
+    - nginx-http
+    - server
   server:
     build: vitaes-renderer/.
     image: vitaes/server
     ports:
     - "5000:5000"
+    links:
+    - redis
+    - rabbitmq
+    - nginx
+    - nginx-http
+    - mongo
   renderer:
     build: vitaes-renderer/.
     command: python3 Consumer.py
     image: vitaes/renderer
     depends_on:
     - rabbitmq
+    links:
+    - redis
+    - rabbitmq
+    - nginx
+    - nginx-http
+    - mongo
   nginx:
     build: vitaes-nginx/.
     ports:
@@ -48,6 +64,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: vitaes
+    links:
+    - mongo
 volumes:
   mongodb:
     external: true
