@@ -24,8 +24,8 @@ def get_cv_types():
     )
     return response
 
-@app.route('/ADDFILE/', methods=['POST'])
-def add_file_req():
+@app.route('/TEMPLATE/FILES/<templatename>/', methods=['POST'])
+def add_file_req(templatename):
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
@@ -37,13 +37,20 @@ def add_file_req():
         return redirect(request.url)
     if file and len(file.filename) > 4 and file.filename[-4:] == ".zip":
         db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
+        templates = db.template_info.find({"name":templatename})
+        if templates.count() == 0:
+            abort(404, "Template name not found")
+        template = templates[0]
+        if "base_folder" in template:
+            abort(403, "This template already have a file")
         gfs = gridfs.GridFS(db)
         fl = gfs.new_file()
         fl.write(file)
         fl.filename = file.filename
         fl.close()
+        # templatename + (fl._id)
         return "ok"
-    abort(404, "Error")
+    abort(404, "No file in submission")
 
 
 @app.route('/CVQUEUE/', methods=['POST'])
