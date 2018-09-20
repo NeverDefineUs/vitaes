@@ -1,5 +1,5 @@
 from datetime import date, datetime
-import time
+import time, sys
 from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
@@ -46,9 +46,10 @@ def add_file_req(templatename):
         gfs = gridfs.GridFS(db)
         fl = gfs.new_file()
         fl.write(file)
-        fl.filename = file.filename
+        fl.filename = "files.zip"
         fl.close()
-        # templatename + (fl._id)
+        template["base_folder"] = "mongo://" + fl._id.__str__()
+        db.template_info.save(template)
         return "ok"
     abort(404, "No file in submission")
 
