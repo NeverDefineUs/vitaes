@@ -24,11 +24,6 @@ def get_cv_types():
     )
     return response
 
-@app.route('/CV/', methods=['POST'])
-def process_curr():
-    req = request.json
-    return send_file("Output/" + render_from_cv_dict(req) + ".pdf")
-
 @app.route('/ADDFILE/', methods=['POST'])
 def add_file_req():
     if 'file' not in request.files:
