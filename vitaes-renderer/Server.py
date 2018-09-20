@@ -5,6 +5,8 @@ import json
 from flask_cors import CORS
 from Common import render_map, render_from_cv_dict, id_gen, refresh_render_map
 import pika
+import gridfs
+import pymongo 
 import redis
 
 app = Flask(__name__)
@@ -26,6 +28,27 @@ def get_cv_types():
 def process_curr():
     req = request.json
     return send_file("Output/" + render_from_cv_dict(req) + ".pdf")
+
+@app.route('/ADDFILE/', methods=['POST'])
+def add_file_req():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and len(file.filename) > 4 and file.filename[-4:] == ".zip":
+        db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
+        gfs = gridfs.GridFS(db)
+        fl = gfs.new_file()
+        fl.write(file)
+        fl.filename = file.filename
+        fl.close()
+        return "ok"
+    abort(404, "Error")
 
 
 @app.route('/CVQUEUE/', methods=['POST'])
