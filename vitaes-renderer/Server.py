@@ -33,8 +33,6 @@ def add_file_req(templatename):
         flash('No file part')
         return redirect(request.url)
     file = request.files['file']
-    # if user does not select file, browser also
-    # submit an empty part without filename
     if file.filename == '':
         flash('No selected file')
         return redirect(request.url)
