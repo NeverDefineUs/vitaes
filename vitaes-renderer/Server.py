@@ -57,7 +57,7 @@ def add_file_req(templatename):
     abort(404, "No file in submission")
 
 
-@app.route('/CVQUEUE/', methods=['POST'])
+@app.route('/cv/', methods=['POST'])
 def process_curr_delayed():
     req = request.json
     req['path'] = id_gen(size=10)
@@ -68,7 +68,7 @@ def process_curr_delayed():
     return req['path']
 
 
-@app.route('/CVGET/<cvid>/', methods=['GET'])
+@app.route('/cv/<cvid>/', methods=['GET'])
 def get_curr(cvid):
     cv = db.get(cvid)
     if cv != None:
