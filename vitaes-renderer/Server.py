@@ -14,17 +14,20 @@ CORS(app)
 db = redis.Redis(host='redis')
 time.sleep(10)
 
-@app.route('/CVTYPES/', methods=['GET'])
+@app.route('/template/', methods=['GET', 'POST'])
 def get_cv_types():
-    refresh_render_map()
-    response = app.response_class(
-        response=json.dumps(render_map),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    if request.method == 'GET':
+        refresh_render_map()
+        response = app.response_class(
+            response=json.dumps(render_map),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
+    elif request.method == 'POST':
+        template = request.json
 
-@app.route('/TEMPLATE/FILES/<templatename>/', methods=['POST'])
+@app.route('/template/files/<templatename>/', methods=['POST'])
 def add_file_req(templatename):
     if 'file' not in request.files:
         flash('No file part')
