@@ -28,7 +28,7 @@ class CvRenderBase:
         raise NotImplementedError
 
 class CvRenderTexToPdf(CvRenderBase):   
-    def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str="cv_7", path: str=None, command: str="pdflatex", params={}):
+    def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str, path: str=None, command: str="pdflatex", params={}):
         if path == None:
             path=id_gen()
         os.system("mkdir Output/" + path)
