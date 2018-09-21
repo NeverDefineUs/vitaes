@@ -26,6 +26,15 @@ def get_cv_types():
         return response
     elif request.method == 'POST':
         template = request.json
+        db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes.template_info
+        for field in ['name', 'command', 'params', 'fixed_params']:
+            if field not in template:
+                abort(403, "Missing field: " + field)
+        templates = db.find({"name":template['name']})
+        if templates.count() != 0:
+            abort(403, "Cant push to existing file")
+        db.insert_one(template)
+        return "ok"
 
 @app.route('/template/files/<templatename>/', methods=['POST'])
 def add_file_req(templatename):
