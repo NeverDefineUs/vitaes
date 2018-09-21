@@ -30,11 +30,11 @@ def get_cv_types():
 @app.route('/template/files/<templatename>/', methods=['POST'])
 def add_file_req(templatename):
     if 'file' not in request.files:
-        flash('No file part')
+        abort(403, 'No file part')
         return redirect(request.url)
     file = request.files['file']
     if file.filename == '':
-        flash('No selected file')
+        abort(403, 'No selected file')
         return redirect(request.url)
     if file and len(file.filename) > 4 and file.filename[-4:] == ".zip":
         db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
