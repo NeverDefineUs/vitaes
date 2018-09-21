@@ -113,8 +113,12 @@ def render_from_cv_dict(req):
         mongoId = baseFolder[8:]
         baseFolder = path
         os.system("mkdir Templates/" + path)
-        zip_gout = gfs.find_one({"filename": render_map[render_key]["name"] + ".zip"})
-        zip_file = zip_gout.read()
+        zip_gout = gfs.find({"filename": render_map[render_key]["name"] + ".zip"})
+        zip_file = zip_gout[0]
+        for zip_f in zip_gout:
+            if zip_f._id.__str__() == mongoId:
+                zip_file = zip_f
+        zip_file = zip_file.read()
         os.system("touch Templates/" + path + "/main.zip")
         file = open("Templates/" + path + "/main.zip", "wb")
         file.write(zip_file)
