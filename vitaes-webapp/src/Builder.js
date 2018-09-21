@@ -265,7 +265,7 @@ class Builder extends Component {
       if (this.hostname === 'vitaes.io:5000') {
         this.hostname = 'renderer.vitaes.io'
       }
-      fetch( window.location.protocol + '//' + this.hostname + '/CVTYPES/', {
+      fetch( window.location.protocol + '//' + this.hostname + '/template/', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
