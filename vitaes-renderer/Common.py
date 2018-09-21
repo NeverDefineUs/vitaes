@@ -106,6 +106,20 @@ def render_from_cv_dict(req):
         for item in items:
             cv_item = parse_item(cv_key, item)
             cv.add(cv_item)
+    baseFolder = render_map[render_key]['base_folder']
+    if baseFolder.startswith("mongo://"):
+        db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
+        gfs = gridfs.GridFS(db)
+        mongoId = baseFolder[8:]
+        baseFolder = path
+        os.system("mkdir Templates/" + path)
+        zip_gout = gfs.find_one({"filename": render_map[render_key]["name"] + ".zip"})
+        zip_file = zip_gout.read()
+        os.system("touch Templates/" + path + "/main.zip")
+        file = open("Templates/" + path + "/main.zip", "wb")
+        file.write(zip_file)
+        file.close()
+        os.system("unzip Templates/" + path + "/main.zip -d Templates/" + path)
 
-    path = Renders.CvRenderTexToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=render_map[render_key]['base_folder'], command=render_map[render_key]['command'], params=params)
+    path = Renders.CvRenderTexToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, command=render_map[render_key]['command'], params=params)
     return path

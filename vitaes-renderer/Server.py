@@ -54,11 +54,8 @@ def add_file_req(templatename):
         if "base_folder" in template:
             abort(403, "This template already have a file")
         gfs = gridfs.GridFS(db)
-        fl = gfs.new_file()
-        fl.write(file)
-        fl.filename = "files.zip"
-        fl.close()
-        template["base_folder"] = "mongo://" + fl._id.__str__()
+        fl = gfs.put(file, filename=templatename + ".zip")
+        template["base_folder"] = "mongo://" + fl.__str__()
         db.template_info.save(template)
         return "ok"
     abort(404, "No file in submission")

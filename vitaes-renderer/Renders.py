@@ -34,8 +34,8 @@ class CvRenderTexToPdf(CvRenderBase):
         os.system("mkdir Output/" + path)
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
-        os.system("touch Output/" + path + "/main.tex")
         cv = cvRender.render(cv, params=params, baseFolder=baseFolder)
+        os.system("touch Output/" + path + "/main.tex")
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cv)
         file.close()
@@ -192,7 +192,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
                 retLines.append(line)
         return '\n'.join(retLines)
 
-    def render(cv: CurriculumVitae, baseFolder: str="awesome", params={}):
+    def render(cv: CurriculumVitae, baseFolder: str, params={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
         file.close()
