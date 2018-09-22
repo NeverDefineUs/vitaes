@@ -12,16 +12,29 @@ body{
   min-width: 1500px;
 }
 
+.App-icon {
+  height: 2em;
+  margin-top: 0em; 
+  display: inline-block;
+}
+
 .App-header {
   background-color: #222;
   height: 30px;
   padding-top: 10px;
   padding-bottom: 20px;
   color: white;
+  display: inline-block;
+  width: 100%;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 2em;
+  margin-top: 0em;
+  vertical-align: center;
+  display: inline-block;
+  font-family: 'Roboto';
+  font-weight: 50;
 }
 
 .App-intro {

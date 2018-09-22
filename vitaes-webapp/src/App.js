@@ -4,7 +4,7 @@ import About from './About';
 import Builder from './Builder';
 import Login from './Login';
 import firebase from 'firebase';
-import config from './config.js'
+import config from './config.js';
 
 firebase.initializeApp(config);
 
@@ -80,7 +80,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Welcome to Vitaes</h1>
+        <img src="/mod5.svg" className="App-icon" alt=""/><h1 className="App-title">  Vitaes</h1>
         </header>
         <div className="App-sidenav">
           {this.state.hide_options === false ?
