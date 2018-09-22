@@ -24,7 +24,7 @@ let testCv =
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {tab: -1, cv: testCv, user: null, hide_options: true}
+    this.state = {tab: -1, cv: testCv, user: null, hide_options: true, permissions: null}
     this.googleLogin = this.googleLogin.bind(this)
     this.googleLogout = this.googleLogout.bind(this)
     this.cvSetter = this.cvSetter.bind(this)
@@ -38,6 +38,11 @@ class App extends Component {
           }
         }
       }
+    })
+    var dbHP = firebase.database().ref("permissions")
+    dbHP.on("value", function(snapshot) {
+      app.setState({permissions: snapshot.val()})
+      console.log(snapshot.val())
     })
     firebase.auth().getRedirectResult().then(function(result) {
       var user = firebase.auth().currentUser
@@ -87,6 +92,9 @@ class App extends Component {
           [
             <a onClick={() => { this.setState({tab: 1}) }}>Create your CV</a>,
           ]
+          : null}
+          {this.state.user !== null && this.state.permissions !== null && this.state.permissions[this.state.user.uid] ?
+            <a onClick={() => {this.setState({tab: 4})}}>Add Template</a>
           : null}
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
           {this.state.user !== null ?
