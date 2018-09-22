@@ -4,7 +4,9 @@ class AddTemplate extends Component {
     render() {
       return (
         <div className="Base">
-        o
+          <div className="Base-title">
+            Create a template:
+          </div>
         </div>
       )
     }

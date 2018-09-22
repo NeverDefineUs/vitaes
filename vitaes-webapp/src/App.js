@@ -95,7 +95,7 @@ class App extends Component {
           ]
           : null}
           {this.state.user !== null && this.state.permissions !== null && this.state.permissions[this.state.user.uid] ?
-            <a onClick={() => {this.setState({tab: 4})}}>Add Template</a>
+            <a onClick={() => {this.setState({tab: 4})}}>Create Template</a>
           : null}
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
           {this.state.user !== null ?
