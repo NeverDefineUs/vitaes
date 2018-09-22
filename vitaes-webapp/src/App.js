@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import About from './About';
+import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import firebase from 'firebase';
@@ -105,6 +106,7 @@ class App extends Component {
           { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 3 ? <About /> : null}
+          { this.state.tab === 4 ? <AddTemplate /> : null}
         </div>
       </div>
     );
