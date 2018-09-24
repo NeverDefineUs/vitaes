@@ -468,7 +468,7 @@ class Builder extends Component {
           </div>
           <div className="Base-button">
             <a onClick={this.downloadCvAsJson}>
-              Json Download
+              Download Json
             </a>
           </div>
           <div className="Base-button">
