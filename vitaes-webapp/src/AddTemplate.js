@@ -31,6 +31,8 @@ class AddTemplate extends Component {
           <div className="Base-title">
             Create a template:
           </div>
+          <TemplateField placeholder="awesome" label="Name" value={this.state.name} callback={(e) => {let template = this.state.template;template["name"] = e.target.value;this.setState({"template": template})}}/>
+          <TemplateField placeholder="pdflatex" label="Command" value={this.state.command} callback={(e) => {let template = this.state.template;template["command"] = e.target.value;this.setState({"template": template})}}/>
         </div>
       )
     }
