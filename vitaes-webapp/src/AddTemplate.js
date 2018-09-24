@@ -21,6 +21,10 @@ class TemplateField extends Component {
 }
 
 class AddTemplate extends Component {
+    constructor(){
+      super()
+      this.state = {template: {command: "pdflatex", name: "", params: {}, fixed_params:{}}}
+    }
     render() {
       return (
         <div className="Base">
