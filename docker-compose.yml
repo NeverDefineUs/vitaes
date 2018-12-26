@@ -52,6 +52,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: vitaes
     volumes:
     - mongodb:/data/db
+    - ./mongobackup:/mbckp
     networks:
     - net
   mongo-express:
