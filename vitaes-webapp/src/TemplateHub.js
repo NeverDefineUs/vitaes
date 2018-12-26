@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Builder.css'
+import './TemplateHub.css'
 import {capitalize} from './Util'
 
 class TemplateHubModel extends Component {
@@ -17,11 +18,15 @@ class TemplateHubModel extends Component {
     }
     return (
       <div>
-        <ul>
-          <li>{capitalize(this.props.keyName)}</li>
-          {parameters}
-        </ul>
-          {model['data']['downloads']}
+        <div className="template-title-bar">
+          <div className="template-name">{capitalize(this.props.keyName)}</div>
+          <div className='template-linemark'></div>
+        </div>
+        <div className="template-info">
+          <img className="template-image" src="https://imgur.com/download/qwvtvlj"></img>
+          <div className="template-button"><a><img src="/Ei-heart.svg"></img><span>{model['data']['likes']}</span></a></div>
+        </div>
+        
       </div>
     ) 
   }
