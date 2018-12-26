@@ -4,6 +4,7 @@ import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
+import TemplateHub from './TemplateHub';
 import firebase from 'firebase';
 import config from './config.js';
 
@@ -97,6 +98,7 @@ class App extends Component {
           {this.state.user !== null && this.state.permissions !== null && this.state.permissions[this.state.user.uid] ?
             <a onClick={() => {this.setState({tab: 4})}}>Create Template</a>
           : null}
+          <a onClick={() => { this.setState({tab: 2}) }}>Template Hub</a>
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
           {this.state.user !== null ?
             <a onClick={this.googleLogout}>Sign Out</a>
@@ -105,6 +107,7 @@ class App extends Component {
         <div className="App-intro">
           { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
+          { this.state.tab === 2 ? <TemplateHub /> : null}
           { this.state.tab === 3 ? <About /> : null}
           { this.state.tab === 4 ? <AddTemplate /> : null}
         </div>
