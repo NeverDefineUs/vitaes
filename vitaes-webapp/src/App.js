@@ -107,7 +107,7 @@ class App extends Component {
         <div className="App-intro">
           { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
-          { this.state.tab === 2 ? <TemplateHub /> : null}
+          { this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
           { this.state.tab === 3 ? <About /> : null}
           { this.state.tab === 4 ? <AddTemplate /> : null}
         </div>

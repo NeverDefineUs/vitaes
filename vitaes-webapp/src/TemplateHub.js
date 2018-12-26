@@ -4,6 +4,13 @@ import './TemplateHub.css'
 import {capitalize} from './Util'
 
 class TemplateHubModel extends Component {
+  constructor(props) {
+    super(props)
+    this.hostname = window.location.hostname + ':5000'
+    if (this.hostname === 'vitaes.io:5000') {
+      this.hostname = 'renderer.vitaes.io'
+    }
+  }
   render(){
     let model = this.props.model
     console.log(model)
@@ -24,7 +31,20 @@ class TemplateHubModel extends Component {
         </div>
         <div className="template-info">
           <img className="template-image" src="https://imgur.com/download/qwvtvlj"></img>
-          <div className="template-button"><a><img src="/Ei-heart.svg"></img><span>{model['data']['likes']}</span></a></div>
+          <div className="template-button" onClick={() => {
+            fetch( window.location.protocol + '//' + this.hostname + '/template/like/', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({"uid": this.props.user, "templatename": this.props.keyName})
+            }).then(response => {
+
+            })
+          }}>
+            <a><img src="/Ei-heart.svg"></img><span>{model['data']['likes']}</span></a>
+          </div>
         </div>
         
       </div>
@@ -63,7 +83,7 @@ class TemplateHub extends Component {
   render() {
       var templateList = []
       for (let key in this.state.cv_models) {
-        templateList.push(<TemplateHubModel keyName={key} model={this.state.cv_models[key]} />)
+        templateList.push(<TemplateHubModel user={this.props.user} keyName={key} model={this.state.cv_models[key]} />)
       }
       return (
         <div className="Base">
