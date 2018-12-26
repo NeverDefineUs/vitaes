@@ -60,6 +60,27 @@ def add_file_req(templatename):
         return "ok"
     abort(404, "No file in submission")
 
+@app.route('/template/like/<templatename>/', methods=['POST'])
+def like_template(templatename):
+    req = request.json
+    if 'uid' not in req:
+        abort(403, 'No user in submission')
+    db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
+    user_db = db.user
+    template_db = db.template_info
+    template = template_db.find_one({'name': templatename})
+    if template is None:
+        abort(404, "template not found")
+    user = user_db.find_one({'uid': req['uid']})
+    if user is None:
+        user = user_db.insert_one({'uid': req['uid'], 'likes': []})
+    if templatename in user['likes']:
+        return ''
+    user['likes'].append(templatename)
+    user_db.save(user)
+    template['data']['likes'] += 1
+    template_db.save(template)
+    return 'ok'
 
 @app.route('/cv/', methods=['POST'])
 def process_curr_delayed():
