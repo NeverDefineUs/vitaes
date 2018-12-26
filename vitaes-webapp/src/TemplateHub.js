@@ -38,9 +38,9 @@ class TemplateHubModel extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({"uid": this.props.user, "templatename": this.props.keyName})
+              body: JSON.stringify({"uid": this.props.user.uid, "templatename": this.props.keyName})
             }).then(response => {
-
+              this.props.fetchTemplates()
             })
           }}>
             <a><img src="/Ei-heart.svg"></img><span>{model['data']['likes']}</span></a>
@@ -61,7 +61,12 @@ class TemplateHub extends Component {
       if (this.hostname === 'vitaes.io:5000') {
         this.hostname = 'renderer.vitaes.io'
       }
-      fetch( window.location.protocol + '//' + this.hostname + '/template/', {
+      this.fetchTemplates = this.fetchTemplates.bind(this)
+      this.fetchTemplates()
+  }
+
+  fetchTemplates() {
+    fetch( window.location.protocol + '//' + this.hostname + '/template/', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -83,7 +88,7 @@ class TemplateHub extends Component {
   render() {
       var templateList = []
       for (let key in this.state.cv_models) {
-        templateList.push(<TemplateHubModel user={this.props.user} keyName={key} model={this.state.cv_models[key]} />)
+        templateList.push(<TemplateHubModel fetchTemplates={this.fetchTemplates} user={this.props.user} keyName={key} model={this.state.cv_models[key]} />)
       }
       return (
         <div className="Base">
