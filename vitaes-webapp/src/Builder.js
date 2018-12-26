@@ -4,12 +4,9 @@ import CvOrder from './CvOrder.js'
 import firebase from 'firebase'
 import TextareaAutosize from 'react-autosize-textarea'
 import {arrayMove} from 'react-sortable-hoc'
+import {capitalize} from './Util'
 import fetch from 'fetch-retry'
 
-const capitalize = (word) => {
-  word = word.replace('_', ' ')
-  return word.charAt(0).toUpperCase() + word.slice(1)
-}
 const locFields = [["country", "Country name"], ["state", "State name"], ["city", "City name"]]
 
 class CvHeaderField extends Component {

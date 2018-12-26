@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Builder.css'
+import {capitalize} from './Util'
 
 class TemplateHub extends Component {
     
@@ -33,7 +34,11 @@ class TemplateHub extends Component {
       var templateList = []
       for (let key in this.state.cv_models) {
         console.log(this.state.cv_models[key])
-        templateList.push(<div>{key}</div>)
+        templateList.push(<div>
+        <ul>
+          <li>{capitalize(key)}</li>
+        </ul>
+        </div>)
       }
       return (
         <div className="Base">
