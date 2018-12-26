@@ -2,6 +2,31 @@ import React, { Component } from 'react'
 import './Builder.css'
 import {capitalize} from './Util'
 
+class TemplateHubModel extends Component {
+  render(){
+    let model = this.props.model
+    console.log(model)
+    var parameters = []
+    for (let val of model['params']) {
+      parameters.push(<div>{capitalize(val['pretty_name'])}</div>)
+      let paramOptions = []
+      for (let opt in val['mapped_options']) {
+        paramOptions.push(<li>{opt}</li>)
+      }
+      parameters.push(<ul>{paramOptions}</ul>)
+    }
+    return (
+      <div>
+        <ul>
+          <li>{capitalize(this.props.keyName)}</li>
+          {parameters}
+        </ul>
+          {model['data']['downloads']}
+      </div>
+    ) 
+  }
+}
+
 class TemplateHub extends Component {
     
   constructor(props) {
@@ -33,12 +58,7 @@ class TemplateHub extends Component {
   render() {
       var templateList = []
       for (let key in this.state.cv_models) {
-        console.log(this.state.cv_models[key])
-        templateList.push(<div>
-        <ul>
-          <li>{capitalize(key)}</li>
-        </ul>
-        </div>)
+        templateList.push(<TemplateHubModel keyName={key} model={this.state.cv_models[key]} />)
       }
       return (
         <div className="Base">
