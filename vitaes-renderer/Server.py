@@ -60,11 +60,14 @@ def add_file_req(templatename):
         return "ok"
     abort(404, "No file in submission")
 
-@app.route('/template/like/<templatename>/', methods=['POST'])
-def like_template(templatename):
+@app.route('/template/like/', methods=['POST'])
+def like_template():
     req = request.json
     if 'uid' not in req:
         abort(403, 'No user in submission')
+    if 'templatename' not in req:
+        abort(403, 'No Template name in submission')
+    templatename = req['templatename']
     db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
     user_db = db.user
     template_db = db.template_info
@@ -73,7 +76,8 @@ def like_template(templatename):
         abort(404, "template not found")
     user = user_db.find_one({'uid': req['uid']})
     if user is None:
-        user = user_db.insert_one({'uid': req['uid'], 'likes': []})
+        user_db.insert_one({'uid': req['uid'], 'likes': []})
+        user = user_db.find_one({'uid': req['uid']})
     if templatename in user['likes']:
         return ''
     user['likes'].append(templatename)
