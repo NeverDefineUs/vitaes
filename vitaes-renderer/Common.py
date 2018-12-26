@@ -1,6 +1,7 @@
 from datetime import date, datetime
 import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
+from bson.objectid import ObjectId
 from CurriculumVitae import CurriculumVitae
 from Models import *
 import Renders
@@ -113,7 +114,7 @@ def render_from_cv_dict(req):
         mongoId = baseFolder[8:]
         baseFolder = path
         os.system("mkdir Templates/" + path)
-        zip_gout = gfs.find({"filename": render_map[render_key]["name"] + ".zip"})
+        zip_gout = gfs.find({"_id": ObjectId(mongoId)})
         zip_file = zip_gout[0]
         for zip_f in zip_gout:
             if zip_f._id.__str__() == mongoId:
