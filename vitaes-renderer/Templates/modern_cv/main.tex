@@ -143,5 +143,13 @@
 \cvitem{$language['language']}{$language['level']}
 #end for
 #end if
+#if $section == "skill" and $skill_dict.keys() != ['Languages'] and $skill_dict != {}
+\section{Skills}
+#for $skill in $skill_dict.keys()
+#if $skill != "Languages"
+\cvitem{$skill}{${', '.join($skill_dict[$skill])}}
+#end if
+#end for
+#end if
 #end for
 \end{document}
