@@ -1,6 +1,3 @@
-[submodule "vitaes-webapp"]
-	path = vitaes-webapp
-	url = https://github.com/Arthurlpgc/vitaes-webapp
 [submodule "vitaes-renderer"]
 	path = vitaes-renderer
 	url = https://github.com/Arthurlpgc/vitaes-renderer
