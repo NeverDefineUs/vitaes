@@ -1,0 +1,6 @@
+.DS_STORE
+__pycache__/*
+.idea/
+*.pyc
+.vscode/
+CVCS.pem
