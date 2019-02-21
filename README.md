@@ -7,7 +7,7 @@ It uses an abstract tree to model the curriculum and compiles it in a PDF.
 First you need a project on firebase, and replace the credentials on front/src/config.js.
 Download docker-compose and run `setup.sh` and then `deploy.sh`.
 ### Next runs
-Run `docker-compose up --build` on the main directory does the trick. To pull you run `deploy.sh` again.
+Run `docker-compose up --build` on the main directory does the trick.
 ## Contributing
 You can fork and make a pull request at anytime, fixing an issue or adding a feature you think would be useful.
 ## Releases
