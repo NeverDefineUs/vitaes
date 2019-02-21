@@ -1,0 +1,68 @@
+html{
+  min-height:100%;
+  position:relative;
+}
+body{
+  height:100%; 
+}
+
+.App {
+  text-align: center;
+  height: 100%;
+  min-width: 1500px;
+}
+
+.App-icon {
+  height: 2em;
+  margin-top: 0em; 
+  display: inline-block;
+}
+
+.App-header {
+  background-color: #222;
+  height: 30px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  color: white;
+  display: inline-block;
+  width: 100%;
+}
+
+.App-title {
+  font-size: 2em;
+  margin-top: 0em;
+  vertical-align: center;
+  display: inline-block;
+  font-family: 'Roboto';
+  font-weight: 50;
+}
+
+.App-intro {
+  font-size: large;
+  margin-left: 240px
+}
+
+.App-sidenav {
+  height: 100%; 
+  width: 240px; 
+  position: absolute; 
+  z-index: 1; 
+  top: 60px; 
+  bottom: 0;
+  left: 0;
+  background-color: #EEE; 
+  overflow-x: hidden; 
+  padding-top: 10px;
+}
+
+.App-sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #222;
+  display: block;
+}
+
+.App-sidenav a:hover {
+  color: #e1e1e1;
+}

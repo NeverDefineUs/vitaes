@@ -1,0 +1,131 @@
+.Base {
+  margin: 20px;
+  border: 2px;
+  border-color: #FAFAFA;
+  background-color: #F9F9F9;
+  border-style: solid;
+  margin-left: 20%;
+  margin-right: 20%;
+  border-radius: 20px;
+  padding: 2em;
+  text-align: left;
+}
+
+.Base-subtitle {
+  font-size: 1.5em;
+}
+
+.Base-profile {
+  width: 30%;
+}
+
+.Base-title {
+  font-size: 2em;
+  padding-bottom: 0.5em;
+}
+
+.Base-label {
+  font-size: 1em;
+  padding-right: 1em;
+  display: inline-block;
+}
+
+.Base-field {
+  display: flex;
+  width: 100%;
+  padding-bottom: 0em;
+  margin-bottom: 15px; 
+}
+
+.Base-button a {
+  background-color: #000;
+  text-decoration: none;
+  font-size: 1em;
+  border-radius: 10px;
+  padding: 6px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: #fff;
+  position: relative;
+  float: right;
+  margin-left: 0.5em;
+  background-color: #000;
+}
+.Base-button a:hover {
+  background-color: #888;
+  color: #EEE;
+}
+
+.Base-inputfield {
+  border-radius: 2px;
+  flex-grow: 100;
+  border: 1px;
+  font-size: 1em;
+  min-height: 1.2em;
+  border-style: solid;
+  border-color: #ddd;
+}
+
+.Base-textareafield {
+  border-radius: 2px;
+  flex-grow: 100;
+  border: 1px;
+  font-size: 1em;
+  min-height: 1.2em;
+  border-style: solid;
+  border-color: #ddd;
+  height: fit-content;
+  resize: none; 
+}
+
+.Base-item {
+  background-color: #EEE;
+  padding: 5px;
+  padding-left: 10px; 
+  margin-bottom: 5px;
+  height: 1.2em;
+}
+
+.Base-orderlist {
+  list-style-type: none;
+}
+
+.Base-form {
+  background-color: #EEE;
+  margin-bottom: 5px;
+  padding: 1em;
+  padding-bottom: 3em;
+  border-radius: 1em;
+}
+
+.Base-item-close {
+  display: inline;
+}
+.Base-item-close a {
+  background-color: #BBB;
+  float: right;
+  height: 1.2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 0.75em;
+}
+
+.Base-item-close a:hover {
+  background-color: #AAA;
+}
+
+.Base-select {
+  float: right;
+  height: 2em;
+  margin: 0;
+  width: 30em;
+  background-color: #fff;
+}
+
+.Base-linemarker {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  background-color: #CCC;
+  width: stretch;
+  height: 1px;
+}
