@@ -46,7 +46,7 @@ class AddTemplate extends Component {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(this.state.template)}); 
-              this.setState({template: {owner: firebase.auth().currentUser.uid, command: "", name: "", params: {}, fixed_params:{}}})}}
+              this.setState({template: {owner: firebase.auth().currentUser.uid, command: "", likes: 0, name: "", params: {}, fixed_params:{}}})}}
               >
               Submit
             </a>

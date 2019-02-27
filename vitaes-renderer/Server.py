@@ -79,12 +79,17 @@ def like_template():
         user_db.insert_one({'uid': req['uid'], 'likes': []})
         user = user_db.find_one({'uid': req['uid']})
     if templatename in user['likes']:
-        return ''
-    user['likes'].append(templatename)
-    user_db.save(user)
-    template['data']['likes'] += 1
-    template_db.save(template)
-    return 'ok'
+      user['likes'].remove(templatename)
+      user_db.save(user)
+      template['data']['likes'] -= 1
+      template_db.save(template)
+      return 'ok'
+    else:
+      user['likes'].append(templatename)
+      user_db.save(user)
+      template['data']['likes'] += 1
+      template_db.save(template)
+      return 'ok'
 
 @app.route('/cv/', methods=['POST'])
 def process_curr_delayed():
