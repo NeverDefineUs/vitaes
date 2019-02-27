@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import firebase from 'firebase'
 
 class TemplateField extends Component {
   // label, placeholder, value, callback
@@ -38,11 +39,6 @@ class AddTemplate extends Component {
             Params:
           </div>
           <div className="Base-button">
-            <a onClick={()=>{}}>
-              Add New Param
-            </a>
-          </div> 
-          <div className="Base-button">
             <a onClick={()=>{
               fetch("http://localhost:5000/template/", {method: 'POST',
                 headers: {
@@ -50,11 +46,16 @@ class AddTemplate extends Component {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(this.state.template)}); 
-              this.setState({template: {command: "", name: "", params: {}, fixed_params:{}}})}}
+              this.setState({template: {owner: firebase.auth().currentUser.uid, command: "", name: "", params: {}, fixed_params:{}}})}}
               >
               Submit
             </a>
-          </div> 
+          </div>
+          <div className="Base-button">
+            <a onClick={()=>{}}>
+              Add New Param
+            </a>
+          </div>  
         </div>
       )
     }

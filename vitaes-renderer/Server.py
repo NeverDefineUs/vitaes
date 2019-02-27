@@ -27,7 +27,7 @@ def get_cv_types():
     elif request.method == 'POST':
         template = request.json
         db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes.template_info
-        for field in ['name', 'command', 'params', 'fixed_params']:
+        for field in ['name', 'command', 'params', 'fixed_params', 'owner']:
             if field not in template:
                 abort(403, "Missing field: " + field)
         templates = db.find({"name":template['name']})
