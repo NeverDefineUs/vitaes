@@ -67,10 +67,7 @@ class App extends Component {
   }
 
   cvSetter(cv) {
-    console.log(cv)
-    
     this.setState({cv: cv})
-    console.log(this.state.cv)
   }
 
   googleLogin() {
