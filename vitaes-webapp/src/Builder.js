@@ -290,6 +290,11 @@ class Builder extends Component {
       this.setCv(aux)
     }
 
+    validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
     downloadCvAsJson() {
       var db = firebase.database().ref('cv-dumps-json').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
