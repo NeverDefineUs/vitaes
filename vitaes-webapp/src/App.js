@@ -44,13 +44,11 @@ class App extends Component {
     var dbHP = firebase.database().ref("permissions")
     dbHP.on("value", function(snapshot) {
       app.setState({permissions: snapshot.val()})
-      console.log(snapshot.val())
     })
     firebase.auth().getRedirectResult().then(function(result) {
       var user = firebase.auth().currentUser
       var db = firebase.database().ref("cvs").child(user.uid)
       app.setState({user: user, tab: 1, hide_options: false})
-      console.log(user)
       db.on("value", function(snapshot) {
         var snap = snapshot.val()
         if (snap === null) {
