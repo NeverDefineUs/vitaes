@@ -306,6 +306,15 @@ class Builder extends Component {
     }
 
     downloadCvAsPDF() {
+      if (!this.validateEmail(this.props.cv.CvHeaderItem.email)) {
+        alert("Invalid E-mail field")
+        return
+      }
+      if (this.props.cv.CvHeaderItem.name === "") {
+        alert("Empty name field")
+        return
+      }
+      
       var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
       fetch( window.location.protocol + '//' + this.hostname + '/cv/', {
