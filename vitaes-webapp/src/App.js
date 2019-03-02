@@ -73,20 +73,16 @@ class App extends Component {
     firebase.auth().signInWithRedirect(provider)
   }
 
-  googleLogout() {
-    firebase.auth().signOut()
-    this.setState({user: null, tab: 0, hide_options: true})
-  }
-
   facebookLogin() {
     var provider = new firebase.auth.FacebookAuthProvider()
     firebase.auth().signInWithRedirect(provider)
   }
-
-  facebookLogout() {
+  
+  logout() {
     firebase.auth().signOut()
+    this.setState({user: null, tab: 0, hide_options: true})
   }
-
+  
   render() {
     return (
       <div className="App">
