@@ -28,7 +28,8 @@ class App extends Component {
     super(props)
     this.state = {tab: -1, cv: testCv, user: null, hide_options: true, permissions: null}
     this.googleLogin = this.googleLogin.bind(this)
-    this.googleLogout = this.googleLogout.bind(this)
+    this.facebookLogin = this.facebookLogin.bind(this)
+    this.logout = this.logout.bind(this)
     this.cvSetter = this.cvSetter.bind(this)
     let app = this
     var dbErrors = firebase.database().ref("errors")
@@ -73,7 +74,12 @@ class App extends Component {
     firebase.auth().signInWithRedirect(provider)
   }
 
-  googleLogout() {
+  facebookLogin() {
+    var provider = new firebase.auth.FacebookAuthProvider()
+    firebase.auth().signInWithRedirect(provider)
+  }
+  
+  logout() {
     firebase.auth().signOut()
     this.setState({user: null, tab: 0, hide_options: true})
   }
@@ -96,11 +102,11 @@ class App extends Component {
           <a onClick={() => { this.setState({tab: 2}) }}>Template Hub</a>
           <a onClick={() => { this.setState({tab: 3}) }}>About The Project</a>
           {this.state.user !== null ?
-            <a onClick={this.googleLogout}>Sign Out</a>
+            <a onClick={this.logout}>Sign Out</a>
           : <a onClick={() => this.setState({tab: 0})}>Sign in</a>}
         </div>
         <div className="App-intro">
-          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} /> : null}
+          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} facebookLogin={this.facebookLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
           { this.state.tab === 3 ? <About /> : null}
