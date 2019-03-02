@@ -19,6 +19,12 @@ class Login extends Component {
                 Google Login
                 </a>
             </div>
+            <br/>
+            <div className="Login-facebook Login-button">
+                <a onClick={this.props.facebookLogin}>
+                Facebook Login
+                </a>
+            </div>
         </div>
     }
 }

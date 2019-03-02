@@ -78,6 +78,15 @@ class App extends Component {
     this.setState({user: null, tab: 0, hide_options: true})
   }
 
+  facebookLogin() {
+    var provider = new firebase.auth.FacebookAuthProvider()
+    firebase.auth().signInWithRedirect(provider)
+  }
+
+  facebookLogout() {
+    firebase.auth().signOut()
+  }
+
   render() {
     return (
       <div className="App">
@@ -100,7 +109,7 @@ class App extends Component {
           : <a onClick={() => this.setState({tab: 0})}>Sign in</a>}
         </div>
         <div className="App-intro">
-          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} /> : null}
+          { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} facebookLogin={this.facebookLogin} /> : null}
           { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
           { this.state.tab === 3 ? <About /> : null}

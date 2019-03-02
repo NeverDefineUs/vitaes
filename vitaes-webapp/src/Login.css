@@ -45,3 +45,11 @@
 .Login-google a:hover {
   background-color: #3275E4;
 }
+
+.Login-facebook a {
+  background-color: #3C5A99;
+}
+
+.Login-facebook a:hover {
+  background-color: #536997;
+}
