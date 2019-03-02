@@ -25,6 +25,12 @@ class Login extends Component {
                 Facebook Login
                 </a>
             </div>
+            <br/>
+            <div className="Login-github Login-button">
+                <a onClick={this.props.githubLogin}>
+                GitHub Login
+                </a>
+            </div>
         </div>
     }
 }
