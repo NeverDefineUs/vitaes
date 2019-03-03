@@ -53,3 +53,11 @@
 .Login-facebook a:hover {
   background-color: #6489c8;
 }
+
+.Login-github a {
+  background-color: #333;
+}
+
+.Login-github a:hover {
+  background-color: #191919;
+}
