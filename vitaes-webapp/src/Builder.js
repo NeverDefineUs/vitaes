@@ -314,6 +314,13 @@ class Builder extends Component {
         alert("Empty name field")
         return
       }
+      if(!this.props.cv.CvHeaderItem.birthday==""){
+		    if(!this.props.cv.CvHeaderItem.birthday.match(/^\d{4}-\d{2}-\d{2}$/)){
+		    	alert("Wrong birthday date format")
+		      return
+		    }
+      }
+      
       
       var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
