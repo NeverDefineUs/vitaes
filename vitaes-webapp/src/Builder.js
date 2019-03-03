@@ -315,10 +315,10 @@ class Builder extends Component {
         return
       }
       if(!this.props.cv.CvHeaderItem.birthday==""){
-		    if(!this.props.cv.CvHeaderItem.birthday.match(/^\d{4}-\d{2}-\d{2}$/)){
-		    	alert("Wrong birthday date format")
-		      return
-		    }
+        if(!this.props.cv.CvHeaderItem.birthday.match(/^\d{4}-\d{2}-\d{2}$/)){
+          alert("Wrong birthday date format")
+          return
+        }
       }
       
       
