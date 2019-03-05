@@ -22,12 +22,65 @@ class TemplateField extends Component {
   }
 }
 
+class OwnedTemplate extends Component {
+  render() {
+    return (<div className="Base-item">
+       {this.props.template.name}
+        <div className="Base-item-close">
+        <input type="file" ref="fileUploader" style={{display: "none"}} onInput={(event)=>{
+            let files = event.target.files
+            if (files.length === 1 && files[0].name.substr(files[0].name.length - 4, 4) == ".zip"){
+              this.hostname = window.location.hostname + ':5000'
+              if (this.hostname === 'vitaes.io:5000') {
+                this.hostname = 'renderer.vitaes.io'
+              }
+              fetch(window.location.protocol + '//' + this.hostname + '/template/', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                }
+              }).then(response => {
+                if (response.ok) {
+                  var jsonPromise = response.json()
+                  jsonPromise.then(json => {
+                    this.setState({cv_models: json}
+                  )})
+                } else {
+                  var textPromise = response.text()
+                  textPromise.then(text => alert("Error:" + text))
+                }
+              })
+            }
+          }}/>
+          <a onClick={()=>{
+            let base_folder = this.props.template.base_folder
+            if(base_folder === undefined || base_folder.substr(0,6) == "mongo:") {
+              this.refs.fileUploader.click();
+            }
+          }}>
+            Upload zip
+          </a>
+        </div> 
+      </div>)
+  }
+}
+
 class AddTemplate extends Component {
     constructor(){
       super()
-      this.state = {template: {command: "", name: "", params: {}, fixed_params:{}}}
+      this.state = {template: {owner: firebase.auth().currentUser.uid, command: "", data: {likes: 0}, name: "", params: {}, fixed_params:{}}}
     }
     render() {
+      var owned_cvs = []
+
+      for(let cv_key in this.props.cv_models){
+        let template = this.props.cv_models[cv_key]
+        if(template.owner === firebase.auth().currentUser.uid){
+          owned_cvs.push(<OwnedTemplate template={template} key={cv_key}/>)
+        }
+      }
+
       return (
         <div className="Base">
           <div className="Base-title">
@@ -46,7 +99,7 @@ class AddTemplate extends Component {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(this.state.template)}); 
-              this.setState({template: {owner: firebase.auth().currentUser.uid, command: "", likes: 0, name: "", params: {}, fixed_params:{}}})}}
+              this.setState({template: {owner: firebase.auth().currentUser.uid, command: "", data: {likes: 0}, name: "", params: {}, fixed_params:{}}})}}
               >
               Submit
             </a>
@@ -56,6 +109,8 @@ class AddTemplate extends Component {
               Add New Param
             </a>
           </div>  
+          <div className="Base-linemarker" style={{marginTop: "3em"}}/>
+          {owned_cvs}
         </div>
       )
     }

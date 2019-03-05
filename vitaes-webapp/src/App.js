@@ -64,6 +64,28 @@ class App extends Component {
     }).catch(function(error) {
       app.setState({tab: 0})
     })
+
+    this.hostname = window.location.hostname + ':5000'
+    if (this.hostname === 'vitaes.io:5000') {
+      this.hostname = 'renderer.vitaes.io'
+    }
+    fetch(window.location.protocol + '//' + this.hostname + '/template/', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then(response => {
+      if (response.ok) {
+        var jsonPromise = response.json()
+        jsonPromise.then(json => {
+          this.setState({cv_models: json}
+        )})
+      } else {
+        var textPromise = response.text()
+        textPromise.then(text => alert("Error:" + text))
+      }
+    })
   }
 
   cvSetter(cv) {
@@ -113,10 +135,10 @@ class App extends Component {
         </div>
         <div className="App-intro">
           { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} facebookLogin={this.facebookLogin} githubLogin={this.githubLogin} /> : null}
-          { this.state.tab === 1 ? <Builder cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
+          { this.state.tab === 1 ? <Builder cv_models={this.state.cv_models} cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
           { this.state.tab === 3 ? <About /> : null}
-          { this.state.tab === 4 ? <AddTemplate /> : null}
+          { this.state.tab === 4 ? <AddTemplate cv_models={this.state.cv_models}/> : null}
         </div>
       </div>
     );
