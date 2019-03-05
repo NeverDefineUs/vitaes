@@ -314,10 +314,16 @@ class Builder extends Component {
         alert("Empty name field")
         return
       }
-      if(!this.props.cv.CvHeaderItem.birthday==""){
+      if (!this.props.cv.CvHeaderItem.birthday ==""){
+        const date = new Date(this.props.cv.CvHeaderItem.birthday)
+        const day = Number(this.props.cv.CvHeaderItem.birthday[8]+this.props.cv.CvHeaderItem.birthday[9])
+        const month = Number(this.props.cv.CvHeaderItem.birthday[5]+this.props.cv.CvHeaderItem.birthday[6])
+        const year = Number(this.props.cv.CvHeaderItem.birthday[0]+this.props.cv.CvHeaderItem.birthday[1]+this.props.cv.CvHeaderItem.birthday[2]+this.props.cv.CvHeaderItem.birthday[3])
         if(!this.props.cv.CvHeaderItem.birthday.match(/^\d{4}-\d{2}-\d{2}$/)){
-          alert("Wrong birthday date format")
-          return
+          if((date.getMonth()+1!=month)||date.getDate()!=day||(date.getFullYear()!=year)){
+            alert("Wrong birthday date format")
+            return
+          }
         }
       }
       
