@@ -295,6 +295,18 @@ class Builder extends Component {
         return re.test(email);
     }
 
+    validateDate(dateStr){
+      const date = new Date(dateStr)
+      const day = Number(dateStr[8] + dateStr[9])
+      const month = Number(dateStr[5] + dateStr[6])
+      const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3])
+      if((date.getMonth()+1 !== month) || (date.getDate()+1 !== day) || (date.getFullYear() !== year)){
+        return false
+      }else{
+        return true
+      }
+    }
+
     downloadCvAsJson() {
       var db = firebase.database().ref('cv-dumps-json').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
@@ -314,7 +326,14 @@ class Builder extends Component {
         alert("Empty name field")
         return
       }
-      
+
+      if (!this.props.cv.CvHeaderItem.birthday == ""){
+        if(!this.validateDate(this.props.cv.CvHeaderItem.birthday)){
+            alert("Wrong birthday date format")
+            return
+        }
+      }
+            
       var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
       fetch( window.location.protocol + '//' + this.hostname + '/cv/', {
