@@ -295,11 +295,11 @@ class Builder extends Component {
         return re.test(email);
     }
 
-    validateBirthday(birthday){
-      const date = new Date(birthday)
-      const day = Number(birthday[8] + birthday[9])
-      const month = Number(birthday[5] + birthday[6])
-      const year = Number(birthday[0] + birthday[1] + birthday[2] + birthday[3])
+    validateDate(dateStr){
+      const date = new Date(dateStr)
+      const day = Number(dateStr[8] + dateStr[9])
+      const month = Number(dateStr[5] + dateStr[6])
+      const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3])
       if((date.getMonth()+1 !== month) || (date.getDate()+1 !== day) || (date.getFullYear() !== year)){
         return false
       }else{
@@ -328,7 +328,7 @@ class Builder extends Component {
       }
 
       if (!this.props.cv.CvHeaderItem.birthday == ""){
-        if(!this.validateBirthday(this.props.cv.CvHeaderItem.birthday)){
+        if(!this.validateDate(this.props.cv.CvHeaderItem.birthday)){
             alert("Wrong birthday date format")
             return
         }
