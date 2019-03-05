@@ -30,23 +30,21 @@ class OwnedTemplate extends Component {
         <input type="file" ref="fileUploader" style={{display: "none"}} onInput={(event)=>{
             let files = event.target.files
             if (files.length === 1 && files[0].name.substr(files[0].name.length - 4, 4) == ".zip"){
-              this.hostname = window.location.hostname + ':5000'
-              if (this.hostname === 'vitaes.io:5000') {
-                this.hostname = 'renderer.vitaes.io'
+              var hostname = window.location.hostname + ':5000'
+              if (hostname === 'vitaes.io:5000') {
+                hostname = 'renderer.vitaes.io'
               }
-              fetch(window.location.protocol + '//' + this.hostname + '/template/', {
+
+              const file = files[0]
+              console.log(file)
+              let form = new FormData()
+              form.append('file', file)
+
+              fetch(window.location.protocol + '//' + hostname + '/template/files/' + this.props.template.name + '/', {
                 method: 'POST',
-                headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                }
+                body: form
               }).then(response => {
-                if (response.ok) {
-                  var jsonPromise = response.json()
-                  jsonPromise.then(json => {
-                    this.setState({cv_models: json}
-                  )})
-                } else {
+                if (!response.ok) {
                   var textPromise = response.text()
                   textPromise.then(text => alert("Error:" + text))
                 }

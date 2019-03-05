@@ -315,7 +315,7 @@ class Builder extends Component {
             
       var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
-      fetch( window.location.protocol + '//' + this.hostname + '/cv/', {
+      fetch( window.location.protocol + '//' + this.props.hostname + '/cv/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -326,7 +326,7 @@ class Builder extends Component {
         if (response.ok) {
           var idPromise = response.text()
           idPromise.then(id => {
-            fetch( window.location.protocol + '//' + this.hostname + '/cv/' + id + '/', {
+            fetch( window.location.protocol + '//' + this.props.hostname + '/cv/' + id + '/', {
               method: 'GET',
               retries: 20,
               retryDelay: 1000,
