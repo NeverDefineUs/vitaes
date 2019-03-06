@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import { getHostname } from './Util';
+import { getEmptyTemplate } from './Template/Util';
 
 class TemplateField extends Component {
   // label, placeholder, value, callback
@@ -63,7 +64,7 @@ class OwnedTemplate extends Component {
 class AddTemplate extends Component {
     constructor(){
       super()
-      this.state = {template: {owner: firebase.auth().currentUser.uid, command: "", data: {likes: 0}, name: "", params: {}, fixed_params:{}}}
+      this.state = {template: getEmptyTemplate()}
     }
     render() {
       var owned_cvs = []
@@ -93,7 +94,7 @@ class AddTemplate extends Component {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(this.state.template)}); 
-              this.setState({template: {owner: firebase.auth().currentUser.uid, command: "", data: {likes: 0}, name: "", params: {}, fixed_params:{}}})}}
+              this.setState({template: getEmptyTemplate()})}}
               >
               Submit
             </a>
