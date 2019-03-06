@@ -14,7 +14,6 @@ class TemplateHubModel extends Component {
 
   render() {
     const { model } = this.props;
-    console.log(model);
     const parameters = [];
     for (const val of model.params) {
       parameters.push(<div>{capitalize(val.pretty_name)}</div>);
