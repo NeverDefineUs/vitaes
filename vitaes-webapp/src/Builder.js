@@ -4,7 +4,7 @@ import CvOrder from './CvOrder.js'
 import firebase from 'firebase'
 import TextareaAutosize from 'react-autosize-textarea'
 import {arrayMove} from 'react-sortable-hoc'
-import {capitalize} from './Util'
+import {capitalize, getHostname} from './Util'
 import fetch from 'fetch-retry'
 
 const locFields = [["country", "Country name"], ["state", "State name"], ["city", "City name"]]
@@ -249,7 +249,7 @@ class CvItemForm extends Component {
 class Builder extends Component {
     constructor(props) {
       super(props)
-      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", cv_models: {}, cv_order:['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill'], params:{}}
+      this.state = {curriculum: this.props.cv, chosenLabel: "", user_cv_model: "awesome", cv_order:['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill'], params:{}}
       this.handleChangeHeader = this.handleChangeHeader.bind(this)
       this.downloadCvAsJson = this.downloadCvAsJson.bind(this)
       this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this)
@@ -258,27 +258,6 @@ class Builder extends Component {
       this.setLabel = this.setLabel.bind(this)
       this.startFilePicker = this.startFilePicker.bind(this)
       this.uploadJSON = this.uploadJSON.bind(this)
-      this.hostname = window.location.hostname + ':5000'
-      if (this.hostname === 'vitaes.io:5000') {
-        this.hostname = 'renderer.vitaes.io'
-      }
-      fetch( window.location.protocol + '//' + this.hostname + '/template/', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      }).then(response => {
-        if (response.ok) {
-          var jsonPromise = response.json()
-          jsonPromise.then(json => {
-            this.setState({cv_models: json}
-          )})
-        } else {
-          var textPromise = response.text()
-          textPromise.then(text => alert("Error:" + text))
-        }
-      })
     }
 
     handleChangeHeader(event) {
@@ -336,7 +315,7 @@ class Builder extends Component {
             
       var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
-      fetch( window.location.protocol + '//' + this.hostname + '/cv/', {
+      fetch( window.location.protocol + '//' + getHostname() + '/cv/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -347,7 +326,7 @@ class Builder extends Component {
         if (response.ok) {
           var idPromise = response.text()
           idPromise.then(id => {
-            fetch( window.location.protocol + '//' + this.hostname + '/cv/' + id + '/', {
+            fetch( window.location.protocol + '//' + getHostname() + '/cv/' + id + '/', {
               method: 'GET',
               retries: 20,
               retryDelay: 1000,
@@ -407,13 +386,13 @@ class Builder extends Component {
 
     render() {
       var cv_model_options = []
-      for (let cv_model_name in this.state.cv_models) {
-        var cv_model = this.state.cv_models[cv_model_name]
+      for (let cv_model_name in this.props.cv_models) {
+        var cv_model = this.props.cv_models[cv_model_name]
         cv_model_options.push(<option key={cv_model['name']} value={cv_model['name']}>{capitalize(cv_model['name'])}</option>)
       }
       var cv_model_suboptions = []
-      if (this.state.cv_models[this.state.user_cv_model] !== undefined) {
-        for (let cv_suboption of this.state.cv_models[this.state.user_cv_model]['params']) {
+      if (this.props.cv_models[this.state.user_cv_model] !== undefined) {
+        for (let cv_suboption of this.props.cv_models[this.state.user_cv_model]['params']) {
           var cv_model_suboptions_items = []
           for (let opt in cv_suboption['mapped_options']) {
             cv_model_suboptions_items.push(<option key={opt} value={cv_suboption['mapped_options'][opt]}>{capitalize(opt)}</option>)
@@ -477,7 +456,7 @@ class Builder extends Component {
             value={this.state.user_cv_model}
             className="Base-select" 
             onChange={(e) => {
-              this.setState({user_cv_model: e.target.value, params: this.state.cv_models[e.target.value]['fixed_params']})
+              this.setState({user_cv_model: e.target.value, params: this.props.cv_models[e.target.value]['fixed_params']})
             }}
           >
           {cv_model_options}

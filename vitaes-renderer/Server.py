@@ -51,7 +51,7 @@ def add_file_req(templatename):
         if templates.count() == 0:
             abort(404, "Template name not found")
         template = templates[0]
-        if "base_folder" in template:
+        if "base_folder" in template and template['base_folder'][0:6] != "mongo:":
             abort(403, "This template already have a file")
         gfs = gridfs.GridFS(db)
         fl = gfs.put(file, filename=templatename + ".zip")
