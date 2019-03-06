@@ -29,17 +29,25 @@ class About extends Component {
         <div className="Base-subtitle">Other Contributors:</div>
         <ul>
           <li>
-            <strong>magsouza:</strong> Designed the favicon. Started feature
+            <strong>magsouza:</strong>
+            {' '}
+Designed the favicon. Started feature
             hub, and fixed a bug on Modern CV template
           </li>
           <li>
-            <strong>jvsn19:</strong> Helped modeling the base classes.
+            <strong>jvsn19:</strong>
+            {' '}
+Helped modeling the base classes.
           </li>
           <li>
-            <strong>rfrl:</strong> Helped testing and deploying.
+            <strong>rfrl:</strong>
+            {' '}
+Helped testing and deploying.
           </li>
           <li>
-            <strong>vjsl:</strong> Helped uncover a bug with accents and on
+            <strong>vjsl:</strong>
+            {' '}
+Helped uncover a bug with accents and on
             adding https.
           </li>
         </ul>
@@ -50,10 +58,14 @@ class About extends Component {
         </div>
         <ul>
           <li>
-            <strong>posquit0:</strong> Awesome CV.
+            <strong>posquit0:</strong>
+            {' '}
+Awesome CV.
           </li>
           <li>
-            <strong>Xavier Danaux:</strong> Modern CV(not the git user).
+            <strong>Xavier Danaux:</strong>
+            {' '}
+Modern CV(not the git user).
           </li>
         </ul>
       </div>

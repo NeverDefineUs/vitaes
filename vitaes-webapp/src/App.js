@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
+import firebase from 'firebase';
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
-import firebase from 'firebase';
 import config from './config.js';
 import { getHostname } from './Util';
 
 firebase.initializeApp(config);
 
-let testCv = {
+const testCv = {
   CvHeaderItem: {
-    name: ''
+    name: '',
   },
   CvWorkExperienceItem: [],
   CvAcademicProjectItem: [],
   CvImplementationProjectItem: [],
   CvAchievementItem: [],
   CvEducationalExperienceItem: [],
-  CvLanguageItem: []
+  CvLanguageItem: [],
 };
 
 class App extends Component {
@@ -31,92 +31,92 @@ class App extends Component {
       cv: testCv,
       user: null,
       hide_options: true,
-      permissions: null
+      permissions: null,
     };
     this.googleLogin = this.googleLogin.bind(this);
     this.facebookLogin = this.facebookLogin.bind(this);
     this.githubLogin = this.githubLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.cvSetter = this.cvSetter.bind(this);
-    let app = this;
-    var dbErrors = firebase.database().ref('errors');
-    dbErrors.on('value', function(snapshot) {
+    const app = this;
+    const dbErrors = firebase.database().ref('errors');
+    dbErrors.on('value', (snapshot) => {
       if (snapshot.val() !== null) {
-        for (let msg of snapshot.val()) {
+        for (const msg of snapshot.val()) {
           if (msg !== undefined) {
             alert(msg);
           }
         }
       }
     });
-    var dbHP = firebase.database().ref('permissions');
-    dbHP.on('value', function(snapshot) {
+    const dbHP = firebase.database().ref('permissions');
+    dbHP.on('value', (snapshot) => {
       app.setState({ permissions: snapshot.val() });
     });
     firebase
       .auth()
       .getRedirectResult()
-      .then(function(result) {
-        var user = firebase.auth().currentUser;
-        var db = firebase
+      .then((result) => {
+        const user = firebase.auth().currentUser;
+        const db = firebase
           .database()
           .ref('cvs')
           .child(user.uid);
-        app.setState({ user: user, tab: 1, hide_options: false });
+        app.setState({ user, tab: 1, hide_options: false });
         db.on(
           'value',
-          function(snapshot) {
-            var snap = snapshot.val();
+          (snapshot) => {
+            const snap = snapshot.val();
             if (snap === null) {
               db.set(testCv);
             } else {
               app.setState({ cv: snap });
             }
           },
-          function(errorObject) {
+          (errorObject) => {
             console.log(errorObject);
-          }
+          },
         );
       })
-      .catch(function(error) {
+      .catch((error) => {
         app.setState({ tab: 0 });
       });
 
-    fetch(window.location.protocol + '//' + getHostname() + '/template/', {
+    fetch(`${window.location.protocol}//${getHostname()}/template/`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
       if (response.ok) {
-        var jsonPromise = response.json();
-        jsonPromise.then(json => {
+        const jsonPromise = response.json();
+        jsonPromise.then((json) => {
           this.setState({ cv_models: json });
         });
       } else {
-        var textPromise = response.text();
-        textPromise.then(text => alert('Error:' + text));
+        const textPromise = response.text();
+        textPromise.then(text => alert(`Error:${text}`));
       }
     });
   }
 
   cvSetter(cv) {
-    this.setState({ cv: cv });
+    this.setState({ cv });
   }
 
   googleLogin() {
-    var provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
   }
 
   facebookLogin() {
-    var provider = new firebase.auth.FacebookAuthProvider();
+    const provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().signInWithRedirect(provider);
   }
 
   githubLogin() {
-    var provider = new firebase.auth.GithubAuthProvider();
+    const provider = new firebase.auth.GithubAuthProvider();
     firebase.auth().signInWithRedirect(provider);
   }
 
@@ -135,18 +135,18 @@ class App extends Component {
         <div className="App-sidenav">
           {this.state.hide_options === false
             ? [
-                <a
-                  onClick={() => {
-                    this.setState({ tab: 1 });
-                  }}
-                >
+              <a
+                onClick={() => {
+                  this.setState({ tab: 1 });
+                }}
+              >
                   Create your CV
-                </a>
-              ]
+              </a>,
+            ]
             : null}
-          {this.state.user !== null &&
-          this.state.permissions !== null &&
-          this.state.permissions[this.state.user.uid] ? (
+          {this.state.user !== null
+          && this.state.permissions !== null
+          && this.state.permissions[this.state.user.uid] ? (
             <a
               onClick={() => {
                 this.setState({ tab: 4 });
@@ -154,7 +154,7 @@ class App extends Component {
             >
               Create Template
             </a>
-          ) : null}
+            ) : null}
           <a
             onClick={() => {
               this.setState({ tab: 2 });

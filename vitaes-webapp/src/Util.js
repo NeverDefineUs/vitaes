@@ -4,7 +4,7 @@ export function capitalize(word) {
 }
 
 export function getHostname() {
-  var hostname = window.location.hostname + ':5000';
+  let hostname = `${window.location.hostname}:5000`;
   if (hostname === 'vitaes.io:5000') {
     hostname = 'renderer.vitaes.io';
   }
@@ -17,7 +17,7 @@ export function copyElement(element) {
 
 export function removeDisabled(cv) {
   cv = copyElement(cv);
-  for (let key in cv) {
+  for (const key in cv) {
     if (Array.isArray(cv[key])) {
       cv[key] = cv[key].filter(element => !element.disable);
     }

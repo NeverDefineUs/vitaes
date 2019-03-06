@@ -1,9 +1,9 @@
-var config = {
+const config = {
   apiKey: '',
   authDomain: '',
   databaseURL: '',
   projectId: '',
   storageBucket: '',
-  messagingSenderId: ''
+  messagingSenderId: '',
 };
 export default config;
