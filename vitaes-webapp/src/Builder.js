@@ -4,7 +4,7 @@ import CvOrder from './CvOrder.js'
 import firebase from 'firebase'
 import TextareaAutosize from 'react-autosize-textarea'
 import {arrayMove} from 'react-sortable-hoc'
-import {capitalize, getHostname} from './Util'
+import {capitalize, getHostname, removeDisabled} from './Util'
 import fetch from 'fetch-retry'
 
 const locFields = [["country", "Country name"], ["state", "State name"], ["city", "City name"]]
@@ -101,6 +101,17 @@ class CvItemForm extends Component {
     }
   }
 
+  getEventEnabler(index) {
+    return () => {
+      var cv = this.props.curriculum
+      if(cv[this.props.cvkey][index].disable === undefined) {
+        cv[this.props.cvkey][index].disable = false
+      }
+      cv[this.props.cvkey][index].disable = !cv[this.props.cvkey][index].disable
+      this.props.stateChanger(cv)
+    }
+  }
+
   getEventExpander(index) {
     return () => {
       if (this.props.label === this.props.chosenLabel) {
@@ -186,7 +197,7 @@ class CvItemForm extends Component {
 
   render() {
     var nodes = [<div className="Base-linemarker" key={-3}/>,<div className="Base-subtitle" key={-2}>{this.props.label}:</div>, <br key={-1}/>]
-    let x = this
+    let comp = this
     if (this.props.curriculum[this.props.cvkey] !== undefined) {
       this.props.curriculum[this.props.cvkey].forEach(function(item, index) {
         var name = ""
@@ -199,7 +210,10 @@ class CvItemForm extends Component {
         } else {
           name = item.skill_type + ": " + item.skill_name
         }
-        nodes.push(<div className="Base-item" key={index}><span onClick={x.getEventExpander(index)}>{name}</span> <div className="Base-item-close" onClick={x.getEventDeleter(index)}><a>Delete</a></div></div>)
+        nodes.push(<div className="Base-item" key={index}><span onClick={comp.getEventExpander(index)}>{name}</span> 
+          <div className="Base-item-close" onClick={comp.getEventDeleter(index)}><a>delete</a></div>
+          <div className="Base-item-close" onClick={comp.getEventEnabler(index)}><a>{item.disable ? "hide" : "show"}</a></div>
+        </div>)
       })
     }
     if (this.props.chosenLabel !== this.props.label){
@@ -315,13 +329,14 @@ class Builder extends Component {
             
       var db = firebase.database().ref('cv-dumps').child('EMAIL:' + (this.props.user !== null ? this.props.user.uid : (this.props.cv['CvHeaderItem']['email'] !== undefined ? this.props.cv['CvHeaderItem']['email'].replace(/\./g,'_dot_'):''))).push()
       db.set(this.props.cv)
+      var cv = removeDisabled(this.props.cv)
       fetch( window.location.protocol + '//' + getHostname() + '/cv/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"curriculum_vitae": this.props.cv, "section_order": this.state.cv_order, "render_key": this.state.user_cv_model, params: this.state.params})
+        body: JSON.stringify({"curriculum_vitae": cv, "section_order": this.state.cv_order, "render_key": this.state.user_cv_model, params: this.state.params})
       }).then(response => {
         if (response.ok) {
           var idPromise = response.text()

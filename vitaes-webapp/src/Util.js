@@ -10,3 +10,19 @@ export function getHostname() {
   }
   return hostname
 }
+
+export function copyElement(element) {
+  return JSON.parse(JSON.stringify(element))
+}
+
+export function removeDisabled(cv) {
+  cv = copyElement(cv)
+  console.log(cv)
+  for (let key in cv){
+    if (Array.isArray(cv[key])){
+      cv[key] = cv[key].filter((element)=>!element.disable)
+    }
+  }
+  console.log(cv)
+  return cv
+}
