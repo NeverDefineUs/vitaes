@@ -135,7 +135,7 @@ class App extends Component {
           { this.state.tab === 1 ? <Builder cv_models={this.state.cv_models} cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
           { this.state.tab === 3 ? <About /> : null}
-          { this.state.tab === 4 ? <AddTemplate cv_models={this.state.cv_models}/> : null}
+          { this.state.tab === 4 ? <AddTemplate cv_models={this.state.cv_models} /> : null}
         </div>
       </div>
     );
