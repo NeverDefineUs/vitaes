@@ -5,7 +5,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
 import { capitalize, getHostname, removeDisabled } from './Util';
-import CvOrder from './CvOrder.js';
+import CvOrder from './CvOrder';
 
 const locFields = [
   ['country', 'Country name'],

@@ -54,13 +54,13 @@ class TemplateHubModel extends Component {
                     templatename: this.props.keyName,
                   }),
                 },
-              ).then((response) => {
+              ).then(() => {
                 this.props.fetchTemplates();
               });
             }}
           >
             <a>
-              <img src="/Ei-heart.svg" />
+              <img alt="" src="/Ei-heart.svg" />
               <span>{model.data.likes}</span>
             </a>
           </div>
