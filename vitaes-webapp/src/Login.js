@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
+import PropTypes from 'prop-types';
 
 class Login extends Component {
   render() {
@@ -28,4 +29,12 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  skipLogin: PropTypes.element.isRequired,
+  facebookLogin: PropTypes.element.isRequired,
+  googleLogin: PropTypes.element.isRequired,
+  githubLogin: PropTypes.element.isRequired,
+};
+
 export default Login;
