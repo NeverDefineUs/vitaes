@@ -17,12 +17,10 @@ export function copyElement(element) {
 
 export function removeDisabled(cv) {
   cv = copyElement(cv)
-  console.log(cv)
   for (let key in cv){
     if (Array.isArray(cv[key])){
       cv[key] = cv[key].filter((element)=>!element.disable)
     }
   }
-  console.log(cv)
   return cv
 }
