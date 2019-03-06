@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
+import { getHostname } from './Util';
 
 class TemplateField extends Component {
   // label, placeholder, value, callback
@@ -30,17 +31,12 @@ class OwnedTemplate extends Component {
         <input type="file" ref="fileUploader" style={{display: "none"}} onInput={(event)=>{
             let files = event.target.files
             if (files.length === 1 && files[0].name.substr(files[0].name.length - 4, 4) == ".zip"){
-              var hostname = window.location.hostname + ':5000'
-              if (hostname === 'vitaes.io:5000') {
-                hostname = 'renderer.vitaes.io'
-              }
-
               const file = files[0]
               console.log(file)
               let form = new FormData()
               form.append('file', file)
 
-              fetch(window.location.protocol + '//' + hostname + '/template/files/' + this.props.template.name + '/', {
+              fetch(window.location.protocol + '//' + getHostname() + '/template/files/' + this.props.template.name + '/', {
                 method: 'POST',
                 body: form
               }).then(response => {

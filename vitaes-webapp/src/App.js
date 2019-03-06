@@ -7,6 +7,7 @@ import Login from './Login';
 import TemplateHub from './TemplateHub';
 import firebase from 'firebase';
 import config from './config.js';
+import { getHostname } from './Util';
 
 firebase.initializeApp(config);
 
@@ -65,11 +66,7 @@ class App extends Component {
       app.setState({tab: 0})
     })
 
-    this.hostname = window.location.hostname + ':5000'
-    if (this.hostname === 'vitaes.io:5000') {
-      this.hostname = 'renderer.vitaes.io'
-    }
-    fetch(window.location.protocol + '//' + this.hostname + '/template/', {
+    fetch(window.location.protocol + '//' + getHostname() + '/template/', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -135,7 +132,7 @@ class App extends Component {
         </div>
         <div className="App-intro">
           { this.state.tab === 0 ? <Login skipLogin={() => {this.setState({tab: 1, hide_options: false})}} googleLogin={this.googleLogin} facebookLogin={this.facebookLogin} githubLogin={this.githubLogin} /> : null}
-          { this.state.tab === 1 ? <Builder hostname={this.hostname} cv_models={this.state.cv_models} cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
+          { this.state.tab === 1 ? <Builder cv_models={this.state.cv_models} cv={this.state.cv} cvSetter={this.cvSetter} user={this.state.user}> </Builder> : null }
           { this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
           { this.state.tab === 3 ? <About /> : null}
           { this.state.tab === 4 ? <AddTemplate cv_models={this.state.cv_models}/> : null}
