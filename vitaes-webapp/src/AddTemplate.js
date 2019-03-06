@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import { getHostname } from './Util';
-import { getEmptyTemplate } from './Template/Util';
+import { getEmptyTemplate, setTemplateFile } from './Template/Util';
 
 class TemplateField extends Component {
   // label, placeholder, value, callback
@@ -25,35 +25,27 @@ class TemplateField extends Component {
 }
 
 class OwnedTemplate extends Component {
+  setFile = (event)=>{
+    let files = event.target.files
+    if (files.length === 1 && files[0].name.substr(files[0].name.length - 4, 4) == ".zip"){
+      const file = files[0]
+      setTemplateFile(this.props.template, file)
+    }
+  }
+
+  chooseAndUploadFile = ()=>{
+    let base_folder = this.props.template.base_folder
+    if(base_folder === undefined || base_folder.substr(0,6) == "mongo:") {
+      this.refs.fileUploader.click();
+    }
+  }
+
   render() {
     return (<div className="Base-item">
        {this.props.template.name}
         <div className="Base-item-close">
-        <input type="file" ref="fileUploader" style={{display: "none"}} onInput={(event)=>{
-            let files = event.target.files
-            if (files.length === 1 && files[0].name.substr(files[0].name.length - 4, 4) == ".zip"){
-              const file = files[0]
-              console.log(file)
-              let form = new FormData()
-              form.append('file', file)
-
-              fetch(window.location.protocol + '//' + getHostname() + '/template/files/' + this.props.template.name + '/', {
-                method: 'POST',
-                body: form
-              }).then(response => {
-                if (!response.ok) {
-                  var textPromise = response.text()
-                  textPromise.then(text => alert("Error:" + text))
-                }
-              })
-            }
-          }}/>
-          <a onClick={()=>{
-            let base_folder = this.props.template.base_folder
-            if(base_folder === undefined || base_folder.substr(0,6) == "mongo:") {
-              this.refs.fileUploader.click();
-            }
-          }}>
+        <input type="file" ref="fileUploader" style={{display: "none"}} onInput={this.setFile}/>
+          <a onClick={this.chooseAndUploadFile}>
             Upload zip
           </a>
         </div> 
