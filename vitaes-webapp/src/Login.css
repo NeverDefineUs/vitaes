@@ -1,8 +1,8 @@
 .Login {
   margin: 20px;
   border: 2px;
-  border-color: #FAFAFA;
-  background-color: #FBFBFB;
+  border-color: #fafafa;
+  background-color: #fbfbfb;
   border-style: solid;
   margin-left: 35%;
   margin-right: 35%;
@@ -35,15 +35,15 @@
 
 .Login-button a:hover {
   background-color: #888;
-  color: #EEE;
+  color: #eee;
 }
 
 .Login-google a {
-  background-color: #4285F4;
+  background-color: #4285f4;
 }
 
 .Login-google a:hover {
-  background-color: #3275E4;
+  background-color: #3275e4;
 }
 
 .Login-facebook a {

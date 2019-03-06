@@ -1,9 +1,9 @@
-html{
-  min-height:100%;
-  position:relative;
+html {
+  min-height: 100%;
+  position: relative;
 }
-body{
-  height:100%; 
+body {
+  height: 100%;
 }
 
 .App {
@@ -14,7 +14,7 @@ body{
 
 .App-icon {
   height: 2em;
-  margin-top: 0em; 
+  margin-top: 0em;
   display: inline-block;
 }
 
@@ -39,19 +39,19 @@ body{
 
 .App-intro {
   font-size: large;
-  margin-left: 240px
+  margin-left: 240px;
 }
 
 .App-sidenav {
-  height: 100%; 
-  width: 240px; 
-  position: absolute; 
-  z-index: 1; 
-  top: 60px; 
+  height: 100%;
+  width: 240px;
+  position: absolute;
+  z-index: 1;
+  top: 60px;
   bottom: 0;
   left: 0;
-  background-color: #EEE; 
-  overflow-x: hidden; 
+  background-color: #eee;
+  overflow-x: hidden;
   padding-top: 10px;
 }
 
