@@ -1,8 +1,8 @@
 .Base {
   margin: 20px;
   border: 2px;
-  border-color: #FAFAFA;
-  background-color: #F9F9F9;
+  border-color: #fafafa;
+  background-color: #f9f9f9;
   border-style: solid;
   margin-left: 20%;
   margin-right: 20%;
@@ -34,7 +34,7 @@
   display: flex;
   width: 100%;
   padding-bottom: 0em;
-  margin-bottom: 15px; 
+  margin-bottom: 15px;
 }
 
 .Base-button a {
@@ -53,7 +53,7 @@
 }
 .Base-button a:hover {
   background-color: #888;
-  color: #EEE;
+  color: #eee;
 }
 
 .Base-inputfield {
@@ -75,13 +75,13 @@
   border-style: solid;
   border-color: #ddd;
   height: fit-content;
-  resize: none; 
+  resize: none;
 }
 
 .Base-item {
-  background-color: #EEE;
+  background-color: #eee;
   padding: 5px;
-  padding-left: 10px; 
+  padding-left: 10px;
   margin-bottom: 5px;
   height: 1.2em;
 }
@@ -91,7 +91,7 @@
 }
 
 .Base-form {
-  background-color: #EEE;
+  background-color: #eee;
   margin-bottom: 5px;
   padding: 1em;
   padding-bottom: 3em;
@@ -102,7 +102,7 @@
   display: inline;
 }
 .Base-item-close a {
-  background-color: #BBB;
+  background-color: #bbb;
   float: right;
   height: 1.2em;
   padding-left: 1em;
@@ -111,7 +111,7 @@
 }
 
 .Base-item-close a:hover {
-  background-color: #AAA;
+  background-color: #aaa;
 }
 
 .Base-select {
@@ -125,7 +125,7 @@
 .Base-linemarker {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
-  background-color: #CCC;
+  background-color: #ccc;
   width: stretch;
   height: 1px;
 }
