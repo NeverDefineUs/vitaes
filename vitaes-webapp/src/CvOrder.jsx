@@ -9,7 +9,7 @@ const SortableItem = SortableElement(({ value }) => (
 const SortableList = SortableContainer(({ cvOrder }) => (
   <ul className="Base-orderlist">
     {cvOrder.map((value, index) => (
-      <SortableItem key={`item-${index}`} index={index} value={value} />
+      <SortableItem key={`item-${value}`} index={index} value={value} />
     ))}
   </ul>
 ));

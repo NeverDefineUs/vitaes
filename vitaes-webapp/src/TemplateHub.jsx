@@ -37,6 +37,7 @@ class TemplateHubModel extends Component {
           />
           <div
             className="template-button"
+            role="button"
             onClick={() => {
               fetch(
                 `${window.location.protocol

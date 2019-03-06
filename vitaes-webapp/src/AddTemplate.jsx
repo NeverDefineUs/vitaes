@@ -25,6 +25,20 @@ class TemplateField extends Component {
 }
 
 class OwnedTemplate extends Component {
+  constructor(props) {
+    super(props);
+    this.fileUploader = (
+      <input
+        type="file"
+        style={{ display: 'none' }}
+        onInput={this.setFile}
+      />
+    );
+
+    this.setFile = this.setFile.bind(this);
+    this.chooseAndUploadFile = this.chooseAndUploadFile.bind(this);
+  }
+
   setFile(event) {
     const { files } = event.target;
     if (
@@ -39,7 +53,7 @@ class OwnedTemplate extends Component {
   chooseAndUploadFile() {
     const baseFolder = this.props.template.base_folder;
     if (baseFolder === undefined || baseFolder.substr(0, 6) === 'mongo:') {
-      this.refs.fileUploader.click();
+      this.fileUploader.click();
     }
   }
 
@@ -48,12 +62,7 @@ class OwnedTemplate extends Component {
       <div className="Base-item">
         {this.props.template.name}
         <div className="Base-item-close">
-          <input
-            type="file"
-            ref="fileUploader"
-            style={{ display: 'none' }}
-            onInput={this.setFile}
-          />
+          {this.fileUploader}
           <a onClick={this.chooseAndUploadFile}>Upload zip</a>
         </div>
       </div>

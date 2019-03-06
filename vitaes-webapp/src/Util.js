@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 export function capitalize(rawWord) {
   const word = rawWord.replace('_', ' ');
   return word.charAt(0).toUpperCase() + word.slice(1);
@@ -23,4 +25,20 @@ export function removeDisabled(rawCv) {
     }
   });
   return cv;
+}
+
+
+export function googleLogin() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithRedirect(provider);
+}
+
+export function facebookLogin() {
+  const provider = new firebase.auth.FacebookAuthProvider();
+  firebase.auth().signInWithRedirect(provider);
+}
+
+export function githubLogin() {
+  const provider = new firebase.auth.GithubAuthProvider();
+  firebase.auth().signInWithRedirect(provider);
 }
