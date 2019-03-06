@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import PropTypes from 'prop-types';
 
 const SortableItem = SortableElement(({ value }) => (
   <li className="Base-item Base-orderlist">{value}</li>
@@ -23,5 +24,10 @@ class CvOrder extends Component {
     );
   }
 }
+
+CvOrder.propTypes = {
+  cvOrder: PropTypes.element.isRequired,
+  setOrder: PropTypes.element.isRequired,
+};
 
 export default CvOrder;

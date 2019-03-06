@@ -177,14 +177,9 @@ class App extends Component {
         </div>
         <div className="App-intro">
           {this.state.tab === 0 ? (
-            <Login
-              skipLogin={() => {
-                this.setState({ tab: 1, hide_options: false });
-              }}
-              googleLogin={this.googleLogin}
-              facebookLogin={this.facebookLogin}
-              githubLogin={this.githubLogin}
-            />
+            Login(() => {
+              this.setState({ tab: 1, hide_options: false });
+            }, this.facebookLogin, this.githubLogin, this.googleLogin)
           ) : null}
           {this.state.tab === 1 ? (
             <Builder

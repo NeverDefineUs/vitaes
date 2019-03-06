@@ -31,6 +31,7 @@ class TemplateHubModel extends Component {
         </div>
         <div className="template-info">
           <img
+            alt="Template preview"
             className="template-image"
             src="https://imgur.com/download/qwvtvlj"
           />
