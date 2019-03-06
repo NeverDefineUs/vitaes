@@ -1,43 +1,43 @@
 .template-title-bar {
-    display:flex;
-    flex-direction: row;
-    align-items: flex-end;
-    margin-top: 2em;
-    margin-bottom: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .template-name {
-    margin-right: 0.5em;
-    white-space: nowrap;
+  margin-right: 0.5em;
+  white-space: nowrap;
 }
 
 .template-linemark {
-    margin-top: 0;
-    margin-bottom: 10px;
-    background-color: #CCC;
-    width: stretch;
-    height: 1px;
-  }
+  margin-top: 0;
+  margin-bottom: 10px;
+  background-color: #ccc;
+  width: stretch;
+  height: 1px;
+}
 
 .template-info {
-    display:flex;
-    flex-direction: row;
-    align-items: flex-end;
-    height: 9em;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  height: 9em;
 }
 
 .template-image {
-    height: 9em;
+  height: 9em;
 }
 
 .template-button a {
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    color: #000;
-    margin-left: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #000;
+  margin-left: 1em;
 }
 
 .template-button img {
-    height: 2em;
+  height: 2em;
 }
