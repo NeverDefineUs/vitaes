@@ -1,0 +1,12 @@
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+services:
+  - docker
+
+script: 
+  - docker-compose up -d webapp
+  - docker-compose exec -T webapp ./node_modules/.bin/eslint src --ext .jsx --ext .js
