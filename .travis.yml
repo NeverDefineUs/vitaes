@@ -1,5 +1,6 @@
 before_install:
   - sudo docker-compose --version
+  - sudo docker volume create --name=mongodb
 
 services:
   - docker
