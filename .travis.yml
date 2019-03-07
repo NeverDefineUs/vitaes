@@ -1,0 +1,11 @@
+before_install:
+  - sudo docker-compose --version
+  - sudo docker volume create --name=mongodb
+
+services:
+  - docker
+
+script: 
+  - sudo docker-compose up -d webapp
+  - cp vitaes-webapp/src/config-SAMPLE.js vitaes-webapp/src/config.js
+  - sudo docker-compose exec -T webapp ./node_modules/.bin/eslint src --ext .jsx --ext .js
