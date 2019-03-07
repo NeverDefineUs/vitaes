@@ -27,7 +27,6 @@ export function removeDisabled(rawCv) {
   return cv;
 }
 
-
 export function googleLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
   firebase.auth().signInWithRedirect(provider);
