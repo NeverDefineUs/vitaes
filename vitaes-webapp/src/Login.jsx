@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Login.css';
+import PropTypes from 'prop-types';
+import { googleLogin, facebookLogin, githubLogin } from './Util';
 
 class Login extends Component {
   render() {
@@ -14,18 +16,23 @@ class Login extends Component {
         </div>
         <br />
         <div className="Login-google Login-button">
-          <a onClick={this.props.googleLogin}>Google Login</a>
+          <a onClick={googleLogin}>Google Login</a>
         </div>
         <br />
         <div className="Login-facebook Login-button">
-          <a onClick={this.props.facebookLogin}>Facebook Login</a>
+          <a onClick={facebookLogin}>Facebook Login</a>
         </div>
         <br />
         <div className="Login-github Login-button">
-          <a onClick={this.props.githubLogin}>GitHub Login</a>
+          <a onClick={githubLogin}>GitHub Login</a>
         </div>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  skipLogin: PropTypes.element.isRequired,
+};
+
 export default Login;

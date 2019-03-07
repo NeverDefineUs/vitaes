@@ -8,29 +8,29 @@ export function getEmptyTemplate() {
     data: { likes: 0 },
     name: '',
     params: {},
-    fixed_params: {}
+    fixed_params: {},
   };
 }
 
 export function setTemplateFile(template, file) {
-  let form = new FormData();
+  const form = new FormData();
   form.append('file', file);
 
   fetch(
-    window.location.protocol +
-      '//' +
-      getHostname() +
-      '/template/files/' +
-      template.name +
-      '/',
+    `${window.location.protocol
+    }//${
+      getHostname()
+    }/template/files/${
+      template.name
+    }/`,
     {
       method: 'POST',
-      body: form
-    }
-  ).then(response => {
+      body: form,
+    },
+  ).then((response) => {
     if (!response.ok) {
-      var textPromise = response.text();
-      textPromise.then(text => alert('Error:' + text));
+      const textPromise = response.text();
+      textPromise.then(text => alert(`Error:${text}`));
     }
   });
 }
