@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from 'react';
 import './Builder.css';
 import firebase from 'firebase';
@@ -44,10 +46,6 @@ class CvHeaderField extends Component {
 
 class CvField extends Component {
   // label, placeholder, mandatory, toAdd, stateChanger, addField
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let inputField;
     if (this.props.label !== 'description') {

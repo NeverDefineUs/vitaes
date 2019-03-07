@@ -6,7 +6,7 @@ import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
-import config from './config.js';
+import config from './config';
 import { getHostname } from './Util';
 
 firebase.initializeApp(config);
@@ -33,9 +33,6 @@ class App extends Component {
       hide_options: true,
       permissions: null,
     };
-    this.googleLogin = this.googleLogin.bind(this);
-    this.facebookLogin = this.facebookLogin.bind(this);
-    this.githubLogin = this.githubLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.cvSetter = this.cvSetter.bind(this);
     const app = this;
@@ -56,7 +53,7 @@ class App extends Component {
     firebase
       .auth()
       .getRedirectResult()
-      .then((result) => {
+      .then(() => {
         const user = firebase.auth().currentUser;
         const db = firebase
           .database()
@@ -73,12 +70,11 @@ class App extends Component {
               app.setState({ cv: snap });
             }
           },
-          (errorObject) => {
-            console.log(errorObject);
+          () => {
           },
         );
       })
-      .catch((error) => {
+      .catch(() => {
         app.setState({ tab: 0 });
       });
 
@@ -103,21 +99,6 @@ class App extends Component {
 
   cvSetter(cv) {
     this.setState({ cv });
-  }
-
-  googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
-  }
-
-  facebookLogin() {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
-  }
-
-  githubLogin() {
-    const provider = new firebase.auth.GithubAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
   }
 
   logout() {
@@ -177,9 +158,11 @@ class App extends Component {
         </div>
         <div className="App-intro">
           {this.state.tab === 0 ? (
-            Login(() => {
-              this.setState({ tab: 1, hide_options: false });
-            }, this.facebookLogin, this.githubLogin, this.googleLogin)
+            <Login
+              skipLogin={() => {
+                this.setState({ tab: 1, hide_options: false });
+              }}
+            />
           ) : null}
           {this.state.tab === 1 ? (
             <Builder
