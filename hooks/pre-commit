@@ -45,9 +45,5 @@ EOF
 	exit 1
 fi
 
-docker-compose up -d webapp 
-<<<<<<< HEAD
-docker-compose exec -T webapp ./node_modules/.bin/prettier --single-quote --write "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
-=======
+docker-compose up -d --build webapp 
 docker-compose exec -T webapp ./node_modules/.bin/eslint src --ext .jsx --ext .js
->>>>>>> 22330f3f7c8c9c3c2b6a911cb2a9f09dda84fe63
