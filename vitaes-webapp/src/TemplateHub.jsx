@@ -34,7 +34,7 @@ class TemplateHubModel extends Component {
           <img
             alt="Template preview"
             className="template-image"
-            src="https://imgur.com/download/qwvtvlj"
+            src={model.data.image}
           />
           <div
             className="template-button"
