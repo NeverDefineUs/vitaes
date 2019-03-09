@@ -1,6 +1,6 @@
 import firebase from 'firebase';
-import { getHostname } from '../Util';
 import { toast } from 'react-toastify';
+import { getHostname } from '../Util';
 
 export function getEmptyTemplate() {
   return {

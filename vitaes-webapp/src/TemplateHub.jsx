@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Builder.css';
 import './TemplateHub.css';
-import { capitalize } from './Util';
 import { toast } from 'react-toastify';
+import { capitalize } from './Util';
 
 class TemplateHubModel extends Component {
   constructor(props) {
