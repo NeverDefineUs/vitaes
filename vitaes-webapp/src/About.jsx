@@ -25,14 +25,25 @@ class About extends Component {
         Contact Email: saboya@vitaes.io
         <br />
         <br />
+        <h3> Magsouza</h3>
+        <br />
+        <img src="https://avatars1.githubusercontent.com/u/37961381?s=400&v=4" alt="" className="Base-profile" />
+        <br />
+        Contact Email: mag@vitaes.io
+        <br />
+        <br />
         <br />
         <div className="Base-subtitle">Other Contributors:</div>
         <ul>
           <li>
-            <strong>magsouza:</strong>
+            <strong>acrc2:</strong>
             {' '}
-Designed the favicon. Started feature
-            hub, and fixed a bug on Modern CV template
+Made the birthday validation.
+          </li>
+          <li>
+            <strong>Hildemir:</strong>
+            {' '}
+Refactors on the validation functions.
           </li>
           <li>
             <strong>jvsn19:</strong>
@@ -68,6 +79,11 @@ Awesome CV.
 Modern CV(not the git user).
           </li>
         </ul>
+        <div className="Base-subtitle">Repo:</div>
+        <br />
+        https://github.com/NeverDefineUs/vitaes
+        <br />
+        <br />
       </div>
     );
   }
