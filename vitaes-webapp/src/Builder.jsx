@@ -25,7 +25,7 @@ class CvHeaderField extends Component {
         <div className="Base-label">
           {capitalize(this.props.label)}
           {this.props.mandatory ? ' (' + strings.required + ')' : ''}
-          {this.props.label === 'birthday' ? ' [YYYY-MM-DD]' : ''}
+          {this.props.id === 'birthday' ? ' [YYYY-MM-DD]' : ''}
 :
         </div>
         <input
