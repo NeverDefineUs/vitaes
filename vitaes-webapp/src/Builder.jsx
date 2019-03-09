@@ -353,8 +353,7 @@ class Builder extends Component {
     }
     this.setCv(aux);
   }
-
-
+  
   downloadCvAsJson() {
     const db = firebase
       .database()
