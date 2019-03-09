@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Builder.css';
 import './TemplateHub.css';
+import { toast } from 'react-toastify';
 import { capitalize } from './Util';
 
 class TemplateHubModel extends Component {
@@ -98,7 +99,7 @@ class TemplateHub extends Component {
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => alert(`Error:${text}`));
+        textPromise.then(text => toast.error(`Error:${text}`));
       }
     });
   }
