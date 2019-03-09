@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import PropTypes from 'prop-types';
+import { strings } from './i18n/strings';
 
 const SortableItem = SortableElement(({ value }) => (
   <li className="Base-item Base-orderlist">{value}</li>
@@ -9,7 +10,7 @@ const SortableItem = SortableElement(({ value }) => (
 const SortableList = SortableContainer(({ cvOrder }) => (
   <ul className="Base-orderlist">
     {cvOrder.map((value, index) => (
-      <SortableItem key={`item-${value}`} index={index} value={value} />
+      <SortableItem key={`item-${value}`} index={index} value={strings[value]} />
     ))}
   </ul>
 ));

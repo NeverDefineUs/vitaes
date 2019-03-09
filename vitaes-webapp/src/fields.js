@@ -1,4 +1,4 @@
-import { strings } from './i18n/localization';
+import { strings } from './i18n/strings';
 
 export const fieldsDef = {
   achievementName: ['name', strings.achievementName, strings.title],

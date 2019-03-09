@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Login.css';
 import PropTypes from 'prop-types';
 import { googleLogin, facebookLogin, githubLogin } from './Util';
+import { strings } from './i18n/strings';
 
 class Login extends Component {
   render() {
@@ -12,19 +13,19 @@ class Login extends Component {
         <br />
         <br />
         <div className="Login-button">
-          <a onClick={this.props.skipLogin}>Skip Login</a>
+          <a onClick={this.props.skipLogin}>{strings.skipLogin}</a>
         </div>
         <br />
         <div className="Login-google Login-button">
-          <a onClick={googleLogin}>Google Login</a>
+          <a onClick={googleLogin}>{strings.googleLogin}</a>
         </div>
         <br />
         <div className="Login-facebook Login-button">
-          <a onClick={facebookLogin}>Facebook Login</a>
+          <a onClick={facebookLogin}>{strings.facebookLogin}</a>
         </div>
         <br />
         <div className="Login-github Login-button">
-          <a onClick={githubLogin}>GitHub Login</a>
+          <a onClick={githubLogin}>{strings.githubLogin}</a>
         </div>
       </div>
     );

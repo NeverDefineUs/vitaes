@@ -8,7 +8,7 @@ import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
 import { capitalize, getHostname, removeDisabled } from './Util';
 import CvOrder from './CvOrder';
-import { strings } from './i18n/localization';
+import { strings } from './i18n/strings';
 import { fieldsDef } from './fields';
 
 const locFields = [
@@ -747,7 +747,7 @@ class Builder extends Component {
         />
         {/* YEAH ME ^^^^ */}
         <div className="Base-linemarker" />
-        <div className="Base-subtitle">Reorder CV areas:</div>
+        <div className="Base-subtitle">{strings.reorderCVAreas}:</div>
         <br />
         <CvOrder
           setOrder={({ oldIndex, newIndex }) => this.setState({
@@ -757,7 +757,7 @@ class Builder extends Component {
           cvOrder={this.state.cv_order}
         />
         <br />
-        <div className="Base-label">Model:</div>
+        <div className="Base-label">{strings.model}:</div>
         <select
           value={this.state.user_cv_model}
           className="Base-select"

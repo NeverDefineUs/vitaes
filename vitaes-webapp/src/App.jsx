@@ -8,7 +8,7 @@ import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
 import { getHostname, titleCase } from './Util';
-import { strings } from './i18n/localization';
+import { strings } from './i18n/strings';
 
 firebase.initializeApp(config);
 

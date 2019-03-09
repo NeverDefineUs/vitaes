@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Builder.css';
 import Arthurlpgc from './Profile/Arthurlpgc.jpg';
 import RamonSaboya from './Profile/RamonSaboya.jpg';
-import { strings } from './i18n/localization';
+import { strings } from './i18n/strings';
 
 class About extends Component {
   render() {
