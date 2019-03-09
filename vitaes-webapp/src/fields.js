@@ -20,11 +20,11 @@ export const fieldsDef = {
   projectDescription: ['description', strings.projectDescriptionPlaceholder, strings.description],
   repositoryLink: ['repository_link', strings.repositoryLinkPlaceholder, strings.repositoryLink],
   role: ['role', strings.rolePlaceholder, strings.role],
-  skillName: ['skill_name', 'Skill name'],
-  skillType: ['skill_type', 'Description of the skill', strings.skillType],
-  startDate: ['start_date', 'Starting date'],
-  state: ['state', 'State name'],
-  teacher: ['teacher', "Teacher's name"],
+  skillName: ['skill_name', strings.skillPlaceholder, strings.skill],
+  skillType: ['skill_type', strings.skillTypePlaceholder, strings.skillType],
+  startDate: ['start_date', strings.startDatePlaceholder, strings.startDate],
+  state: ['state', strings.statePlaceholder, strings.state],
+  teacher: ['teacher', strings.teacherPlaceholder, strings.teacher],
 };
 
 export default fieldsDef;

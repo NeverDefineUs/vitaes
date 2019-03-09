@@ -284,7 +284,7 @@ class CvItemForm extends Component {
             toAdd={this.state.toAdd}
             addField={this.addField}
             id={field_info[0]}
-            label={field_info[0]}
+            label={field_info[2]}
             placeholder={field_info[1]}
             mandatory
           />,
@@ -299,7 +299,7 @@ class CvItemForm extends Component {
             toAdd={this.state.toAdd}
             addField={this.addField}
             id={field_info[0]}
-            label={field_info[0]}
+            label={field_info[2]}
             placeholder={field_info[1]}
             mandatory={false}
           />,
@@ -718,7 +718,7 @@ class Builder extends Component {
             fieldsDef.country,
             fieldsDef.state,
             fieldsDef.city,
-            fieldsDef.respositoryLink,
+            fieldsDef.repositoryLink,
           ]}
         />
         <CvItemForm
@@ -782,7 +782,7 @@ class Builder extends Component {
               onChange={e => this.uploadJSON(e.target.files)}
               style={{ display: 'none' }}
             />
-            Upload Json
+            {strings.uploadJson}
           </a>
         </div>
         <div className="Base-button">
