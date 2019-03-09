@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import TextareaAutosize from 'react-autosize-textarea';
 import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
-import { capitalize, getHostname, removeDisabled } from './Util';
+import { capitalize, getHostname, removeDisabled, validateEmail, validateDate } from './Util';
 import CvOrder from './CvOrder';
 
 const locFields = [
@@ -353,27 +353,7 @@ class Builder extends Component {
     }
     this.setCv(aux);
   }
-
-  validateEmail(email) {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  }
-
-  validateDate(dateStr) {
-    const date = new Date(dateStr);
-    const day = Number(dateStr[8] + dateStr[9]);
-    const month = Number(dateStr[5] + dateStr[6]);
-    const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3]);
-    if (
-      date.getMonth() + 1 !== month
-      || date.getDate() + 1 !== day
-      || date.getFullYear() !== year
-    ) {
-      return false;
-    }
-    return true;
-  }
-
+  
   downloadCvAsJson() {
     const db = firebase
       .database()
@@ -398,7 +378,7 @@ class Builder extends Component {
   }
 
   downloadCvAsPDF() {
-    if (!this.validateEmail(this.props.cv.CvHeaderItem.email)) {
+    if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
       alert('Invalid E-mail field');
       return;
     }
@@ -408,7 +388,7 @@ class Builder extends Component {
     }
 
     if (!this.props.cv.CvHeaderItem.birthday == '') {
-      if (!this.validateDate(this.props.cv.CvHeaderItem.birthday)) {
+      if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
         alert('Wrong birthday date format');
         return;
       }
