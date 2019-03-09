@@ -17,6 +17,7 @@
     "react": "^16.4.2",
     "react-autosize-textarea": "",
     "react-dom": "^16.4.2",
+    "react-localization": "^1.0.13",
     "react-scripts": "1.1.5",
     "react-sortable-hoc": ""
   },

@@ -7,7 +7,8 @@ import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
-import { getHostname } from './Util';
+import { getHostname, titleCase } from './Util';
+import { strings } from './i18n/localization';
 
 firebase.initializeApp(config);
 
@@ -121,7 +122,7 @@ class App extends Component {
                   this.setState({ tab: 1 });
                 }}
               >
-                  Create your CV
+                  {strings.createCV}
               </a>,
             ]
             : null}
@@ -133,7 +134,7 @@ class App extends Component {
                 this.setState({ tab: 4 });
               }}
             >
-              Create Template
+              {titleCase(strings.createTemplate)}
             </a>
             ) : null}
           <a
@@ -148,12 +149,12 @@ class App extends Component {
               this.setState({ tab: 3 });
             }}
           >
-            About The Project
+            {titleCase(strings.aboutTheProject)}
           </a>
           {this.state.user !== null ? (
-            <a onClick={this.logout}>Sign Out</a>
+            <a onClick={this.logout}>{strings.signOut}</a>
           ) : (
-            <a onClick={() => this.setState({ tab: 0 })}>Sign in</a>
+            <a onClick={() => this.setState({ tab: 0 })}>{strings.signIn}</a>
           )}
         </div>
         <div className="App-intro">

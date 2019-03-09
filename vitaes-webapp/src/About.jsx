@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import './Builder.css';
 import Arthurlpgc from './Profile/Arthurlpgc.jpg';
 import RamonSaboya from './Profile/RamonSaboya.jpg';
+import { strings } from './i18n/localization';
 
 class About extends Component {
   render() {
     return (
       <div className="Base">
-        <div className="Base-title">About the project:</div>
+        <div className="Base-title">{strings.aboutTheProject}:</div>
         <br />
         <div className="Base-subtitle">Major Contributors:</div>
         <br />
