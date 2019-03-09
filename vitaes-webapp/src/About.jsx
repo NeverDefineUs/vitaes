@@ -41,6 +41,11 @@ class About extends Component {
 Made the birthday validation.
           </li>
           <li>
+            <strong>Hildemir:</strong>
+            {' '}
+Refactors on the validation functions.
+          </li>
+          <li>
             <strong>jvsn19:</strong>
             {' '}
 Helped modeling the base classes.
