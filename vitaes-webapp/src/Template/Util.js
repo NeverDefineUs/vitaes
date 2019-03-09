@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { getHostname } from '../Util';
+import { toast } from 'react-toastify';
 
 export function getEmptyTemplate() {
   return {
@@ -30,7 +31,7 @@ export function setTemplateFile(template, file) {
   ).then((response) => {
     if (!response.ok) {
       const textPromise = response.text();
-      textPromise.then(text => alert(`Error:${text}`));
+      textPromise.then(text => toast.error(`Error:${text}`));
     }
   });
 }

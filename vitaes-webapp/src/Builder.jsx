@@ -8,6 +8,7 @@ import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
 import { capitalize, getHostname, removeDisabled } from './Util';
 import CvOrder from './CvOrder';
+import { toast } from 'react-toastify';
 
 const locFields = [
   ['country', 'Country name'],
@@ -173,9 +174,9 @@ class CvItemForm extends Component {
     for (const item of this.props.fields) {
       if (toAdd[item[0]] === undefined) {
         if (item[0] === 'name') {
-          alert('Needed Field: Title');
+          toast.error('Needed Field: Title');
         } else {
-          alert(`Needed Field: ${capitalize(item[0])}`);
+          toast.error(`Needed Field: ${capitalize(item[0])}`);
         }
         return false;
       }
@@ -183,7 +184,7 @@ class CvItemForm extends Component {
     for (const item in toAdd) {
       if (item.endsWith('date') && toAdd[item]) {
         if (!toAdd[item].match(/^\d{4}-\d{2}-\d{2}$/)) {
-          alert(`Wrong format:${item}`);
+          toast.error(`Wrong format:${item}`);
           return false;
         }
       }
@@ -399,17 +400,17 @@ class Builder extends Component {
 
   downloadCvAsPDF() {
     if (!this.validateEmail(this.props.cv.CvHeaderItem.email)) {
-      alert('Invalid E-mail field');
+      toast.error('Invalid E-mail field');
       return;
     }
     if (this.props.cv.CvHeaderItem.name === '') {
-      alert('Empty name field');
+      toast.error('Empty name field');
       return;
     }
 
     if (!this.props.cv.CvHeaderItem.birthday == '') {
       if (!this.validateDate(this.props.cv.CvHeaderItem.birthday)) {
-        alert('Wrong birthday date format');
+        toast.error('Wrong birthday date format');
         return;
       }
     }
@@ -462,13 +463,13 @@ class Builder extends Component {
                 element.click();
               });
             } else {
-              alert('Error processing file');
+              toast.error('Error processing file');
             }
           });
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => alert(`Error:${text}`));
+        textPromise.then(text => toast.error(`Error:${text}`));
       }
     });
   }
