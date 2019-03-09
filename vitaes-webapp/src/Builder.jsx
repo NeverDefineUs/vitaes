@@ -786,14 +786,14 @@ class Builder extends Component {
           </a>
         </div>
         <div className="Base-button">
-          <a onClick={this.downloadCvAsJson}>Download Json</a>
+          <a onClick={this.downloadCvAsJson}>{strings.downloadJson}</a>
         </div>
         <div className="Base-button">
-          <a onClick={this.downloadCvAsPDF}>Download CV</a>
+          <a onClick={this.downloadCvAsPDF}>{strings.downloadCV}</a>
         </div>
         {this.props.user !== null ? (
           <div className="Base-button">
-            <a onClick={this.saveOnAccount}>Save on account</a>
+            <a onClick={this.saveOnAccount}>{strings.saveCVOnAccount}</a>
           </div>
         ) : null}
         <br />
