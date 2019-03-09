@@ -41,3 +41,23 @@ export function githubLogin() {
   const provider = new firebase.auth.GithubAuthProvider();
   firebase.auth().signInWithRedirect(provider);
 }
+
+export function validateEmail(email) {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
+
+export function validateDate(dateStr) {
+  const date = new Date(dateStr);
+  const day = Number(dateStr[8] + dateStr[9]);
+  const month = Number(dateStr[5] + dateStr[6]);
+  const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3]);
+  if (
+    date.getMonth() + 1 !== month
+    || date.getDate() + 1 !== day
+    || date.getFullYear() !== year
+  ) {
+    return false;
+  }
+  return true;
+}
