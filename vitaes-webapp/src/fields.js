@@ -1,9 +1,9 @@
-import { strings } from "./i18n/localization";
+import { strings } from './i18n/localization';
 
 export const fieldsDef = {
   achievementName: ['name', strings.achievementName, strings.title],
   achievementDescription: ['description', strings.achievementDescriptionPlaceholder, strings.description],
-  articleLink: ['article_link', 'Full URL to the article'],
+  articleLink: ['article_link', strings.articleLinkPlaceholder, strings.articleLink],
   certificateLink: ['certification_link', 'Full URL to the certification'],
   city: ['city', 'City name'],
   country: ['country', 'Country name'],
@@ -13,7 +13,7 @@ export const fieldsDef = {
   institution: ['institution', 'Name of the institution (e.g. MIT)'],
   jobDescription: [
     'description',
-    'Write activities performed at the job(* for items)', 
+    'Write activities performed at the job(* for items)',
     strings.description,
   ],
   language: ['language', 'Language name (e.g. English)'],
@@ -30,3 +30,5 @@ export const fieldsDef = {
   state: ['state', 'State name'],
   teacher: ['teacher', "Teacher's name"],
 };
+
+export default fieldsDef;

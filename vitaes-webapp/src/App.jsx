@@ -122,7 +122,7 @@ class App extends Component {
                   this.setState({ tab: 1 });
                 }}
               >
-                  {strings.createCV}
+                {strings.createCV}
               </a>,
             ]
             : null}

@@ -8,7 +8,10 @@ class About extends Component {
   render() {
     return (
       <div className="Base">
-        <div className="Base-title">{strings.aboutTheProject}:</div>
+        <div className="Base-title">
+          {strings.aboutTheProject}
+:
+        </div>
         <br />
         <div className="Base-subtitle">Major Contributors:</div>
         <br />
