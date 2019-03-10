@@ -508,7 +508,7 @@ class Builder extends Component {
       );
     }
     let cv_model_suboptions = [];
-    if (this.props.cv_models[this.state.user_cv_model] !== undefined) {
+    if (this.props.cv_models !== undefined && this.props.cv_models[this.state.user_cv_model] !== undefined) {
       for (const cv_suboption of this.props.cv_models[this.state.user_cv_model].params) {
         const cv_model_suboptions_items = [];
         for (const opt in cv_suboption.mapped_options) {

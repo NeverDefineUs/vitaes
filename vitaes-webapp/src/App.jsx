@@ -33,12 +33,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: -1,
+      tab: 1,
       cv: testCv,
       user: null,
-      hide_options: true,
       permissions: null,
+      showLogin: false,
     };
+    this.showLogin = this.showLogin.bind(this);
+    this.hideLogin = this.hideLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.cvSetter = this.cvSetter.bind(this);
     const app = this;
@@ -65,7 +67,7 @@ class App extends Component {
           .database()
           .ref('cvs')
           .child(user.uid);
-        app.setState({ user, tab: 1, hide_options: false });
+        app.setState({ user, tab: 1 });
         db.on(
           'value',
           (snapshot) => {
@@ -81,7 +83,7 @@ class App extends Component {
         );
       })
       .catch(() => {
-        app.setState({ tab: 0 });
+        app.showLogin();
       });
 
     fetch(`${window.location.protocol}//${getHostname()}/template/`, {
@@ -109,17 +111,35 @@ class App extends Component {
 
   logout() {
     firebase.auth().signOut();
-    this.setState({ user: null, tab: 0, hide_options: true });
+    this.setState({ user: null, tab: 1, cv: testCv });
+  }
+
+  showLogin() {
+    this.setState({ showLogin: true });
+  }
+
+  hideLogin() {
+    this.setState({ showLogin: false });
   }
 
   render() {
+    const login = (
+      <Login
+        show={this.state.showLogin}
+        onHide={this.hideLogin}
+        skipLogin={() => {
+          this.setState({ tab: 1 });
+          this.hideLogin();
+        }}
+      />
+    );
     return (
       <span>
         <ToastContainer position="bottom-right" />
-        <div className="App">
+        <div>
           <script
             src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
-            crossOrigin
+            crossOrigin="anonymous"
           />
           <link
             rel="stylesheet"
@@ -141,17 +161,14 @@ class App extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                {this.state.hide_options === false
-                  ? (
-                    <Nav.Link
-                      href="#create_cv"
-                      onClick={() => {
-                        this.setState({ tab: 1 });
-                      }}
-                    >
-                      {strings.createCV}
-                    </Nav.Link>
-                  ) : null}
+                <Nav.Link
+                  href="#create_cv"
+                  onClick={() => {
+                    this.setState({ tab: 1 });
+                  }}
+                >
+                  {strings.createCV}
+                </Nav.Link>
                 {this.state.user !== null
                   && this.state.permissions !== null
                   && this.state.permissions[this.state.user.uid]
@@ -190,21 +207,16 @@ Template Hub
                 {this.state.user !== null ? (
                   <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
                 ) : (
-                  <Nav.Link href="#signin" onClick={() => this.setState({ tab: 0 })}>{strings.signIn}</Nav.Link>
+                  <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
                 )}
               </Nav>
             </Navbar.Collapse>
           </Navbar>
+          <br />
+          {login}
           <Container>
             <Row className="justify-content-md-center">
               <Col>
-                {this.state.tab === 0 ? (
-                  <Login
-                    skipLogin={() => {
-                      this.setState({ tab: 1, hide_options: false });
-                    }}
-                  />
-                ) : null}
                 {this.state.tab === 1 ? (
                   <Builder
                     cv_models={this.state.cv_models}

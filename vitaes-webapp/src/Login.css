@@ -1,18 +1,6 @@
-.Login {
-  margin: 20px;
-  border: 2px;
-  border-color: #fafafa;
-  background-color: #fbfbfb;
-  border-style: solid;
-  margin-left: 35%;
-  margin-right: 35%;
-  border-radius: 20px;
-  padding: 2em;
-  text-align: center;
-}
-
 .Login-button {
   width: 100%;
+  max-width: 500px;
   display: flex;
   margin-bottom: 10px;
 }
