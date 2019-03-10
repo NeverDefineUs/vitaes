@@ -88,7 +88,7 @@ class AddTemplate extends Component {
 
     return (
       <div className="Base">
-        <div className="Base-title">Create a template:</div>
+        <h1>Create a template:</h1>
         <TemplateField
           placeholder="awesome"
           label="Name"
@@ -109,7 +109,7 @@ class AddTemplate extends Component {
             this.setState({ template });
           }}
         />
-        <div className="Base-subtitle">Params:</div>
+        <h2>Params:</h2>
         <div className="Base-button">
           <a
             href="#"
@@ -131,7 +131,7 @@ class AddTemplate extends Component {
         <div className="Base-button">
           <a href="#" onClick={() => {}}>Add New Param</a>
         </div>
-        <div className="Base-linemarker" style={{ marginTop: '3em' }} />
+        <hr style={{ marginTop: '3em' }} />
         {ownedCvs}
       </div>
     );
