@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
@@ -179,8 +179,12 @@ Template Hub
                 >
                   {strings.aboutTheProject}
                 </Nav.Link>
+                <NavDropdown title={strings.language} id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#lang/en" onClick={() => {strings.setLanguage('en'); this.setState({})}}>English</NavDropdown.Item>
+                  <NavDropdown.Item href="#lang/pt" onClick={() => {strings.setLanguage('pt'); this.setState({})}}>Português</NavDropdown.Item>
+                </NavDropdown>
               </Nav>
-              <Nav className="mr-auto justify-content-end">
+              <Nav className="mr-sm-2">
                 {this.state.user !== null ? (
                   <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
                 ) : (
