@@ -9,7 +9,7 @@ body {
 .App {
   text-align: center;
   height: 100%;
-  min-width: 1500px;
+  min-width: 800px;
 }
 
 .App-icon {
@@ -39,30 +39,4 @@ body {
 
 .App-intro {
   font-size: large;
-  margin-left: 240px;
-}
-
-.App-sidenav {
-  height: 100%;
-  width: 240px;
-  position: absolute;
-  z-index: 1;
-  top: 60px;
-  bottom: 0;
-  left: 0;
-  background-color: #eee;
-  overflow-x: hidden;
-  padding-top: 10px;
-}
-
-.App-sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #222;
-  display: block;
-}
-
-.App-sidenav a:hover {
-  color: #e1e1e1;
 }

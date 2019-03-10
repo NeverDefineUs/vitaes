@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
+import { Navbar, Nav } from 'react-bootstrap';
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
-import { getHostname, titleCase } from './Util';
+import { getHostname } from './Util';
 import { strings } from './i18n/strings';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -114,53 +115,80 @@ class App extends Component {
       <span>
         <ToastContainer position="bottom-right" />
         <div className="App">
-          <header className="App-header">
-            <img src="/mod5.svg" className="App-icon" alt="" />
-            <h1 className="App-title"> Vitaes</h1>
-          </header>
-          <div className="App-sidenav">
-            {this.state.hide_options === false
-              ? [
-                <a
+          <script
+            src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
+            crossOrigin
+          />
+          <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+            integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+            crossOrigin="anonymous"
+          />
+          <Navbar collapseOnSelect expand="lg" fixed="top" bg="dark" variant="dark">
+            <Navbar.Brand href="#home">
+              <img
+                alt=""
+                src="/mod5.svg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+              />
+              {' Vitaes'}
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                {this.state.hide_options === false
+                  ? (
+                    <Nav.Link
+                      href="#create_cv"
+                      onClick={() => {
+                        this.setState({ tab: 1 });
+                      }}
+                    >
+                      {strings.createCV}
+                    </Nav.Link>
+                  ) : null}
+                {this.state.user !== null
+                  && this.state.permissions !== null
+                  && this.state.permissions[this.state.user.uid]
+                  ? (
+                    <Nav.Link
+                      href="#create_template"
+                      onClick={() => {
+                        this.setState({ tab: 4 });
+                      }}
+                    >
+                      {strings.createTemplate}
+                    </Nav.Link>
+                  ) : null}
+                <Nav.Link
+                  href="#hub"
                   onClick={() => {
-                    this.setState({ tab: 1 });
+                    this.setState({ tab: 2 });
                   }}
                 >
-                  {strings.createCV}
-                </a>,
-              ]
-              : null}
-            {this.state.user !== null
-            && this.state.permissions !== null
-            && this.state.permissions[this.state.user.uid] ? (
-              <a
-                onClick={() => {
-                  this.setState({ tab: 4 });
-                }}
-              >
-                {strings.createTemplate}
-              </a>
-              ) : null}
-            <a
-              onClick={() => {
-                this.setState({ tab: 2 });
-              }}
-            >
-              Template Hub
-            </a>
-            <a
-              onClick={() => {
-                this.setState({ tab: 3 });
-              }}
-            >
-              {titleCase(strings.aboutTheProject)}
-            </a>
-            {this.state.user !== null ? (
-              <a onClick={this.logout}>{strings.signOut}</a>
-            ) : (
-              <a onClick={() => this.setState({ tab: 0 })}>{strings.signIn}</a>
-            )}
-          </div>
+Template Hub
+                </Nav.Link>
+                <Nav.Link
+                  href="#about"
+                  onClick={() => {
+                    this.setState({ tab: 3 });
+                  }}
+                >
+                  {strings.aboutTheProject}
+                </Nav.Link>
+              </Nav>
+              <Nav className="mr-auto justify-content-end">
+                {this.state.user !== null ? (
+                  <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
+                ) : (
+                  <Nav.Link href="#signin" onClick={() => this.setState({ tab: 0 })}>{strings.signIn}</Nav.Link>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
           <div className="App-intro">
             {this.state.tab === 0 ? (
               <Login

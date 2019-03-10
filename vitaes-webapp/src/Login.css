@@ -18,46 +18,17 @@
 .Login-button {
   width: 100%;
   display: flex;
+  margin-bottom: 10px;
 }
 
-.Login-button a {
-  flex: 80;
-  background-color: #000;
-  text-decoration: none;
-  font-size: 1em;
-  border-radius: 6px;
-  padding: 6px;
-  padding-left: 15px;
-  padding-right: 15px;
-  color: #fff;
-  background-color: #000;
+.Login-google {
+  background: #4285f4;
 }
 
-.Login-button a:hover {
-  background-color: #888;
-  color: #eee;
+.Login-facebook {
+  background: #4267b2;
 }
 
-.Login-google a {
-  background-color: #4285f4;
-}
-
-.Login-google a:hover {
-  background-color: #3275e4;
-}
-
-.Login-facebook a {
-  background-color: #4267b2;
-}
-
-.Login-facebook a:hover {
-  background-color: #6489c8;
-}
-
-.Login-github a {
-  background-color: #333;
-}
-
-.Login-github a:hover {
-  background-color: #191919;
+.Login-github {
+  background: #333;
 }
