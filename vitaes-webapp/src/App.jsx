@@ -180,8 +180,8 @@ Template Hub
                   {strings.aboutTheProject}
                 </Nav.Link>
                 <NavDropdown title={strings.language} id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#lang/en" onClick={() => {strings.setLanguage('en'); this.setState({})}}>English</NavDropdown.Item>
-                  <NavDropdown.Item href="#lang/pt" onClick={() => {strings.setLanguage('pt'); this.setState({})}}>Português</NavDropdown.Item>
+                  <NavDropdown.Item href="#lang/en" onClick={() => { strings.setLanguage('en'); this.setState({}); }}>English</NavDropdown.Item>
+                  <NavDropdown.Item href="#lang/pt" onClick={() => { strings.setLanguage('pt'); this.setState({}); }}>Português</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
               <Nav className="mr-sm-2">
