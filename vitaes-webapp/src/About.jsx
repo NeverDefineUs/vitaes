@@ -8,36 +8,31 @@ class About extends Component {
   render() {
     return (
       <div className="Base">
-        <div className="Base-title">
+        <h1>
           {strings.aboutTheProject}
 :
-        </div>
+        </h1>
         <br />
-        <div className="Base-subtitle">Major Contributors:</div>
-        <br />
+        <h2>Major Contributors:</h2>
         <h3> Arthurlpgc</h3>
-        <br />
         <img src={Arthurlpgc} alt="" className="Base-profile" />
         <br />
         Contact Email: latache@vitaes.io
         <br />
         <br />
         <h3> RamonSaboya</h3>
-        <br />
         <img src={RamonSaboya} alt="" className="Base-profile" />
         <br />
         Contact Email: saboya@vitaes.io
         <br />
         <br />
         <h3> Magsouza</h3>
-        <br />
         <img src="https://avatars1.githubusercontent.com/u/37961381?s=400&v=4" alt="" className="Base-profile" />
         <br />
         Contact Email: mag@vitaes.io
         <br />
         <br />
-        <br />
-        <div className="Base-subtitle">Other Contributors:</div>
+        <h2>Other Contributors:</h2>
         <ul>
           <li>
             <strong>acrc2:</strong>
@@ -67,10 +62,9 @@ Helped uncover a bug with accents and on
           </li>
         </ul>
         <br />
-        <br />
-        <div className="Base-subtitle">
+        <h2>
           Indirect Contributors(Made their templates open source):
-        </div>
+        </h2>
         <ul>
           <li>
             <strong>posquit0:</strong>
@@ -83,8 +77,7 @@ Awesome CV.
 Modern CV(not the git user).
           </li>
         </ul>
-        <div className="Base-subtitle">Repo:</div>
-        <br />
+        <h2>Repo:</h2>
         https://github.com/NeverDefineUs/vitaes
         <br />
         <br />

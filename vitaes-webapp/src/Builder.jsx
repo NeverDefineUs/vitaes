@@ -224,11 +224,10 @@ class CvItemForm extends Component {
 
   render() {
     const nodes = [
-      <div className="Base-linemarker" key={-3} />,
-      <div className="Base-subtitle" key={-2}>
-        {this.props.label}
-:
-      </div>,
+      <hr />,
+      <h2 key={-2}>
+        {this.props.label}:
+      </h2>,
       <br key={-1} />,
     ];
     const comp = this;
@@ -542,11 +541,10 @@ class Builder extends Component {
     }
     return (
       <div className="Base">
-        <div className="Base-title">Curriculum Vitae:</div>
+        <h1>Curriculum Vitae:</h1>
         <br />
-        <div className="Base-subtitle">{strings.header}:</div>
+        <h2>{strings.header}:</h2>
         <br />
-        {/* PLZ REFACTOR ME */}
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
@@ -735,8 +733,8 @@ class Builder extends Component {
           ]}
         />
         {/* YEAH ME ^^^^ */}
-        <div className="Base-linemarker" />
-        <div className="Base-subtitle">{strings.reorderCVAreas}:</div>
+        <hr/>
+        <h2>{strings.reorderCVAreas}:</h2>
         <br />
         <CvOrder
           setOrder={({ oldIndex, newIndex }) => this.setState({

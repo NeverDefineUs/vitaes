@@ -11,24 +11,8 @@
   text-align: center;
 }
 
-.Login-title {
-  font-size: 1.5em;
-}
-
 .Login-button {
   width: 100%;
   display: flex;
   margin-bottom: 10px;
-}
-
-.Login-google {
-  background: #4285f4;
-}
-
-.Login-facebook {
-  background: #4267b2;
-}
-
-.Login-github {
-  background: #333;
 }

@@ -9,9 +9,7 @@ class Login extends Component {
   render() {
     return (
       <div className="Login">
-        <span className="Login-title">Login:</span>
-        <br />
-        <br />
+        <h1>Login:</h1>
         <br />
         <Button
           variant="dark"
@@ -24,7 +22,7 @@ class Login extends Component {
         <br />
         <Button
           style={{ background: '#4285f4', border: '#4285f488' }}
-          className="Login-button Login-google"
+          className="Login-button"
           onClick={googleLogin}
           size="sm"
         >
@@ -33,7 +31,7 @@ class Login extends Component {
         <br />
         <Button
           style={{ background: '#4267b2', border: '#4267b288' }}
-          className="Login-facebook Login-button"
+          className="Login-button"
           onClick={facebookLogin}
           size="sm"
         >
@@ -42,7 +40,7 @@ class Login extends Component {
         <br />
         <Button
           style={{ background: '#333', border: '#3338' }}
-          className="Login-github Login-button"
+          className="Login-button"
           onClick={githubLogin}
           size="sm"
         >

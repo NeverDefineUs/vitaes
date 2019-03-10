@@ -28,15 +28,6 @@ body {
   width: 100%;
 }
 
-.App-title {
-  font-size: 2em;
-  margin-top: 0em;
-  vertical-align: center;
-  display: inline-block;
-  font-family: 'Roboto';
-  font-weight: 50;
-}
-
 .App-intro {
-  font-size: large;
+  align-items: center;
 }
