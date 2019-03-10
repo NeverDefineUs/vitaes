@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import {
+  Navbar, Nav, NavDropdown, Row, Col, Container,
+} from 'react-bootstrap';
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
@@ -193,30 +195,34 @@ Template Hub
               </Nav>
             </Navbar.Collapse>
           </Navbar>
-          <div className="App-intro">
-            {this.state.tab === 0 ? (
-              <Login
-                skipLogin={() => {
-                  this.setState({ tab: 1, hide_options: false });
-                }}
-              />
-            ) : null}
-            {this.state.tab === 1 ? (
-              <Builder
-                cv_models={this.state.cv_models}
-                cv={this.state.cv}
-                cvSetter={this.cvSetter}
-                user={this.state.user}
-              >
-                {' '}
-              </Builder>
-            ) : null}
-            {this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
-            {this.state.tab === 3 ? <About /> : null}
-            {this.state.tab === 4 ? (
-              <AddTemplate cv_models={this.state.cv_models} />
-            ) : null}
-          </div>
+          <Container>
+            <Row className="justify-content-md-center">
+              <Col>
+                {this.state.tab === 0 ? (
+                  <Login
+                    skipLogin={() => {
+                      this.setState({ tab: 1, hide_options: false });
+                    }}
+                  />
+                ) : null}
+                {this.state.tab === 1 ? (
+                  <Builder
+                    cv_models={this.state.cv_models}
+                    cv={this.state.cv}
+                    cvSetter={this.cvSetter}
+                    user={this.state.user}
+                  >
+                    {' '}
+                  </Builder>
+                ) : null}
+                {this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
+                {this.state.tab === 3 ? <About /> : null}
+                {this.state.tab === 4 ? (
+                  <AddTemplate cv_models={this.state.cv_models} />
+                ) : null}
+              </Col>
+            </Row>
+          </Container>
         </div>
       </span>
     );
