@@ -1,33 +1,56 @@
 import React, { Component } from 'react';
 import './Login.css';
 import PropTypes from 'prop-types';
+import { Button, Modal } from 'react-bootstrap';
 import { googleLogin, facebookLogin, githubLogin } from './Util';
 import { strings } from './i18n/strings';
 
 class Login extends Component {
   render() {
     return (
-      <div className="Login">
-        <span className="Login-title">Login:</span>
-        <br />
-        <br />
-        <br />
-        <div className="Login-button">
-          <a onClick={this.props.skipLogin}>{strings.skipLogin}</a>
-        </div>
-        <br />
-        <div className="Login-google Login-button">
-          <a onClick={googleLogin}>{strings.googleLogin}</a>
-        </div>
-        <br />
-        <div className="Login-facebook Login-button">
-          <a onClick={facebookLogin}>{strings.facebookLogin}</a>
-        </div>
-        <br />
-        <div className="Login-github Login-button">
-          <a onClick={githubLogin}>{strings.githubLogin}</a>
-        </div>
-      </div>
+      <Modal show={this.props.show} onHide={this.props.onHide}>
+        <Modal.Header closeButton>
+          <Modal.Title>Login</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Button
+            variant="dark"
+            className="Login-button"
+            onClick={this.props.skipLogin}
+            size="sm"
+          >
+            {strings.skipLogin}
+          </Button>
+          <br />
+          <Button
+            style={{ background: '#4285f4', border: '#4285f488' }}
+            className="Login-button"
+            onClick={googleLogin}
+            size="sm"
+          >
+            {strings.googleLogin}
+          </Button>
+          <br />
+          <Button
+            style={{ background: '#4267b2', border: '#4267b288' }}
+            className="Login-button"
+            onClick={facebookLogin}
+            size="sm"
+          >
+            {strings.facebookLogin}
+          </Button>
+          <br />
+          <Button
+            style={{ background: '#333', border: '#3338' }}
+            className="Login-button"
+            onClick={githubLogin}
+            size="sm"
+          >
+            {strings.githubLogin}
+          </Button>
+        </Modal.Body>
+      </Modal>
     );
   }
 }

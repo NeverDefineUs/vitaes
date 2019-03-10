@@ -118,7 +118,7 @@ class TemplateHub extends Component {
     }
     return (
       <div className="Base">
-        <div className="Base-title">Template Hub</div>
+        <h1>Template Hub</h1>
         {templateList}
         <br />
       </div>
