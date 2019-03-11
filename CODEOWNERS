@@ -1,3 +1,4 @@
 # Shouldn't be a hard restriction, just simplifying pull request reviews
 * @Arthurlpgc @RamonSaboya
-/vitaes-webapp @magsouza
+/vitaes-webapp/ @NeverDefineUs/ReactVitaes
+/vitaes-renderer/ @NeverDefineUs/RendererVitaes
