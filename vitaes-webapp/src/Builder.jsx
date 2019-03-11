@@ -11,7 +11,7 @@ import {
 } from './Util';
 import CvOrder from './CvOrder';
 import { strings } from './i18n/strings';
-import { fieldsDef } from './fields';
+import { fieldsDef, updateFields } from './fields';
 
 const locFields = [
   fieldsDef.country,
@@ -22,6 +22,7 @@ const locFields = [
 class CvHeaderField extends Component {
   // label, id, placeholder, mandatory, curriculum, stateChanger
   render() {
+    updateFields();
     return (
       <div className="Base-field">
         <div className="Base-label">
