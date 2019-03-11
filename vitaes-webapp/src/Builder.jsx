@@ -11,6 +11,7 @@ import CvOrder from './CvOrder';
 import { strings } from './i18n/strings';
 import { fieldsDef } from './fields';
 import { toast } from 'react-toastify';
+import { Alert, Button, Col, Row } from 'react-bootstrap';
 
 const locFields = [
   fieldsDef.country,
@@ -223,11 +224,10 @@ class CvItemForm extends Component {
 
   render() {
     const nodes = [
-      <div className="Base-linemarker" key={-3} />,
-      <div className="Base-subtitle" key={-2}>
-        {this.props.label}
-:
-      </div>,
+      <hr />,
+      <h2 key={-2}>
+        {this.props.label}:
+      </h2>,
       <br key={-1} />,
     ];
     const comp = this;
@@ -244,21 +244,23 @@ class CvItemForm extends Component {
           name = `${item.skill_type}: ${item.skill_name}`;
         }
         nodes.push(
-          <div className="Base-item" key={index}>
+          <Alert variant="secondary" style={{width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5}} key={index}>
             <span onClick={comp.getEventExpander(index)}>{name}</span>
-            <div
-              className="Base-item-close"
+            <Button 
+              variant="dark" size="sm"
               onClick={comp.getEventDeleter(index)}
+              style={{marginLeft: 5, float: "right"}}
             >
-              <a>delete</a>
-            </div>
-            <div
-              className="Base-item-close"
+              delete
+            </Button>
+            <Button 
+              variant="dark" size="sm" 
               onClick={comp.getEventEnabler(index)}
+              style={{marginLeft: 5, float: "right"}}
             >
-              <a>{item.disable ? 'hide' : 'show'}</a>
-            </div>
-          </div>,
+              {item.disable ? 'hide' : 'show'}
+            </Button>
+          </Alert>,
         );
       });
     }
@@ -266,12 +268,13 @@ class CvItemForm extends Component {
       return (
         <div>
           {nodes}
-          <div
-            className="Base-button"
+          <Button
+            variant="secondary"
+            style={{float: "right"}}
             onClick={() => this.props.labelChanger(this.props.label)}
           >
-            <a>{strings.addEntry}</a>
-          </div>
+            {strings.addEntry}
+          </Button>
           <br />
         </div>
       );
@@ -312,9 +315,13 @@ class CvItemForm extends Component {
         {nodes}
         <div className="Base-form">
           {formNodes}
-          <div className="Base-button" onClick={this.addField}>
-            <a>{strings.addEntry}</a>
-          </div>
+          <Button
+            variant="secondary"
+            style={{float: "right"}}
+            onClick={this.addField}
+          >
+            {strings.addEntry}
+          </Button>
         </div>
         <br />
       </div>
@@ -501,7 +508,7 @@ class Builder extends Component {
       );
     }
     let cv_model_suboptions = [];
-    if (this.props.cv_models[this.state.user_cv_model] !== undefined) {
+    if (this.props.cv_models !== undefined && this.props.cv_models[this.state.user_cv_model] !== undefined) {
       for (const cv_suboption of this.props.cv_models[this.state.user_cv_model].params) {
         const cv_model_suboptions_items = [];
         for (const opt in cv_suboption.mapped_options) {
@@ -534,11 +541,10 @@ class Builder extends Component {
     }
     return (
       <div className="Base">
-        <div className="Base-title">Curriculum Vitae:</div>
+        <h1>Curriculum Vitae:</h1>
         <br />
-        <div className="Base-subtitle">{strings.header}:</div>
+        <h2>{strings.header}:</h2>
         <br />
-        {/* PLZ REFACTOR ME */}
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
@@ -727,8 +733,8 @@ class Builder extends Component {
           ]}
         />
         {/* YEAH ME ^^^^ */}
-        <div className="Base-linemarker" />
-        <div className="Base-subtitle">{strings.reorderCVAreas}:</div>
+        <hr/>
+        <h2>{strings.reorderCVAreas}:</h2>
         <br />
         <CvOrder
           setOrder={({ oldIndex, newIndex }) => this.setState({
@@ -754,8 +760,12 @@ class Builder extends Component {
         {cv_model_suboptions}
         <br />
         <br />
-        <div className="Base-button">
-          <a onClick={this.startFilePicker}>
+        <Button 
+          variant="secondary"
+          size="sm"
+          onClick={this.startFilePicker}
+          style={{marginLeft: 5, float: "right"}}
+        >
             <input
               type="file"
               id="file"
@@ -764,18 +774,32 @@ class Builder extends Component {
               style={{ display: 'none' }}
             />
             {strings.uploadJson}
-          </a>
-        </div>
-        <div className="Base-button">
-          <a onClick={this.downloadCvAsJson}>{strings.downloadJson}</a>
-        </div>
-        <div className="Base-button">
-          <a onClick={this.downloadCvAsPDF}>{strings.downloadCV}</a>
-        </div>
+        </Button>
+        <Button 
+          variant="secondary"
+          size="sm"
+          onClick={this.downloadCvAsJson}
+          style={{marginLeft: 5, float: "right"}}
+        >
+          {strings.downloadJson}
+        </Button>
+        <Button 
+          variant="secondary"
+          size="sm" 
+          onClick={this.downloadCvAsPDF}
+          style={{marginLeft: 5, float: "right"}}
+        >
+          {strings.downloadCV}
+        </Button>
         {this.props.user !== null ? (
-          <div className="Base-button">
-            <a onClick={this.saveOnAccount}>{strings.saveCVOnAccount}</a>
-          </div>
+          <Button 
+            variant="secondary"
+            size="sm" 
+            onClick={this.saveOnAccount}
+            style={{marginLeft: 5, float: "right"}}
+          >
+            {strings.saveCVOnAccount}
+          </Button>
         ) : null}
         <br />
       </div>

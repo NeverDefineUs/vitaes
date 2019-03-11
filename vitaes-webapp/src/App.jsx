@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
+import {
+  Navbar, Nav, NavDropdown, Row, Col, Container,
+} from 'react-bootstrap';
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
-import { getHostname, titleCase } from './Util';
+import { getHostname } from './Util';
 import { strings } from './i18n/strings';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,12 +33,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: -1,
+      tab: 1,
       cv: testCv,
       user: null,
-      hide_options: true,
       permissions: null,
+      showLogin: false,
     };
+    this.showLogin = this.showLogin.bind(this);
+    this.hideLogin = this.hideLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.cvSetter = this.cvSetter.bind(this);
     const app = this;
@@ -62,7 +67,7 @@ class App extends Component {
           .database()
           .ref('cvs')
           .child(user.uid);
-        app.setState({ user, tab: 1, hide_options: false });
+        app.setState({ user, tab: 1 });
         db.on(
           'value',
           (snapshot) => {
@@ -78,7 +83,7 @@ class App extends Component {
         );
       })
       .catch(() => {
-        app.setState({ tab: 0 });
+        app.showLogin();
       });
 
     fetch(`${window.location.protocol}//${getHostname()}/template/`, {
@@ -106,85 +111,130 @@ class App extends Component {
 
   logout() {
     firebase.auth().signOut();
-    this.setState({ user: null, tab: 0, hide_options: true });
+    this.setState({ user: null, tab: 1, cv: testCv });
+  }
+
+  showLogin() {
+    this.setState({ showLogin: true });
+  }
+
+  hideLogin() {
+    this.setState({ showLogin: false });
   }
 
   render() {
+    const login = (
+      <Login
+        show={this.state.showLogin}
+        onHide={this.hideLogin}
+        skipLogin={() => {
+          this.setState({ tab: 1 });
+          this.hideLogin();
+        }}
+      />
+    );
     return (
       <span>
         <ToastContainer position="bottom-right" />
-        <div className="App">
-          <header className="App-header">
-            <img src="/mod5.svg" className="App-icon" alt="" />
-            <h1 className="App-title"> Vitaes</h1>
-          </header>
-          <div className="App-sidenav">
-            {this.state.hide_options === false
-              ? [
-                <a
+        <div>
+          <script
+            src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+            integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+            crossOrigin="anonymous"
+          />
+          <Navbar collapseOnSelect expand="lg" fixed="top" bg="dark" variant="dark">
+            <Navbar.Brand href="#home">
+              <img
+                alt=""
+                src="/mod5.svg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+              />
+              {' Vitaes'}
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link
+                  href="#create_cv"
                   onClick={() => {
                     this.setState({ tab: 1 });
                   }}
                 >
                   {strings.createCV}
-                </a>,
-              ]
-              : null}
-            {this.state.user !== null
-            && this.state.permissions !== null
-            && this.state.permissions[this.state.user.uid] ? (
-              <a
-                onClick={() => {
-                  this.setState({ tab: 4 });
-                }}
-              >
-                {strings.createTemplate}
-              </a>
-              ) : null}
-            <a
-              onClick={() => {
-                this.setState({ tab: 2 });
-              }}
-            >
-              Template Hub
-            </a>
-            <a
-              onClick={() => {
-                this.setState({ tab: 3 });
-              }}
-            >
-              {titleCase(strings.aboutTheProject)}
-            </a>
-            {this.state.user !== null ? (
-              <a onClick={this.logout}>{strings.signOut}</a>
-            ) : (
-              <a onClick={() => this.setState({ tab: 0 })}>{strings.signIn}</a>
-            )}
-          </div>
-          <div className="App-intro">
-            {this.state.tab === 0 ? (
-              <Login
-                skipLogin={() => {
-                  this.setState({ tab: 1, hide_options: false });
-                }}
-              />
-            ) : null}
-            {this.state.tab === 1 ? (
-              <Builder
-                cv_models={this.state.cv_models}
-                cv={this.state.cv}
-                cvSetter={this.cvSetter}
-                user={this.state.user}
-              >
-                {' '}
-              </Builder>
-            ) : null}
-            {this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
-            {this.state.tab === 3 ? <About /> : null}
-            {this.state.tab === 4 ? (
-              <AddTemplate cv_models={this.state.cv_models} />
-            ) : null}
-          </div>
+                </Nav.Link>
+                {this.state.user !== null
+                  && this.state.permissions !== null
+                  && this.state.permissions[this.state.user.uid]
+                  ? (
+                    <Nav.Link
+                      href="#create_template"
+                      onClick={() => {
+                        this.setState({ tab: 4 });
+                      }}
+                    >
+                      {strings.createTemplate}
+                    </Nav.Link>
+                  ) : null}
+                <Nav.Link
+                  href="#hub"
+                  onClick={() => {
+                    this.setState({ tab: 2 });
+                  }}
+                >
+Template Hub
+                </Nav.Link>
+                <Nav.Link
+                  href="#about"
+                  onClick={() => {
+                    this.setState({ tab: 3 });
+                  }}
+                >
+                  {strings.aboutTheProject}
+                </Nav.Link>
+                <NavDropdown title={strings.language} id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#lang/en" onClick={() => { strings.setLanguage('en'); this.setState({}); }}>English</NavDropdown.Item>
+                  <NavDropdown.Item href="#lang/pt" onClick={() => { strings.setLanguage('pt'); this.setState({}); }}>Português</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Nav className="mr-sm-2">
+                {this.state.user !== null ? (
+                  <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
+                ) : (
+                  <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+          <br />
+          {login}
+          <Container>
+            <Row className="justify-content-md-center">
+              <Col>
+                {this.state.tab === 1 ? (
+                  <Builder
+                    cv_models={this.state.cv_models}
+                    cv={this.state.cv}
+                    cvSetter={this.cvSetter}
+                    user={this.state.user}
+                  >
+                    {' '}
+                  </Builder>
+                ) : null}
+                {this.state.tab === 2 ? <TemplateHub user={this.state.user} /> : null}
+                {this.state.tab === 3 ? <About /> : null}
+                {this.state.tab === 4 ? (
+                  <AddTemplate cv_models={this.state.cv_models} />
+                ) : null}
+              </Col>
+            </Row>
+          </Container>
         </div>
       </span>
     );

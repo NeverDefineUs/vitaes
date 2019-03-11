@@ -4,24 +4,14 @@
   border-color: #fafafa;
   background-color: #f9f9f9;
   border-style: solid;
-  margin-left: 20%;
-  margin-right: 20%;
+  max-width: 1500px;
   border-radius: 20px;
   padding: 2em;
   text-align: left;
 }
 
-.Base-subtitle {
-  font-size: 1.5em;
-}
-
 .Base-profile {
   width: 30%;
-}
-
-.Base-title {
-  font-size: 2em;
-  padding-bottom: 0.5em;
 }
 
 .Base-label {
@@ -120,12 +110,4 @@
   margin: 0;
   width: 30em;
   background-color: #fff;
-}
-
-.Base-linemarker {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  background-color: #ccc;
-  width: stretch;
-  height: 1px;
 }
