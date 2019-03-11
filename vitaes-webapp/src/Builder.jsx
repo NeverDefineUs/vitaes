@@ -28,7 +28,7 @@ class CvHeaderField extends Component {
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${strings.required})` : ''}
           {this.props.id === 'birthday' ? ' [YYYY-MM-DD]' : ''}
-:
+          :
         </div>
         <input
           type="text"
@@ -96,7 +96,7 @@ class CvField extends Component {
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${strings.required})` : ''}
           {this.props.id.endsWith('date') ? ' [YYYY-MM-DD]' : ''}
-:
+          :
         </div>
         {inputField}
       </div>
@@ -227,7 +227,7 @@ class CvItemForm extends Component {
       <hr />,
       <h2 key={-2}>
         {this.props.label}
-:
+        :
       </h2>,
       <br key={-1} />,
     ];
@@ -526,7 +526,7 @@ class Builder extends Component {
           <br />,
           <div className="Base-label">
             {cvSuboption.pretty_name}
-:
+            :
           </div>,
           <select
             value={this.state.params[cvSuboption.name]}
@@ -548,7 +548,7 @@ class Builder extends Component {
         <br />
         <h2>
           {strings.header}
-:
+          :
         </h2>
         <br />
         <CvHeaderField
@@ -742,7 +742,7 @@ class Builder extends Component {
         <hr />
         <h2>
           {strings.reorderCVAreas}
-:
+          :
         </h2>
         <br />
         <CvOrder
@@ -755,7 +755,7 @@ class Builder extends Component {
         <br />
         <div className="Base-label">
           {strings.model}
-:
+          :
         </div>
         <select
           value={this.state.user_cv_model}
