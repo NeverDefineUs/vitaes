@@ -56,14 +56,14 @@ export function validateEmail(email) {
 }
 
 export function validateDate(dateStr) {
-  const date = Date.parse(dateStr);
+  const date = new Date(dateStr);
   const day = Number(dateStr[8] + dateStr[9]);
   const month = Number(dateStr[5] + dateStr[6]);
   const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3]);
   if (
-    date.getMonth() + 1 !== month
-    || date.getDate() + 1 !== day
-    || date.getFullYear() !== year
+    date.getUTCMonth() + 1 !== month
+    || date.getUTCDate() + 1 !== day
+    || date.getUTCFullYear() !== year
   ) {
     return false;
   }
