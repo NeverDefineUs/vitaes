@@ -21,7 +21,6 @@ module.exports = {
   rules: {
     'react/destructuring-assignment': 'off',
     'react/prop-types': 'off',
-    'no-alert': 'off',
     'react/no-multi-comp': 'off',
     'no-restricted-syntax': 'off',
     'guard-for-in': 'off',

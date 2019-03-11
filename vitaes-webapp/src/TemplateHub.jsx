@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Builder.css';
 import './TemplateHub.css';
+import { toast } from 'react-toastify';
 import { capitalize } from './Util';
 
 class TemplateHubModel extends Component {
@@ -33,7 +34,7 @@ class TemplateHubModel extends Component {
           <img
             alt="Template preview"
             className="template-image"
-            src="https://imgur.com/download/qwvtvlj"
+            src={model.data.image}
           />
           <div
             className="template-button"
@@ -98,7 +99,7 @@ class TemplateHub extends Component {
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => alert(`Error:${text}`));
+        textPromise.then(text => toast.error(`Error:${text}`));
       }
     });
   }
@@ -117,7 +118,7 @@ class TemplateHub extends Component {
     }
     return (
       <div className="Base">
-        <div className="Base-title">Template Hub</div>
+        <h1>Template Hub</h1>
         {templateList}
         <br />
       </div>

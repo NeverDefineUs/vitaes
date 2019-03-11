@@ -6,34 +6,38 @@ import firebase from 'firebase';
 import TextareaAutosize from 'react-autosize-textarea';
 import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
-import { capitalize, getHostname, removeDisabled } from './Util';
+import { capitalize, getHostname, removeDisabled, validateEmail, validateDate } from './Util';
 import CvOrder from './CvOrder';
+import { strings } from './i18n/strings';
+import { fieldsDef } from './fields';
+import { toast } from 'react-toastify';
+import { Alert, Button, Col, Row } from 'react-bootstrap';
 
 const locFields = [
-  ['country', 'Country name'],
-  ['state', 'State name'],
-  ['city', 'City name'],
+  fieldsDef.country,
+  fieldsDef.state,
+  fieldsDef.city,
 ];
 
 class CvHeaderField extends Component {
-  // label, placeholder, mandatory, curriculum, stateChanger
+  // label, id, placeholder, mandatory, curriculum, stateChanger
   render() {
     return (
       <div className="Base-field">
         <div className="Base-label">
           {capitalize(this.props.label)}
-          {this.props.mandatory ? ' (Required)' : ''}
-          {this.props.label === 'birthday' ? ' [YYYY-MM-DD]' : ''}
+          {this.props.mandatory ? ' (' + strings.required + ')' : ''}
+          {this.props.id === 'birthday' ? ' [YYYY-MM-DD]' : ''}
 :
         </div>
         <input
           type="text"
-          name={this.props.label}
+          name={this.props.id}
           value={
-            this.props.curriculum.CvHeaderItem[this.props.label]
+            this.props.curriculum.CvHeaderItem[this.props.id]
             === undefined
               ? ''
-              : this.props.curriculum.CvHeaderItem[this.props.label]
+              : this.props.curriculum.CvHeaderItem[this.props.id]
           }
           className="Base-inputfield"
           placeholder={this.props.placeholder}
@@ -45,18 +49,18 @@ class CvHeaderField extends Component {
 }
 
 class CvField extends Component {
-  // label, placeholder, mandatory, toAdd, stateChanger, addField
+  // label, id, placeholder, mandatory, toAdd, stateChanger, addField
   render() {
     let inputField;
     if (this.props.label !== 'description') {
       inputField = (
         <input
           type="text"
-          name={this.props.label}
+          name={this.props.id}
           value={
-            this.props.toAdd[this.props.label] === undefined
+            this.props.toAdd[this.props.id] === undefined
               ? ''
-              : this.props.toAdd[this.props.label]
+              : this.props.toAdd[this.props.id]
           }
           className="Base-inputfield"
           onChange={this.props.stateChanger}
@@ -72,11 +76,11 @@ class CvField extends Component {
       inputField = (
         <TextareaAutosize
           type="text"
-          name={this.props.label}
+          name={this.props.id}
           value={
-            this.props.toAdd[this.props.label] === undefined
+            this.props.toAdd[this.props.id] === undefined
               ? ''
-              : this.props.toAdd[this.props.label]
+              : this.props.toAdd[this.props.id]
           }
           className="Base-textareafield"
           onChange={this.props.stateChanger}
@@ -89,9 +93,9 @@ class CvField extends Component {
     return (
       <div className="Base-field">
         <div className="Base-label">
-          {capitalize(this.props.label === 'name' ? 'title' : this.props.label)}
-          {this.props.mandatory ? ' (Required)' : ''}
-          {this.props.label.endsWith('date') ? ' [YYYY-MM-DD]' : ''}
+          {capitalize(this.props.label)}
+          {this.props.mandatory ? ' (' + strings.required + ')' : ''}
+          {this.props.id.endsWith('date') ? ' [YYYY-MM-DD]' : ''}
 :
         </div>
         {inputField}
@@ -173,17 +177,17 @@ class CvItemForm extends Component {
     for (const item of this.props.fields) {
       if (toAdd[item[0]] === undefined) {
         if (item[0] === 'name') {
-          alert('Needed Field: Title');
+          toast.error('Needed Field: Title');
         } else {
-          alert(`Needed Field: ${capitalize(item[0])}`);
+          toast.error(`Needed Field: ${capitalize(item[0])}`);
         }
         return false;
       }
     }
     for (const item in toAdd) {
       if (item.endsWith('date') && toAdd[item]) {
-        if (!toAdd[item].match(/^\d{4}-\d{2}-\d{2}$/)) {
-          alert(`Wrong format:${item}`);
+        if (!validateDate(toAdd[item])) {
+          toast.error(`Wrong format:${item}`);
           return false;
         }
       }
@@ -220,11 +224,10 @@ class CvItemForm extends Component {
 
   render() {
     const nodes = [
-      <div className="Base-linemarker" key={-3} />,
-      <div className="Base-subtitle" key={-2}>
-        {this.props.label}
-:
-      </div>,
+      <hr />,
+      <h2 key={-2}>
+        {this.props.label}:
+      </h2>,
       <br key={-1} />,
     ];
     const comp = this;
@@ -241,21 +244,23 @@ class CvItemForm extends Component {
           name = `${item.skill_type}: ${item.skill_name}`;
         }
         nodes.push(
-          <div className="Base-item" key={index}>
+          <Alert variant="secondary" style={{width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5}} key={index}>
             <span onClick={comp.getEventExpander(index)}>{name}</span>
-            <div
-              className="Base-item-close"
+            <Button 
+              variant="dark" size="sm"
               onClick={comp.getEventDeleter(index)}
+              style={{marginLeft: 5, float: "right"}}
             >
-              <a>delete</a>
-            </div>
-            <div
-              className="Base-item-close"
+              delete
+            </Button>
+            <Button 
+              variant="dark" size="sm" 
               onClick={comp.getEventEnabler(index)}
+              style={{marginLeft: 5, float: "right"}}
             >
-              <a>{item.disable ? 'hide' : 'show'}</a>
-            </div>
-          </div>,
+              {item.disable ? 'hide' : 'show'}
+            </Button>
+          </Alert>,
         );
       });
     }
@@ -263,12 +268,13 @@ class CvItemForm extends Component {
       return (
         <div>
           {nodes}
-          <div
-            className="Base-button"
+          <Button
+            variant="secondary"
+            style={{float: "right"}}
             onClick={() => this.props.labelChanger(this.props.label)}
           >
-            <a>Add</a>
-          </div>
+            {strings.addEntry}
+          </Button>
           <br />
         </div>
       );
@@ -281,7 +287,8 @@ class CvItemForm extends Component {
             stateChanger={this.handleChange}
             toAdd={this.state.toAdd}
             addField={this.addField}
-            label={field_info[0]}
+            id={field_info[0]}
+            label={field_info[2]}
             placeholder={field_info[1]}
             mandatory
           />,
@@ -295,7 +302,8 @@ class CvItemForm extends Component {
             stateChanger={this.handleChange}
             toAdd={this.state.toAdd}
             addField={this.addField}
-            label={field_info[0]}
+            id={field_info[0]}
+            label={field_info[2]}
             placeholder={field_info[1]}
             mandatory={false}
           />,
@@ -307,9 +315,13 @@ class CvItemForm extends Component {
         {nodes}
         <div className="Base-form">
           {formNodes}
-          <div className="Base-button" onClick={this.addField}>
-            <a>Add</a>
-          </div>
+          <Button
+            variant="secondary"
+            style={{float: "right"}}
+            onClick={this.addField}
+          >
+            {strings.addEntry}
+          </Button>
         </div>
         <br />
       </div>
@@ -353,27 +365,7 @@ class Builder extends Component {
     }
     this.setCv(aux);
   }
-
-  validateEmail(email) {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  }
-
-  validateDate(dateStr) {
-    const date = new Date(dateStr);
-    const day = Number(dateStr[8] + dateStr[9]);
-    const month = Number(dateStr[5] + dateStr[6]);
-    const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3]);
-    if (
-      date.getMonth() + 1 !== month
-      || date.getDate() + 1 !== day
-      || date.getFullYear() !== year
-    ) {
-      return false;
-    }
-    return true;
-  }
-
+  
   downloadCvAsJson() {
     const db = firebase
       .database()
@@ -398,18 +390,18 @@ class Builder extends Component {
   }
 
   downloadCvAsPDF() {
-    if (!this.validateEmail(this.props.cv.CvHeaderItem.email)) {
-      alert('Invalid E-mail field');
+    if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
+      toast.error('Invalid E-mail field');
       return;
     }
     if (this.props.cv.CvHeaderItem.name === '') {
-      alert('Empty name field');
+      toast.error('Empty name field');
       return;
     }
 
     if (!this.props.cv.CvHeaderItem.birthday == '') {
-      if (!this.validateDate(this.props.cv.CvHeaderItem.birthday)) {
-        alert('Wrong birthday date format');
+      if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
+        toast.error('Wrong birthday date format');
         return;
       }
     }
@@ -462,13 +454,13 @@ class Builder extends Component {
                 element.click();
               });
             } else {
-              alert('Error processing file');
+              toast.error('Error processing file');
             }
           });
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => alert(`Error:${text}`));
+        textPromise.then(text => toast.error(`Error:${text}`));
       }
     });
   }
@@ -516,7 +508,7 @@ class Builder extends Component {
       );
     }
     let cv_model_suboptions = [];
-    if (this.props.cv_models[this.state.user_cv_model] !== undefined) {
+    if (this.props.cv_models !== undefined && this.props.cv_models[this.state.user_cv_model] !== undefined) {
       for (const cv_suboption of this.props.cv_models[this.state.user_cv_model].params) {
         const cv_model_suboptions_items = [];
         for (const opt in cv_suboption.mapped_options) {
@@ -549,36 +541,39 @@ class Builder extends Component {
     }
     return (
       <div className="Base">
-        <div className="Base-title">Curriculum Vitae:</div>
+        <h1>Curriculum Vitae:</h1>
         <br />
-        <div className="Base-subtitle">Header:</div>
+        <h2>{strings.header}:</h2>
         <br />
-        {/* PLZ REFACTOR ME */}
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
-          label="name"
+          label={strings.name}
+          id="name"
           mandatory
-          placeholder="Display name"
+          placeholder={strings.namePlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
-          label="email"
+          label={strings.email}
+          id="email"
           mandatory
-          placeholder="Full email address"
+          placeholder={strings.emailPlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
-          label="phone"
+          label={strings.phone}
+          id="phone"
           mandatory={false}
-          placeholder="Phone number (e.g. +55 12 3456-7890)"
+          placeholder={strings.phonePlaceholder + " (e.g. +55 12 3456-7890)"}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
           label="linkedin"
+          id="linkedin"
           mandatory={false}
           placeholder="Linkedin url (e.g. linkedin.com/in/youruser/)"
         />
@@ -586,159 +581,160 @@ class Builder extends Component {
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
           label="github"
+          id="github"
           mandatory={false}
           placeholder="GitHub url (e.g. github.com/youruser/)"
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
-          label="homepage"
+          label={strings.homepage}
+          id="homepage"
           mandatory={false}
-          placeholder="Website address"
+          placeholder={strings.homepagePlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
-          label="address"
+          label={strings.address}
+          id="address"
           mandatory={false}
-          placeholder="Phyisical address"
+          placeholder={strings.addressPlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
           curriculum={this.props.cv}
-          label="birthday"
+          label={strings.birthday}
+          id="birthday"
           mandatory={false}
-          placeholder="Birthday date"
+          placeholder={strings.birthdayPlaceholder}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Work"
+          label={strings.work}
           cvkey="CvWorkExperienceItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
           fields={[
-            ['institution', 'Name of the institution (e.g. MIT)'],
-            ['role', 'Position held (e.g. Software Engineer)'],
-            ['start_date', 'Starting date'],
+            fieldsDef.institution,
+            fieldsDef.role,
+            fieldsDef.startDate,
           ]}
           optFields={[
-            ['end_date', 'Ending date (leave empty for "present")'],
-            ['country', 'Country name'],
-            ['state', 'State name'],
-            ['city', 'City name'],
-            [
-              'description',
-              'Write activities performed at the job(* for items)',
-            ],
+            fieldsDef.endDate,
+            fieldsDef.country,
+            fieldsDef.state,
+            fieldsDef.city,
+            fieldsDef.jobDescription,
           ]}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Education"
+          label={strings.education}
           cvkey="CvEducationalExperienceItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
           fields={[
-            ['institution', 'Name of the institution (e.g. MIT)'],
-            ['course', 'Name of the course (e.g. Computer Science Bachelor)'],
-            ['start_date', 'Starting date'],
+            fieldsDef.institution,
+            fieldsDef.course,
+            fieldsDef.startDate,
           ]}
           optFields={[
-            ['end_date', 'Ending date (leave empty for "present")'],
-            ['country', 'Country name'],
-            ['state', 'State name'],
-            ['city', 'City name'],
-            ['description', 'Write details about the course(* for items)'],
-            ['teacher', "Teacher's name"],
+            fieldsDef.endDate,
+            fieldsDef.country,
+            fieldsDef.state,
+            fieldsDef.city,
+            fieldsDef.courseDescription,
+            fieldsDef.teacher,
           ]}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Academic Experience"
+          label={strings.academic}
           cvkey="CvAcademicProjectItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
-          fields={[['name', 'Project name'], ['start_date', 'Starting date']]}
+          fields={[fieldsDef.projectName, fieldsDef.startDate]}
           optFields={[
-            ['end_date', 'Ending date (leave empty for "present")'],
-            ['description', 'Short description of the project(* for items)'],
-            ['institution', 'Name of the institution (e.g. MIT)'],
-            ['country', 'Country name'],
-            ['state', 'State name'],
-            ['city', 'City name'],
-            ['article_link', 'Full URL to the article'],
+            fieldsDef.endDate,
+            fieldsDef.projectDescription,
+            fieldsDef.institution,
+            fieldsDef.country,
+            fieldsDef.state,
+            fieldsDef.city,
+            fieldsDef.articleLink,
           ]}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Achievements"
+          label={strings.achievements}
           cvkey="CvAchievementItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
           fields={[
-            ['name', 'Achievement name'],
-            ['start_date', 'Starting date'],
+            fieldsDef.achievementName,
+            fieldsDef.startDate,
           ]}
           optFields={[
-            ['end_date', 'Ending date (leave empty for "present")'],
-            ['description', 'Short description of the achievement'],
-            ['institution', 'Name of the institution (e.g. MIT)'],
-            ['country', 'Country name'],
-            ['state', 'State name'],
-            ['city', 'City name'],
-            ['place', 'Rank obtained (e.g. 1th)'],
-            ['certification_link', 'Full URL to the certification'],
+            fieldsDef.endDate,
+            fieldsDef.achievementDescription,
+            fieldsDef.institution,
+            fieldsDef.country,
+            fieldsDef.state,
+            fieldsDef.city,
+            fieldsDef.place,
+            fieldsDef.certificateLink,
           ]}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Projects"
+          label={strings.projects}
           cvkey="CvImplementationProjectItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
-          fields={[['name', 'Project name'], ['start_date', 'Starting date']]}
+          fields={[fieldsDef.projectName, fieldsDef.startDate]}
           optFields={[
-            ['end_date', 'Ending date (leave empty for "present")'],
-            ['description', 'Short description of the project(* for items)'],
-            ['language', 'Programming language used (e.g. Python)'],
-            ['country', 'Country name'],
-            ['state', 'State name'],
-            ['city', 'City name'],
-            ['repository_link', 'Full URL to the repository'],
+            fieldsDef.endDate,
+            fieldsDef.projectDescription,
+            fieldsDef.programLanguage,
+            fieldsDef.country,
+            fieldsDef.state,
+            fieldsDef.city,
+            fieldsDef.repositoryLink,
           ]}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Languages"
+          label={strings.languages}
           cvkey="CvLanguageItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
           fields={[
-            ['language', 'Language name (e.g. English)'],
-            ['level', 'Level of knowledge (e.g. Advanced)'],
+            fieldsDef.language,
+            fieldsDef.languageLevel,
           ]}
         />
         <CvItemForm
           chosenLabel={this.state.chosenLabel}
-          label="Skills"
+          label={strings.skills}
           cvkey="CvSkillItem"
           curriculum={this.props.cv}
           stateChanger={this.setCv}
           labelChanger={this.setLabel}
           fields={[
-            ['skill_name', 'Skill name'],
-            ['skill_type', 'Description of the skill'],
+            fieldsDef.skillName,
+            fieldsDef.skillType,
           ]}
         />
         {/* YEAH ME ^^^^ */}
-        <div className="Base-linemarker" />
-        <div className="Base-subtitle">Reorder CV areas:</div>
+        <hr/>
+        <h2>{strings.reorderCVAreas}:</h2>
         <br />
         <CvOrder
           setOrder={({ oldIndex, newIndex }) => this.setState({
@@ -748,7 +744,7 @@ class Builder extends Component {
           cvOrder={this.state.cv_order}
         />
         <br />
-        <div className="Base-label">Model:</div>
+        <div className="Base-label">{strings.model}:</div>
         <select
           value={this.state.user_cv_model}
           className="Base-select"
@@ -764,8 +760,12 @@ class Builder extends Component {
         {cv_model_suboptions}
         <br />
         <br />
-        <div className="Base-button">
-          <a onClick={this.startFilePicker}>
+        <Button 
+          variant="secondary"
+          size="sm"
+          onClick={this.startFilePicker}
+          style={{marginLeft: 5, float: "right"}}
+        >
             <input
               type="file"
               id="file"
@@ -773,19 +773,33 @@ class Builder extends Component {
               onChange={e => this.uploadJSON(e.target.files)}
               style={{ display: 'none' }}
             />
-            Upload Json
-          </a>
-        </div>
-        <div className="Base-button">
-          <a onClick={this.downloadCvAsJson}>Download Json</a>
-        </div>
-        <div className="Base-button">
-          <a onClick={this.downloadCvAsPDF}>Download CV</a>
-        </div>
+            {strings.uploadJson}
+        </Button>
+        <Button 
+          variant="secondary"
+          size="sm"
+          onClick={this.downloadCvAsJson}
+          style={{marginLeft: 5, float: "right"}}
+        >
+          {strings.downloadJson}
+        </Button>
+        <Button 
+          variant="secondary"
+          size="sm" 
+          onClick={this.downloadCvAsPDF}
+          style={{marginLeft: 5, float: "right"}}
+        >
+          {strings.downloadCV}
+        </Button>
         {this.props.user !== null ? (
-          <div className="Base-button">
-            <a onClick={this.saveOnAccount}>Save on account</a>
-          </div>
+          <Button 
+            variant="secondary"
+            size="sm" 
+            onClick={this.saveOnAccount}
+            style={{marginLeft: 5, float: "right"}}
+          >
+            {strings.saveCVOnAccount}
+          </Button>
         ) : null}
         <br />
       </div>
