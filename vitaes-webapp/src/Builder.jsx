@@ -186,7 +186,7 @@ class CvItemForm extends Component {
     }
     for (const item in toAdd) {
       if (item.endsWith('date') && toAdd[item]) {
-        if (!toAdd[item].match(/^\d{4}-\d{2}-\d{2}$/)) {
+        if (!validateDate(toAdd[item])) {
           toast.error(`Wrong format:${item}`);
           return false;
         }
