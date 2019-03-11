@@ -100,7 +100,7 @@ class App extends Component {
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => toast.error(`Error:${text}`));
+        textPromise.then(text => toast.error(`${strings.error}: ${text}`));
       }
     });
   }

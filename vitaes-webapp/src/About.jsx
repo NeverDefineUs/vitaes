@@ -13,26 +13,26 @@ class About extends Component {
 :
         </h1>
         <br />
-        <h2>Major Contributors:</h2>
+        <h2>{strings.majorContributors}:</h2>
         <h3> Arthurlpgc</h3>
         <img src={Arthurlpgc} alt="" className="Base-profile" />
         <br />
-        Contact Email: latache@vitaes.io
+        {strings.contactEmail}: latache@vitaes.io
         <br />
         <br />
         <h3> RamonSaboya</h3>
         <img src={RamonSaboya} alt="" className="Base-profile" />
         <br />
-        Contact Email: saboya@vitaes.io
+        {strings.contactEmail}: saboya@vitaes.io
         <br />
         <br />
         <h3> Magsouza</h3>
         <img src="https://avatars1.githubusercontent.com/u/37961381?s=400&v=4" alt="" className="Base-profile" />
         <br />
-        Contact Email: mag@vitaes.io
+        {strings.contactEmail}: mag@vitaes.io
         <br />
         <br />
-        <h2>Other Contributors:</h2>
+        <h2>{strings.otherContributors}:</h2>
         <ul>
           <li>
             <strong>acrc2:</strong>
@@ -63,7 +63,7 @@ Helped uncover a bug with accents and on
         </ul>
         <br />
         <h2>
-          Indirect Contributors(Made their templates open source):
+          {strings.templateContributors}:
         </h2>
         <ul>
           <li>
@@ -77,7 +77,7 @@ Awesome CV.
 Modern CV(not the git user).
           </li>
         </ul>
-        <h2>Repo:</h2>
+        <h2>{strings.repository}:</h2>
         https://github.com/NeverDefineUs/vitaes
         <br />
         <br />
