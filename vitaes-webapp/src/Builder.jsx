@@ -27,7 +27,7 @@ class CvHeaderField extends Component {
         <div className="Base-label">
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${strings.required})` : ''}
-          {this.props.id === 'birthday' ? ' [YYYY-MM-DD]' : ''}
+          {this.props.id === 'birthday' ? ` (${strings.dateFormat})` : ''}
           :
         </div>
         <input
@@ -95,7 +95,7 @@ class CvField extends Component {
         <div className="Base-label">
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${strings.required})` : ''}
-          {this.props.id.endsWith('date') ? ' [YYYY-MM-DD]' : ''}
+          {this.props.id.endsWith('date') ? ` (${strings.dateFormat})` : ''}
           :
         </div>
         {inputField}
@@ -177,9 +177,9 @@ class CvItemForm extends Component {
     for (const item of this.props.fields) {
       if (toAdd[item[0]] === undefined) {
         if (item[0] === 'name') {
-          toast.error('Needed Field: Title');
+          toast.error(`${strings.mandatoryField}: ${strings.title}`);
         } else {
-          toast.error(`Needed Field: ${capitalize(item[0])}`);
+          toast.error(`${strings.mandatoryField}: ${capitalize(item[0])}`);
         }
         return false;
       }
@@ -187,7 +187,7 @@ class CvItemForm extends Component {
     for (const item in toAdd) {
       if (item.endsWith('date') && toAdd[item]) {
         if (!validateDate(toAdd[item])) {
-          toast.error(`Wrong format:${item}`);
+          toast.error(`${strings.wrongFormat}: ${item}`);
           return false;
         }
       }
@@ -393,17 +393,17 @@ class Builder extends Component {
 
   downloadCvAsPDF() {
     if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
-      toast.error('Invalid E-mail field');
+      toast.error(strings.invalidEmail);
       return;
     }
     if (this.props.cv.CvHeaderItem.name === '') {
-      toast.error('Empty name field');
+      toast.error(strings.invalidName);
       return;
     }
 
     if (this.props.cv.CvHeaderItem.birthday) {
       if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
-        toast.error('Wrong birthday date format');
+        toast.error(strings.invalidBirthdayFormat);
         return;
       }
     }
@@ -454,13 +454,13 @@ class Builder extends Component {
                 element.click();
               });
             } else {
-              toast.error('Error processing file');
+              toast.error(strings.errorProcessingFile);
             }
           });
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => toast.error(`Error:${text}`));
+        textPromise.then(text => toast.error(`${strings.error}: ${text}`));
       }
     });
   }
@@ -573,7 +573,7 @@ class Builder extends Component {
           label={strings.phone}
           id="phone"
           mandatory={false}
-          placeholder={`${strings.phonePlaceholder} (e.g. +55 12 3456-7890)`}
+          placeholder={strings.phonePlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
@@ -581,7 +581,7 @@ class Builder extends Component {
           label="linkedin"
           id="linkedin"
           mandatory={false}
-          placeholder="Linkedin url (e.g. linkedin.com/in/youruser/)"
+          placeholder={strings.linkedinPlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
@@ -589,7 +589,7 @@ class Builder extends Component {
           label="github"
           id="github"
           mandatory={false}
-          placeholder="GitHub url (e.g. github.com/youruser/)"
+          placeholder={strings.githubPlaceholder}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
