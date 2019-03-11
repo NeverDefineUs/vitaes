@@ -24,6 +24,7 @@ module.exports = {
     'react/no-multi-comp': 'off',
     'no-restricted-syntax': 'off',
     'guard-for-in': 'off',
+    'react/no-access-state-in-setstate':'off',
     //fix for a11y:
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/interactive-supports-focus': 'off',
