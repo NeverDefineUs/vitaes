@@ -13,6 +13,7 @@ import CvOrder from './CvOrder';
 import { strings } from './i18n/strings';
 import { fieldsDef, updateFields } from './fields';
 
+updateFields();
 const locFields = [
   fieldsDef.country,
   fieldsDef.state,
@@ -22,7 +23,6 @@ const locFields = [
 class CvHeaderField extends Component {
   // label, id, placeholder, mandatory, curriculum, stateChanger
   render() {
-    updateFields();
     return (
       <div className="Base-field">
         <div className="Base-label">
@@ -152,8 +152,8 @@ class CvItemForm extends Component {
       }
       if (toAdd.location !== undefined) {
         for (const locField of locFields) {
-          if (toAdd.location.CvLocation[locField] !== undefined) {
-            toAdd[locField] = toAdd.location.CvLocation[locField];
+          if (toAdd.location.CvLocation[locField[0]] !== undefined) {
+            toAdd[locField[0]] = toAdd.location.CvLocation[locField[0]];
           }
         }
         delete toAdd.location;
@@ -501,6 +501,7 @@ class Builder extends Component {
   }
 
   render() {
+    updateFields();
     const cvModelOptions = [];
     for (const cvModelName in this.props.cv_models) {
       const cvModel = this.props.cv_models[cvModelName];
