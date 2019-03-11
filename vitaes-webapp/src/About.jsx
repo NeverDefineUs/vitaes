@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './Builder.css';
-import Arthurlpgc from './Profile/Arthurlpgc.jpg';
-import RamonSaboya from './Profile/RamonSaboya.jpg';
 import { strings } from './i18n/strings';
 
 class About extends Component {
@@ -18,14 +16,14 @@ class About extends Component {
           :
         </h2>
         <h3> Arthurlpgc</h3>
-        <img src={Arthurlpgc} alt="" className="Base-profile" />
+        <img src="https://avatars1.githubusercontent.com/u/11645779?s=460&v=4" alt="" className="Base-profile" />
         <br />
         {strings.contactEmail}
         : latache@vitaes.io
         <br />
         <br />
         <h3> RamonSaboya</h3>
-        <img src={RamonSaboya} alt="" className="Base-profile" />
+        <img src="https://avatars0.githubusercontent.com/u/5997047?s=400&v=4" alt="" className="Base-profile" />
         <br />
         {strings.contactEmail}
         : saboya@vitaes.io
