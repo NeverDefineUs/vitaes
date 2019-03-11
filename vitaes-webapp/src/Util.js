@@ -62,7 +62,7 @@ export function validateDate(dateStr) {
   const year = Number(dateStr[0] + dateStr[1] + dateStr[2] + dateStr[3]);
   if (
     date.getUTCMonth() + 1 !== month
-    || date.getUTCDate() + 1 !== day
+    || date.getUTCDate() !== day
     || date.getUTCFullYear() !== year
   ) {
     return false;
