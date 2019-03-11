@@ -10,7 +10,10 @@ class Login extends Component {
     return (
       <Modal show={this.props.show} onHide={this.props.onHide}>
         <Modal.Header closeButton>
-          <Modal.Title>{strings.title}:</Modal.Title>
+          <Modal.Title>
+            {strings.title}
+            :
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
