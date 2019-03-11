@@ -1,17 +1,17 @@
-/* eslint-disable */
-
 import React, { Component } from 'react';
 import './Builder.css';
 import firebase from 'firebase';
 import TextareaAutosize from 'react-autosize-textarea';
 import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
-import { capitalize, getHostname, removeDisabled, validateEmail, validateDate } from './Util';
+import { toast } from 'react-toastify';
+import { Alert, Button } from 'react-bootstrap';
+import {
+  capitalize, getHostname, removeDisabled, validateEmail, validateDate,
+} from './Util';
 import CvOrder from './CvOrder';
 import { strings } from './i18n/strings';
 import { fieldsDef } from './fields';
-import { toast } from 'react-toastify';
-import { Alert, Button, Col, Row } from 'react-bootstrap';
 
 const locFields = [
   fieldsDef.country,
@@ -26,7 +26,7 @@ class CvHeaderField extends Component {
       <div className="Base-field">
         <div className="Base-label">
           {capitalize(this.props.label)}
-          {this.props.mandatory ? ' (' + strings.required + ')' : ''}
+          {this.props.mandatory ? ` (${strings.required})` : ''}
           {this.props.id === 'birthday' ? ' [YYYY-MM-DD]' : ''}
 :
         </div>
@@ -94,7 +94,7 @@ class CvField extends Component {
       <div className="Base-field">
         <div className="Base-label">
           {capitalize(this.props.label)}
-          {this.props.mandatory ? ' (' + strings.required + ')' : ''}
+          {this.props.mandatory ? ` (${strings.required})` : ''}
           {this.props.id.endsWith('date') ? ' [YYYY-MM-DD]' : ''}
 :
         </div>
@@ -202,13 +202,13 @@ class CvItemForm extends Component {
       || toAdd.city !== undefined
     ) {
       const cvLocation = {};
-      for (var locField of locFields) {
+      for (const locField of locFields) {
         if (toAdd[locField[0]] !== undefined) {
           cvLocation[locField[0]] = toAdd[locField[0]];
         }
       }
       toAdd.location = { CvLocation: cvLocation };
-      for (locField of locFields) {
+      for (const locField of locFields) {
         delete toAdd[locField[0]];
       }
     }
@@ -226,7 +226,8 @@ class CvItemForm extends Component {
     const nodes = [
       <hr />,
       <h2 key={-2}>
-        {this.props.label}:
+        {this.props.label}
+:
       </h2>,
       <br key={-1} />,
     ];
@@ -235,28 +236,36 @@ class CvItemForm extends Component {
       this.props.curriculum[this.props.cvkey].forEach((item, index) => {
         let name = '';
         if (item.name !== undefined) {
-          name = item.name;
+          ({ name } = item);
         } else if (item.institution !== undefined) {
-          name = item.institution.CvInstitution.name;
+          ({ name } = item.institution.CvInstitution);
         } else if (item.language !== undefined) {
           name = item.language;
         } else {
           name = `${item.skill_type}: ${item.skill_name}`;
         }
         nodes.push(
-          <Alert variant="secondary" style={{width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5}} key={index}>
+          <Alert
+            variant="secondary"
+            style={{
+              width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5,
+            }}
+            key={name}
+          >
             <span onClick={comp.getEventExpander(index)}>{name}</span>
-            <Button 
-              variant="dark" size="sm"
+            <Button
+              variant="dark"
+              size="sm"
               onClick={comp.getEventDeleter(index)}
-              style={{marginLeft: 5, float: "right"}}
+              style={{ marginLeft: 5, float: 'right' }}
             >
               delete
             </Button>
-            <Button 
-              variant="dark" size="sm" 
+            <Button
+              variant="dark"
+              size="sm"
               onClick={comp.getEventEnabler(index)}
-              style={{marginLeft: 5, float: "right"}}
+              style={{ marginLeft: 5, float: 'right' }}
             >
               {item.disable ? 'hide' : 'show'}
             </Button>
@@ -270,7 +279,7 @@ class CvItemForm extends Component {
           {nodes}
           <Button
             variant="secondary"
-            style={{float: "right"}}
+            style={{ float: 'right' }}
             onClick={() => this.props.labelChanger(this.props.label)}
           >
             {strings.addEntry}
@@ -281,30 +290,30 @@ class CvItemForm extends Component {
     }
     const formNodes = [];
     if (this.props.fields !== undefined) {
-      this.props.fields.forEach((field_info, index) => {
+      this.props.fields.forEach((fieldInfo) => {
         formNodes.push(
           <CvField
             stateChanger={this.handleChange}
             toAdd={this.state.toAdd}
             addField={this.addField}
-            id={field_info[0]}
-            label={field_info[2]}
-            placeholder={field_info[1]}
+            id={fieldInfo[0]}
+            label={fieldInfo[2]}
+            placeholder={fieldInfo[1]}
             mandatory
           />,
         );
       });
     }
     if (this.props.optFields !== undefined) {
-      this.props.optFields.forEach((field_info, index) => {
+      this.props.optFields.forEach((fieldInfo) => {
         formNodes.push(
           <CvField
             stateChanger={this.handleChange}
             toAdd={this.state.toAdd}
             addField={this.addField}
-            id={field_info[0]}
-            label={field_info[2]}
-            placeholder={field_info[1]}
+            id={fieldInfo[0]}
+            label={fieldInfo[2]}
+            placeholder={fieldInfo[1]}
             mandatory={false}
           />,
         );
@@ -317,7 +326,7 @@ class CvItemForm extends Component {
           {formNodes}
           <Button
             variant="secondary"
-            style={{float: "right"}}
+            style={{ float: 'right' }}
             onClick={this.addField}
           >
             {strings.addEntry}
@@ -333,7 +342,6 @@ class Builder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      curriculum: this.props.cv,
       chosenLabel: '',
       user_cv_model: 'awesome',
       cv_order: [
@@ -355,31 +363,25 @@ class Builder extends Component {
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
+    this.fileUploader = (
+      <input
+        type="file"
+        id="file"
+        onChange={e => this.uploadJSON(e.target.files)}
+        style={{ display: 'none' }}
+      />
+    );
   }
 
-  handleChangeHeader(event) {
-    const aux = this.props.cv;
-    aux.CvHeaderItem[event.target.name] = event.target.value;
-    if (aux.CvHeaderItem[event.target.name] === '') {
-      delete aux.CvHeaderItem[event.target.name];
-    }
-    this.setCv(aux);
+  setCv(cv) {
+    this.props.cvSetter(cv);
   }
-  
+
+  setLabel(label) {
+    this.setState({ chosenLabel: label });
+  }
+
   downloadCvAsJson() {
-    const db = firebase
-      .database()
-      .ref('cv-dumps-json')
-      .child(
-        `EMAIL:${
-          this.props.user !== null
-            ? this.props.user.uid
-            : this.props.cv.CvHeaderItem.email !== undefined
-              ? this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')
-              : ''}`,
-      )
-      .push();
-    db.set(this.props.cv);
     const element = document.createElement('a');
     const file = new Blob([JSON.stringify(this.props.cv)], {
       type: 'text/plain',
@@ -399,7 +401,7 @@ class Builder extends Component {
       return;
     }
 
-    if (!this.props.cv.CvHeaderItem.birthday == '') {
+    if (this.props.cv.CvHeaderItem.birthday) {
       if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
         toast.error('Wrong birthday date format');
         return;
@@ -413,9 +415,7 @@ class Builder extends Component {
         `EMAIL:${
           this.props.user !== null
             ? this.props.user.uid
-            : this.props.cv.CvHeaderItem.email !== undefined
-              ? this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')
-              : ''}`,
+            : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
       )
       .push();
     db.set(this.props.cv);
@@ -444,10 +444,10 @@ class Builder extends Component {
               retryDelay: 1000,
               retryOn: [404],
             },
-          ).then((response) => {
-            if (response.ok) {
-              const file = response.blob();
-              file.then((file) => {
+          ).then((cvresponse) => {
+            if (cvresponse.ok) {
+              const fileBlob = cvresponse.blob();
+              fileBlob.then((file) => {
                 const element = document.createElement('a');
                 element.href = URL.createObjectURL(file);
                 element.download = 'cv.pdf';
@@ -476,21 +476,23 @@ class Builder extends Component {
     }
   }
 
-  setCv(cv) {
-    this.props.cvSetter(cv);
+  handleChangeHeader(event) {
+    const aux = this.props.cv;
+    aux.CvHeaderItem[event.target.name] = event.target.value;
+    if (aux.CvHeaderItem[event.target.name] === '') {
+      delete aux.CvHeaderItem[event.target.name];
+    }
+    this.setCv(aux);
   }
 
-  setLabel(label) {
-    this.setState({ chosenLabel: label });
-  }
-
-  startFilePicker(e) {
-    this.refs.fileUploader.click();
+  startFilePicker() {
+    this.fileUploader.click();
   }
 
   uploadJSON(selectorFiles) {
     const fr = new FileReader();
-    fr.onload = function (e) {
+    // eslint-disable-next-line func-names
+    fr.onload = function () {
       const json = fr.result;
       this.setCv(JSON.parse(json));
     }.bind(this);
@@ -498,43 +500,44 @@ class Builder extends Component {
   }
 
   render() {
-    const cv_model_options = [];
-    for (const cv_model_name in this.props.cv_models) {
-      const cv_model = this.props.cv_models[cv_model_name];
-      cv_model_options.push(
-        <option key={cv_model.name} value={cv_model.name}>
-          {capitalize(cv_model.name)}
+    const cvModelOptions = [];
+    for (const cvModelName in this.props.cv_models) {
+      const cvModel = this.props.cv_models[cvModelName];
+      cvModelOptions.push(
+        <option key={cvModel.name} value={cvModel.name}>
+          {capitalize(cvModel.name)}
         </option>,
       );
     }
-    let cv_model_suboptions = [];
-    if (this.props.cv_models !== undefined && this.props.cv_models[this.state.user_cv_model] !== undefined) {
-      for (const cv_suboption of this.props.cv_models[this.state.user_cv_model].params) {
-        const cv_model_suboptions_items = [];
-        for (const opt in cv_suboption.mapped_options) {
-          cv_model_suboptions_items.push(
-            <option key={opt} value={cv_suboption.mapped_options[opt]}>
+    let cvModelSuboptions = [];
+    if (this.props.cv_models !== undefined
+      && this.props.cv_models[this.state.user_cv_model] !== undefined) {
+      for (const cvSuboption of this.props.cv_models[this.state.user_cv_model].params) {
+        const cvModelSuboptionsItems = [];
+        for (const opt in cvSuboption.mapped_options) {
+          cvModelSuboptionsItems.push(
+            <option key={opt} value={cvSuboption.mapped_options[opt]}>
               {capitalize(opt)}
             </option>,
           );
         }
-        cv_model_suboptions = cv_model_suboptions.concat([
+        cvModelSuboptions = cvModelSuboptions.concat([
           <br />,
           <br />,
           <div className="Base-label">
-            {cv_suboption.pretty_name}
+            {cvSuboption.pretty_name}
 :
           </div>,
           <select
-            value={this.state.params[cv_suboption.name]}
+            value={this.state.params[cvSuboption.name]}
             className="Base-select"
             onChange={(e) => {
               const { params } = this.state;
-              params[cv_suboption.name] = e.target.value;
+              params[cvSuboption.name] = e.target.value;
               this.setState({ params });
             }}
           >
-            {cv_model_suboptions_items}
+            {cvModelSuboptionsItems}
           </select>,
         ]);
       }
@@ -543,7 +546,10 @@ class Builder extends Component {
       <div className="Base">
         <h1>Curriculum Vitae:</h1>
         <br />
-        <h2>{strings.header}:</h2>
+        <h2>
+          {strings.header}
+:
+        </h2>
         <br />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
@@ -567,7 +573,7 @@ class Builder extends Component {
           label={strings.phone}
           id="phone"
           mandatory={false}
-          placeholder={strings.phonePlaceholder + " (e.g. +55 12 3456-7890)"}
+          placeholder={`${strings.phonePlaceholder} (e.g. +55 12 3456-7890)`}
         />
         <CvHeaderField
           stateChanger={this.handleChangeHeader}
@@ -733,8 +739,11 @@ class Builder extends Component {
           ]}
         />
         {/* YEAH ME ^^^^ */}
-        <hr/>
-        <h2>{strings.reorderCVAreas}:</h2>
+        <hr />
+        <h2>
+          {strings.reorderCVAreas}
+:
+        </h2>
         <br />
         <CvOrder
           setOrder={({ oldIndex, newIndex }) => this.setState({
@@ -744,7 +753,10 @@ class Builder extends Component {
           cvOrder={this.state.cv_order}
         />
         <br />
-        <div className="Base-label">{strings.model}:</div>
+        <div className="Base-label">
+          {strings.model}
+:
+        </div>
         <select
           value={this.state.user_cv_model}
           className="Base-select"
@@ -755,48 +767,42 @@ class Builder extends Component {
             });
           }}
         >
-          {cv_model_options}
+          {cvModelOptions}
         </select>
-        {cv_model_suboptions}
+        {cvModelSuboptions}
         <br />
         <br />
-        <Button 
+        <Button
           variant="secondary"
           size="sm"
           onClick={this.startFilePicker}
-          style={{marginLeft: 5, float: "right"}}
+          style={{ marginLeft: 5, float: 'right' }}
         >
-            <input
-              type="file"
-              id="file"
-              ref="fileUploader"
-              onChange={e => this.uploadJSON(e.target.files)}
-              style={{ display: 'none' }}
-            />
-            {strings.uploadJson}
+          {this.fileUploader}
+          {strings.uploadJson}
         </Button>
-        <Button 
+        <Button
           variant="secondary"
           size="sm"
           onClick={this.downloadCvAsJson}
-          style={{marginLeft: 5, float: "right"}}
+          style={{ marginLeft: 5, float: 'right' }}
         >
           {strings.downloadJson}
         </Button>
-        <Button 
+        <Button
           variant="secondary"
-          size="sm" 
+          size="sm"
           onClick={this.downloadCvAsPDF}
-          style={{marginLeft: 5, float: "right"}}
+          style={{ marginLeft: 5, float: 'right' }}
         >
           {strings.downloadCV}
         </Button>
         {this.props.user !== null ? (
-          <Button 
+          <Button
             variant="secondary"
-            size="sm" 
+            size="sm"
             onClick={this.saveOnAccount}
-            style={{marginLeft: 5, float: "right"}}
+            style={{ marginLeft: 5, float: 'right' }}
           >
             {strings.saveCVOnAccount}
           </Button>
