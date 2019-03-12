@@ -112,7 +112,7 @@ export class AlertManager extends Component {
           </Card.Body>
         </Card>,
         <Card>
-          <Card.Header>Featured</Card.Header>
+          <Card.Header>{strings.alerts}</Card.Header>
           <ListGroup variant="flush">
             {alerts}
           </ListGroup>
