@@ -13,7 +13,7 @@ export function updateFields() {
     country: ['country', strings.countryPlaceholder, strings.country],
     course: ['course', strings.coursePlaceholder, strings.course],
     courseDescription: ['description', strings.courseDescriptionPlaceholder, strings.description],
-    endDate: ['end_date', strings.endDatePlaceholder, strings.endDate],
+    endDate: ['end_date', strings.dateFormat + strings.endDatePlaceholder, strings.endDate],
     institution: ['institution', strings.institutionPlaceholder, strings.institution],
     jobDescription: ['description', strings.jobDescriptionPlaceholder, strings.description],
     language: ['language', strings.languagePlaceholder, strings.language],
@@ -26,7 +26,7 @@ export function updateFields() {
     role: ['role', strings.rolePlaceholder, strings.role],
     skillName: ['skill_name', strings.skillPlaceholder, strings.skill],
     skillType: ['skill_type', strings.skillTypePlaceholder, strings.skillType],
-    startDate: ['start_date', strings.startDatePlaceholder, strings.startDate],
+    startDate: ['start_date', strings.dateFormat, strings.startDate],
     state: ['state', strings.statePlaceholder, strings.state],
     teacher: ['teacher', strings.teacherPlaceholder, strings.teacher],
   };
