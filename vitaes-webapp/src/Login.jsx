@@ -11,7 +11,7 @@ class Login extends Component {
       <Modal show={this.props.show} onHide={this.props.onHide}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {strings.title}
+            {strings.signIn}
             :
           </Modal.Title>
         </Modal.Header>

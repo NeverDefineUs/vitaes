@@ -56,18 +56,6 @@
   border-color: #ddd;
 }
 
-.Base-textareafield {
-  border-radius: 2px;
-  flex-grow: 100;
-  border: 1px;
-  font-size: 1em;
-  min-height: 1.2em;
-  border-style: solid;
-  border-color: #ddd;
-  height: fit-content;
-  resize: none;
-}
-
 .Base-item {
   background-color: #eee;
   padding: 5px;
@@ -78,36 +66,4 @@
 
 .Base-orderlist {
   list-style-type: none;
-}
-
-.Base-form {
-  background-color: #eee;
-  margin-bottom: 5px;
-  padding: 1em;
-  padding-bottom: 3em;
-  border-radius: 1em;
-}
-
-.Base-item-close {
-  display: inline;
-}
-.Base-item-close a {
-  background-color: #bbb;
-  float: right;
-  height: 1.2em;
-  padding-left: 1em;
-  padding-right: 1em;
-  border-radius: 0.75em;
-}
-
-.Base-item-close a:hover {
-  background-color: #aaa;
-}
-
-.Base-select {
-  float: right;
-  height: 2em;
-  margin: 0;
-  width: 30em;
-  background-color: #fff;
 }

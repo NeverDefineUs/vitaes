@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './Builder.css';
 import firebase from 'firebase';
-import TextareaAutosize from 'react-autosize-textarea';
 import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
 import { toast } from 'react-toastify';
-import { Alert, Button } from 'react-bootstrap';
+import {
+  Alert, Button, Form, Card, Col, Row,
+} from 'react-bootstrap';
 import {
   capitalize, getHostname, removeDisabled, validateEmail, validateDate,
 } from './Util';
@@ -24,27 +25,27 @@ class CvHeaderField extends Component {
   // label, id, placeholder, mandatory, curriculum, stateChanger
   render() {
     return (
-      <div className="Base-field">
-        <div className="Base-label">
+      <Form.Group as={Row} size="sm">
+        <Form.Label column sm="2">
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${strings.required})` : ''}
-          {this.props.id === 'birthday' ? ` (${strings.dateFormat})` : ''}
           :
-        </div>
-        <input
-          type="text"
-          name={this.props.id}
-          value={
-            this.props.curriculum.CvHeaderItem[this.props.id]
-            === undefined
-              ? ''
-              : this.props.curriculum.CvHeaderItem[this.props.id]
-          }
-          className="Base-inputfield"
-          placeholder={this.props.placeholder}
-          onChange={this.props.stateChanger}
-        />
-      </div>
+        </Form.Label>
+        <Col sm="10">
+          <Form.Control
+            type="text"
+            value={
+              this.props.curriculum.CvHeaderItem[this.props.id]
+              === undefined
+                ? ''
+                : this.props.curriculum.CvHeaderItem[this.props.id]
+            }
+            name={this.props.id}
+            placeholder={this.props.placeholder}
+            onChange={this.props.stateChanger}
+          />
+        </Col>
+      </Form.Group>
     );
   }
 }
@@ -52,56 +53,37 @@ class CvHeaderField extends Component {
 class CvField extends Component {
   // label, id, placeholder, mandatory, toAdd, stateChanger, addField
   render() {
-    let inputField;
-    if (this.props.label !== 'description') {
-      inputField = (
-        <input
-          type="text"
-          name={this.props.id}
-          value={
-            this.props.toAdd[this.props.id] === undefined
-              ? ''
-              : this.props.toAdd[this.props.id]
-          }
-          className="Base-inputfield"
-          onChange={this.props.stateChanger}
-          placeholder={this.props.placeholder}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              this.props.addField();
-            }
-          }}
-        />
-      );
-    } else {
-      inputField = (
-        <TextareaAutosize
-          type="text"
-          name={this.props.id}
-          value={
-            this.props.toAdd[this.props.id] === undefined
-              ? ''
-              : this.props.toAdd[this.props.id]
-          }
-          className="Base-textareafield"
-          onChange={this.props.stateChanger}
-          placeholder={this.props.placeholder}
-          rows={1}
-        />
-      );
-    }
-
-    return (
-      <div className="Base-field">
-        <div className="Base-label">
+    const inputField = (
+      <Form.Group as={Row}>
+        <Form.Label column sm={3}>
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${strings.required})` : ''}
           {this.props.id.endsWith('date') ? ` (${strings.dateFormat})` : ''}
-          :
-        </div>
-        {inputField}
-      </div>
+            :
+        </Form.Label>
+        <Col sm={9}>
+          <Form.Control
+            type="text"
+            as={this.props.id === 'description' ? 'textarea' : 'input'}
+            name={this.props.id}
+            value={
+                this.props.toAdd[this.props.id] === undefined
+                  ? ''
+                  : this.props.toAdd[this.props.id]
+              }
+            className="Base-inputfield"
+            onChange={this.props.stateChanger}
+            placeholder={this.props.placeholder}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                this.props.addField();
+              }
+            }}
+          />
+        </Col>
+      </Form.Group>
     );
+    return inputField;
   }
 }
 
@@ -226,10 +208,10 @@ class CvItemForm extends Component {
   render() {
     const nodes = [
       <hr />,
-      <h2 key={-2}>
+      <h3 key={-2}>
         {this.props.label}
         :
-      </h2>,
+      </h3>,
       <br key={-1} />,
     ];
     const comp = this;
@@ -323,8 +305,10 @@ class CvItemForm extends Component {
     return (
       <div>
         {nodes}
-        <div className="Base-form">
-          {formNodes}
+        <Card style={{ padding: 10 }}>
+          <Card.Body>
+            {formNodes}
+          </Card.Body>
           <Button
             variant="secondary"
             style={{ float: 'right' }}
@@ -332,8 +316,7 @@ class CvItemForm extends Component {
           >
             {strings.addEntry}
           </Button>
-        </div>
-        <br />
+        </Card>
       </div>
     );
   }
@@ -394,14 +377,13 @@ class Builder extends Component {
 
   downloadCvAsPDF() {
     if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
-      toast.error(strings.invalidEmail);
+      toast.error(strings.invalidEmailFormat);
       return;
     }
     if (this.props.cv.CvHeaderItem.name === '') {
-      toast.error(strings.invalidName);
+      toast.error(strings.invalidNameFormat);
       return;
     }
-
     if (this.props.cv.CvHeaderItem.birthday) {
       if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
         toast.error(strings.invalidBirthdayFormat);
@@ -511,7 +493,7 @@ class Builder extends Component {
         </option>,
       );
     }
-    let cvModelSuboptions = [];
+    const cvModelSuboptions = [];
     if (this.props.cv_models !== undefined
       && this.props.cv_models[this.state.user_cv_model] !== undefined) {
       for (const cvSuboption of this.props.cv_models[this.state.user_cv_model].params) {
@@ -523,294 +505,302 @@ class Builder extends Component {
             </option>,
           );
         }
-        cvModelSuboptions = cvModelSuboptions.concat([
-          <br />,
-          <br />,
-          <div className="Base-label">
-            {cvSuboption.pretty_name}
+        cvModelSuboptions.push(
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              {cvSuboption.pretty_name}
             :
-          </div>,
-          <select
-            value={this.state.params[cvSuboption.name]}
-            className="Base-select"
-            onChange={(e) => {
-              const { params } = this.state;
-              params[cvSuboption.name] = e.target.value;
-              this.setState({ params });
-            }}
-          >
-            {cvModelSuboptionsItems}
-          </select>,
-        ]);
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control
+                as="select"
+                value={this.state.params[cvSuboption.name]}
+                onChange={(e) => {
+                  const { params } = this.state;
+                  params[cvSuboption.name] = e.target.value;
+                  this.setState({ params });
+                }}
+              >
+                {cvModelSuboptionsItems}
+              </Form.Control>
+            </Col>
+          </Form.Group>,
+        );
       }
     }
     return (
-      <div className="Base">
-        <h1>Curriculum Vitae:</h1>
-        <br />
-        <h2>
-          {strings.header}
+      <Card bg="light">
+        <Card.Body>
+          <h2>Curriculum Vitae:</h2>
+          <br />
+          <h3>
+            {strings.header}
           :
-        </h2>
-        <br />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label={strings.name}
-          id="name"
-          mandatory
-          placeholder={strings.namePlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label={strings.email}
-          id="email"
-          mandatory
-          placeholder={strings.emailPlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label={strings.phone}
-          id="phone"
-          mandatory={false}
-          placeholder={strings.phonePlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label="linkedin"
-          id="linkedin"
-          mandatory={false}
-          placeholder={strings.linkedinPlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label="github"
-          id="github"
-          mandatory={false}
-          placeholder={strings.githubPlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label={strings.homepage}
-          id="homepage"
-          mandatory={false}
-          placeholder={strings.homepagePlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label={strings.address}
-          id="address"
-          mandatory={false}
-          placeholder={strings.addressPlaceholder}
-        />
-        <CvHeaderField
-          stateChanger={this.handleChangeHeader}
-          curriculum={this.props.cv}
-          label={strings.birthday}
-          id="birthday"
-          mandatory={false}
-          placeholder={strings.birthdayPlaceholder}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.work}
-          cvkey="CvWorkExperienceItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[
-            fieldsDef.institution,
-            fieldsDef.role,
-            fieldsDef.startDate,
-          ]}
-          optFields={[
-            fieldsDef.endDate,
-            fieldsDef.country,
-            fieldsDef.state,
-            fieldsDef.city,
-            fieldsDef.jobDescription,
-          ]}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.education}
-          cvkey="CvEducationalExperienceItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[
-            fieldsDef.institution,
-            fieldsDef.course,
-            fieldsDef.startDate,
-          ]}
-          optFields={[
-            fieldsDef.endDate,
-            fieldsDef.country,
-            fieldsDef.state,
-            fieldsDef.city,
-            fieldsDef.courseDescription,
-            fieldsDef.teacher,
-          ]}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.academic}
-          cvkey="CvAcademicProjectItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[fieldsDef.projectName, fieldsDef.startDate]}
-          optFields={[
-            fieldsDef.endDate,
-            fieldsDef.projectDescription,
-            fieldsDef.institution,
-            fieldsDef.country,
-            fieldsDef.state,
-            fieldsDef.city,
-            fieldsDef.articleLink,
-          ]}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.achievements}
-          cvkey="CvAchievementItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[
-            fieldsDef.achievementName,
-            fieldsDef.startDate,
-          ]}
-          optFields={[
-            fieldsDef.endDate,
-            fieldsDef.achievementDescription,
-            fieldsDef.institution,
-            fieldsDef.country,
-            fieldsDef.state,
-            fieldsDef.city,
-            fieldsDef.place,
-            fieldsDef.certificateLink,
-          ]}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.projects}
-          cvkey="CvImplementationProjectItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[fieldsDef.projectName, fieldsDef.startDate]}
-          optFields={[
-            fieldsDef.endDate,
-            fieldsDef.projectDescription,
-            fieldsDef.programLanguage,
-            fieldsDef.country,
-            fieldsDef.state,
-            fieldsDef.city,
-            fieldsDef.repositoryLink,
-          ]}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.languages}
-          cvkey="CvLanguageItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[
-            fieldsDef.language,
-            fieldsDef.languageLevel,
-          ]}
-        />
-        <CvItemForm
-          chosenLabel={this.state.chosenLabel}
-          label={strings.skills}
-          cvkey="CvSkillItem"
-          curriculum={this.props.cv}
-          stateChanger={this.setCv}
-          labelChanger={this.setLabel}
-          fields={[
-            fieldsDef.skillName,
-            fieldsDef.skillType,
-          ]}
-        />
-        {/* YEAH ME ^^^^ */}
-        <hr />
-        <h2>
-          {strings.reorderCVAreas}
+          </h3>
+          <br />
+          <Form>
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label={strings.name}
+              id="name"
+              mandatory
+              placeholder={strings.namePlaceholder}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label={strings.email}
+              id="email"
+              mandatory
+              placeholder={strings.emailPlaceholder}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label="linkedin"
+              id="linkedin"
+              mandatory={false}
+              placeholder={strings.linkedinPlaceholder}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label={strings.homepage}
+              id="homepage"
+              mandatory={false}
+              placeholder={strings.homepagePlaceholder}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label="github"
+              id="github"
+              mandatory={false}
+              placeholder={strings.githubPlaceholder}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label={strings.phone}
+              id="phone"
+              mandatory={false}
+              placeholder={strings.phonePlaceholder}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label={strings.birthday}
+              id="birthday"
+              mandatory={false}
+              placeholder={strings.dateFormat}
+            />
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
+              curriculum={this.props.cv}
+              label={strings.address}
+              id="address"
+              mandatory={false}
+              placeholder={strings.addressPlaceholder}
+            />
+          </Form>
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.work}
+            cvkey="CvWorkExperienceItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[
+              fieldsDef.institution,
+              fieldsDef.role,
+              fieldsDef.startDate,
+            ]}
+            optFields={[
+              fieldsDef.endDate,
+              fieldsDef.country,
+              fieldsDef.state,
+              fieldsDef.city,
+              fieldsDef.jobDescription,
+            ]}
+          />
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.education}
+            cvkey="CvEducationalExperienceItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[
+              fieldsDef.institution,
+              fieldsDef.course,
+              fieldsDef.startDate,
+            ]}
+            optFields={[
+              fieldsDef.endDate,
+              fieldsDef.country,
+              fieldsDef.state,
+              fieldsDef.city,
+              fieldsDef.teacher,
+              fieldsDef.courseDescription,
+            ]}
+          />
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.academic}
+            cvkey="CvAcademicProjectItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[fieldsDef.projectName, fieldsDef.startDate]}
+            optFields={[
+              fieldsDef.endDate,
+              fieldsDef.institution,
+              fieldsDef.country,
+              fieldsDef.state,
+              fieldsDef.city,
+              fieldsDef.articleLink,
+              fieldsDef.projectDescription,
+            ]}
+          />
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.achievements}
+            cvkey="CvAchievementItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[
+              fieldsDef.achievementName,
+              fieldsDef.startDate,
+            ]}
+            optFields={[
+              fieldsDef.endDate,
+              fieldsDef.institution,
+              fieldsDef.country,
+              fieldsDef.state,
+              fieldsDef.city,
+              fieldsDef.place,
+              fieldsDef.certificateLink,
+              fieldsDef.achievementDescription,
+            ]}
+          />
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.projects}
+            cvkey="CvImplementationProjectItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[fieldsDef.projectName, fieldsDef.startDate]}
+            optFields={[
+              fieldsDef.endDate,
+              fieldsDef.programLanguage,
+              fieldsDef.country,
+              fieldsDef.state,
+              fieldsDef.city,
+              fieldsDef.repositoryLink,
+              fieldsDef.projectDescription,
+            ]}
+          />
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.languages}
+            cvkey="CvLanguageItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[
+              fieldsDef.language,
+              fieldsDef.languageLevel,
+            ]}
+          />
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={strings.skills}
+            cvkey="CvSkillItem"
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={[
+              fieldsDef.skillName,
+              fieldsDef.skillType,
+            ]}
+          />
+          <hr />
+          <h3>
+            {strings.reorderCVAreas}
           :
-        </h2>
-        <br />
-        <CvOrder
-          setOrder={({ oldIndex, newIndex }) => this.setState({
-            cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex),
-          })
+          </h3>
+          <br />
+          <CvOrder
+            setOrder={({ oldIndex, newIndex }) => this.setState({
+              cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex),
+            })
           }
-          cvOrder={this.state.cv_order}
-        />
-        <br />
-        <div className="Base-label">
-          {strings.model}
-          :
-        </div>
-        <select
-          value={this.state.user_cv_model}
-          className="Base-select"
-          onChange={(e) => {
-            this.setState({
-              user_cv_model: e.target.value,
-              params: this.props.cv_models[e.target.value].fixed_params,
-            });
-          }}
-        >
-          {cvModelOptions}
-        </select>
-        {cvModelSuboptions}
-        <br />
-        <br />
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.startFilePicker}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {this.fileUploader}
-          {strings.uploadJson}
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.downloadCvAsJson}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {strings.downloadJson}
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.downloadCvAsPDF}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {strings.downloadCV}
-        </Button>
-        {this.props.user !== null ? (
+            cvOrder={this.state.cv_order}
+          />
+          <br />
+          <Form.Group as={Row}>
+            <Form.Label column sm="2">
+              {strings.model}
+            :
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control
+                as="select"
+                value={this.state.user_cv_model}
+                onChange={(e) => {
+                  this.setState({
+                    user_cv_model: e.target.value,
+                    params: this.props.cv_models[e.target.value].fixed_params,
+                  });
+                }}
+              >
+                {cvModelOptions}
+              </Form.Control>
+            </Col>
+          </Form.Group>
+          {cvModelSuboptions}
+          <br />
+          <br />
           <Button
             variant="secondary"
             size="sm"
-            onClick={this.saveOnAccount}
+            onClick={this.startFilePicker}
             style={{ marginLeft: 5, float: 'right' }}
           >
-            {strings.saveCVOnAccount}
+            {this.fileUploader}
+            {strings.uploadJson}
           </Button>
-        ) : null}
-        <br />
-      </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={this.downloadCvAsJson}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            {strings.downloadJson}
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={this.downloadCvAsPDF}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            {strings.downloadCV}
+          </Button>
+          {this.props.user !== null ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={this.saveOnAccount}
+              style={{ marginLeft: 5, float: 'right' }}
+            >
+              {strings.saveCVOnAccount}
+            </Button>
+          ) : null}
+        </Card.Body>
+      </Card>
     );
   }
 }
