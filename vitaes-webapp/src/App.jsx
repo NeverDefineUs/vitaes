@@ -14,6 +14,8 @@ import config from './config';
 import { getHostname } from './Util';
 import { strings } from './i18n/strings';
 import 'react-toastify/dist/ReactToastify.css';
+import { setupAlerts } from './Alert/Util';
+import { AlertManager } from './Alert/AlertManager';
 
 firebase.initializeApp(config);
 
@@ -44,16 +46,7 @@ class App extends Component {
     this.logout = this.logout.bind(this);
     this.cvSetter = this.cvSetter.bind(this);
     const app = this;
-    const dbErrors = firebase.database().ref('errors');
-    dbErrors.on('value', (snapshot) => {
-      if (snapshot.val() !== null) {
-        for (const msg of snapshot.val()) {
-          if (msg !== undefined) {
-            toast.warn(msg);
-          }
-        }
-      }
-    });
+    setupAlerts();
     const dbHP = firebase.database().ref('permissions');
     dbHP.on('value', (snapshot) => {
       app.setState({ permissions: snapshot.val() });
@@ -173,14 +166,24 @@ class App extends Component {
                   && this.state.permissions !== null
                   && this.state.permissions[this.state.user.uid]
                   ? (
-                    <Nav.Link
-                      href="#create_template"
-                      onClick={() => {
-                        this.setState({ tab: 4 });
-                      }}
-                    >
-                      {strings.createTemplate}
-                    </Nav.Link>
+                    [
+                      <Nav.Link
+                        href="#create_template"
+                        onClick={() => {
+                          this.setState({ tab: 4 });
+                        }}
+                      >
+                        {strings.createTemplate}
+                      </Nav.Link>,
+                      <Nav.Link
+                        href="#alert_manager"
+                        onClick={() => {
+                          this.setState({ tab: 5 });
+                        }}
+                      >
+                        {strings.alertManager}
+                      </Nav.Link>,
+                    ]
                   ) : null}
                 <Nav.Link
                   href="#hub"
@@ -231,6 +234,9 @@ Template Hub
                 {this.state.tab === 3 ? <About /> : null}
                 {this.state.tab === 4 ? (
                   <AddTemplate cv_models={this.state.cv_models} />
+                ) : null}
+                {this.state.tab === 5 ? (
+                  <AlertManager />
                 ) : null}
               </Col>
             </Row>
