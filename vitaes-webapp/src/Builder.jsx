@@ -756,38 +756,38 @@ class Builder extends Component {
           {cvModelSuboptions}
           <br />
           <br />
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.startFilePicker}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          <input
-            type="file"
-            id="file"
-            ref={(fp) => { this.fileUploader = fp; }}
-            onChange={e => this.uploadJSON(e.target.files)}
-            style={{ display: 'none' }}
-          />
-          {strings.uploadJson}
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.downloadCvAsJson}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {strings.downloadJson}
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.downloadCvAsPDF}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {strings.downloadCV}
-        </Button>
-        {this.props.user !== null ? (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={this.startFilePicker}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            <input
+              type="file"
+              id="file"
+              ref={(fp) => { this.fileUploader = fp; }}
+              onChange={e => this.uploadJSON(e.target.files)}
+              style={{ display: 'none' }}
+            />
+            {strings.uploadJson}
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={this.downloadCvAsJson}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            {strings.downloadJson}
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={this.downloadCvAsPDF}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            {strings.downloadCV}
+          </Button>
+          {this.props.user !== null ? (
             <Button
               variant="secondary"
               size="sm"
