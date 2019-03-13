@@ -364,14 +364,6 @@ class Builder extends Component {
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
-    this.fileUploader = (
-      <input
-        type="file"
-        id="file"
-        onChange={e => this.uploadJSON(e.target.files)}
-        style={{ display: 'none' }}
-      />
-    );
   }
 
   setCv(cv) {
@@ -780,7 +772,13 @@ class Builder extends Component {
           onClick={this.startFilePicker}
           style={{ marginLeft: 5, float: 'right' }}
         >
-          {this.fileUploader}
+          <input
+            type="file"
+            id="file"
+            ref={(fp) => { this.fileUploader = fp; }}
+            onChange={e => this.uploadJSON(e.target.files)}
+            style={{ display: 'none' }}
+          />
           {strings.uploadJson}
         </Button>
         <Button
