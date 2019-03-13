@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import './Builder.css';
-import Arthurlpgc from './Profile/Arthurlpgc.jpg';
-import RamonSaboya from './Profile/RamonSaboya.jpg';
 import { strings } from './i18n/strings';
+
+const imagesSrcs = {
+  Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
+  RamonSaboya: 'https://avatars0.githubusercontent.com/u/5997047?s=400&v=4',
+  Magsouza: 'https://avatars1.githubusercontent.com/u/37961381?s=400&v=4',
+};
 
 class About extends Component {
   render() {
@@ -18,21 +22,21 @@ class About extends Component {
           :
         </h2>
         <h3> Arthurlpgc</h3>
-        <img src={Arthurlpgc} alt="" className="Base-profile" />
+        <img src={imagesSrcs.Arthurlpgc} alt="" className="Base-profile" />
         <br />
         {strings.contactEmail}
         : latache@vitaes.io
         <br />
         <br />
         <h3> RamonSaboya</h3>
-        <img src={RamonSaboya} alt="" className="Base-profile" />
+        <img src={imagesSrcs.RamonSaboya} alt="" className="Base-profile" />
         <br />
         {strings.contactEmail}
         : saboya@vitaes.io
         <br />
         <br />
         <h3> Magsouza</h3>
-        <img src="https://avatars1.githubusercontent.com/u/37961381?s=400&v=4" alt="" className="Base-profile" />
+        <img src={imagesSrcs.Magsouza} alt="" className="Base-profile" />
         <br />
         {strings.contactEmail}
         : mag@vitaes.io
