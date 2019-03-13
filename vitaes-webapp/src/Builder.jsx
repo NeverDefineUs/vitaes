@@ -11,8 +11,9 @@ import {
 } from './Util';
 import CvOrder from './CvOrder';
 import { strings } from './i18n/strings';
-import { fieldsDef } from './fields';
+import { fieldsDef, updateFields } from './fields';
 
+updateFields();
 const locFields = [
   fieldsDef.country,
   fieldsDef.state,
@@ -151,8 +152,8 @@ class CvItemForm extends Component {
       }
       if (toAdd.location !== undefined) {
         for (const locField of locFields) {
-          if (toAdd.location.CvLocation[locField] !== undefined) {
-            toAdd[locField] = toAdd.location.CvLocation[locField];
+          if (toAdd.location.CvLocation[locField[0]] !== undefined) {
+            toAdd[locField[0]] = toAdd.location.CvLocation[locField[0]];
           }
         }
         delete toAdd.location;
@@ -363,14 +364,6 @@ class Builder extends Component {
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
-    this.fileUploader = (
-      <input
-        type="file"
-        id="file"
-        onChange={e => this.uploadJSON(e.target.files)}
-        style={{ display: 'none' }}
-      />
-    );
   }
 
   setCv(cv) {
@@ -500,6 +493,7 @@ class Builder extends Component {
   }
 
   render() {
+    updateFields();
     const cvModelOptions = [];
     for (const cvModelName in this.props.cv_models) {
       const cvModel = this.props.cv_models[cvModelName];
@@ -778,7 +772,13 @@ class Builder extends Component {
           onClick={this.startFilePicker}
           style={{ marginLeft: 5, float: 'right' }}
         >
-          {this.fileUploader}
+          <input
+            type="file"
+            id="file"
+            ref={(fp) => { this.fileUploader = fp; }}
+            onChange={e => this.uploadJSON(e.target.files)}
+            style={{ display: 'none' }}
+          />
           {strings.uploadJson}
         </Button>
         <Button
