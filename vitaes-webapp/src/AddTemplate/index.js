@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import { getEmptyTemplate, setTemplateFile } from './Template/Util';
+
+import { getEmptyTemplate, setTemplateFile } from './Util';
 
 class TemplateField extends Component {
   // label, placeholder, value, callback
@@ -9,7 +10,7 @@ class TemplateField extends Component {
       <div className="Base-field">
         <div className="Base-label">
           {this.props.label}
-:
+          :
         </div>
         <input
           type="text"
@@ -129,7 +130,7 @@ class AddTemplate extends Component {
           </a>
         </div>
         <div className="Base-button">
-          <a href="#" onClick={() => {}}>Add New Param</a>
+          <a href="#" onClick={() => { }}>Add New Param</a>
         </div>
         <hr style={{ marginTop: '3em' }} />
         {ownedCvs}
