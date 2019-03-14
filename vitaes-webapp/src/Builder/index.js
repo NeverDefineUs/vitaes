@@ -4,322 +4,19 @@ import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';
 import { toast } from 'react-toastify';
 import {
-  Alert, Button, Form, Card, Col, Row,
+  Button, Form, Card, Col, Row,
 } from 'react-bootstrap';
+
+import { strings } from 'i18n/strings';
 import {
   capitalize, getHostname, removeDisabled, validateEmail, validateDate,
-} from './Util';
+} from 'Util';
+
 import CvOrder from './CvOrder';
-import { strings } from './i18n/strings';
-import { fieldsDef, updateFields } from './fields';
+import { fieldsDef, updateFields } from './shared/fields';
+import CvHeaderField from './CvHeaderField'
+import CvItemForm from './CvItemForm'
 
-updateFields();
-const locFields = [
-  fieldsDef.country,
-  fieldsDef.state,
-  fieldsDef.city,
-];
-
-class CvHeaderField extends Component {
-  // label, id, placeholder, mandatory, curriculum, stateChanger
-  render() {
-    return (
-      <Form.Group as={Row} size="sm">
-        <Form.Label column sm="2">
-          {capitalize(this.props.label)}
-          {this.props.mandatory ? ` (${strings.required})` : ''}
-          :
-        </Form.Label>
-        <Col sm="10">
-          <Form.Control
-            type="text"
-            value={
-              this.props.curriculum.CvHeaderItem[this.props.id]
-              === undefined
-                ? ''
-                : this.props.curriculum.CvHeaderItem[this.props.id]
-            }
-            name={this.props.id}
-            placeholder={this.props.placeholder}
-            onChange={this.props.stateChanger}
-          />
-        </Col>
-      </Form.Group>
-    );
-  }
-}
-
-class CvField extends Component {
-  // label, id, placeholder, mandatory, toAdd, stateChanger, addField
-  render() {
-    const inputField = (
-      <Form.Group as={Row}>
-        <Form.Label column sm={3}>
-          {capitalize(this.props.label)}
-          {this.props.mandatory ? ` (${strings.required})` : ''}
-          {this.props.id.endsWith('date') ? ` (${strings.dateFormat})` : ''}
-            :
-        </Form.Label>
-        <Col sm={9}>
-          <Form.Control
-            type="text"
-            as={this.props.id === 'description' ? 'textarea' : 'input'}
-            name={this.props.id}
-            value={
-                this.props.toAdd[this.props.id] === undefined
-                  ? ''
-                  : this.props.toAdd[this.props.id]
-              }
-            className="Base-inputfield"
-            onChange={this.props.stateChanger}
-            placeholder={this.props.placeholder}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                this.props.addField();
-              }
-            }}
-          />
-        </Col>
-      </Form.Group>
-    );
-    return inputField;
-  }
-}
-
-class CvItemForm extends Component {
-  // label, chosenLabel, curriculum, cvkey, stateChanger, fields, optFields, labelChanger
-  constructor(props) {
-    super(props);
-    this.getEventDeleter = this.getEventDeleter.bind(this);
-    this.getEventExpander = this.getEventExpander.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.addField = this.addField.bind(this);
-    this.state = { toAdd: {} };
-  }
-
-  getEventDeleter(index) {
-    return () => {
-      const cv = this.props.curriculum;
-      cv[this.props.cvkey].splice(index, 1);
-      this.props.stateChanger(cv);
-    };
-  }
-
-  getEventEnabler(index) {
-    return () => {
-      const cv = this.props.curriculum;
-      if (cv[this.props.cvkey][index].disable === undefined) {
-        cv[this.props.cvkey][index].disable = false;
-      }
-      cv[this.props.cvkey][index].disable = !cv[this.props.cvkey][index]
-        .disable;
-      this.props.stateChanger(cv);
-    };
-  }
-
-  getEventExpander(index) {
-    return () => {
-      if (this.props.label === this.props.chosenLabel) {
-        if (!this.addField()) {
-          return;
-        }
-      }
-      const cv = this.props.curriculum;
-      const toAdd = cv[this.props.cvkey][index];
-      cv[this.props.cvkey].splice(index, 1);
-      this.props.stateChanger(cv);
-      if (toAdd.institution !== undefined) {
-        toAdd.institution = toAdd.institution.CvInstitution.name;
-      }
-      if (toAdd.location !== undefined) {
-        for (const locField of locFields) {
-          if (toAdd.location.CvLocation[locField[0]] !== undefined) {
-            toAdd[locField[0]] = toAdd.location.CvLocation[locField[0]];
-          }
-        }
-        delete toAdd.location;
-      }
-      this.setState({ toAdd });
-      this.props.labelChanger(this.props.label);
-    };
-  }
-
-  handleChange(event) {
-    const aux = this.state.toAdd;
-    aux[event.target.name] = event.target.value;
-    if (aux[event.target.name] === '') {
-      delete aux[event.target.name];
-    }
-    this.setState({ toAdd: aux });
-  }
-
-  addField() {
-    const cv = this.props.curriculum;
-    const { toAdd } = this.state;
-    for (const item of this.props.fields) {
-      if (toAdd[item[0]] === undefined) {
-        if (item[0] === 'name') {
-          toast.error(`${strings.mandatoryField}: ${strings.title}`);
-        } else {
-          toast.error(`${strings.mandatoryField}: ${capitalize(item[0])}`);
-        }
-        return false;
-      }
-    }
-    for (const item in toAdd) {
-      if (item.endsWith('date') && toAdd[item]) {
-        if (!validateDate(toAdd[item])) {
-          toast.error(`${strings.wrongFormat}: ${item}`);
-          return false;
-        }
-      }
-    }
-    if (toAdd.institution !== undefined) {
-      const institution = { CvInstitution: { name: toAdd.institution } };
-      toAdd.institution = institution;
-    }
-    if (
-      toAdd.country !== undefined
-      || toAdd.state !== undefined
-      || toAdd.city !== undefined
-    ) {
-      const cvLocation = {};
-      for (const locField of locFields) {
-        if (toAdd[locField[0]] !== undefined) {
-          cvLocation[locField[0]] = toAdd[locField[0]];
-        }
-      }
-      toAdd.location = { CvLocation: cvLocation };
-      for (const locField of locFields) {
-        delete toAdd[locField[0]];
-      }
-    }
-    if (cv[this.props.cvkey] === undefined) {
-      cv[this.props.cvkey] = [];
-    }
-    cv[this.props.cvkey].push(toAdd);
-    this.props.stateChanger(cv);
-    this.setState({ toAdd: {} });
-    this.props.labelChanger('');
-    return true;
-  }
-
-  render() {
-    const nodes = [
-      <hr />,
-      <h3 key={-2}>
-        {this.props.label}
-        :
-      </h3>,
-      <br key={-1} />,
-    ];
-    const comp = this;
-    if (this.props.curriculum[this.props.cvkey] !== undefined) {
-      this.props.curriculum[this.props.cvkey].forEach((item, index) => {
-        let name = '';
-        if (item.name !== undefined) {
-          ({ name } = item);
-        } else if (item.institution !== undefined) {
-          ({ name } = item.institution.CvInstitution);
-        } else if (item.language !== undefined) {
-          name = item.language;
-        } else {
-          name = `${item.skill_type}: ${item.skill_name}`;
-        }
-        nodes.push(
-          <Alert
-            variant="secondary"
-            style={{
-              width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5,
-            }}
-            key={name}
-          >
-            <span onClick={comp.getEventExpander(index)}>{name}</span>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventDeleter(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              delete
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventEnabler(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {item.disable ? 'hide' : 'show'}
-            </Button>
-          </Alert>,
-        );
-      });
-    }
-    if (this.props.chosenLabel !== this.props.label) {
-      return (
-        <div>
-          {nodes}
-          <Button
-            variant="secondary"
-            style={{ float: 'right' }}
-            onClick={() => this.props.labelChanger(this.props.label)}
-          >
-            {strings.addEntry}
-          </Button>
-          <br />
-        </div>
-      );
-    }
-    const formNodes = [];
-    if (this.props.fields !== undefined) {
-      this.props.fields.forEach((fieldInfo) => {
-        formNodes.push(
-          <CvField
-            stateChanger={this.handleChange}
-            toAdd={this.state.toAdd}
-            addField={this.addField}
-            id={fieldInfo[0]}
-            label={fieldInfo[2]}
-            placeholder={fieldInfo[1]}
-            mandatory
-          />,
-        );
-      });
-    }
-    if (this.props.optFields !== undefined) {
-      this.props.optFields.forEach((fieldInfo) => {
-        formNodes.push(
-          <CvField
-            stateChanger={this.handleChange}
-            toAdd={this.state.toAdd}
-            addField={this.addField}
-            id={fieldInfo[0]}
-            label={fieldInfo[2]}
-            placeholder={fieldInfo[1]}
-            mandatory={false}
-          />,
-        );
-      });
-    }
-    return (
-      <div>
-        {nodes}
-        <Card style={{ padding: 10 }}>
-          <Card.Body>
-            {formNodes}
-          </Card.Body>
-          <Button
-            variant="secondary"
-            style={{ float: 'right' }}
-            onClick={this.addField}
-          >
-            {strings.addEntry}
-          </Button>
-        </Card>
-      </div>
-    );
-  }
-}
 
 class Builder extends Component {
   constructor(props) {
@@ -387,9 +84,9 @@ class Builder extends Component {
       .ref('cv-dumps')
       .child(
         `EMAIL:${
-          this.props.user !== null
-            ? this.props.user.uid
-            : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
+        this.props.user !== null
+          ? this.props.user.uid
+          : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
       )
       .push();
     db.set(this.props.cv);
@@ -500,7 +197,7 @@ class Builder extends Component {
           <Form.Group as={Row}>
             <Form.Label column sm="2">
               {cvSuboption.pretty_name}
-            :
+              :
             </Form.Label>
             <Col sm="10">
               <Form.Control
@@ -526,7 +223,7 @@ class Builder extends Component {
           <br />
           <h3>
             {strings.header}
-          :
+            :
           </h3>
           <br />
           <Form>
@@ -721,21 +418,21 @@ class Builder extends Component {
           <hr />
           <h3>
             {strings.reorderCVAreas}
-          :
+            :
           </h3>
           <br />
           <CvOrder
             setOrder={({ oldIndex, newIndex }) => this.setState({
               cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex),
             })
-          }
+            }
             cvOrder={this.state.cv_order}
           />
           <br />
           <Form.Group as={Row}>
             <Form.Label column sm="2">
               {strings.model}
-            :
+              :
             </Form.Label>
             <Col sm="10">
               <Form.Control

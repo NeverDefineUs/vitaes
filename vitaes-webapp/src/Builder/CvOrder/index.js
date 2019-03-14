@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import PropTypes from 'prop-types';
 import { Badge } from 'react-bootstrap';
-import { strings } from './i18n/strings';
+
+import { strings } from 'i18n/strings';
 
 const SortableItem = SortableElement(({ value }) => (
   <li><Badge variant="secondary" style={{ width: '80%', marginLeft: '10%' }}>{value}</Badge></li>
