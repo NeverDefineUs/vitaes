@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 
-import { getEmptyTemplate, setTemplateFile } from './Util';
+import { getEmptyTemplate, setTemplateFile } from './util';
 
 class TemplateField extends Component {
   // label, placeholder, value, callback

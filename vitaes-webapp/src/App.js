@@ -14,8 +14,8 @@ import config from './config';
 import getHostname from 'utils/getHostname';
 import { strings } from './i18n/strings';
 import 'react-toastify/dist/ReactToastify.css';
-import { setupAlerts } from './Alert/Util';
-import { AlertManager } from './Alert/AlertManager';
+import { setupAlerts } from './AlertManager/util';
+import AlertManager from './AlertManager';
 
 firebase.initializeApp(config);
 
