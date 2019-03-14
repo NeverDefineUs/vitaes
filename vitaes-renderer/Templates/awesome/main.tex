@@ -90,7 +90,7 @@
 
 #for $section in $params['section_order']
 #if $education_array and $section == 'education'
-\cvsection{Education}
+\cvsection{$resources['education']}
 \begin{cventries}
 #for $education in $education_array
   \cventry
@@ -110,7 +110,7 @@
   - $education['end_date'].strftime("%b, %Y")
 #end if
 #else
-  - Present
+  - $resources['present']
 #end if
     } % Date(s)
 #if 'description' in $education
@@ -125,7 +125,7 @@
 \end{cventries}
 #end if
 #if $work_array and $section == 'work'
-\cvsection{Experience}
+\cvsection{$resources['experience']}
 
 
 \begin{cventries}
@@ -148,7 +148,7 @@ $work['city']
   - $work['end_date'].strftime("%b, %Y")
 #end if
 #else
-  - Present
+  - $resources['present']
 #end if
 } % Date(s)
 #if 'description' in $work
@@ -162,7 +162,7 @@ $work['city']
 \end{cventries}
 #end if
 #if $achievement_array and $section == 'achievement'
-\cvsection{Achievements}
+\cvsection{$resources['achievements']}
 
 \begin{cvhonors}
 #for $achievement in $achievement_array
@@ -184,7 +184,7 @@ $achievement['city'], $achievement['country']
 \end{cvhonors}
 #end if
 #if $project_array and $section == 'project'
-\cvsection{Projects}
+\cvsection{$resources['projects']}
 
 
 \begin{cventries}
@@ -211,7 +211,7 @@ $project['city']
   - $project['end_date'].strftime("%b, %Y")
 #end if
 #else
-  - Present
+  - $resources['present']
 #end if
 } % Date(s)
 #if 'description' in $project
@@ -225,7 +225,7 @@ $project['city']
 \end{cventries}
 #end if
 #if $academic_array and $section == 'academic'
-\cvsection{Academic Experience}
+\cvsection{$resources['academicXp']}
 
 
 \begin{cventries}
@@ -252,7 +252,7 @@ $academic['city']
   - $academic['end_date'].strftime("%b, %Y")
 #end if
 #else
-  - Present
+  - $resources['present']
 #end if
 } % Date(s)
 #if 'description' in $academic
@@ -266,7 +266,7 @@ $academic['city']
 \end{cventries}
 #end if
 #if $skill_dict != {} and $section == 'skill'
-\cvsection{Skills}
+\cvsection{$resources['skills']}
 
 
 \begin{cvskills}

@@ -3,6 +3,7 @@ import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
 from bson.objectid import ObjectId
 from CurriculumVitae import CurriculumVitae
+from I18n import *
 from Models import *
 import Renders
 import json
@@ -89,8 +90,6 @@ def render_from_cv_dict(req):
         if 'section_order' in req:
             params['section_order'] = req['section_order']
 
-
-
     if 'CvHeaderItem' not in req_cv:
         abort(400, "Missing header")
 
@@ -126,5 +125,9 @@ def render_from_cv_dict(req):
         file.close()
         os.system("unzip Templates/" + path + "/main.zip -d Templates/" + path)
 
-    path = Renders.CvRenderTexToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, command=render_map[render_key]['command'], params=params)
+    if 'lang' not in params:
+      params['lang'] = 'en'
+    resources = get_resources(params['lang'])
+
+    path = Renders.CvRenderTexToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, command=render_map[render_key]['command'], params=params, resources=resources)
     return path

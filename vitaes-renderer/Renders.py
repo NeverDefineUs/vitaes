@@ -28,13 +28,13 @@ class CvRenderBase:
         raise NotImplementedError
 
 class CvRenderTexToPdf(CvRenderBase):   
-    def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str, path: str=None, command: str="pdflatex", params={}):
+    def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str, path: str=None, command: str="pdflatex", params={}, resources={}):
         if path == None:
             path=id_gen()
         os.system("mkdir Output/" + path)
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
-        cv = cvRender.render(cv, params=params, baseFolder=baseFolder)
+        cv = cvRender.render(cv, params=params, baseFolder=baseFolder, resources=resources)
         os.system("touch Output/" + path + "/main.tex")
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cv)
@@ -192,7 +192,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
                 retLines.append(line)
         return '\n'.join(retLines)
 
-    def render(cv: CurriculumVitae, baseFolder: str, params={}):
+    def render(cv: CurriculumVitae, baseFolder: str, params={}, resources={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
         file.close()
@@ -214,6 +214,9 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["skill_dict"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
         cvDict["break_into_items"] = CvRenderCheetahTemplate.break_into_items
+        for key in resources:
+          resources[key] = text_clean(resources[key])
+        cvDict["resources"] = resources
         template = Template(templateString, cvDict)
         return str(template)
 
