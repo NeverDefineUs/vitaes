@@ -11,7 +11,7 @@ import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
-import { getHostname } from './Util';
+import getHostname from 'utils/getHostname';
 import { strings } from './i18n/strings';
 import 'react-toastify/dist/ReactToastify.css';
 import { setupAlerts } from './Alert/Util';

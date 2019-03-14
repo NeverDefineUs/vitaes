@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 
 import { strings } from 'i18n/strings';
-import { capitalize } from 'Util';
+import capitalize from 'utils/capitalize';
 
 class CvField extends Component {
   // label, id, placeholder, mandatory, toAdd, stateChanger, addField

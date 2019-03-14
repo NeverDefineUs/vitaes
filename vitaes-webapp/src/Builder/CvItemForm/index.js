@@ -3,7 +3,8 @@ import { toast } from 'react-toastify';
 import { Alert, Button, Card } from 'react-bootstrap';
 
 import { strings } from 'i18n/strings';
-import { capitalize, validateDate } from 'Util';
+import capitalize from 'utils/capitalize';
+import validateDate from 'utils/validateDate';
 
 import { fieldsDef, updateFields } from './../shared/fields';
 import CvField from './CvField'

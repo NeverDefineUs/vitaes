@@ -8,9 +8,11 @@ import {
 } from 'react-bootstrap';
 
 import { strings } from 'i18n/strings';
-import {
-  capitalize, getHostname, removeDisabled, validateEmail, validateDate,
-} from 'Util';
+import capitalize from 'utils/capitalize';
+import getHostname from 'utils/getHostname';
+import removeDisabled from 'utils/removeDisabled';
+import validateEmail from 'utils/validateEmail';
+import validateDate from 'utils/validateDate';
 
 import CvOrder from './CvOrder';
 import { fieldsDef, updateFields } from './shared/fields';
