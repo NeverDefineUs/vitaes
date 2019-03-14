@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Builder.css';
 import firebase from 'firebase';
 import { arrayMove } from 'react-sortable-hoc';
 import fetch from 'fetch-retry';

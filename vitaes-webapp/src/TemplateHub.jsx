@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Builder.css';
 import './TemplateHub.css';
 import { toast } from 'react-toastify';
 import { capitalize } from './Util';

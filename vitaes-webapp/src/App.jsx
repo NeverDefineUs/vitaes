@@ -191,7 +191,7 @@ class App extends Component {
                     this.setState({ tab: 2 });
                   }}
                 >
-Template Hub
+                  Template Hub
                 </Nav.Link>
                 <Nav.Link
                   href="#about"
@@ -210,8 +210,8 @@ Template Hub
                 {this.state.user !== null ? (
                   <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
                 ) : (
-                  <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
-                )}
+                    <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
+                  )}
               </Nav>
             </Navbar.Collapse>
           </Navbar>
