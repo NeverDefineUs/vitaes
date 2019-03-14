@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { strings } from './../i18n/strings';
+import { strings } from 'i18n/strings';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',

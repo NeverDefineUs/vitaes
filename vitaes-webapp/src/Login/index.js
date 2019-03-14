@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 
-import { strings } from './../i18n/strings';
+import { strings } from 'i18n/strings';
 
 import { googleLogin, facebookLogin, githubLogin } from './providers';
 import './Login.css';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { capitalize } from './../../Util';
+import { capitalize } from 'Util';
 
 import './TemplateHubModel.css';
 
