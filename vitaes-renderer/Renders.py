@@ -76,6 +76,10 @@ def text_clean(text):
     if text == None:
         return text
     text=str(text)
+    extra = {
+        "\\{": "{",
+        "\\}": "}",
+    }
     accents = {
         "\\`a": "à",
         "\\'a": "á",
@@ -111,15 +115,15 @@ def text_clean(text):
         '\\"O': "Ö",
         "\\'U": "Ú",
         '\\"U': "Ü",
-        "\\c{{c}}": "ç",
-        "\\c{{C}}": "Ç",
+        "\\c{c}": "ç",
+        "\\c{C}": "Ç",
         "\\#": "#",
         "\\%": "%",
-        "\\{": "{",
-        "\\}": "}",
         "\\_": "_",
         "\\&": "&",
     }
+    for x in extra.keys():
+        text = text.replace(extra[x], x)
     for x in accents.keys():
         text = text.replace(accents[x], x)
     return text
@@ -218,9 +222,6 @@ class CvRenderCheetahTemplate(CvRenderBase):
           resources[key] = text_clean(resources[key])
         cvDict["resources"] = resources
         template = Template(templateString, cvDict)
-        sys.stdout.flush()
-        print(str(template), file=sys.stdout)
-        sys.stdout.flush()
         return str(template)
 
 
