@@ -43,7 +43,7 @@ class TemplateHubModel extends Component {
               fetch(
                 `${window.location.protocol
                 }//${
-                this.hostname
+                  this.hostname
                 }/template/like/`,
                 {
                   method: 'POST',

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 
-import TemplateHubModel from './TemplateHubModel'
+import TemplateHubModel from './TemplateHubModel';
 
 class TemplateHub extends Component {
   constructor(props) {

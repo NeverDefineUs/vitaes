@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import './App.css';
+
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {
   Navbar, Nav, NavDropdown, Row, Col, Container,
 } from 'react-bootstrap';
+
+import getHostname from 'utils/getHostname';
+import { strings } from 'i18n/strings';
+
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
-import getHostname from 'utils/getHostname';
-import { strings } from './i18n/strings';
-import 'react-toastify/dist/ReactToastify.css';
 import { setupAlerts } from './AlertManager/util';
 import AlertManager from './AlertManager';
+import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 firebase.initializeApp(config);
 
@@ -210,8 +214,8 @@ class App extends Component {
                 {this.state.user !== null ? (
                   <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
                 ) : (
-                    <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
-                  )}
+                  <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
+                )}
               </Nav>
             </Navbar.Collapse>
           </Navbar>

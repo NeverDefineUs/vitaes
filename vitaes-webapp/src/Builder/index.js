@@ -16,8 +16,8 @@ import validateDate from 'utils/validateDate';
 
 import CvOrder from './CvOrder';
 import { fieldsDef, updateFields } from './shared/fields';
-import CvHeaderField from './CvHeaderField'
-import CvItemForm from './CvItemForm'
+import CvHeaderField from './CvHeaderField';
+import CvItemForm from './CvItemForm';
 
 
 class Builder extends Component {
@@ -86,9 +86,9 @@ class Builder extends Component {
       .ref('cv-dumps')
       .child(
         `EMAIL:${
-        this.props.user !== null
-          ? this.props.user.uid
-          : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
+          this.props.user !== null
+            ? this.props.user.uid
+            : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
       )
       .push();
     db.set(this.props.cv);

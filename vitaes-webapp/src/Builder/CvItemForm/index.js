@@ -6,10 +6,10 @@ import { strings } from 'i18n/strings';
 import capitalize from 'utils/capitalize';
 import validateDate from 'utils/validateDate';
 
-import { fieldsDef, updateFields } from './../shared/fields';
-import CvField from './CvField'
+import { fieldsDef, updateFields } from '../shared/fields';
+import CvField from './CvField';
 
-updateFields()
+updateFields();
 
 const locFields = [
   fieldsDef.country,

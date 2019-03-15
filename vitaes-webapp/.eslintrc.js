@@ -24,7 +24,7 @@ module.exports = {
     'react/no-multi-comp': 'off',
     'no-restricted-syntax': 'off',
     'guard-for-in': 'off',
-    'react/no-access-state-in-setstate':'off',
+    'react/no-access-state-in-setstate': 'off',
     'react/prefer-stateless-function': 'off',
     //fix for a11y:
     'jsx-a11y/anchor-is-valid': 'off',
@@ -33,5 +33,13 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
     // this one is intended to be kept:
     'react/jsx-filename-extension': 'off',
+    'import/no-named-as-default': 0,
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['src']
+      }
+    }
+  }
 };

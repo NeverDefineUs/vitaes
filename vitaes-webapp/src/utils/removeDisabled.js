@@ -1,4 +1,4 @@
-import copyElement from './copyElement'
+import copyElement from './copyElement';
 
 export default function removeDisabled(rawCv) {
   const cv = copyElement(rawCv);
