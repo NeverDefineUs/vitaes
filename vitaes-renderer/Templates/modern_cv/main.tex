@@ -29,12 +29,12 @@
 \makecvtitle
 #for $section in $params['section_order']
 #if $section == 'education' and $education_array
-\section{Education}
+\section{$resources['education']}
 #for $education in $education_array
 \cventry{
     $education['start_date'].strftime("%b/%y")
 #if 'end_date' not in $education
-    Present
+    $resources['present']
 #else if $education['start_date'].strftime("%b/%y") != $education['end_date'].strftime("%b/%y")
     $education['end_date'].strftime("%b/%y")
 #end if
@@ -57,12 +57,12 @@
 #end for
 #end if
 #if $section == 'work' and $work_array
-\section{Work Experience}
+\section{$resources['workXp']}
 #for $work in $work_array
 \cventry{
     $work['start_date'].strftime("%b/%y")
 #if 'end_date' not in $work
-    Present
+    $resources['present']
 #else if $work['start_date'].strftime("%b/%y") != $work['end_date'].strftime("%b/%y")
     $work['end_date'].strftime("%b/%y")
 #end if
@@ -86,11 +86,11 @@
 #end for
 #end if
 #if $section == "project" and $project_array
-\section{Projects}
+\section{$resources['projects']}
 #for $project in $project_array
 \cventry{$project['start_date'].strftime("%b/%Y")
 #if 'end_date' not in $project
-    Present
+    $resources['present']
 #else if $project['start_date'].strftime("%b/%Y") != $project['end_date'].strftime("%b/%Y")
     $project['end_date'].strftime("%b/%Y")
 #end if
@@ -109,11 +109,11 @@
 #end for
 #end if
 #if $section == "academic" and $academic_array
-\section{Academic Experience}
+\section{$resources['academicXp']}
 #for $academic in $academic_array
 \cventry{$academic['start_date'].strftime("%b/%Y")
 #if 'end_date' not in $academic
-    Present
+    $resources['present']
 #else if $academic['start_date'].strftime("%b/%Y") != $academic['end_date'].strftime("%b/%Y")
      $academic['end_date'].strftime("%b/%Y")
 #end if
@@ -132,19 +132,19 @@
 #end for
 #end if
 #if $section == "achievement" and $achievement_array
-\section{Achievements}
+\section{$resources['achievements']}
 #for $achievement in $achievement_array
 \cvitem{$achievement['start_date'].strftime("%d/%b/%Y")}{$achievement['name']}
 #end for
 #end if
 #if $section == "language" and $language_array
-\section{Languages}
+\section{$resources['languages']}
 #for $language in $language_array
 \cvitem{$language['language']}{$language['level']}
 #end for
 #end if
 #if $section == "skill" and list($skill_dict.keys()) != ["Languages"] and $skill_dict != {}
-\section{Skills}
+\section{$resources['skills']}
 #for $skill in $skill_dict.keys()
 #if $skill != "Languages"
 \cvitem{$skill}{${', '.join($skill_dict[$skill])}}
