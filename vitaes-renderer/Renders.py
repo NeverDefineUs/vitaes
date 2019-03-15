@@ -111,8 +111,8 @@ def text_clean(text):
         '\\"O': "Ö",
         "\\'U": "Ú",
         '\\"U': "Ü",
-        "\\c{c}": "ç",
-        "\\c{C}": "Ç",
+        "\\c{{c}}": "ç",
+        "\\c{{C}}": "Ç",
         "\\#": "#",
         "\\%": "%",
         "\\{": "{",
@@ -218,6 +218,9 @@ class CvRenderCheetahTemplate(CvRenderBase):
           resources[key] = text_clean(resources[key])
         cvDict["resources"] = resources
         template = Template(templateString, cvDict)
+        sys.stdout.flush()
+        print(str(template), file=sys.stdout)
+        sys.stdout.flush()
         return str(template)
 
 
