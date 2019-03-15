@@ -1,7 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
 import { ListGroup, Button } from 'react-bootstrap';
-import { strings } from '../i18n/strings';
+
+import { strings } from 'i18n/strings';
 
 export function AlertList(props) {
   const alerts = [];

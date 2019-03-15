@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import './Builder.css';
-import { strings } from './i18n/strings';
+import { strings } from 'i18n/strings';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
@@ -50,28 +49,28 @@ class About extends Component {
           <li>
             <strong>acrc2:</strong>
             {' '}
-Made the birthday validation.
+            Made the birthday validation.
           </li>
           <li>
             <strong>Hildemir:</strong>
             {' '}
-Refactors on the validation functions.
+            Refactors on the validation functions.
           </li>
           <li>
             <strong>jvsn19:</strong>
             {' '}
-Helped modeling the base classes.
+            Helped modeling the base classes.
           </li>
           <li>
             <strong>rfrl:</strong>
             {' '}
-Helped testing and deploying.
+            Helped testing and deploying.
           </li>
           <li>
             <strong>vjsl:</strong>
             {' '}
-Helped uncover a bug with accents and on
-            adding https.
+            Helped uncover a bug with accents and on
+                        adding https.
           </li>
         </ul>
         <br />
@@ -83,12 +82,12 @@ Helped uncover a bug with accents and on
           <li>
             <strong>posquit0:</strong>
             {' '}
-Awesome CV.
+            Awesome CV.
           </li>
           <li>
             <strong>Xavier Danaux:</strong>
             {' '}
-Modern CV(not the git user).
+            Modern CV(not the git user).
           </li>
         </ul>
         <h2>

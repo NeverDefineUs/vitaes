@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import './Login.css';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
-import { googleLogin, facebookLogin, githubLogin } from './Util';
-import { strings } from './i18n/strings';
+
+import { strings } from 'i18n/strings';
+
+import { googleLogin, facebookLogin, githubLogin } from './providers';
+import './Login.css';
+
 
 class Login extends Component {
   render() {

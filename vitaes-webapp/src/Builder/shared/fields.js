@@ -1,4 +1,4 @@
-import { strings } from './i18n/strings';
+import { strings } from 'i18n/strings';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let fieldsDef = {};

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import {
   Card, ListGroup,
 } from 'react-bootstrap';
-import { strings } from '../i18n/strings';
+
+import { strings } from 'i18n/strings';
+
 import { AlertList } from './AlertList';
 import { AlertCreationForm } from './AlertCreationForm';
-import { setAlertCallback } from './Util';
+import { setAlertCallback } from './util';
 
 export class AlertManager extends Component {
   constructor(props) {

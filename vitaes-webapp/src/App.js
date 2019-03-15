@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import './App.css';
+
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {
   Navbar, Nav, NavDropdown, Row, Col, Container,
 } from 'react-bootstrap';
+
+import getHostname from 'utils/getHostname';
+import { strings } from 'i18n/strings';
+
 import About from './About';
 import AddTemplate from './AddTemplate';
 import Builder from './Builder';
 import Login from './Login';
 import TemplateHub from './TemplateHub';
 import config from './config';
-import { getHostname } from './Util';
-import { strings } from './i18n/strings';
+import { setupAlerts } from './AlertManager/util';
+import AlertManager from './AlertManager';
+import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { setupAlerts } from './Alert/Util';
-import { AlertManager } from './Alert/AlertManager';
+
 
 firebase.initializeApp(config);
 
@@ -191,7 +195,7 @@ class App extends Component {
                     this.setState({ tab: 2 });
                   }}
                 >
-Template Hub
+                  Template Hub
                 </Nav.Link>
                 <Nav.Link
                   href="#about"

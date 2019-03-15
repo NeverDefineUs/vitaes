@@ -1,9 +1,10 @@
 import { toast } from 'react-toastify';
 import firebase from 'firebase';
-import { strings } from '../i18n/strings';
+
+import { strings } from 'i18n/strings';
 
 let messages = [];
-let messageCallback = () => {};
+let messageCallback = () => { };
 
 export function setAlertCallback(callback) {
   messageCallback = callback;

@@ -4,8 +4,9 @@ import {
   Button, Card, Form, InputGroup,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { copyElement } from '../Util';
-import { strings } from '../i18n/strings';
+
+import copyElement from 'utils/copyElement';
+import { strings } from 'i18n/strings';
 
 export class AlertCreationForm extends Component {
   constructor(props) {
