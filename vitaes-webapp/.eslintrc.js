@@ -23,7 +23,6 @@ module.exports = {
     'react/prop-types': 'off',
     'react/no-multi-comp': 'off',
     'no-restricted-syntax': 'off',
-    'guard-for-in': 'off',
     'react/no-access-state-in-setstate': 'off',
     'react/prefer-stateless-function': 'off',
     //fix for a11y:
@@ -31,7 +30,8 @@ module.exports = {
     'jsx-a11y/interactive-supports-focus': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
-    // this one is intended to be kept:
+    // these ones are intended to be kept:
+    'guard-for-in': 'off',
     'react/jsx-filename-extension': 'off',
     'import/no-named-as-default': 0,
   },
