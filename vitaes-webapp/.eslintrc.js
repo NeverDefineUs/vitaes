@@ -21,7 +21,6 @@ module.exports = {
   rules: {
     'react/destructuring-assignment': 'off',
     'react/prop-types': 'off',
-    'react/no-multi-comp': 'off',
     'no-restricted-syntax': 'off',
     'react/no-access-state-in-setstate': 'off',
     'react/prefer-stateless-function': 'off',
