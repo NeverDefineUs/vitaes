@@ -65,7 +65,7 @@ class App extends Component {
           .ref('cvs')
           .child(user.uid);
         app.setState({ user, tab: 1 });
-        const loadingToast = toast.info('Loading...', {autoClose: false});
+        const loadingToast = toast.info('Loading...', { autoClose: false });
         db.on(
           'value',
           (snapshot) => {
