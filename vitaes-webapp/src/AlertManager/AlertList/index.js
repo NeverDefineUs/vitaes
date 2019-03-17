@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { ListGroup, Button } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 
 export function AlertList(props) {
   const alerts = [];
@@ -17,7 +17,7 @@ export function AlertList(props) {
           variant="secondary"
           onClick={() => firebase.database().ref('messages').child(alertKey).remove()}
         >
-          {strings.delete}
+          {translate('delete')}
         </Button>
       </ListGroup.Item>,
     );
