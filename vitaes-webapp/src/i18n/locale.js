@@ -81,6 +81,8 @@ export const translate = (key) => {
   throw new Error(`No translation was found for key '${key}'.`);
 };
 
+export const getActiveLocale = () => activeLocale;
+
 export const getAvailableLocales = () => {
   if (availableLocales) {
     return availableLocales;
