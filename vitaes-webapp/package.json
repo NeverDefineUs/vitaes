@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "",
     "bootstrap": "^4.3.1",
     "eslint": "^5.15.1",
     "eslint-config-airbnb": "^17.1.0",

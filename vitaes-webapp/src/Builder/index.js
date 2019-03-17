@@ -93,6 +93,7 @@ class Builder extends Component {
       .push();
     db.set(this.props.cv);
     const cv = removeDisabled(this.props.cv);
+    this.state.params.lang = strings.getLanguage();
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
       headers: {
