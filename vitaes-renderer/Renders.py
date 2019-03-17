@@ -76,6 +76,10 @@ def text_clean(text):
     if text == None:
         return text
     text=str(text)
+    extra = {
+        "\\{": "{",
+        "\\}": "}",
+    }
     accents = {
         "\\`a": "à",
         "\\'a": "á",
@@ -115,11 +119,11 @@ def text_clean(text):
         "\\c{C}": "Ç",
         "\\#": "#",
         "\\%": "%",
-        "\\{": "{",
-        "\\}": "}",
         "\\_": "_",
         "\\&": "&",
     }
+    for x in extra.keys():
+        text = text.replace(extra[x], x)
     for x in accents.keys():
         text = text.replace(accents[x], x)
     return text
