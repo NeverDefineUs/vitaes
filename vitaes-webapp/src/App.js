@@ -23,6 +23,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 firebase.initializeApp(config);
 
+setLocale();
+
 const testCv = {
   CvHeaderItem: {
     name: '',

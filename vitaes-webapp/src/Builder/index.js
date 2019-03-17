@@ -7,7 +7,7 @@ import {
   Button, Form, Card, Col, Row,
 } from 'react-bootstrap';
 
-import { translate, getActiveLocale } from 'i18n/locale';
+import { translate, getActiveLanguage } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 import getHostname from 'utils/getHostname';
 import removeDisabled from 'utils/removeDisabled';
@@ -93,7 +93,8 @@ class Builder extends Component {
       .push();
     db.set(this.props.cv);
     const cv = removeDisabled(this.props.cv);
-    this.state.params.lang = getActiveLocale();
+    // TODO this should be receiving full locale
+    this.state.params.lang = getActiveLanguage();
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
       headers: {

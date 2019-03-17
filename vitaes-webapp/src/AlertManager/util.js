@@ -20,10 +20,10 @@ export function setupAlerts() {
       for (const msgKey in snapshot.val()) {
         const msg = snapshot.val()[msgKey];
         if (msg !== undefined) {
-          const alo = getBrowserLanguage();
+          const language = getBrowserLanguage();
           let msgStr = '';
-          if (msg[alo]) {
-            msgStr = msg[alo];
+          if (msg[language]) {
+            msgStr = msg[language];
           } else {
             msgStr = msg.en;
           }

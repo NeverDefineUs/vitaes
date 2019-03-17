@@ -6,7 +6,7 @@ let availableLocales;
 let activeLocale;
 let memo;
 
-const getActiveLanguage = () => activeLocale[0] + activeLocale[1];
+export const getActiveLanguage = () => activeLocale.split('_')[0];
 
 const territoryFallback = (key, inputLanguage) => {
   const language = inputLanguage || getActiveLanguage();
@@ -44,15 +44,28 @@ const languageFallback = (key) => {
 };
 
 export const getBrowserLanguage = () => {
-  if (!navigator) {
-    return DEFAULT_LANGUAGE;
+  let language = DEFAULT_LANGUAGE;
+
+  if (navigator) {
+    let preferredLanguageFound = false;
+    if (navigator.languages) {
+      for (const idx in navigator.languages) {
+        if (!preferredLanguageFound && navigator.languages[idx]) {
+          language = navigator.languages[idx];
+          preferredLanguageFound = true;
+        }
+      }
+    }
+
+    if (!preferredLanguageFound) {
+      language = navigator.language
+        || navigator.browserLanguage
+        || navigator.userLanguage
+        || DEFAULT_LANGUAGE;
+    }
   }
 
-  return (navigator.languages && navigator.languages[0])
-    || navigator.language
-    || navigator.userLanguage
-    || navigator.browserLanguage
-    || DEFAULT_LANGUAGE;
+  return language.replace('-', '_');
 };
 
 export const setLocale = (locale) => {
@@ -97,5 +110,3 @@ export const getAvailableLocales = () => {
 
   return availableLocales;
 };
-
-setLocale();
