@@ -47,6 +47,8 @@ class Builder extends Component {
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
+
+    this.autoSave();
   }
 
   setCv(cv) {
