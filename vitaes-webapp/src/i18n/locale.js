@@ -69,6 +69,11 @@ export const getBrowserLanguage = () => {
 };
 
 export const setLocale = (locale) => {
+  // Avoid executing this function multiple times at every import
+  if (activeLocale && !locale) {
+    return;
+  }
+
   activeLocale = locale || getBrowserLanguage();
   memo = {};
 };
@@ -110,3 +115,5 @@ export const getAvailableLocales = () => {
 
   return availableLocales;
 };
+
+setLocale();
