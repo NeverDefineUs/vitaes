@@ -3,7 +3,7 @@ import {
   Card, ListGroup,
 } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 
 import { AlertList } from './AlertList';
 import { AlertCreationForm } from './AlertCreationForm';
@@ -21,7 +21,7 @@ export class AlertManager extends Component {
       [
         <AlertCreationForm />,
         <Card>
-          <Card.Header>{strings.alerts}</Card.Header>
+          <Card.Header>{translate('alerts')}</Card.Header>
           <ListGroup variant="flush">
             <AlertList alerts={this.state.alerts} />
           </ListGroup>
