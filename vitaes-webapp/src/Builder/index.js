@@ -36,11 +36,13 @@ class Builder extends Component {
         'skill',
       ],
       params: {},
+      saving: false,
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
     this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
     this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this);
     this.saveOnAccount = this.saveOnAccount.bind(this);
+    this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
@@ -150,6 +152,14 @@ class Builder extends Component {
     }
   }
 
+  autoSave() {
+    setInterval(() => {
+      if (this.state.saving) {
+        this.saveOnAccount()
+      }
+    }, 180000)
+  }
+
   handleChangeHeader(event) {
     const aux = this.props.cv;
     aux.CvHeaderItem[event.target.name] = event.target.value;
@@ -224,6 +234,12 @@ class Builder extends Component {
         <Card.Body>
           <h2>Curriculum Vitae:</h2>
           <br />
+          <input 
+            id="autosave"
+            type="checkbox"
+            checked={this.state.saving}
+            onChange={() => this.setState({saving: !this.state.saving})}
+          /> Autosave
           <h3>
             {strings.header}
             :
