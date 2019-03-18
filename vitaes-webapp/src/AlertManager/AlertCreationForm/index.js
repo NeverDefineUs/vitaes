@@ -6,14 +6,14 @@ import {
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-import { translate, getAvailableLocales } from 'i18n/locale';
+import { translate } from 'i18n/locale';
 
-import { defaultMessage } from './util';
+import defaultAlert from './default';
 
 export class AlertCreationForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { message: defaultMessage() };
+    this.state = { message: defaultAlert() };
     this.addAlert = this.addAlert.bind(this);
   }
 
@@ -25,11 +25,7 @@ export class AlertCreationForm extends Component {
       return;
     }
     errorRef.set(message);
-    message = { type: 'warning' };
-    for (const language of getAvailableLocales()) {
-      message[language] = '';
-    }
-    this.setState({ message });
+    this.setState({ message: defaultAlert() });
   }
 
   render() {
