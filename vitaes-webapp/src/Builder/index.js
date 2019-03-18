@@ -7,7 +7,7 @@ import {
   Button, Form, Card, Col, Row,
 } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate, getActiveLanguage } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 import getHostname from 'utils/getHostname';
 import removeDisabled from 'utils/removeDisabled';
@@ -67,16 +67,16 @@ class Builder extends Component {
 
   downloadCvAsPDF() {
     if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
-      toast.error(strings.invalidEmailFormat);
+      toast.error(translate('invalid_email_format'));
       return;
     }
     if (this.props.cv.CvHeaderItem.name === '') {
-      toast.error(strings.invalidNameFormat);
+      toast.error(translate('invalid_name_format'));
       return;
     }
     if (this.props.cv.CvHeaderItem.birthday) {
       if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
-        toast.error(strings.invalidBirthdayFormat);
+        toast.error(translate('invalid_birthday_format'));
         return;
       }
     }
@@ -93,7 +93,8 @@ class Builder extends Component {
       .push();
     db.set(this.props.cv);
     const cv = removeDisabled(this.props.cv);
-    this.state.params.lang = strings.getLanguage();
+    // TODO this should be receiving full locale
+    this.state.params.lang = getActiveLanguage();
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
       headers: {
@@ -128,13 +129,13 @@ class Builder extends Component {
                 element.click();
               });
             } else {
-              toast.error(strings.errorProcessingFile);
+              toast.error(translate('error_processing_file'));
             }
           });
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => toast.error(`${strings.error}: ${text}`));
+        textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
       }
     });
   }
@@ -225,7 +226,7 @@ class Builder extends Component {
           <h2>Curriculum Vitae:</h2>
           <br />
           <h3>
-            {strings.header}
+            {translate('header')}
             :
           </h3>
           <br />
@@ -233,18 +234,18 @@ class Builder extends Component {
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              label={strings.name}
+              label={translate('name')}
               id="name"
               mandatory
-              placeholder={strings.namePlaceholder}
+              placeholder={translate('name_placeholder')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              label={strings.email}
+              label={translate('email')}
               id="email"
               mandatory
-              placeholder={strings.emailPlaceholder}
+              placeholder={translate('email_placeholder')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
@@ -252,15 +253,15 @@ class Builder extends Component {
               label="linkedin"
               id="linkedin"
               mandatory={false}
-              placeholder={strings.linkedinPlaceholder}
+              placeholder={translate('linkedin_placeholder')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              label={strings.homepage}
+              label={translate('homepage')}
               id="homepage"
               mandatory={false}
-              placeholder={strings.homepagePlaceholder}
+              placeholder={translate('homepage_placeholder')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
@@ -268,36 +269,36 @@ class Builder extends Component {
               label="github"
               id="github"
               mandatory={false}
-              placeholder={strings.githubPlaceholder}
+              placeholder={translate('github_placeholder')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              label={strings.phone}
+              label={translate('phone')}
               id="phone"
               mandatory={false}
-              placeholder={strings.phonePlaceholder}
+              placeholder={translate('phone_placeholder')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              label={strings.birthday}
+              label={translate('birthday')}
               id="birthday"
               mandatory={false}
-              placeholder={strings.dateFormat}
+              placeholder={translate('date_format')}
             />
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              label={strings.address}
+              label={translate('address')}
               id="address"
               mandatory={false}
-              placeholder={strings.addressPlaceholder}
+              placeholder={translate('address_placeholder')}
             />
           </Form>
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.work}
+            label={translate('work')}
             cvkey="CvWorkExperienceItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -317,7 +318,7 @@ class Builder extends Component {
           />
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.education}
+            label={translate('education')}
             cvkey="CvEducationalExperienceItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -338,7 +339,7 @@ class Builder extends Component {
           />
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.academic}
+            label={translate('academic')}
             cvkey="CvAcademicProjectItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -356,7 +357,7 @@ class Builder extends Component {
           />
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.achievements}
+            label={translate('achievements')}
             cvkey="CvAchievementItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -378,7 +379,7 @@ class Builder extends Component {
           />
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.projects}
+            label={translate('projects')}
             cvkey="CvImplementationProjectItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -396,7 +397,7 @@ class Builder extends Component {
           />
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.languages}
+            label={translate('languages')}
             cvkey="CvLanguageItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -408,7 +409,7 @@ class Builder extends Component {
           />
           <CvItemForm
             chosenLabel={this.state.chosenLabel}
-            label={strings.skills}
+            label={translate('skills')}
             cvkey="CvSkillItem"
             curriculum={this.props.cv}
             stateChanger={this.setCv}
@@ -420,7 +421,7 @@ class Builder extends Component {
           />
           <hr />
           <h3>
-            {strings.reorderCVAreas}
+            {translate('reorder_cvareas')}
             :
           </h3>
           <br />
@@ -434,7 +435,7 @@ class Builder extends Component {
           <br />
           <Form.Group as={Row}>
             <Form.Label column sm="2">
-              {strings.model}
+              {translate('model')}
               :
             </Form.Label>
             <Col sm="10">
@@ -468,7 +469,7 @@ class Builder extends Component {
               onChange={e => this.uploadJSON(e.target.files)}
               style={{ display: 'none' }}
             />
-            {strings.uploadJson}
+            {translate('upload_json')}
           </Button>
           <Button
             variant="secondary"
@@ -476,7 +477,7 @@ class Builder extends Component {
             onClick={this.downloadCvAsJson}
             style={{ marginLeft: 5, float: 'right' }}
           >
-            {strings.downloadJson}
+            {translate('download_json')}
           </Button>
           <Button
             variant="secondary"
@@ -484,7 +485,7 @@ class Builder extends Component {
             onClick={this.downloadCvAsPDF}
             style={{ marginLeft: 5, float: 'right' }}
           >
-            {strings.downloadCV}
+            {translate('download_cv')}
           </Button>
           {this.props.user !== null ? (
             <Button
@@ -493,7 +494,7 @@ class Builder extends Component {
               onClick={this.saveOnAccount}
               style={{ marginLeft: 5, float: 'right' }}
             >
-              {strings.saveCVOnAccount}
+              {translate('save_cv_on_account')}
             </Button>
           ) : null}
         </Card.Body>

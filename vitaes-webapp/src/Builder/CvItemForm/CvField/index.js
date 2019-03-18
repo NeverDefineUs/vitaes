@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 
 class CvField extends Component {
@@ -11,8 +11,8 @@ class CvField extends Component {
       <Form.Group as={Row}>
         <Form.Label column sm={3}>
           {capitalize(this.props.label)}
-          {this.props.mandatory ? ` (${strings.required})` : ''}
-          {this.props.id.endsWith('date') ? ` (${strings.dateFormat})` : ''}
+          {this.props.mandatory ? ` (${translate('required')})` : ''}
+          {this.props.id.endsWith('date') ? ` (${translate('date_format')})` : ''}
           :
         </Form.Label>
         <Col sm={9}>

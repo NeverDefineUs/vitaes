@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
@@ -12,37 +12,37 @@ class About extends Component {
     return (
       <div className="Base">
         <h1>
-          {strings.aboutTheProject}
+          {translate('about_the_project')}
           :
         </h1>
         <br />
         <h2>
-          {strings.majorContributors}
+          {translate('major_contributors')}
           :
         </h2>
         <h3> Arthurlpgc</h3>
         <img src={imagesSrcs.Arthurlpgc} alt="" className="Base-profile" />
         <br />
-        {strings.contactEmail}
+        {translate('contact_email')}
         : latache@vitaes.io
         <br />
         <br />
         <h3> RamonSaboya</h3>
         <img src={imagesSrcs.RamonSaboya} alt="" className="Base-profile" />
         <br />
-        {strings.contactEmail}
+        {translate('contact_email')}
         : saboya@vitaes.io
         <br />
         <br />
         <h3> Magsouza</h3>
         <img src={imagesSrcs.Magsouza} alt="" className="Base-profile" />
         <br />
-        {strings.contactEmail}
+        {translate('contact_email')}
         : mag@vitaes.io
         <br />
         <br />
         <h2>
-          {strings.otherContributors}
+          {translate('other_contributors')}
           :
         </h2>
         <ul>
@@ -75,7 +75,7 @@ class About extends Component {
         </ul>
         <br />
         <h2>
-          {strings.templateContributors}
+          {translate('template_contributors')}
           :
         </h2>
         <ul>
@@ -91,7 +91,7 @@ class About extends Component {
           </li>
         </ul>
         <h2>
-          {strings.repository}
+          {translate('repository')}
           :
         </h2>
         https://github.com/NeverDefineUs/vitaes
