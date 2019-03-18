@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import _ from 'lodash';
 import {
   Button, Card, Form, InputGroup,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-import copyElement from 'utils/copyElement';
 import { strings } from 'i18n/strings';
+
+import { defaultMessage } from './util';
 
 export class AlertCreationForm extends Component {
   constructor(props) {
     super(props);
-    const message = { type: 'warning' };
-    for (const language of strings.getAvailableLanguages()) {
-      message[language] = '';
-    }
-    this.state = { message };
+    this.state = { message: defaultMessage() };
     this.addAlert = this.addAlert.bind(this);
   }
 
   addAlert() {
     const errorRef = firebase.database().ref('messages').push();
-    let message = copyElement(this.state.message);
+    let message = _.cloneDeep(this.state.message);
     if (!message.en) {
       toast.error(strings.noEnMessageError);
       return;
@@ -74,7 +72,7 @@ export class AlertCreationForm extends Component {
             <Form.Control
               value={this.state.message.type}
               onChange={(event) => {
-                const message = copyElement(this.state.message);
+                const message = _.cloneDeep(this.state.message);
                 message.type = event.target.value;
                 this.setState({ message });
               }}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-
+import  _ from 'lodash';
 import { getEmptyTemplate } from './util';
 import TemplateField from './TemplateField';
 import OwnedTemplate from './OwnedTemplate';
@@ -12,14 +12,11 @@ class AddTemplate extends Component {
   }
 
   render() {
-    const ownedCvs = [];
-
-    for (const cvKey in this.props.cv_models) {
-      const template = this.props.cv_models[cvKey];
-      if (template.owner === firebase.auth().currentUser.uid) {
-        ownedCvs.push(<OwnedTemplate template={template} key={cvKey} />);
-      }
-    }
+    const ownedCvs = _.values(_.mapValues(_.filter(this.props.cv_models, (template) => {
+      return (template.owner === firebase.auth().currentUser.uid);
+    }), (template, cvKey) => {
+      return (<OwnedTemplate template={template} key={cvKey} />);
+    }));
 
     return (
       <div className="Base">
