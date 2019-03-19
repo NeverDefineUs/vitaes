@@ -29,7 +29,7 @@ class CvField extends Component {
             onChange={this.props.stateChanger}
             placeholder={this.props.placeholder}
             onKeyPress={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === 'Enter' && this.props.id !== 'description') {
                 this.props.addField();
               }
             }}
