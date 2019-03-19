@@ -253,6 +253,10 @@ export const strings = {
     en_US: 'Linkedin url (e.g. linkedin.com/in/youruser/)',
     pt_BR: 'Linkedin url (ex. linkedin.com/in/seuusuario/)',
   },
+  loading: {
+    en_US: 'Loading',
+    pt_BR: 'Carregando',
+  },
   major_contributors: {
     en_US: 'Major contributors',
     pt_BR: 'Principais contribuidores',

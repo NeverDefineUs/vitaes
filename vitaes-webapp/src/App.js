@@ -65,9 +65,11 @@ class App extends Component {
           .ref('cvs')
           .child(user.uid);
         app.setState({ user, tab: 1 });
+        const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
         db.on(
           'value',
           (snapshot) => {
+            toast.dismiss(loadingToast);
             const snap = snapshot.val();
             if (snap === null) {
               db.set(testCv);
