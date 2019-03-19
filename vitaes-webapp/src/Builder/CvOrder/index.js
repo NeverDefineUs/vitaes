@@ -3,7 +3,7 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import PropTypes from 'prop-types';
 import { Badge } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 
 const SortableItem = SortableElement(({ value }) => (
   <li><Badge variant="secondary" style={{ width: '80%', marginLeft: '10%' }}>{value}</Badge></li>
@@ -12,7 +12,7 @@ const SortableItem = SortableElement(({ value }) => (
 const SortableList = SortableContainer(({ cvOrder }) => (
   <ul className="Base-orderlist">
     {cvOrder.map((value, index) => (
-      <SortableItem key={`item-${value}`} index={index} value={strings[value]} />
+      <SortableItem key={`item-${value}`} index={index} value={translate(value)} />
     ))}
   </ul>
 ));

@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 
 import getHostname from 'utils/getHostname';
-import { strings } from 'i18n/strings';
+import { translate, setLocale } from 'i18n/locale';
 
 import About from './About';
 import AddTemplate from './AddTemplate';
@@ -65,9 +65,11 @@ class App extends Component {
           .ref('cvs')
           .child(user.uid);
         app.setState({ user, tab: 1 });
+        const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
         db.on(
           'value',
           (snapshot) => {
+            toast.dismiss(loadingToast);
             const snap = snapshot.val();
             if (snap === null) {
               db.set(testCv);
@@ -97,7 +99,7 @@ class App extends Component {
         });
       } else {
         const textPromise = response.text();
-        textPromise.then(text => toast.error(`${strings.error}: ${text}`));
+        textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
       }
     });
   }
@@ -164,7 +166,7 @@ class App extends Component {
                     this.setState({ tab: 1 });
                   }}
                 >
-                  {strings.createCV}
+                  {translate('create_cv')}
                 </Nav.Link>
                 {this.state.user !== null
                   && this.state.permissions !== null
@@ -177,7 +179,7 @@ class App extends Component {
                           this.setState({ tab: 4 });
                         }}
                       >
-                        {strings.createTemplate}
+                        {translate('create_template')}
                       </Nav.Link>,
                       <Nav.Link
                         href="#alert_manager"
@@ -185,7 +187,7 @@ class App extends Component {
                           this.setState({ tab: 5 });
                         }}
                       >
-                        {strings.alertManager}
+                        {translate('alert_manager')}
                       </Nav.Link>,
                     ]
                   ) : null}
@@ -203,18 +205,18 @@ class App extends Component {
                     this.setState({ tab: 3 });
                   }}
                 >
-                  {strings.aboutTheProject}
+                  {translate('about_the_project')}
                 </Nav.Link>
-                <NavDropdown title={strings.language} id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#lang/en" onClick={() => { strings.setLanguage('en'); this.setState({}); }}>English</NavDropdown.Item>
-                  <NavDropdown.Item href="#lang/pt" onClick={() => { strings.setLanguage('pt'); this.setState({}); }}>Português</NavDropdown.Item>
+                <NavDropdown title={translate('language')} id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#lang/en" onClick={() => { setLocale('en_US'); this.setState({}); }}>English</NavDropdown.Item>
+                  <NavDropdown.Item href="#lang/pt" onClick={() => { setLocale('pt_BR'); this.setState({}); }}>Português</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
               <Nav className="mr-sm-2">
                 {this.state.user !== null ? (
-                  <Nav.Link href="#signout" onClick={this.logout}>{strings.signOut}</Nav.Link>
+                  <Nav.Link href="#signout" onClick={this.logout}>{translate('sign_out')}</Nav.Link>
                 ) : (
-                  <Nav.Link href="#signin" onClick={this.showLogin}>{strings.signIn}</Nav.Link>
+                  <Nav.Link href="#signin" onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
                 )}
               </Nav>
             </Navbar.Collapse>
