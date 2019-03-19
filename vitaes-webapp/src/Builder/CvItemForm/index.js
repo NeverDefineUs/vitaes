@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { Alert, Button, Card } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 import validateDate from 'utils/validateDate';
 
@@ -90,9 +90,9 @@ class CvItemForm extends Component {
     for (const item of this.props.fields) {
       if (toAdd[item[0]] === undefined) {
         if (item[0] === 'name') {
-          toast.error(`${strings.mandatoryField}: ${strings.title}`);
+          toast.error(`${translate('mandatory_field')}: ${translate('title')}`);
         } else {
-          toast.error(`${strings.mandatoryField}: ${capitalize(item[0])}`);
+          toast.error(`${translate('mandatory_field')}: ${capitalize(item[0])}`);
         }
         return false;
       }
@@ -100,7 +100,7 @@ class CvItemForm extends Component {
     for (const item in toAdd) {
       if (item.endsWith('date') && toAdd[item]) {
         if (!validateDate(toAdd[item])) {
-          toast.error(`${strings.wrongFormat}: ${item}`);
+          toast.error(`${translate('wrong_format')}: ${item}`);
           return false;
         }
       }
@@ -172,7 +172,7 @@ class CvItemForm extends Component {
               onClick={comp.getEventDeleter(index)}
               style={{ marginLeft: 5, float: 'right' }}
             >
-              delete
+              {translate('delete')}
             </Button>
             <Button
               variant="dark"
@@ -180,7 +180,7 @@ class CvItemForm extends Component {
               onClick={comp.getEventEnabler(index)}
               style={{ marginLeft: 5, float: 'right' }}
             >
-              {item.disable ? 'hide' : 'show'}
+              {translate(item.disable ? 'hide' : 'show')}
             </Button>
           </Alert>,
         );
@@ -195,7 +195,7 @@ class CvItemForm extends Component {
             style={{ float: 'right' }}
             onClick={() => this.props.labelChanger(this.props.label)}
           >
-            {strings.addEntry}
+            {translate('add_entry')}
           </Button>
           <br />
         </div>
@@ -244,7 +244,7 @@ class CvItemForm extends Component {
             style={{ float: 'right' }}
             onClick={this.addField}
           >
-            {strings.addEntry}
+            {translate('add_entry')}
           </Button>
         </Card>
       </div>

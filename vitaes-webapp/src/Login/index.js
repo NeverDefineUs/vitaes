@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'react-bootstrap';
 
-import { strings } from 'i18n/strings';
+import { translate } from 'i18n/locale';
 
 import { googleLogin, facebookLogin, githubLogin } from './providers';
 import './Login.css';
@@ -14,7 +14,7 @@ class Login extends Component {
       <Modal show={this.props.show} onHide={this.props.onHide}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {strings.signIn}
+            {translate('sign_in')}
             :
           </Modal.Title>
         </Modal.Header>
@@ -26,7 +26,7 @@ class Login extends Component {
             onClick={this.props.skipLogin}
             size="sm"
           >
-            {strings.skipLogin}
+            {translate('skip_login')}
           </Button>
           <br />
           <Button
@@ -35,7 +35,7 @@ class Login extends Component {
             onClick={googleLogin}
             size="sm"
           >
-            {strings.googleLogin}
+            {translate('google_login')}
           </Button>
           <br />
           <Button
@@ -44,7 +44,7 @@ class Login extends Component {
             onClick={facebookLogin}
             size="sm"
           >
-            {strings.facebookLogin}
+            {translate('facebook_login')}
           </Button>
           <br />
           <Button
@@ -53,7 +53,7 @@ class Login extends Component {
             onClick={githubLogin}
             size="sm"
           >
-            {strings.githubLogin}
+            {translate('github_login')}
           </Button>
         </Modal.Body>
       </Modal>
