@@ -19,7 +19,7 @@ export class AlertCreationForm extends Component {
 
   addAlert() {
     const errorRef = firebase.database().ref('messages').push();
-    let message = _.cloneDeep(this.state.message);
+    const message = _.cloneDeep(this.state.message);
     if (!message.en) {
       toast.error(translate('no_en_message_error'));
       return;
@@ -29,34 +29,29 @@ export class AlertCreationForm extends Component {
   }
 
   render() {
-    const forms = [];
-    for (const key in this.state.message) {
-      if (key !== 'type') {
-        const msg = (
-          <InputGroup
-            key={key}
-            value={this.state.message[key]}
-            style={{ marginBottom: 10 }}
-          >
-            <InputGroup.Prepend>
-              <InputGroup.Text>{key}</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="text"
-              aria-describedby="inputGroupPrepend"
-              required
-              value={this.state.message[key]}
-              onChange={(event) => {
-                const { message } = this.state;
-                message[key] = event.target.value;
-                this.setState({ message });
-              }}
-            />
-          </InputGroup>
-        );
-        forms.push(msg);
-      }
-    }
+    const forms = _.values(_.map(_.pickBy(this.state.message, (value, key) => key !== 'type'), (value, key) => (
+      <InputGroup
+        key={key}
+        value={value}
+        style={{ marginBottom: 10 }}
+      >
+        <InputGroup.Prepend>
+          <InputGroup.Text>{key}</InputGroup.Text>
+        </InputGroup.Prepend>
+        <Form.Control
+          type="text"
+          aria-describedby="inputGroupPrepend"
+          required
+          value={value}
+          onChange={(event) => {
+            const { message } = this.state;
+            message[key] = event.target.value;
+            this.setState({ message });
+          }}
+        />
+      </InputGroup>
+    )));
+
     return (
       <Card style={{ marginBottom: 10 }}>
         <Card.Body>

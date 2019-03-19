@@ -32,6 +32,7 @@ module.exports = {
     // these ones are intended to be kept:
     'guard-for-in': 'off',
     'react/jsx-filename-extension': 'off',
+    'implicit-arrow-linebreak': 'off',
     'import/no-named-as-default': 0,
   },
   settings: {
