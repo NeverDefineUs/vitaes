@@ -73,6 +73,10 @@ export const strings = {
     en_US: 'Full URL to the article',
     pt_BR: 'URL completa do artigo',
   },
+  autosave: {
+    en_US: 'Autosave',
+    pt_BR: 'Salvar automaticamente',
+  },
   birthday: {
     en_US: 'Birthday',
     pt_BR: 'Data de nascimento',
@@ -356,6 +360,10 @@ export const strings = {
   save_cv_on_account: {
     en_US: 'Save on account',
     pt_BR: 'Salvar na Conta',
+  },
+  saved: {
+    en_US: 'Saved!',
+    pt_BR: 'Salvo!',
   },
   show: {
     en_US: 'Show',

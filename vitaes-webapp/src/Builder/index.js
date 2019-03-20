@@ -159,6 +159,7 @@ class Builder extends Component {
     setInterval(() => {
       if (this.state.saving) {
         this.saveOnAccount()
+        toast.success(translate('saved'))
       }
     }, 180000)
   }
@@ -237,12 +238,14 @@ class Builder extends Component {
         <Card.Body>
           <h2>Curriculum Vitae:</h2>
           <br />
-          <input 
+          <Form.Check
+            inline 
+            label={translate('autosave')}
             id="autosave"
             type="checkbox"
             checked={this.state.saving}
             onChange={() => this.setState({saving: !this.state.saving})}
-          /> Autosave
+          />
           <h3>
             {translate('header')}
             :
