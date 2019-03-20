@@ -325,6 +325,10 @@ export const strings = {
     en_US: 'Projects',
     pt_BR: 'Projetos',
   },
+  ready: {
+    en_US: 'Ready',
+    pt_BR: 'Pronto',
+  },
   reorder_cvareas: {
     en_US: 'Reorder CV areas',
     pt_BR: 'Reordenar areas do CV',
