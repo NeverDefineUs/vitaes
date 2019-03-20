@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-
 import { getEmptyTemplate } from './util';
 import TemplateField from './TemplateField';
 import OwnedTemplate from './OwnedTemplate';
@@ -12,14 +11,10 @@ class AddTemplate extends Component {
   }
 
   render() {
-    const ownedCvs = [];
-
-    for (const cvKey in this.props.cv_models) {
-      const template = this.props.cv_models[cvKey];
-      if (template.owner === firebase.auth().currentUser.uid) {
-        ownedCvs.push(<OwnedTemplate template={template} key={cvKey} />);
-      }
-    }
+    const ownedCvs = Object.values(this.props.cv_models).filter(template =>
+      (template.owner === firebase.auth().currentUser.uid));
+    const ownedCvsNodes = ownedCvs.map(template =>
+      (<OwnedTemplate template={template} key={template} />));
 
     return (
       <div className="Base">
@@ -67,7 +62,7 @@ class AddTemplate extends Component {
           <a href="#" onClick={() => { }}>Add New Param</a>
         </div>
         <hr style={{ marginTop: '3em' }} />
-        {ownedCvs}
+        {ownedCvsNodes}
       </div>
     );
   }

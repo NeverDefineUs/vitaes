@@ -1,12 +1,12 @@
-import copyElement from './copyElement';
+import { deepCopy } from 'lodash';
 
 export default function removeDisabled(rawCv) {
-  const cv = copyElement(rawCv);
+  const cv = deepCopy(rawCv);
   Object.keys(cv).forEach((key) => {
     if (Array.isArray(cv[key])) {
       cv[key] = cv[key].filter(element => !element.disable);
       cv[key] = cv[key].map((element) => {
-        const elementCopy = copyElement(element);
+        const elementCopy = deepCopy(element);
         elementCopy.disable = true;
         delete elementCopy.disable;
         return elementCopy;

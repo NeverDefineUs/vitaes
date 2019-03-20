@@ -1,68 +1,57 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import _ from 'lodash';
 import {
   Button, Card, Form, InputGroup,
 } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-import copyElement from 'utils/copyElement';
-import { translate, getAvailableLocales } from 'i18n/locale';
+import { translate } from 'i18n/locale';
+
+import defaultAlert from './default';
 
 export class AlertCreationForm extends Component {
   constructor(props) {
     super(props);
-    const message = { type: 'warning' };
-    for (const language of getAvailableLocales()) {
-      message[language] = '';
-    }
-    this.state = { message };
+    this.state = { message: defaultAlert() };
     this.addAlert = this.addAlert.bind(this);
   }
 
   addAlert() {
     const errorRef = firebase.database().ref('messages').push();
-    let message = copyElement(this.state.message);
+    const message = _.cloneDeep(this.state.message);
     if (!message.en) {
       toast.error(translate('no_en_message_error'));
       return;
     }
     errorRef.set(message);
-    message = { type: 'warning' };
-    for (const language of getAvailableLocales()) {
-      message[language] = '';
-    }
-    this.setState({ message });
+    this.setState({ message: defaultAlert() });
   }
 
   render() {
-    const forms = [];
-    for (const key in this.state.message) {
-      if (key !== 'type') {
-        const msg = (
-          <InputGroup
-            key={key}
-            value={this.state.message[key]}
-            style={{ marginBottom: 10 }}
-          >
-            <InputGroup.Prepend>
-              <InputGroup.Text>{key}</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              type="text"
-              aria-describedby="inputGroupPrepend"
-              required
-              value={this.state.message[key]}
-              onChange={(event) => {
-                const { message } = this.state;
-                message[key] = event.target.value;
-                this.setState({ message });
-              }}
-            />
-          </InputGroup>
-        );
-        forms.push(msg);
-      }
-    }
+    const forms = Object.values(_.map(_.pickBy(this.state.message, (value, key) => key !== 'type'), (value, key) => (
+      <InputGroup
+        key={key}
+        value={value}
+        style={{ marginBottom: 10 }}
+      >
+        <InputGroup.Prepend>
+          <InputGroup.Text>{key}</InputGroup.Text>
+        </InputGroup.Prepend>
+        <Form.Control
+          type="text"
+          aria-describedby="inputGroupPrepend"
+          required
+          value={value}
+          onChange={(event) => {
+            const { message } = this.state;
+            message[key] = event.target.value;
+            this.setState({ message });
+          }}
+        />
+      </InputGroup>
+    )));
+
     return (
       <Card style={{ marginBottom: 10 }}>
         <Card.Body>
@@ -74,7 +63,7 @@ export class AlertCreationForm extends Component {
             <Form.Control
               value={this.state.message.type}
               onChange={(event) => {
-                const message = copyElement(this.state.message);
+                const message = _.cloneDeep(this.state.message);
                 message.type = event.target.value;
                 this.setState({ message });
               }}

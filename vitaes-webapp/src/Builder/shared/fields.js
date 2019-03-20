@@ -1,5 +1,6 @@
 import { translate } from 'i18n/locale';
 
+
 // eslint-disable-next-line import/no-mutable-exports
 export let fieldsDef = {};
 
@@ -32,4 +33,5 @@ export function updateFields() {
   };
 }
 
+updateFields();
 export default fieldsDef;
