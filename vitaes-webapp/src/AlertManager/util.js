@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import firebase from 'firebase';
 
-import { getBrowserLanguage } from 'i18n/locale';
+import { getActiveLanguage } from 'i18n/locale';
 
 let messages = [];
 let messageCallback = () => { };
@@ -20,7 +20,7 @@ export function setupAlerts() {
       for (const msgKey in snapshot.val()) {
         const msg = snapshot.val()[msgKey];
         if (msg !== undefined) {
-          const language = getBrowserLanguage();
+          const language = getActiveLanguage();
           let msgStr = '';
           if (msg[language]) {
             msgStr = msg[language];

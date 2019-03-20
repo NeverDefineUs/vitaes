@@ -116,4 +116,7 @@ export const getAvailableLocales = () => {
   return availableLocales;
 };
 
+export const getAvailableLanguages = () => languageFallbackPriority;
+
+
 setLocale();
