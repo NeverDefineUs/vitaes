@@ -2,7 +2,7 @@ import { translate } from 'i18n/locale';
 
 import { fieldsDef, updateFields } from './shared/fields';
 
-// eslint-disble-next-line import/no-mutable-exports
+// eslint-disable-next-line import/no-mutable-exports
 export let cvFormFields = [];
 
 export function updateFormFields() {
