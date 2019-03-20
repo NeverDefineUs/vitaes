@@ -24,6 +24,7 @@ class Builder extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      downloading: false,
       chosenLabel: '',
       user_cv_model: 'awesome',
       cv_order: [
@@ -66,6 +67,9 @@ class Builder extends Component {
   }
 
   downloadCvAsPDF() {
+    if (this.state.downloading) {
+      return;
+    }
     if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
       toast.error(translate('invalid_email_format'));
       return;
@@ -81,20 +85,10 @@ class Builder extends Component {
       }
     }
 
-    const db = firebase
-      .database()
-      .ref('cv-dumps')
-      .child(
-        `EMAIL:${
-          this.props.user !== null
-            ? this.props.user.uid
-            : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
-      )
-      .push();
-    db.set(this.props.cv);
     const cv = removeDisabled(this.props.cv);
     // TODO this should be receiving full locale
     this.state.params.lang = getActiveLanguage();
+    this.setState({ downloading: true });
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
       headers: {
@@ -109,7 +103,21 @@ class Builder extends Component {
       }),
     }).then((response) => {
       if (response.ok) {
+        const saveOn = (path) => {
+          const db = firebase
+            .database()
+            .ref(path)
+            .child(
+              `EMAIL:${
+                this.props.user !== null
+                  ? this.props.user.uid
+                  : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
+            )
+            .push();
+          db.set(this.props.cv);
+        };
         const idPromise = response.text();
+        toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
           fetch(
             `${window.location.protocol}//${getHostname()}/cv/${id}/`,
@@ -121,6 +129,7 @@ class Builder extends Component {
             },
           ).then((cvresponse) => {
             if (cvresponse.ok) {
+              saveOn('cv-dumps');
               const fileBlob = cvresponse.blob();
               fileBlob.then((file) => {
                 const element = document.createElement('a');
@@ -128,8 +137,12 @@ class Builder extends Component {
                 element.download = 'cv.pdf';
                 element.click();
               });
+              toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
+              this.setState({ downloading: false });
             } else {
-              toast.error(translate('error_processing_file'));
+              saveOn('cv-errors');
+              toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
+              this.setState({ downloading: false });
             }
           });
         });
@@ -480,6 +493,7 @@ class Builder extends Component {
             {translate('download_json')}
           </Button>
           <Button
+            disabled={this.state.downloading}
             variant="secondary"
             size="sm"
             onClick={this.downloadCvAsPDF}
