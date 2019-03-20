@@ -233,7 +233,7 @@ class Builder extends Component {
           </h3>
           <br />
           <Form>
-            { _.map(headerFields, (field) => (
+            { _.map(headerFields, field => (
               <CvHeaderField
                 stateChanger={this.handleChangeHeader}
                 curriculum={this.props.cv}
@@ -245,7 +245,7 @@ class Builder extends Component {
             ))
             }
           </Form>
-          {_.map(cvFormFields, (form) => (
+          {_.map(cvFormFields, form => (
             <CvItemForm
               chosenLabel={this.state.chosenLabel}
               label={form.label}

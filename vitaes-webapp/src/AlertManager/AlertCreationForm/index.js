@@ -29,7 +29,7 @@ export class AlertCreationForm extends Component {
   }
 
   render() {
-    const forms = _.values(_.map(_.pickBy(this.state.message, (value, key) => key !== 'type'), (value, key) => (
+    const forms = Object.values(_.map(_.pickBy(this.state.message, (value, key) => key !== 'type'), (value, key) => (
       <InputGroup
         key={key}
         value={value}

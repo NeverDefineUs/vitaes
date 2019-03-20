@@ -6,7 +6,7 @@ import { ListGroup, Button } from 'react-bootstrap';
 import { translate } from 'i18n/locale';
 
 export function AlertList(props) {
-  return _.values(_.map(props.alerts, (alertMsg, alertKey) => (
+  return Object.values(_.map(props.alerts, (alertMsg, alertKey) => (
     <ListGroup.Item>
       {alertMsg.en}
       <Button

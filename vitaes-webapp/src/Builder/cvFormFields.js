@@ -1,7 +1,8 @@
-import { translate } from "i18n/locale";
+import { translate } from 'i18n/locale';
 
-import { fieldsDef, updateFields } from "./shared/fields";
+import { fieldsDef, updateFields } from './shared/fields';
 
+// eslint-disble-next-line import/no-mutable-exports
 export let cvFormFields = [];
 
 export function updateFormFields() {
@@ -31,7 +32,7 @@ export function updateFormFields() {
         fieldsDef.course,
         fieldsDef.startDate,
       ],
-      optFields:[
+      optFields: [
         fieldsDef.endDate,
         fieldsDef.country,
         fieldsDef.state,
@@ -103,6 +104,6 @@ export function updateFormFields() {
         fieldsDef.skillType,
       ],
       optFields: [],
-    }
+    },
   ];
 }
