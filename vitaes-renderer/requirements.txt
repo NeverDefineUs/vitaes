@@ -5,3 +5,4 @@ cheetah3
 pika
 redis
 pymongo
+babel
