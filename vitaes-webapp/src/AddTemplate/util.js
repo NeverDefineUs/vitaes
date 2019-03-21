@@ -22,9 +22,9 @@ export function setTemplateFile(template, file) {
   fetch(
     `${window.location.protocol
     }//${
-    getHostname()
+      getHostname()
     }/template/files/${
-    template.name
+      template.name
     }/`,
     {
       method: 'POST',

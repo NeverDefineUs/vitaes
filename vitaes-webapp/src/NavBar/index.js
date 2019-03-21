@@ -112,8 +112,8 @@ class NavBar extends React.Component {
               {user !== null ? (
                 <Nav.Link onClick={this.logout}>{translate('sign_out')}</Nav.Link>
               ) : (
-                  <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
-                )}
+                <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
