@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { translate } from 'i18n/locale';
 import getHostname from 'utils/getHostname';
 
-import Builder from './Builder'
+import Builder from './Builder';
 
 const defaultCv = {
   CvHeaderItem: {
@@ -20,10 +20,15 @@ const defaultCv = {
 };
 
 class BuilderContainer extends React.Component {
-  state = {
-    cv: defaultCv,
-    cv_models: [],
-    user: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      cv: defaultCv,
+      cv_models: [],
+      user: null,
+    };
+
+    this.setCv = this.setCv.bind(this);
   }
 
   componentDidMount() {
@@ -31,9 +36,9 @@ class BuilderContainer extends React.Component {
       .auth()
       .getRedirectResult()
       .then(() => {
-        const user = firebase.auth().currentUser
+        const user = firebase.auth().currentUser;
 
-        this.setState({ user })
+        this.setState({ user });
         const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
 
         const db = firebase
@@ -55,7 +60,7 @@ class BuilderContainer extends React.Component {
           () => {
           },
         );
-      })
+      });
 
     fetch(`${window.location.protocol}//${getHostname()}/template/`, {
       method: 'GET',
@@ -76,8 +81,8 @@ class BuilderContainer extends React.Component {
     });
   }
 
-  setCv = (cv) => {
-    this.setState({ cv })
+  setCv(cv) {
+    this.setState({ cv });
   }
 
   render() {
@@ -91,7 +96,7 @@ class BuilderContainer extends React.Component {
           user={this.state.user}
         />
       </React.Fragment>
-    )
+    );
   }
 }
 

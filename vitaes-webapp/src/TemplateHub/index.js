@@ -1,11 +1,14 @@
 import React from 'react';
 import firebase from 'firebase';
 
-import TemplateHub from './TemplateHub'
+import TemplateHub from './TemplateHub';
 
 class TemplateHubContainer extends React.Component {
-  state = {
-    user: null
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+    };
   }
 
   componentDidMount() {
@@ -13,13 +16,13 @@ class TemplateHubContainer extends React.Component {
       .auth()
       .getRedirectResult()
       .then(() => {
-        const user = firebase.auth().currentUser
-        this.setState({ user })
-      })
+        const user = firebase.auth().currentUser;
+        this.setState({ user });
+      });
   }
 
   render() {
-    return <TemplateHub user={this.state.user} />
+    return <TemplateHub user={this.state.user} />;
   }
 }
 export default TemplateHubContainer;

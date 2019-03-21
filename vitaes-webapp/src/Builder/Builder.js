@@ -111,9 +111,9 @@ class Builder extends Component {
             .ref(path)
             .child(
               `EMAIL:${
-              this.props.user !== null
-                ? this.props.user.uid
-                : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
+                this.props.user !== null
+                  ? this.props.user.uid
+                  : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
             )
             .push();
           db.set(this.props.cv);

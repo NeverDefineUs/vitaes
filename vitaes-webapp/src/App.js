@@ -54,7 +54,6 @@ class App extends Component {
         show={this.state.showLogin}
         onHide={this.hideLogin}
         skipLogin={() => {
-          this.setState({ tab: 1 });
           this.hideLogin();
         }}
       />
@@ -77,9 +76,6 @@ class App extends Component {
             <Nav className="mr-auto">
               <Nav.Link
                 href="/"
-                onClick={() => {
-                  this.setState({ tab: 1 });
-                }}
               >
                 {translate('create_cv')}
               </Nav.Link>
@@ -90,17 +86,11 @@ class App extends Component {
                   [
                     <Nav.Link
                       href="/create-template"
-                      onClick={() => {
-                        this.setState({ tab: 4 });
-                      }}
                     >
                       {translate('create_template')}
                     </Nav.Link>,
                     <Nav.Link
                       href="/alert-manager"
-                      onClick={() => {
-                        this.setState({ tab: 5 });
-                      }}
                     >
                       {translate('alert_manager')}
                     </Nav.Link>,
@@ -108,17 +98,11 @@ class App extends Component {
                 ) : null}
               <Nav.Link
                 href="/hub"
-                onClick={() => {
-                  this.setState({ tab: 2 });
-                }}
               >
                 Template Hub
-                </Nav.Link>
+              </Nav.Link>
               <Nav.Link
                 href="/about"
-                onClick={() => {
-                  this.setState({ tab: 3 });
-                }}
               >
                 {translate('about_the_project')}
               </Nav.Link>
@@ -131,8 +115,8 @@ class App extends Component {
               {this.state.user !== null ? (
                 <Nav.Link onClick={this.logout}>{translate('sign_out')}</Nav.Link>
               ) : (
-                  <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
-                )}
+                <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>

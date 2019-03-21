@@ -4,11 +4,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import getHostname from 'utils/getHostname';
 import { translate } from 'i18n/locale';
 
-import AddTemplate from './AddTemplate'
+import AddTemplate from './AddTemplate';
 
 class AddTemplateContainer extends Component {
-  state = {
-    cv_models: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      cv_models: [],
+    };
   }
 
   componentDidMount() {
@@ -37,7 +40,7 @@ class AddTemplateContainer extends Component {
         <ToastContainer position="bottom-right" />
         <AddTemplate cv_models={this.state.cv_models} />
       </React.Fragment>
-    )
+    );
   }
 }
 
