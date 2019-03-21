@@ -1,6 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
+import { ToastContainer, toast } from 'react-toastify';
 
+import { translate } from 'i18n/locale';
 import getHostname from 'utils/getHostname';
 
 import Builder from './Builder'
@@ -32,6 +34,7 @@ class BuilderContainer extends React.Component {
         const user = firebase.auth().currentUser
 
         this.setState({ user })
+        const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
 
         const db = firebase
           .database()
@@ -41,6 +44,7 @@ class BuilderContainer extends React.Component {
         db.on(
           'value',
           (snapshot) => {
+            toast.dismiss(loadingToast);
             const snap = snapshot.val();
             if (snap === null) {
               db.set(defaultCv);
@@ -65,6 +69,9 @@ class BuilderContainer extends React.Component {
         jsonPromise.then((json) => {
           this.setState({ cv_models: json });
         });
+      } else {
+        const textPromise = response.text();
+        textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
       }
     });
   }
@@ -75,12 +82,15 @@ class BuilderContainer extends React.Component {
 
   render() {
     return (
-      <Builder
-        cv_models={this.state.cv_models}
-        cv={this.state.cv}
-        cvSetter={this.setCv}
-        user={this.state.user}
-      />
+      <React.Fragment>
+        <ToastContainer position="bottom-right" />
+        <Builder
+          cv_models={this.state.cv_models}
+          cv={this.state.cv}
+          cvSetter={this.setCv}
+          user={this.state.user}
+        />
+      </React.Fragment>
     )
   }
 }
