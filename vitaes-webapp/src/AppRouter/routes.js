@@ -8,9 +8,9 @@ import About from 'About';
 
 
 export default [
-  { path: '/', component: () => <Builder />, exact: 'true' },
-  { path: '/create-template', component: () => <AddTemplate />, exact: 'false' },
-  { path: '/alert-manager', component: () => <AlertManager />, exact: 'false' },
-  { path: '/hub', component: () => <TemplateHub />, exact: 'false' },
-  { path: '/about', component: () => <About />, exact: 'false' },
+  { path: '/', component: () => <Builder />, exact: true },
+  { path: '/create-template', component: () => <AddTemplate />, exact: false },
+  { path: '/alert-manager', component: () => <AlertManager />, exact: false },
+  { path: '/hub', component: () => <TemplateHub />, exact: false },
+  { path: '/about', component: () => <About />, exact: false },
 ];

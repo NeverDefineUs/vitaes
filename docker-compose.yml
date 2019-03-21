@@ -1,8 +1,8 @@
 version: '3'
 services:
   webapp:
-    volumes: 
-    - ./vitaes-webapp/src:/project/src
+    volumes:
+    - ./vitaes-webapp:/project
     build: vitaes-webapp/.
     image: vitaes/webapp
     networks:
@@ -61,7 +61,7 @@ services:
     ports:
     - 8081:8081
     depends_on:
-    - mongo 
+    - mongo
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: vitaes

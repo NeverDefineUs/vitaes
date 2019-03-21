@@ -1,11 +1,12 @@
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
+import { get } from 'lodash';
 
 import getHostname from 'utils/getHostname';
 
 export function getEmptyTemplate() {
   return {
-    owner: firebase.auth().currentUser.uid,
+    owner: get(firebase.auth().currentUser, 'uid'),
     command: '',
     data: { likes: 0 },
     name: '',
@@ -21,9 +22,9 @@ export function setTemplateFile(template, file) {
   fetch(
     `${window.location.protocol
     }//${
-      getHostname()
+    getHostname()
     }/template/files/${
-      template.name
+    template.name
     }/`,
     {
       method: 'POST',

@@ -11,8 +11,9 @@ class AddTemplate extends Component {
   }
 
   render() {
+    console.log(firebase.auth().currentUser)
     const ownedCvs = Object.values(this.props.cv_models).filter(template =>
-      (template.owner === firebase.auth().currentUser.uid));
+      (firebase.auth().currentUser && template.owner === firebase.auth().currentUser.uid));
     const ownedCvsNodes = ownedCvs.map(template =>
       (<OwnedTemplate template={template} key={template} />));
 

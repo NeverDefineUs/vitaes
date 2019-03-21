@@ -54,6 +54,7 @@ class NavBar extends React.Component {
   render() {
     const { onChangeLanguage } = this.props;
     const { user, permissions, showLogin } = this.state;
+
     return (
       <React.Fragment>
         <Navbar collapseOnSelect expand="lg" fixed="top" bg="dark" variant="dark">
@@ -79,11 +80,13 @@ class NavBar extends React.Component {
                 ? (
                   [
                     <Nav.Link
+                      key="create-template"
                       href="/create-template"
                     >
                       {translate('create_template')}
                     </Nav.Link>,
                     <Nav.Link
+                      key="alert-manager"
                       href="/alert-manager"
                     >
                       {translate('alert_manager')}
@@ -109,8 +112,8 @@ class NavBar extends React.Component {
               {user !== null ? (
                 <Nav.Link onClick={this.logout}>{translate('sign_out')}</Nav.Link>
               ) : (
-                <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
-              )}
+                  <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
+                )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
