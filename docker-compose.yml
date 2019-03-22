@@ -5,6 +5,7 @@ services:
     - ./vitaes-webapp:/project
     build: vitaes-webapp/.
     image: vitaes/webapp
+    command: yarn start
     networks:
     - net
   server:

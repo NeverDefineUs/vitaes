@@ -1,9 +1,5 @@
-FROM node:slim
-
-WORKDIR project
-COPY . .
+FROM node:slim as react-build
+WORKDIR /project
+copy package.json yarn.lock ./
 RUN yarn
-
-
-EXPOSE 3000
-CMD yarn start
+COPY . .
