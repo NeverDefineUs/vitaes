@@ -2,7 +2,8 @@ version: '3'
 services:
   webapp:
     volumes:
-    - ./vitaes-webapp:/project
+    - ./vitaes-webapp/src:/project/src
+    - ./vitaes-webapp/public:/project/public
     build: vitaes-webapp/.
     image: vitaes/webapp
     command: yarn start
