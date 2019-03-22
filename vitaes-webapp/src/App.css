@@ -72,3 +72,7 @@ body { padding-top: 40px; }
   .Base-orderlist {
     list-style-type: none;
   }
+
+  #root > .container {
+    margin-top: 40px;
+  }

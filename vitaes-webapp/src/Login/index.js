@@ -62,7 +62,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  skipLogin: PropTypes.element.isRequired,
+  skipLogin: PropTypes.func.isRequired,
 };
 
 export default Login;
