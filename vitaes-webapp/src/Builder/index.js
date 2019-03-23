@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
 
-import { translate, getActiveLocale } from 'i18n/locale';
+import { translate } from 'i18n/locale';
 import getHostname from 'utils/getHostname';
 
 import Builder from './Builder';
