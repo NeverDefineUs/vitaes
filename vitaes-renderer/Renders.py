@@ -172,10 +172,12 @@ class CvRenderCheetahTemplate(CvRenderBase):
                 skills[text_clean(skill.skill_type)].append(text_clean(skill.skill_name))
         return skills
 
-    def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix=""):
+    def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix="", itemSpacing=""):
         lines = description.split('\n')
         while len(lines) > 0 and lines[-1].strip() == '':
             lines = lines[:-1]
+        itemOnTop = [itemSpacing] if len(lines) > 0 and len(lines[0]) > 1 and lines[0][0] == '*' else []
+        itemOnBottom = [itemSpacing] if len(lines) > 0 and len(lines[-1]) > 1 and lines[-1][0] == '*' else []
         lines.append('')
         depth = 0
         retLines = []
@@ -195,6 +197,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
                 retLines.append(itemPrefix + line[depth:] + itemSuffix)
             else: 
                 retLines.append(line)
+        retLines = itemOnTop + retLines[:-1] + itemOnBottom + [retLines[-1]]
         return '\n'.join(retLines)
 
     def render(cv: CurriculumVitae, baseFolder: str, params={}, resources={}):

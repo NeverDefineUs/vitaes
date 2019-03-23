@@ -115,7 +115,7 @@
 #end if
     } % Date(s)
 #if 'description' in $education
-{$break_into_items($education['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($education['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -153,7 +153,7 @@ $work['city']
 #end if
 } % Date(s)
 #if 'description' in $work
-{$break_into_items($work['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($work['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -216,7 +216,7 @@ $project['city']
 #end if
 } % Date(s)
 #if 'description' in $project
-{$break_into_items($project['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($project['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -257,7 +257,7 @@ $academic['city']
 #end if
 } % Date(s)
 #if 'description' in $academic
-{$break_into_items($academic['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($academic['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
