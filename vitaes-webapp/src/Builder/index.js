@@ -39,14 +39,14 @@ class BuilderContainer extends React.Component {
         const user = firebase.auth().currentUser;
 
         this.setState({ user });
-        if (user) { 
+        if (user) {
           const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
-  
+
           const db = firebase
             .database()
             .ref('cvs')
             .child(user.uid);
-  
+
           db.on(
             'value',
             (snapshot) => {
