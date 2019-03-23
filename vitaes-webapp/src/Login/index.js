@@ -28,7 +28,6 @@ class Login extends Component {
           >
             {translate('skip_login')}
           </Button>
-          <br />
           <Button
             style={{ background: '#4285f4', border: '#4285f488' }}
             className="Login-button"
@@ -37,7 +36,6 @@ class Login extends Component {
           >
             {translate('google_login')}
           </Button>
-          <br />
           <Button
             style={{ background: '#4267b2', border: '#4267b288' }}
             className="Login-button"
@@ -46,7 +44,6 @@ class Login extends Component {
           >
             {translate('facebook_login')}
           </Button>
-          <br />
           <Button
             style={{ background: '#333', border: '#3338' }}
             className="Login-button"
