@@ -32,11 +32,11 @@
 \section{$resources['education']}
 #for $education in $education_array
 \cventry{
-    $education['start_date'].strftime("%b/%y")
+    $format_datetime($education['start_date'], 'LLL/YY', locale=$params['lang'])
 #if 'end_date' not in $education
     $resources['present']
 #else if $education['start_date'].strftime("%b/%y") != $education['end_date'].strftime("%b/%y")
-    $education['end_date'].strftime("%b/%y")
+    $format_datetime($education['end_date'], 'LLL/YY', locale=$params['lang'])
 #end if
 }{$education['course']}{$education['institution']}
 #if 'country' in $education and 'city' in $education and $education['city'] != '' and $education['country'] != ''
@@ -60,11 +60,11 @@
 \section{$resources['workXp']}
 #for $work in $work_array
 \cventry{
-    $work['start_date'].strftime("%b/%y")
+    $format_datetime($work['start_date'], 'LLL/YY', locale=$params['lang'])
 #if 'end_date' not in $work
     $resources['present']
 #else if $work['start_date'].strftime("%b/%y") != $work['end_date'].strftime("%b/%y")
-    $work['end_date'].strftime("%b/%y")
+    $format_datetime($work['end_date'], 'LLL/YY', locale=$params['lang'])
 #end if
 }
 #if 'role' in $work
@@ -88,11 +88,11 @@
 #if $section == "project" and $project_array
 \section{$resources['projects']}
 #for $project in $project_array
-\cventry{$project['start_date'].strftime("%b/%Y")
+\cventry{$format_datetime($project['start_date'], 'LLL/YY', locale=$params['lang'])
 #if 'end_date' not in $project
     $resources['present']
 #else if $project['start_date'].strftime("%b/%Y") != $project['end_date'].strftime("%b/%Y")
-    $project['end_date'].strftime("%b/%Y")
+    $format_datetime($project['end_date'], 'LLL/YY', locale=$params['lang'])
 #end if
 }{$project['name']}
 #if 'language' in $project
@@ -111,11 +111,11 @@
 #if $section == "academic" and $academic_array
 \section{$resources['academicXp']}
 #for $academic in $academic_array
-\cventry{$academic['start_date'].strftime("%b/%Y")
+\cventry{$format_datetime($academic['start_date'], 'LLL/YY', locale=$params['lang'])
 #if 'end_date' not in $academic
     $resources['present']
 #else if $academic['start_date'].strftime("%b/%Y") != $academic['end_date'].strftime("%b/%Y")
-     $academic['end_date'].strftime("%b/%Y")
+     $format_datetime($academic['end_date'], 'LLL/YY', locale=$params['lang'])
 #end if
 }{$academic['name']}
 #if 'institution' in $academic
@@ -134,7 +134,7 @@
 #if $section == "achievement" and $achievement_array
 \section{$resources['achievements']}
 #for $achievement in $achievement_array
-\cvitem{$achievement['start_date'].strftime("%d/%b/%Y")}{$achievement['name']}
+\cvitem{$format_datetime($achievement['start_date'], 'dd/LLL/YYYY', locale=$params['lang'])}{$achievement['name']}
 #end for
 #end if
 #if $section == "language" and $language_array
