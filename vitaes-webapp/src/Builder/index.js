@@ -39,27 +39,29 @@ class BuilderContainer extends React.Component {
         const user = firebase.auth().currentUser;
 
         this.setState({ user });
-        const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
+        if (user) {
+          const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
 
-        const db = firebase
-          .database()
-          .ref('cvs')
-          .child(user.uid);
+          const db = firebase
+            .database()
+            .ref('cvs')
+            .child(user.uid);
 
-        db.on(
-          'value',
-          (snapshot) => {
-            toast.dismiss(loadingToast);
-            const snap = snapshot.val();
-            if (snap === null) {
-              db.set(defaultCv);
-            } else {
-              this.setState({ cv: snap });
-            }
-          },
-          () => {
-          },
-        );
+          db.on(
+            'value',
+            (snapshot) => {
+              toast.dismiss(loadingToast);
+              const snap = snapshot.val();
+              if (snap === null) {
+                db.set(defaultCv);
+              } else {
+                this.setState({ cv: snap });
+              }
+            },
+            () => {
+            },
+          );
+        }
       });
 
     fetch(`${window.location.protocol}//${getHostname()}/template/`, {
