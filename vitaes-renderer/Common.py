@@ -126,8 +126,9 @@ def render_from_cv_dict(req):
         os.system("unzip Templates/" + path + "/main.zip -d Templates/" + path)
 
     if 'lang' not in params:
-      params['lang'] = 'en'
-    resources = get_resources(params['lang'])
+      params['lang'] = 'en_US'
+      
+    resources = get_resources(params['lang'][:2])
 
     path = Renders.CvRenderTexToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, command=render_map[render_key]['command'], params=params, resources=resources)
     return path

@@ -105,10 +105,10 @@
   , $education['city']
 #end if
     } % Location
-    { $education['start_date'].strftime("%b, %Y") 
+    { $format_datetime($education['start_date'], 'LLL, YYYY', locale=$params['lang']) 
 #if 'end_date' in $education 
 #if $education['end_date'].strftime("%b, %Y") != $education['start_date'].strftime("%b, %Y")
-  - $education['end_date'].strftime("%b, %Y")
+  - $format_datetime($education['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
@@ -143,10 +143,10 @@ $work['city']
 #end if
 #end if
     } % Location
-    { $work['start_date'].strftime("%b, %Y") 
+    { $format_datetime($work['start_date'], 'LLL, YYYY', locale=$params['lang']) 
 #if 'end_date' in $work
 #if $work['start_date'].strftime("%b, %Y") != $work['end_date'].strftime("%b, %Y")
-  - $work['end_date'].strftime("%b, %Y")
+  - $format_datetime($work['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
@@ -206,10 +206,10 @@ $project['city']
 #end if
 #end if
     } % Location
-    { $project['start_date'].strftime("%b, %Y") 
+    { $format_datetime($project['start_date'], 'LLL, YYYY', locale=$params['lang']) 
 #if 'end_date' in $project
 #if $project['start_date'].strftime("%b, %Y") != $project['end_date'].strftime("%b, %Y")
-  - $project['end_date'].strftime("%b, %Y")
+  - $format_datetime($project['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
@@ -247,10 +247,10 @@ $academic['city']
 #end if
 #end if
     } % Location
-    { $academic['start_date'].strftime("%b, %Y") 
+    { $format_datetime($academic['start_date'], 'LLL, YYYY', locale=$params['lang'])  
 #if 'end_date' in $academic
 #if $academic['start_date'].strftime("%b, %Y") != $academic['end_date'].strftime("%b, %Y")
-  - $academic['end_date'].strftime("%b, %Y")
+  - $format_datetime($academic['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
