@@ -44,6 +44,7 @@ export const BugReporter = (props) => {
       <Modal.Footer style={{ paddingBottom: 0, paddingTop: 10, paddingLeft: 0 }}>
         <Row style={{ width: '100%', alignItems: 'center', margin: 10 }}>
           <Button
+            variant="secondary"
             style={{ flex: 1 }}
             onClick={() => {
               if (!title) {

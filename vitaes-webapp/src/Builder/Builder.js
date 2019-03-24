@@ -29,7 +29,7 @@ class Builder extends Component {
     super(props);
     this.state = {
       downloading: false,
-      showBugUi: true,
+      showBugUi: false,
       chosenLabel: '',
       user_cv_model: 'awesome',
       cv_order: [
@@ -241,6 +241,9 @@ class Builder extends Component {
     return (
       <Card bg="light">
         <Card.Body>
+          <Button variant="secondary" style={{ float: 'right' }} sm="2" onClick={() => this.setState({ showBugUi: true })}>
+            {translate('report_a_bug')}
+          </Button>
           <h2>Curriculum Vitae:</h2>
           <br />
           <h3>
