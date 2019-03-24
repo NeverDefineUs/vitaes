@@ -161,10 +161,6 @@ class CvRenderCheetahTemplate(CvRenderBase):
         return ret
     def extract_skills(cv):
         skills = {}
-        if Models.CvLanguageItem in cv.items and cv.items[Models.CvLanguageItem] != []:
-            skills["Languages"] = []
-            for language in cv.items[Models.CvLanguageItem]:
-                skills["Languages"].append(text_clean(language.language))
         if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
             for skill in cv.items[Models.CvSkillItem]:
                 if text_clean(skill.skill_type) not in skills:
