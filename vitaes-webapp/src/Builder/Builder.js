@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 
 import BugReporter from 'BugReporter';
-import { translate, getActiveLanguage } from 'i18n/locale';
+import { translate, getActiveLocale } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 import getHostname from 'utils/getHostname';
 import removeDisabled from 'utils/removeDisabled';
@@ -21,8 +21,6 @@ import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
-import { getAvailableLocales } from '../i18n/locale';
-
 
 class Builder extends Component {
   constructor(props) {
@@ -92,7 +90,7 @@ class Builder extends Component {
 
     const cv = removeDisabled(this.props.cv);
     // TODO this should be receiving full locale
-    this.state.params.lang = getActiveLanguage();
+    this.state.params.lang = getActiveLocale();
     this.setState({ downloading: true });
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
@@ -368,7 +366,7 @@ class Builder extends Component {
             user_cv_model: this.state.user_cv_model,
             params: this.state.params,
             cv_order: this.state.cv_order,
-            lang: getAvailableLocales(),
+            lang: getActiveLocale(),
           }}
           onHide={() => this.setState({ showBugUi: false })}
         />

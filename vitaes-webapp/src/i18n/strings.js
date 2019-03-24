@@ -397,6 +397,14 @@ export const strings = {
     en_US: 'Skill name',
     pt_BR: 'Nome da competência',
   },
+  skill_level: {
+    en_US: 'Skill level',
+    pt_BR: 'Nível da competência',
+  },
+  skill_level_placeholder: {
+    en_US: 'Level of the skill (e.g. Advanced, 1 year)',
+    pt_BR: 'Descrição do nível (ex. Avançado, 1 ano)',
+  },
   skill_type: {
     en_US: 'Skill type',
     pt_BR: 'Tipo da competência',

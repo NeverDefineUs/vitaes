@@ -26,6 +26,7 @@ export function updateFields() {
     repositoryLink: ['repository_link', translate('repository_link_placeholder'), translate('repository_link')],
     role: ['role', translate('role_placeholder'), translate('role')],
     skillName: ['skill_name', translate('skill_placeholder'), translate('skill')],
+    skillLevel: ['skill_level', translate('skill_level_placeholder'), translate('skill_level')],
     skillType: ['skill_type', translate('skill_type_placeholder'), translate('skill_type')],
     startDate: ['start_date', translate('date_format'), translate('start_date')],
     state: ['state', translate('state_placeholder'), translate('state')],

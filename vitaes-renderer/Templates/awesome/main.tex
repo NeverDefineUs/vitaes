@@ -105,17 +105,17 @@
   , $education['city']
 #end if
     } % Location
-    { $education['start_date'].strftime("%b, %Y") 
+    { $format_datetime($education['start_date'], 'LLL, YYYY', locale=$params['lang']) 
 #if 'end_date' in $education 
 #if $education['end_date'].strftime("%b, %Y") != $education['start_date'].strftime("%b, %Y")
-  - $education['end_date'].strftime("%b, %Y")
+  - $format_datetime($education['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
 #end if
     } % Date(s)
 #if 'description' in $education
-{$break_into_items($education['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($education['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -143,17 +143,17 @@ $work['city']
 #end if
 #end if
     } % Location
-    { $work['start_date'].strftime("%b, %Y") 
+    { $format_datetime($work['start_date'], 'LLL, YYYY', locale=$params['lang']) 
 #if 'end_date' in $work
 #if $work['start_date'].strftime("%b, %Y") != $work['end_date'].strftime("%b, %Y")
-  - $work['end_date'].strftime("%b, %Y")
+  - $format_datetime($work['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
 #end if
 } % Date(s)
 #if 'description' in $work
-{$break_into_items($work['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($work['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -206,17 +206,17 @@ $project['city']
 #end if
 #end if
     } % Location
-    { $project['start_date'].strftime("%b, %Y") 
+    { $format_datetime($project['start_date'], 'LLL, YYYY', locale=$params['lang']) 
 #if 'end_date' in $project
 #if $project['start_date'].strftime("%b, %Y") != $project['end_date'].strftime("%b, %Y")
-  - $project['end_date'].strftime("%b, %Y")
+  - $format_datetime($project['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
 #end if
 } % Date(s)
 #if 'description' in $project
-{$break_into_items($project['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($project['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -247,17 +247,17 @@ $academic['city']
 #end if
 #end if
     } % Location
-    { $academic['start_date'].strftime("%b, %Y") 
+    { $format_datetime($academic['start_date'], 'LLL, YYYY', locale=$params['lang'])  
 #if 'end_date' in $academic
 #if $academic['start_date'].strftime("%b, %Y") != $academic['end_date'].strftime("%b, %Y")
-  - $academic['end_date'].strftime("%b, %Y")
+  - $format_datetime($academic['end_date'], 'LLL, YYYY', locale=$params['lang']) 
 #end if
 #else
   - $resources['present']
 #end if
 } % Date(s)
 #if 'description' in $academic
-{$break_into_items($academic['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+{$break_into_items($academic['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}", itemSpacing="\\vspace{-4.0mm}")}
 #else
 {}
 #end if
@@ -266,16 +266,29 @@ $academic['city']
 #end for
 \end{cventries}
 #end if
-#if $skill_dict != {} and $section == 'skill'
+#set $used_skill_dict = $skill_dict['aggregated']
+#if $used_skill_dict != {} and $section == 'skill'
 \cvsection{$resources['skills']}
-
-
 \begin{cvskills}
 
-#for $skill in $skill_dict.keys()
+#for $category in $used_skill_dict.keys()
+#set $skill_data = $used_skill_dict[$category]
   \cvskill
-    {$skill} % Category
-    {${', '.join($skill_dict[$skill])}} % Skills
+    {$category} % Category
+    {${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}} % Skills
+
+#end for
+\end{cvskills}
+#end if
+
+#if $language_array != [] and $section == 'language'
+\cvsection{$resources['languages']}
+\begin{cvskills}
+
+#for $language in $language_array
+  \cvskill
+    {$language['language']} % Language
+    {$language['level']} % Level
 
 #end for
 \end{cvskills}
