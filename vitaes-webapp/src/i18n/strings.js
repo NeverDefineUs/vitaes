@@ -77,6 +77,10 @@ export const strings = {
     en_US: 'Birthday',
     pt_BR: 'Data de nascimento',
   },
+  cancel: {
+    en_US: 'Cancel',
+    pt_BR: 'Cancelar',
+  },
   certificate_link: {
     en_US: 'Certificate link',
     pt_BR: 'Link do certificado',

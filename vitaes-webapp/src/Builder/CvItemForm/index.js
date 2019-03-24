@@ -246,14 +246,24 @@ class CvItemForm extends Component {
         <Card style={{ padding: 10 }}>
           <Card.Body>
             {formNodes}
+            <Button
+              variant="secondary"
+              style={{ float: 'right', marginLeft: 5 }}
+              onClick={this.addField}
+            >
+              {translate('add_entry')}
+            </Button>
+            <Button
+              variant="secondary"
+              style={{ float: 'right', marginLeft: 5 }}
+              onClick={() => {
+                this.setState({ toAdd: {} });
+                this.props.labelChanger('');
+              }}
+            >
+              {translate('cancel')}
+            </Button>
           </Card.Body>
-          <Button
-            variant="secondary"
-            style={{ float: 'right' }}
-            onClick={this.addField}
-          >
-            {translate('add_entry')}
-          </Button>
         </Card>
       </div>
     );
