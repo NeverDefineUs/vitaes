@@ -170,6 +170,7 @@ class Builder extends Component {
         .ref('cvs')
         .child(user.uid);
       db.set(this.props.cv);
+      toast.success(translate('saved'));
     }
   }
 
@@ -177,7 +178,6 @@ class Builder extends Component {
     setInterval(() => {
       if (this.state.autoSave) {
         this.saveOnAccount();
-        toast.success(translate('saved'));
       }
     }, autoSaveTime);
   }
@@ -375,10 +375,10 @@ class Builder extends Component {
           ) : null}
           {this.props.user !== null ? (
             <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => this.setState({ autoSave: !this.state.autoSave })}
-            style={{ marginLeft: 5, float: 'right' }}
+              variant="secondary"
+              size="sm"
+              onClick={() => this.setState({ autoSave: !this.state.autoSave })}
+              style={{ marginLeft: 5, float: 'right' }}
             >
               {this.state.autoSave ? translate('autosave_on') : translate('autosave_off')}
             </Button>
