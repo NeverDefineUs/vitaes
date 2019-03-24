@@ -103,7 +103,9 @@ export function updateFormFields() {
         fieldsDef.skillName,
         fieldsDef.skillType,
       ],
-      optFields: [],
+      optFields: [
+        fieldsDef.skillLevel,
+      ],
     },
   ];
 }

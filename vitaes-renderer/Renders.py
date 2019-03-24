@@ -165,14 +165,19 @@ class CvRenderCheetahTemplate(CvRenderBase):
         if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
             for skill in cv.items[Models.CvSkillItem]:
                 cleanName = text_clean(skill.skill_name)
+                cleanLevel = text_clean(skill.skill_level)
                 cleanType = text_clean(skill.skill_type)
                 skills.append({
                     'name': cleanName,
+                    'level': cleanLevel,
                     'type': cleanType,
                 })
                 if cleanType not in aggSkills:
                     aggSkills[cleanType] = []
-                aggSkills[cleanType].append(cleanName)
+                aggSkills[cleanType].append({
+                    'name': cleanName,
+                    'level': cleanLevel,
+                })
         return {
             'plain': skills,
             'aggregated': aggSkills,
@@ -234,8 +239,4 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["resources"] = resources
         template = Template(templateString, cvDict)
         return str(template)
-
-
-
-
         

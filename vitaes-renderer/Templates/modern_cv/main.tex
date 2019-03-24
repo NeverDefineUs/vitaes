@@ -145,8 +145,9 @@
 #set $used_skill_dict = $skill_dict['aggregated']
 #if $section == "skill" and $used_skill_dict != {}
 \section{$resources['skills']}
-#for $skill in $used_skill_dict.keys()
-\cvitem{$skill}{${', '.join($used_skill_dict[$skill])}}
+#for $category in $used_skill_dict.keys()
+#set $skill_data = $used_skill_dict[$category]
+\cvitem{$category}{${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}}
 #end for
 #end if
 #end for
