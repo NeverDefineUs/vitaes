@@ -41,13 +41,22 @@ export const BugReporter = (props) => {
             <Tooltip>{translate('optional')}</Tooltip>
           }
           >
-            <BugReporterField label={translate('description')} value={desc} long setter={setDesc} />
+            <BugReporterField
+              label={translate('description')}
+              value={desc}
+              long
+              setter={setDesc}
+            />
           </OverlayTrigger>
           <OverlayTrigger overlay={
             <Tooltip>{translate('optional')}</Tooltip>
           }
           >
-            <BugReporterField label={translate('email')} value={email} setter={setEmail} />
+            <BugReporterField
+              label={translate('email')}
+              value={email}
+              setter={setEmail}
+            />
           </OverlayTrigger>
         </Form>
       </Modal.Body>
