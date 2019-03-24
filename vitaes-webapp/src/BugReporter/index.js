@@ -9,6 +9,9 @@ import { translate } from 'i18n/locale';
 import { BugReporterField } from './BugReporterField';
 import { BugReporterCheckbox } from './BugReporterCheckbox';
 
+const footerStyle = { paddingBottom: 0, paddingTop: 10, paddingLeft: 0 };
+const footerRowStyle = { width: '100%', alignItems: 'center', margin: 10 };
+
 export const BugReporter = (props) => {
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
@@ -41,8 +44,8 @@ export const BugReporter = (props) => {
           </OverlayTrigger>
         </Form>
       </Modal.Body>
-      <Modal.Footer style={{ paddingBottom: 0, paddingTop: 10, paddingLeft: 0 }}>
-        <Row style={{ width: '100%', alignItems: 'center', margin: 10 }}>
+      <Modal.Footer style={footerStyle}>
+        <Row style={footerRowStyle}>
           <Button
             variant="secondary"
             style={{ flex: 1 }}
