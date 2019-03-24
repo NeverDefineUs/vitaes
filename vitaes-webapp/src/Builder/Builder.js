@@ -22,6 +22,8 @@ import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 
+const autoSaveTime = 120000;
+
 class Builder extends Component {
   constructor(props) {
     super(props);
@@ -40,15 +42,19 @@ class Builder extends Component {
         'skill',
       ],
       params: {},
+      autoSave: false,
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
     this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
     this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this);
     this.saveOnAccount = this.saveOnAccount.bind(this);
+    this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
+
+    this.autoSave();
   }
 
   setCv(cv) {
@@ -164,7 +170,16 @@ class Builder extends Component {
         .ref('cvs')
         .child(user.uid);
       db.set(this.props.cv);
+      toast.success(translate('saved'));
     }
+  }
+
+  autoSave() {
+    setInterval(() => {
+      if (this.state.autoSave) {
+        this.saveOnAccount();
+      }
+    }, autoSaveTime);
   }
 
   handleChangeHeader(event) {
@@ -356,6 +371,16 @@ class Builder extends Component {
               style={{ marginLeft: 5, float: 'right' }}
             >
               {translate('save_cv_on_account')}
+            </Button>
+          ) : null}
+          {this.props.user !== null ? (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => this.setState({ autoSave: !this.state.autoSave })}
+              style={{ marginLeft: 5, float: 'right' }}
+            >
+              {this.state.autoSave ? translate('autosave_on') : translate('autosave_off')}
             </Button>
           ) : null}
         </Card.Body>
