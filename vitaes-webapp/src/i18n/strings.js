@@ -77,6 +77,10 @@ export const strings = {
     en_US: 'Birthday',
     pt_BR: 'Data de nascimento',
   },
+  cancel: {
+    en_US: 'Cancel',
+    pt_BR: 'Cancelar',
+  },
   certificate_link: {
     en_US: 'Certificate link',
     pt_BR: 'Link do certificado',
@@ -145,6 +149,10 @@ export const strings = {
     en_US: 'Download JSON',
     pt_BR: 'Baixar JSON',
   },
+  edit: {
+    en_US: 'Edit',
+    pt_BR: 'Editar',
+  },
   education: {
     en_US: 'Education',
     pt_BR: 'Educação',
@@ -172,6 +180,10 @@ export const strings = {
   error_processing_file: {
     en_US: 'Error processing file',
     pt_BR: 'Erro ao processar o arquivo',
+  },
+  error_not_logged_in: {
+    en_US: 'You need to be logged in',
+    pt_BR: 'Você precisa estar logado',
   },
   facebook_login: {
     en_US: 'Facebook login',
@@ -265,6 +277,10 @@ export const strings = {
     en_US: 'Mandatory field',
     pt_BR: 'Campo obrigatório',
   },
+  missing_title: {
+    en_US: 'Missing title',
+    pt_BR: 'Título faltando',
+  },
   model: {
     en_US: 'Model',
     pt_BR: 'Modelo',
@@ -280,6 +296,10 @@ export const strings = {
   no_en_message_error: {
     en_US: 'You must provide an english message',
     pt_BR: 'Você deve preencher a mensagem em inglês',
+  },
+  optional: {
+    en_US: 'Optional',
+    pt_BR: 'Opcional',
   },
   other_contributors: {
     en_US: 'Other contributors',
@@ -333,6 +353,10 @@ export const strings = {
     en_US: 'Reorder CV areas',
     pt_BR: 'Reordenar areas do CV',
   },
+  report_a_bug: {
+    en_US: 'Report a bug',
+    pt_BR: 'Reportar um bug',
+  },
   repository: {
     en_US: 'Repository',
     pt_BR: 'Repositório',
@@ -360,6 +384,10 @@ export const strings = {
   save_cv_on_account: {
     en_US: 'Save on account',
     pt_BR: 'Salvar na Conta',
+  },
+  send: {
+    en_US: 'Send',
+    pt_BR: 'Enviar',
   },
   show: {
     en_US: 'Show',
@@ -436,6 +464,10 @@ export const strings = {
   upload_json: {
     en_US: 'Upload JSON',
     pt_BR: 'Subir JSON',
+  },
+  use_personal_data: {
+    en_US: 'Send data',
+    pt_BR: 'Enviar dados',
   },
   work: {
     en_US: 'Work',

@@ -165,7 +165,7 @@ class CvItemForm extends Component {
             }}
             key={name}
           >
-            <span onClick={comp.getEventExpander(index)}>{name}</span>
+            {name}
             <Button
               variant="dark"
               size="sm"
@@ -181,6 +181,14 @@ class CvItemForm extends Component {
               style={{ marginLeft: 5, float: 'right' }}
             >
               {translate(item.disable ? 'hide' : 'show')}
+            </Button>
+            <Button
+              variant="dark"
+              size="sm"
+              onClick={comp.getEventExpander(index)}
+              style={{ marginLeft: 5, float: 'right' }}
+            >
+              {translate('edit')}
             </Button>
           </Alert>,
         );
@@ -238,14 +246,24 @@ class CvItemForm extends Component {
         <Card style={{ padding: 10 }}>
           <Card.Body>
             {formNodes}
+            <Button
+              variant="secondary"
+              style={{ float: 'right', marginLeft: 5 }}
+              onClick={this.addField}
+            >
+              {translate('add_entry')}
+            </Button>
+            <Button
+              variant="secondary"
+              style={{ float: 'right', marginLeft: 5 }}
+              onClick={() => {
+                this.setState({ toAdd: {} });
+                this.props.labelChanger('');
+              }}
+            >
+              {translate('cancel')}
+            </Button>
           </Card.Body>
-          <Button
-            variant="secondary"
-            style={{ float: 'right' }}
-            onClick={this.addField}
-          >
-            {translate('add_entry')}
-          </Button>
         </Card>
       </div>
     );
