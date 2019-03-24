@@ -271,10 +271,11 @@ $academic['city']
 \cvsection{$resources['skills']}
 \begin{cvskills}
 
-#for $skill in $used_skill_dict.keys()
+#for $category in $used_skill_dict.keys()
+#set $skill_data = $used_skill_dict[$category]
   \cvskill
-    {$skill} % Category
-    {${', '.join($used_skill_dict[$skill])}} % Skills
+    {$category} % Category
+    {${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}} % Skills
 
 #end for
 \end{cvskills}
