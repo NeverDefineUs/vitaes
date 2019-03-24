@@ -8,6 +8,7 @@ import {
   Button, Form, Card, Col, Row,
 } from 'react-bootstrap';
 
+import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 import getHostname from 'utils/getHostname';
@@ -21,12 +22,12 @@ import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 
-
 class Builder extends Component {
   constructor(props) {
     super(props);
     this.state = {
       downloading: false,
+      showBugUi: false,
       chosenLabel: '',
       user_cv_model: 'awesome',
       cv_order: [
@@ -238,6 +239,14 @@ class Builder extends Component {
     return (
       <Card bg="light">
         <Card.Body>
+          <Button
+            variant="secondary"
+            style={{ float: 'right' }}
+            sm="2"
+            onClick={() => this.setState({ showBugUi: true })}
+          >
+            {translate('report_a_bug')}
+          </Button>
           <h2>Curriculum Vitae:</h2>
           <br />
           <h3>
@@ -350,6 +359,17 @@ class Builder extends Component {
             </Button>
           ) : null}
         </Card.Body>
+        <BugReporter
+          show={this.state.showBugUi}
+          data={{
+            cv: this.props.cv,
+            user_cv_model: this.state.user_cv_model,
+            params: this.state.params,
+            cv_order: this.state.cv_order,
+            lang: getActiveLocale(),
+          }}
+          onHide={() => this.setState({ showBugUi: false })}
+        />
       </Card>
     );
   }
