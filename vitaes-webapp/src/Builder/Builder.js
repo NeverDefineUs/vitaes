@@ -22,6 +22,8 @@ import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 
+const autosave_time = 120000;
+
 class Builder extends Component {
   constructor(props) {
     super(props);
@@ -40,15 +42,19 @@ class Builder extends Component {
         'skill',
       ],
       params: {},
+      autoSave: false,
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
     this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
     this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this);
     this.saveOnAccount = this.saveOnAccount.bind(this);
+    this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
+
+    this.autoSave();
   }
 
   setCv(cv) {
@@ -167,6 +173,15 @@ class Builder extends Component {
     }
   }
 
+  autoSave() {
+    setInterval(() => {
+      if (this.state.autoSave) {
+        this.saveOnAccount();
+        toast.success(translate('saved'));
+      }
+    }, autosave_time);
+  }
+
   handleChangeHeader(event) {
     const aux = this.props.cv;
     aux.CvHeaderItem[event.target.name] = event.target.value;
@@ -249,6 +264,13 @@ class Builder extends Component {
           </Button>
           <h2>Curriculum Vitae:</h2>
           <br />
+          <Form.Check
+            inline
+            label={translate('autosave')}
+            type="checkbox"
+            checked={this.state.autoSave}
+            onChange={() => this.setState({ autoSave: !this.state.autoSave })}
+          />
           <h3>
             {translate('header')}
             :
