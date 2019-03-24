@@ -173,6 +173,10 @@ export const strings = {
     en_US: 'Error processing file',
     pt_BR: 'Erro ao processar o arquivo',
   },
+  error_not_logged_in: {
+    en_US: 'You need to be logged in',
+    pt_BR: 'Você precisa estar logado',
+  },
   facebook_login: {
     en_US: 'Facebook login',
     pt_BR: 'Entrar com o Facebook',

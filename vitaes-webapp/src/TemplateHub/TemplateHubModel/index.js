@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
 
 import capitalize from 'utils/capitalize';
+import { translate } from 'i18n/locale';
 
 import './TemplateHubModel.css';
 
@@ -40,26 +42,31 @@ class TemplateHubModel extends Component {
             className="template-button"
             role="button"
             onClick={() => {
-              fetch(
-                `${window.location.protocol
-                }//${
-                  this.hostname
-                }/template/like/`,
-                {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
+              if (this.props.user) {
+                fetch(
+                  `${window.location.protocol
+                  }//${
+                    this.hostname
+                  }/template/like/`,
+                  {
+                    method: 'POST',
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      uid: this.props.user.uid,
+                      templatename: this.props.keyName,
+                    }),
                   },
-                  body: JSON.stringify({
-                    uid: this.props.user.uid,
-                    templatename: this.props.keyName,
-                  }),
-                },
-              ).then(() => {
-                this.props.fetchTemplates();
-              });
-            }}
+                ).then(() => {
+                  this.props.fetchTemplates();
+                });
+              } else {
+                toast.error(translate('error_not_logged_in'));
+              }
+            }
+          }
           >
             <a>
               <img alt="" src="/Ei-heart.svg" />
