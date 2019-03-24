@@ -73,9 +73,13 @@ export const strings = {
     en_US: 'Full URL to the article',
     pt_BR: 'URL completa do artigo',
   },
-  autosave: {
-    en_US: 'Autosave',
-    pt_BR: 'Salvar automaticamente',
+  autosave_off: {
+    en_US: 'Autosave off',
+    pt_BR: 'Autosave desligado',
+  },
+  autosave_on: {
+    en_US: 'Autosave on',
+    pt_BR: 'Autosave ligado',
   },
   birthday: {
     en_US: 'Birthday',

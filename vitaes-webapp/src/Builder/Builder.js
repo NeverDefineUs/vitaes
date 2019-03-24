@@ -264,13 +264,6 @@ class Builder extends Component {
           </Button>
           <h2>Curriculum Vitae:</h2>
           <br />
-          <Form.Check
-            inline
-            label={translate('autosave')}
-            type="checkbox"
-            checked={this.state.autoSave}
-            onChange={() => this.setState({ autoSave: !this.state.autoSave })}
-          />
           <h3>
             {translate('header')}
             :
@@ -378,6 +371,16 @@ class Builder extends Component {
               style={{ marginLeft: 5, float: 'right' }}
             >
               {translate('save_cv_on_account')}
+            </Button>
+          ) : null}
+          {this.props.user !== null ? (
+            <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => this.setState({ autoSave: !this.state.autoSave })}
+            style={{ marginLeft: 5, float: 'right' }}
+            >
+              {this.state.autoSave ? translate('autosave_on') : translate('autosave_off')}
             </Button>
           ) : null}
         </Card.Body>
