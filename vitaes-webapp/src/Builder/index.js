@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { translate } from 'i18n/locale';
 import getHostname from 'utils/getHostname';
@@ -90,7 +90,6 @@ class BuilderContainer extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <ToastContainer position="bottom-right" />
         <Builder
           cv_models={this.state.cv_models}
           cv={this.state.cv}
