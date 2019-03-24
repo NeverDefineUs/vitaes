@@ -145,6 +145,10 @@ export const strings = {
     en_US: 'Download JSON',
     pt_BR: 'Baixar JSON',
   },
+  edit: {
+    en_US: 'Edit',
+    pt_BR: 'Editar',
+  },
   education: {
     en_US: 'Education',
     pt_BR: 'Educação',
