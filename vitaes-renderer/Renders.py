@@ -160,13 +160,23 @@ class CvRenderCheetahTemplate(CvRenderBase):
             ret.sort(key = date_comparer_2, reverse = True)
         return ret
     def extract_skills(cv):
-        skills = {}
+        skills = []
+        aggSkills = {}
         if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
             for skill in cv.items[Models.CvSkillItem]:
-                if text_clean(skill.skill_type) not in skills:
-                    skills[text_clean(skill.skill_type)] = []
-                skills[text_clean(skill.skill_type)].append(text_clean(skill.skill_name))
-        return skills
+                cleanName = text_clean(skill.skill_name)
+                cleanType = text_clean(skill.skill_type)
+                skills.append({
+                    'name': cleanName,
+                    'type': cleanType,
+                })
+                if cleanType not in aggSkills:
+                    aggSkills[cleanType] = []
+                aggSkills[cleanType].append(cleanName)
+        return {
+            'plain': skills,
+            'aggregated': aggSkills,
+        }
 
     def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix="", itemSpacing=""):
         lines = description.split('\n')

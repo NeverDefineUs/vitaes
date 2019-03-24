@@ -142,10 +142,11 @@
 \cvitem{$language['language']}{$language['level']}
 #end for
 #end if
-#if $section == "skill" and $skill_dict != {}
+#set $used_skill_dict = $skill_dict['aggregated']
+#if $section == "skill" and $used_skill_dict != {}
 \section{$resources['skills']}
-#for $skill in $skill_dict.keys()
-\cvitem{$skill}{${', '.join($skill_dict[$skill])}}
+#for $skill in $used_skill_dict.keys()
+\cvitem{$skill}{${', '.join($used_skill_dict[$skill])}}
 #end for
 #end if
 #end for

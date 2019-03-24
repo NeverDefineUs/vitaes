@@ -266,14 +266,15 @@ $academic['city']
 #end for
 \end{cventries}
 #end if
-#if $skill_dict != {} and $section == 'skill'
+#set $used_skill_dict = $skill_dict['aggregated']
+#if $used_skill_dict != {} and $section == 'skill'
 \cvsection{$resources['skills']}
 \begin{cvskills}
 
-#for $skill in $skill_dict.keys()
+#for $skill in $used_skill_dict.keys()
   \cvskill
     {$skill} % Category
-    {${', '.join($skill_dict[$skill])}} % Skills
+    {${', '.join($used_skill_dict[$skill])}} % Skills
 
 #end for
 \end{cvskills}
