@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import getHostname from 'utils/getHostname';
 import { translate } from 'i18n/locale';
@@ -37,7 +37,6 @@ class AddTemplateContainer extends Component {
   render() {
     return (
       <React.Fragment>
-        <ToastContainer position="bottom-right" />
         <AddTemplate cv_models={this.state.cv_models} />
       </React.Fragment>
     );

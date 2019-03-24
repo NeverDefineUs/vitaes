@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import ToastContainer from 'react-toastify';
 
 import { setLocale } from 'i18n/locale';
 
@@ -28,6 +29,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer position="bottom-right" />
         <NavBar onChangeLanguage={this.handleChangeLanguage} />
         <AppRouter />
       </React.Fragment>
