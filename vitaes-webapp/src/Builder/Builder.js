@@ -8,6 +8,7 @@ import {
   Button, Form, Card, Col, Row,
 } from 'react-bootstrap';
 
+import BugReporter from 'BugReporter';
 import { translate, getActiveLanguage } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
 import getHostname from 'utils/getHostname';
@@ -20,6 +21,7 @@ import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
+import { getAvailableLocales } from '../i18n/locale';
 
 
 class Builder extends Component {
@@ -27,6 +29,7 @@ class Builder extends Component {
     super(props);
     this.state = {
       downloading: false,
+      showBugUi: true,
       chosenLabel: '',
       user_cv_model: 'awesome',
       cv_order: [
@@ -350,6 +353,17 @@ class Builder extends Component {
             </Button>
           ) : null}
         </Card.Body>
+        <BugReporter
+          show={this.state.showBugUi}
+          data={{
+            cv: this.props.cv,
+            user_cv_model: this.state.user_cv_model,
+            params: this.state.params,
+            cv_order: this.state.cv_order,
+            lang: getAvailableLocales(),
+          }}
+          onHide={() => this.setState({ showBugUi: false })}
+        />
       </Card>
     );
   }
