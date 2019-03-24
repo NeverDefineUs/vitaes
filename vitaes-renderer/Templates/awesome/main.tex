@@ -268,14 +268,25 @@ $academic['city']
 #end if
 #if $skill_dict != {} and $section == 'skill'
 \cvsection{$resources['skills']}
-
-
 \begin{cvskills}
 
 #for $skill in $skill_dict.keys()
   \cvskill
     {$skill} % Category
     {${', '.join($skill_dict[$skill])}} % Skills
+
+#end for
+\end{cvskills}
+#end if
+
+#if $language_array != [] and $section == 'language'
+\cvsection{$resources['languages']}
+\begin{cvskills}
+
+#for $language in $language_array
+  \cvskill
+    {$language['language']} % Language
+    {$language['level']} % Level
 
 #end for
 \end{cvskills}
