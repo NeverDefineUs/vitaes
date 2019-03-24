@@ -22,7 +22,7 @@ import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 
-const autosave_time = 120000;
+const autoSaveTime = 120000;
 
 class Builder extends Component {
   constructor(props) {
@@ -179,7 +179,7 @@ class Builder extends Component {
         this.saveOnAccount();
         toast.success(translate('saved'));
       }
-    }, autosave_time);
+    }, autoSaveTime);
   }
 
   handleChangeHeader(event) {
