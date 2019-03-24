@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import ToastContainer from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import { setLocale } from 'i18n/locale';
 
