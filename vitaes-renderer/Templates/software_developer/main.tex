@@ -1,0 +1,281 @@
+%-------------------------
+% Resume in Latex
+% Author : Sourabh Bajaj
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[pdftex]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{seqsplit}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.375in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1}{: #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[5]{
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\[0.5pt]
+      \multicolumn{2}{p{18.3cm}}{\footnotesize #5} \\
+    \end{tabular*}\vspace{10pt}
+}
+
+\newcommand{\resumeAchievement}[3]{
+    \begin{tabular*}{0.97\textwidth}{p{1.25cm} l@{\extracolsep{\fill}}r}
+      \textit{\small #1} & \textbf{#2} & {\footnotesize #3} \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeLanguage}[2]{
+    \begin{tabular*}{0.97\textwidth}{l}
+      \textbf{#1} (\textit{#2}) \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeSkill}[2]{
+    \begin{tabular*}{0.97\textwidth}{r@{\extracolsep{0.4cm}}r}
+      \textbf{\large #1} & #2 \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING-----------------
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \textbf{\href{$homepage}{\Large $name}} & Email : \href{mailto:$email}{$email}\\
+  \href{$homepage}{$homepage} & Mobile : $phone \\
+\end{tabular*}
+
+
+%-------------------------------------
+#for $section in $params['section_order']
+
+#if $education_array and $section == 'education'
+\section{$resources['education']}
+  #for $education in $education_array
+    \resumeSubheading
+    {$education['institution']}
+    {
+    #if 'country' in $education and 'city' in $education
+      $education['country'], $education['city']
+    #else if 'country' in $education
+      $education['country']
+    #else if 'city' in $education
+      $education['city']
+    #end if
+    }
+    {$education['course']}
+    {$format_datetime($education['start_date'], 'LLL, YYYY', locale=$params['lang']) 
+    #if 'end_date' in $education 
+      #if $education['end_date'].strftime("%b, %Y") != $education['start_date'].strftime("%b, %Y")
+        - $format_datetime($education['end_date'], 'LLL, YYYY', locale=$params['lang']) 
+      #end if
+    #else
+      - $resources['present']
+    #end if
+    }
+    #if 'description' in $education
+      {$break_into_items($education['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+    #else
+      {}
+    #end if
+  #end for
+#end if
+
+#if $work_array and $section == 'work'
+\section{$resources['experience']}
+  #for $work in $work_array
+    \resumeSubheading
+    {$work['institution']}
+    {
+    #if 'country' in $work and 'city' in $work
+      $work['country'], $work['city']
+    #else if 'country' in $work
+      $work['country']
+    #else if 'city' in $work
+      $work['city']
+    #end if
+    }
+    {$work['role']}
+    {$format_datetime($work['start_date'], 'LLL, YYYY', locale=$params['lang']) 
+    #if 'end_date' in $work 
+      #if $work['end_date'].strftime("%b, %Y") != $work['start_date'].strftime("%b, %Y")
+        - $format_datetime($work['end_date'], 'LLL, YYYY', locale=$params['lang']) 
+      #end if
+    #else
+      - $resources['present']
+    #end if
+    }
+    #if 'description' in $work
+      {$break_into_items($work['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+    #else
+      {}
+    #end if
+  #end for
+#end if
+
+#if $achievement_array and $section == 'achievement'
+\section{$resources['achievements']}
+  #for $achievement in $achievement_array
+    \resumeAchievement
+    {$achievement['start_date'].strftime("%Y")}
+    {$achievement['name']}
+    {
+    #if 'country' in $achievement and 'city' in $achievement
+      $achievement['country'], $achievement['city']
+    #else if 'country' in $achievement
+      $achievement['country']
+    #else if 'city' in $achievement
+      $achievement['city']
+    #end if
+    }
+  #end for
+#end if
+
+#if $project_array and $section == 'project'
+\section{$resources['projects']}
+  #for $project in $project_array
+    \resumeSubheading
+    {$project['name']}
+    {
+    #if 'country' in $project and 'city' in $project
+      $project['country'], $project['city']
+    #else if 'country' in $project
+      $project['country']
+    #else if 'city' in $project
+      $project['city']
+    #end if
+    }
+    {
+    #if 'language' in $project
+      $project['language']
+    #end if
+    }
+    {$format_datetime($project['start_date'], 'LLL, YYYY', locale=$params['lang']) 
+    #if 'end_date' in $project 
+      #if $project['end_date'].strftime("%b, %Y") != $project['start_date'].strftime("%b, %Y")
+        - $format_datetime($project['end_date'], 'LLL, YYYY', locale=$params['lang']) 
+      #end if
+    #else
+      - $resources['present']
+    #end if
+    }
+    #if 'description' in $project
+      {$break_into_items($project['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+    #else
+      {}
+    #end if
+  #end for
+#end if
+
+#if $academic_array and $section == 'academic'
+\section{$resources['academicXp']}
+  #for $academic in $academic_array
+    \resumeSubheading
+    {$academic['name']}
+    {
+    #if 'country' in $academic and 'city' in $academic
+      $academic['country'], $academic['city']
+    #else if 'country' in $academic
+      $academic['country']
+    #else if 'city' in $academic
+      $academic['city']
+    #end if
+    }
+    {
+    #if 'institution' in $academic
+      $academic['institution']
+    #end if
+    }
+    {$format_datetime($academic['start_date'], 'LLL, YYYY', locale=$params['lang']) 
+    #if 'end_date' in $academic 
+      #if $academic['end_date'].strftime("%b, %Y") != $academic['start_date'].strftime("%b, %Y")
+        - $format_datetime($academic['end_date'], 'LLL, YYYY', locale=$params['lang']) 
+      #end if
+    #else
+      - $resources['present']
+    #end if
+    }
+    #if 'description' in $academic
+      {$break_into_items($academic['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+    #else
+      {}
+    #end if
+  #end for
+#end if
+
+#if $language_array and $section == 'language'
+\section{$resources['languages']}
+  #for $language in $language_array
+    \resumeLanguage
+    {$language['language']}
+    {$language['level']}
+  #end for
+#end if
+
+#set $used_skill_dict = $skill_dict['aggregated']
+#if $used_skill_dict != {} and $section == 'skill'
+\section{$resources['skills']}
+  #for $category in $used_skill_dict.keys()
+    #set $skill_data = $used_skill_dict[$category]
+    \resumeSkill
+    {$category}
+    {${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}}
+  #end for
+#end if
+
+#end for
+
+%-------------------------------------------
+\end{document}
