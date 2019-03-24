@@ -8,6 +8,7 @@ import validateDate from 'utils/validateDate';
 
 import { fieldsDef, updateFields } from '../shared/fields';
 import CvField from './CvField';
+import { CvItem } from './CvItem';
 
 updateFields();
 
@@ -158,39 +159,13 @@ class CvItemForm extends Component {
           name = `${item.skill_type}: ${item.skill_name}`;
         }
         nodes.push(
-          <Alert
-            variant="secondary"
-            style={{
-              width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5,
-            }}
-            key={name}
-          >
-            {name}
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventDeleter(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {translate('delete')}
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventEnabler(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {translate(item.disable ? 'hide' : 'show')}
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventExpander(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {translate('edit')}
-            </Button>
-          </Alert>,
+          <CvItem
+            name={name}
+            item={item}
+            eventDeleter={comp.getEventDeleter(index)}
+            eventEnabler={comp.getEventEnabler(index)}
+            eventExpander={comp.getEventExpander(index)}
+          />
         );
       });
     }
