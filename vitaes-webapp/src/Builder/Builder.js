@@ -241,7 +241,12 @@ class Builder extends Component {
     return (
       <Card bg="light">
         <Card.Body>
-          <Button variant="secondary" style={{ float: 'right' }} sm="2" onClick={() => this.setState({ showBugUi: true })}>
+          <Button
+            variant="secondary"
+            style={{ float: 'right' }}
+            sm="2"
+            onClick={() => this.setState({ showBugUi: true })}
+          >
             {translate('report_a_bug')}
           </Button>
           <h2>Curriculum Vitae:</h2>

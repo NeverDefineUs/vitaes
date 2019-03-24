@@ -72,7 +72,13 @@ export const BugReporter = (props) => {
           >
             {translate('send')}
           </Button>
-          <BugReporterCheckbox sm="auto" style={{ marginLeft: 10, marginBottom: 0 }} label={translate('use_personal_data')} value={sendState} setter={setSendState} />
+          <BugReporterCheckbox
+            sm="auto"
+            style={{ marginLeft: 10, marginBottom: 0 }}
+            label={translate('use_personal_data')}
+            value={sendState}
+            setter={setSendState}
+          />
         </Row>
       </Modal.Footer>
     </Modal>
