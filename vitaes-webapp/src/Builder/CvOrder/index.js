@@ -6,7 +6,7 @@ import { Badge } from 'react-bootstrap';
 import { translate } from 'i18n/locale';
 
 const SortableItem = SortableElement(({ value }) => (
-  <li><Badge variant="secondary" style={{ width: '80%', marginLeft: '10%' }}>{value}</Badge></li>
+  <Badge variant="secondary" style={{ width: '80%', marginLeft: '10%' }}>{value}</Badge>
 ));
 
 const SortableList = SortableContainer(({ cvOrder }) => (
