@@ -165,7 +165,7 @@ class CvItemForm extends Component {
             }}
             key={name}
           >
-            <span onClick={comp.getEventExpander(index)}>{name}</span>
+            {name}
             <Button
               variant="dark"
               size="sm"
@@ -181,6 +181,14 @@ class CvItemForm extends Component {
               style={{ marginLeft: 5, float: 'right' }}
             >
               {translate(item.disable ? 'hide' : 'show')}
+            </Button>
+            <Button
+              variant="dark"
+              size="sm"
+              onClick={comp.getEventExpander(index)}
+              style={{ marginLeft: 5, float: 'right' }}
+            >
+              {translate('edit')}
             </Button>
           </Alert>,
         );
