@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
-import { Alert, Button, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import arrayMove from 'array-move';
+import _ from 'lodash';
 
 import { translate } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
@@ -8,6 +10,7 @@ import validateDate from 'utils/validateDate';
 
 import { fieldsDef, updateFields } from '../shared/fields';
 import CvField from './CvField';
+import { CvItemOrder } from './CvItemOrder';
 
 updateFields();
 
@@ -23,6 +26,7 @@ class CvItemForm extends Component {
     super(props);
     this.getEventDeleter = this.getEventDeleter.bind(this);
     this.getEventExpander = this.getEventExpander.bind(this);
+    this.getEventEnabler = this.getEventEnabler.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addField = this.addField.bind(this);
     this.state = { toAdd: {} };
@@ -146,53 +150,18 @@ class CvItemForm extends Component {
     ];
     const comp = this;
     if (this.props.curriculum[this.props.cvkey] !== undefined) {
-      this.props.curriculum[this.props.cvkey].forEach((item, index) => {
-        let name = '';
-        if (item.name !== undefined) {
-          ({ name } = item);
-        } else if (item.institution !== undefined) {
-          ({ name } = item.institution.CvInstitution);
-        } else if (item.language !== undefined) {
-          name = item.language;
-        } else {
-          name = `${item.skill_type}: ${item.skill_name}`;
-        }
-        nodes.push(
-          <Alert
-            variant="secondary"
-            style={{
-              width: '100%', paddingBottom: 6, paddingRight: 5, paddingTop: 2, marginBottom: 5, marginTop: 5,
-            }}
-            key={name}
-          >
-            {name}
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventDeleter(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {translate('delete')}
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventEnabler(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {translate(item.disable ? 'hide' : 'show')}
-            </Button>
-            <Button
-              variant="dark"
-              size="sm"
-              onClick={comp.getEventExpander(index)}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {translate('edit')}
-            </Button>
-          </Alert>,
-        );
-      });
+      nodes.push(<CvItemOrder
+        onSortEnd={({ oldIndex, newIndex }) => {
+          const items = arrayMove(this.props.curriculum[this.props.cvkey], oldIndex, newIndex);
+          const cv = _.cloneDeep(this.props.curriculum);
+          cv[this.props.cvkey] = items;
+          this.props.stateChanger(cv);
+        }}
+        items={this.props.curriculum[this.props.cvkey]}
+        getEventDeleter={comp.getEventDeleter}
+        getEventEnabler={comp.getEventEnabler}
+        getEventExpander={comp.getEventExpander}
+      />);
     }
     if (this.props.chosenLabel !== this.props.label) {
       return (
