@@ -23,6 +23,7 @@ import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 
 const autoSaveTime = 120000;
+const toastId = null;
 
 class Builder extends Component {
   constructor(props) {
@@ -170,7 +171,9 @@ class Builder extends Component {
         .ref('cvs')
         .child(user.uid);
       db.set(this.props.cv);
-      toast.success(translate('saved'));
+      toast.success(translate('saved'), {
+        toastId: 'autosv'
+      });
     }
   }
 
