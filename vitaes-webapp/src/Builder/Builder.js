@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import { arrayMove } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 import fetch from 'fetch-retry';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
