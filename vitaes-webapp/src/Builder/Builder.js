@@ -170,7 +170,9 @@ class Builder extends Component {
         .ref('cvs')
         .child(user.uid);
       db.set(this.props.cv);
-      toast.success(translate('saved'));
+      toast.success(translate('saved'), {
+        toastId: 'autosv',
+      });
     }
   }
 
