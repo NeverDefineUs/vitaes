@@ -171,7 +171,7 @@ class Builder extends Component {
         .child(user.uid);
       db.set(this.props.cv);
       toast.success(translate('saved'), {
-        toastId: 'autosv'
+        toastId: 'autosv',
       });
     }
   }
