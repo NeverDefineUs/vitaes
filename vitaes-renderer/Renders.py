@@ -183,7 +183,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
             'aggregated': aggSkills,
         }
 
-    def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix="", itemSpacing=""):
+    def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix="", itemSpacing=None):
         lines = description.split('\n')
         while len(lines) > 0 and lines[-1].strip() == '':
             lines = lines[:-1]
@@ -208,7 +208,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
                 retLines.append(itemPrefix + line[depth:] + itemSuffix)
             else: 
                 retLines.append(line)
-        retLines = itemOnTop + retLines[:-1] + itemOnBottom + [retLines[-1]]
+        if itemSpacing is not None:
+            retLines = itemOnTop + retLines[:-1] + itemOnBottom + [retLines[-1]]
         return '\n'.join(retLines)
 
     def format_skill(skill_data):
