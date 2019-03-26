@@ -275,7 +275,7 @@ $academic['city']
 #set $skill_data = $used_skill_dict[$category]
   \cvskill
     {$category} % Category
-    {${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}} % Skills
+    {$format_skill($skill_data)} % Skills
 
 #end for
 \end{cvskills}

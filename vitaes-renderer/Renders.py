@@ -211,6 +211,18 @@ class CvRenderCheetahTemplate(CvRenderBase):
         retLines = itemOnTop + retLines[:-1] + itemOnBottom + [retLines[-1]]
         return '\n'.join(retLines)
 
+    def format_skill(skill_data):
+        print(skill_data)
+        sys.stdout.flush()
+        formated_skills = []
+        for skill in skill_data:
+            if 'level' in skill and skill['level'] is not None:
+                formated_skills.append(skill['name'] + ' (' + skill['level'] + ')')
+            else:
+                formated_skills.append(skill['name'])
+        return ', '.join(formated_skills)
+
+
     def render(cv: CurriculumVitae, baseFolder: str, params={}, resources={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
@@ -233,6 +245,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
         cvDict["skill_dict"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
         cvDict["break_into_items"] = CvRenderCheetahTemplate.break_into_items
+        cvDict["format_skill"] = CvRenderCheetahTemplate.format_skill
         cvDict["format_datetime"] = format_datetime
         for key in resources:
           resources[key] = text_clean(resources[key])
