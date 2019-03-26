@@ -271,7 +271,7 @@
     #set $skill_data = $used_skill_dict[$category]
     \resumeSkill
     {$category}
-    {${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}}
+    {$format_skill($skill_data)}
   #end for
 #end if
 

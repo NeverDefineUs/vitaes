@@ -147,7 +147,7 @@
 \section{$resources['skills']}
 #for $category in $used_skill_dict.keys()
 #set $skill_data = $used_skill_dict[$category]
-\cvitem{$category}{${', '.join(skill['name'] + ' (' + skill['level'] + ')' for skill in $skill_data)}}
+\cvitem{$category}{$format_skill($skill_data)}
 #end for
 #end if
 #end for
