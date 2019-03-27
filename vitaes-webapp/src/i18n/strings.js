@@ -185,6 +185,10 @@ export const strings = {
     en_US: 'Error',
     pt_BR: 'Erro',
   },
+  error_close_item_edit: {
+    en_US: 'Close current item before editing another',
+    pt_BR: 'Feche o item atual antes de editar o próximo',
+  },
   error_processing_file: {
     en_US: 'Error processing file',
     pt_BR: 'Erro ao processar o arquivo',
