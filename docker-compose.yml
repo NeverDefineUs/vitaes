@@ -46,6 +46,22 @@ services:
     image: redis
     networks:
     - net
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-volume:/var/lib/grafana
+  tsdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - influxdb-volume:/var/lib/influxdb
   mongo:
     image: mongo
     restart: always
@@ -71,6 +87,10 @@ services:
     - net
 volumes:
   mongodb:
+    external: true
+  grafana-volume:
+    external: true
+  influxdb-volume:
     external: true
 networks:
   net:

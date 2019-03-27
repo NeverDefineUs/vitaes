@@ -6,3 +6,4 @@ pika
 redis
 pymongo
 babel
+influxdb

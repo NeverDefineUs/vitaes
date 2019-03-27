@@ -4,6 +4,8 @@ import json, sys
 from Common import render_map, render_from_cv_dict
 import pika
 import redis
+from influxdb import InfluxDBClient
+
 tries = 0
 connection = None
 channel = None
@@ -17,10 +19,24 @@ while tries < 10:
     except:
         tries += 1
 
+while tries < 10:
+    time.sleep(10)
+    tries += 1
+    client = InfluxDBClient(host='tsdb', port=8086, username='root', password='root')
+    try:
+      try:
+        client.create_database('logs')
+      except:
+        print('tsdb already created')
+      client.switch_database('logs')
+      break
+    except:
+      print('retry')
+
 db = redis.Redis(host='redis')
 
 def get_cv_queue(ch, method, properties, body):
-    ans = None
+    mes = ""
     try:
         body=body.decode('utf-8')
         dic = json.loads(body)
@@ -29,12 +45,22 @@ def get_cv_queue(ch, method, properties, body):
         ansb = file.read()
         file.close()
         db.set(name=ans, value=ansb, ex=600)
+        mes = "OK"
     except:
-        print("Error on ", ans)
+        mes = "err"
+    log = [
+      {
+        "measurement": "accuracy",
+        "fields": {
+          "status": mes,
+        }
+      }
+    ]
+    client.write_points(log)
 
-channel.basic_consume(get_cv_queue,
-                      queue='cv_requests',
-                      no_ack=True)
+channel.basic_consume(queue='cv_requests',
+                      on_message_callback=get_cv_queue,
+                      auto_ack=True)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
