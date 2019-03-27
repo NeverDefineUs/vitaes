@@ -54,14 +54,18 @@ services:
       - 3000:3000
     volumes:
       - grafana-volume:/var/lib/grafana
+    networks:
+    - net
   tsdb:
     image: influxdb
-    container_name: influxdb
+    container_name: tsdb
     restart: always
     ports:
       - 8086:8086
     volumes:
       - influxdb-volume:/var/lib/influxdb
+    networks:
+    - net
   mongo:
     image: mongo
     restart: always

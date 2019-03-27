@@ -37,6 +37,7 @@ db = redis.Redis(host='redis')
 
 def get_cv_queue(ch, method, properties, body):
     mes = ""
+    ts = time.time() 
     try:
         body=body.decode('utf-8')
         dic = json.loads(body)
@@ -53,6 +54,7 @@ def get_cv_queue(ch, method, properties, body):
         "measurement": "accuracy",
         "fields": {
           "status": mes,
+          "render_time": float(time.time() - ts),
         }
       }
     ]
