@@ -112,19 +112,6 @@ class Builder extends Component {
       }),
     }).then((response) => {
       if (response.ok) {
-        const saveOn = (path) => {
-          const db = firebase
-            .database()
-            .ref(path)
-            .child(
-              `EMAIL:${
-                this.props.user !== null
-                  ? this.props.user.uid
-                  : this.props.cv.CvHeaderItem.email.replace(/\./g, '_dot_')}`,
-            )
-            .push();
-          db.set(this.props.cv);
-        };
         const idPromise = response.text();
         toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
@@ -138,7 +125,6 @@ class Builder extends Component {
             },
           ).then((cvresponse) => {
             if (cvresponse.ok) {
-              saveOn('cv-dumps');
               const fileBlob = cvresponse.blob();
               fileBlob.then((file) => {
                 const element = document.createElement('a');
@@ -149,7 +135,6 @@ class Builder extends Component {
               toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
               this.setState({ downloading: false });
             } else {
-              saveOn('cv-errors');
               toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
               this.setState({ downloading: false });
             }
