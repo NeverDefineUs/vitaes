@@ -198,11 +198,11 @@ export const strings = {
     pt_BR: 'Entrar com o Facebook',
   },
   github_login: {
-    en_US: 'Github login',
-    pt_BR: 'Entrar com o Github',
+    en_US: 'GitHub login',
+    pt_BR: 'Entrar com o GitHub',
   },
   github_placeholder: {
-    en_US: 'Github url (e.g. github.com/youruser/)',
+    en_US: 'GitHub url (e.g. github.com/youruser/)',
     pt_BR: 'GitHub url (ex. github.com/seuusuario/)',
   },
   google_login: {
