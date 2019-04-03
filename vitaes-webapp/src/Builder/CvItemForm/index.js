@@ -5,7 +5,6 @@ import arrayMove from 'array-move';
 import _ from 'lodash';
 
 import { translate } from 'i18n/locale';
-import capitalize from 'utils/capitalize';
 import validateDate from 'utils/validateDate';
 
 import { fieldsDef, updateFields } from '../shared/fields';
@@ -54,10 +53,9 @@ class CvItemForm extends Component {
 
   getEventExpander(index) {
     return () => {
-      if (this.props.label === this.props.chosenLabel) {
-        if (!this.addField()) {
-          return;
-        }
+      if (this.props.chosenLabel !== '') {
+        toast.error(translate('error_close_item_edit'));
+        return;
       }
       const cv = this.props.curriculum;
       const toAdd = cv[this.props.cvkey][index];
@@ -93,11 +91,7 @@ class CvItemForm extends Component {
     const { toAdd } = this.state;
     for (const item of this.props.fields) {
       if (toAdd[item[0]] === undefined) {
-        if (item[0] === 'name') {
-          toast.error(`${translate('mandatory_field')}: ${translate('title')}`);
-        } else {
-          toast.error(`${translate('mandatory_field')}: ${capitalize(item[0])}`);
-        }
+        toast.error(`${translate('mandatory_field')}: ${item[2]}`);
         return false;
       }
     }
