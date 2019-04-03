@@ -32,7 +32,7 @@ export const TemplateHubModel = (props) => {
           show={show}
           onHide={() => setShow(false)}
           image={model.data.image}
-          title={props.keyName}
+          title={capitalize(props.keyName)}
         />
         {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
         <img
