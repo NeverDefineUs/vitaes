@@ -25,13 +25,6 @@ services:
     - rabbitmq
     networks:
     - net
-  nginx:
-    build: vitaes-nginx/.
-    ports:
-    - "443:443"
-    image: vitaes/nginx
-    networks:
-    - net
   nginx-http:
     build: vitaes-nginx-http/.
     ports:
@@ -61,8 +54,6 @@ services:
     image: influxdb
     container_name: tsdb
     restart: always
-    ports:
-      - 8086:8086
     volumes:
       - influxdb-volume:/var/lib/influxdb
     networks:
