@@ -98,11 +98,10 @@ class NavBar extends React.Component {
               >
                 Template Hub
               </Nav.Link>
-              <Nav.Link
-                href="/about"
-              >
-                {translate('about_the_project')}
-              </Nav.Link>
+              <NavDropdown title={translate('about_the_project')}>
+                <NavDropdown.Item href="/about">{translate('about_the_project')}</NavDropdown.Item>
+                <NavDropdown.Item href="/privacy">{translate('privacy_policy')}</NavDropdown.Item>
+              </NavDropdown>
               <NavDropdown title={translate('language')} id="basic-nav-dropdown">
                 <NavDropdown.Item onClick={() => onChangeLanguage('en_US')}>English</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</NavDropdown.Item>

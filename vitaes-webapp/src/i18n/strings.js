@@ -333,6 +333,10 @@ export const strings = {
     en_US: 'Rank obtained (e.g. 1th)',
     pt_BR: 'Posição obtida (ex. 1•)',
   },
+  privacy_policy: {
+    en_US: 'Privacy policy',
+    pt_BR: 'Politica de privacidade',
+  },
   program_language: {
     en_US: 'Programming language',
     pt_BR: 'Linguagem de programação',
