@@ -1,6 +1,6 @@
 from datetime import date, datetime
 import time
-import json, sys
+import json, sys, hashlib
 from Common import render_map, render_from_cv_dict
 import pika
 import redis
@@ -38,6 +38,8 @@ db = redis.Redis(host='redis')
 def get_cv_queue(ch, method, properties, body):
     mes = ""
     ts = time.time() 
+    email = ""
+    cv_type = ""
     try:
         body=body.decode('utf-8')
         dic = json.loads(body)
@@ -47,15 +49,29 @@ def get_cv_queue(ch, method, properties, body):
         file.close()
         db.set(name=ans, value=ansb, ex=600)
         mes = "OK"
+        dic = json.loads(body)
+        cv_type = dic["render_key"]
+        email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
     except:
         mes = "err"
+    email_hash = hashlib.sha256()
+    email_hash.update(str.encode(email))
+    email = email_hash.hexdigest()
     log = [
       {
         "measurement": "accuracy",
         "fields": {
           "status": mes,
           "render_time": float(time.time() - ts),
-        }
+          "model": cv_type,
+          "email": email,
+        },
+        "tags": {
+          "status": mes,
+          "render_time": float(time.time() - ts),
+          "model": cv_type,
+          "email": email,
+        },
       }
     ]
     client.write_points(log)
