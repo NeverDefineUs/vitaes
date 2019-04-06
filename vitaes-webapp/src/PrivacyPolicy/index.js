@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { Segment } from 'semantic-ui-react';
 
 export const PrivacyPolicy = () => (
-  <div className="Base">
+  <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
     <h1>Privacy Policy</h1>
     <p>Effective date: March 28, 2019</p>
     <p>Vitaes (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;) operates the https://vitaes.io website (hereinafter referred to as the &quot;Service&quot;).</p>
@@ -185,6 +186,6 @@ You also have the right to withdraw your consent at any time where Vitaes relied
     <ul>
       <li>By email: latache@vitaes.io</li>
     </ul>
-  </div>
+  </Segment>
 );
 export default PrivacyPolicy;

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button, Segment } from 'semantic-ui-react';
+
 import { setTemplateFile } from '../util';
 
 class OwnedTemplate extends Component {
@@ -36,13 +38,13 @@ class OwnedTemplate extends Component {
 
   render() {
     return (
-      <div className="Base-item">
+      <Segment>
         {this.props.template.name}
         <div className="Base-item-close">
           {this.fileUploader}
-          <a onClick={this.chooseAndUploadFile}>Upload zip</a>
+          <Button onClick={this.chooseAndUploadFile}>Upload zip</Button>
         </div>
-      </div>
+      </Segment>
     );
   }
 }

@@ -24,7 +24,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "1.1.5",
     "react-sortable-hoc": "",
-    "react-toastify": "^4.5.2"
+    "react-toastify": "^4.5.2",
+    "semantic-ui-react": "^0.86.0"
   },
   "scripts": {
     "start": "react-scripts start",
