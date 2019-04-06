@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Segment, Button } from 'semantic-ui-react';
 import { getEmptyTemplate } from './util';
 import TemplateField from './TemplateField';
 import OwnedTemplate from './OwnedTemplate';
@@ -17,7 +18,7 @@ class AddTemplate extends Component {
       (<OwnedTemplate template={template} key={template} />));
 
     return (
-      <div className="Base">
+      <Segment secondary>
         <h1>Create a template:</h1>
         <TemplateField
           placeholder="awesome"
@@ -40,30 +41,28 @@ class AddTemplate extends Component {
           }}
         />
         <h2>Params:</h2>
-        <div className="Base-button">
-          <a
-            href="#"
-            onClick={() => {
-              fetch('http://localhost:5000/template/', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(this.state.template),
-              });
-              this.setState({ template: getEmptyTemplate() });
-            }}
-          >
+        <Button
+          secondary
+          size="small"
+          style={{ float: 'right' }}
+          onClick={() => {
+            fetch('http://localhost:5000/template/', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(this.state.template),
+            });
+            this.setState({ template: getEmptyTemplate() });
+          }}
+        >
             Submit
-          </a>
-        </div>
-        <div className="Base-button">
-          <a href="#" onClick={() => { }}>Add New Param</a>
-        </div>
+        </Button>
+        <Button secondary size="small" style={{ float: 'right' }} onClick={() => { }}>Add New Param</Button>
         <hr style={{ marginTop: '3em' }} />
         {ownedCvsNodes}
-      </div>
+      </Segment>
     );
   }
 }

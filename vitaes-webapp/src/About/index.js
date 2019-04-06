@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { translate } from 'i18n/locale';
+import { Segment } from 'semantic-ui-react';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
@@ -10,7 +11,7 @@ const imagesSrcs = {
 class About extends Component {
   render() {
     return (
-      <div className="Base">
+      <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
         <h1>
           {translate('about_the_project')}
           :
@@ -97,7 +98,7 @@ class About extends Component {
         https://github.com/NeverDefineUs/vitaes
         <br />
         <br />
-      </div>
+      </Segment>
     );
   }
 }
