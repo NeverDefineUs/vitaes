@@ -44,9 +44,9 @@
 
 %-------------------------
 % Custom commands
-\newcommand{\resumeItem}[2]{
+\newcommand{\resumeItem}[1]{
   \item\small{
-    \textbf{#1}{: #2 \vspace{-2pt}}
+    #1
   }
 }
 
@@ -126,7 +126,7 @@
     #end if
     }
     #if 'description' in $education
-      {$break_into_items($education['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+      {$break_into_items($education['description'], header="\\resumeItemListStart", bottom="\\resumeItemListEnd", itemPrefix="\\resumeItem{", itemSuffix="}")}
     #else
       {}
     #end if
@@ -158,7 +158,7 @@
     #end if
     }
     #if 'description' in $work
-      {$break_into_items($work['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+      {$break_into_items($work['description'], header="\\resumeItemListStart", bottom="\\resumeItemListEnd", itemPrefix="\\resumeItem{", itemSuffix="}")}
     #else
       {}
     #end if
@@ -212,7 +212,7 @@
     #end if
     }
     #if 'description' in $project
-      {$break_into_items($project['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+      {$break_into_items($project['description'], header="\\resumeItemListStart", bottom="\\resumeItemListEnd", itemPrefix="\\resumeItem{", itemSuffix="}")}
     #else
       {}
     #end if
@@ -248,7 +248,7 @@
     #end if
     }
     #if 'description' in $academic
-      {$break_into_items($academic['description'], header="\\begin{cvitems}", bottom="\\end{cvitems}", itemPrefix="\\item{", itemSuffix="}")}
+      {$break_into_items($academic['description'], header="\\resumeItemListStart", bottom="\\resumeItemListEnd", itemPrefix="\\resumeItem{", itemSuffix="}")}
     #else
       {}
     #end if
