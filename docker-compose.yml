@@ -25,7 +25,7 @@ services:
     - rabbitmq
     networks:
     - net
-  nginx-http:
+  nginx:
     build: vitaes-nginx-http/.
     ports:
     - "80:80"
