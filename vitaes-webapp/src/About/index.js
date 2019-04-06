@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { translate } from 'i18n/locale';
 import { Segment } from 'semantic-ui-react';
+
+import { translate } from 'i18n/locale';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
