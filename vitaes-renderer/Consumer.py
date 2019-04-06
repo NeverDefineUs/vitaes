@@ -40,6 +40,7 @@ def get_cv_queue(ch, method, properties, body):
     ts = time.time() 
     email = ""
     cv_type = ""
+    lang = ""
     try:
         body=body.decode('utf-8')
         dic = json.loads(body)
@@ -52,6 +53,7 @@ def get_cv_queue(ch, method, properties, body):
         dic = json.loads(body)
         cv_type = dic["render_key"]
         email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
+        lang = dic["params"]["lang"]
     except:
         mes = "err"
     email_hash = hashlib.sha256()
@@ -65,12 +67,14 @@ def get_cv_queue(ch, method, properties, body):
           "render_time": float(time.time() - ts),
           "model": cv_type,
           "email": email,
+          "lang": lang,
         },
         "tags": {
           "status": mes,
           "render_time": float(time.time() - ts),
           "model": cv_type,
           "email": email,
+          "lang": lang,
         },
       }
     ]
