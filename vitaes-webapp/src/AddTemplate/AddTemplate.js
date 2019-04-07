@@ -38,7 +38,7 @@ class AddTemplate extends Component {
         <TemplateField
           placeholder="awesome"
           label="Name"
-          value={this.state.name}
+          value={this.state.template.name}
           callback={(e) => {
             const { template } = this.state;
             template.name = e.target.value;
@@ -48,7 +48,7 @@ class AddTemplate extends Component {
         <TemplateField
           placeholder="pdflatex"
           label="Command"
-          value={this.state.command}
+          value={this.state.template.command}
           callback={(e) => {
             const { template } = this.state;
             template.command = e.target.value;
