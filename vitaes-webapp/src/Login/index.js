@@ -30,8 +30,9 @@ class Login extends Component {
             {translate('skip_login')}
           </Button>
           <Button
+            primary
             style={{
-              background: '#4285f4', marginTop: 10, border: '#4285f488', color: '#fff',
+              background: '#4285f4', marginTop: 10, border: '#4285f488',
             }}
             className="Login-button"
             onClick={googleLogin}
@@ -40,8 +41,9 @@ class Login extends Component {
             {translate('google_login')}
           </Button>
           <Button
+            primary
             style={{
-              background: '#4267b2', marginTop: 10, border: '#4267b288', color: '#fff',
+              background: '#4267b2', marginTop: 10, border: '#4267b288',
             }}
             className="Login-button"
             onClick={facebookLogin}
@@ -50,8 +52,9 @@ class Login extends Component {
             {translate('facebook_login')}
           </Button>
           <Button
+            primary
             style={{
-              background: '#333', marginTop: 10, border: '#3338', color: '#fff',
+              background: '#333', marginTop: 10, border: '#3338',
             }}
             className="Login-button"
             onClick={githubLogin}
