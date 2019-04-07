@@ -7,6 +7,7 @@ import _ from 'lodash';
 import {
   Button, Form, Col, Row,
 } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
 
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
@@ -52,7 +53,6 @@ class Builder extends Component {
     this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
     this.setLabel = this.setLabel.bind(this);
-    this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
 
     this.autoSave();
@@ -177,10 +177,6 @@ class Builder extends Component {
       delete aux.CvHeaderItem[event.target.name];
     }
     this.setCv(aux);
-  }
-
-  startFilePicker() {
-    this.fileUploader.click();
   }
 
   uploadJSON(selectorFiles) {
@@ -318,21 +314,24 @@ class Builder extends Component {
         {cvModelSuboptions}
         <br />
         <br />
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.startFilePicker}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          <input
-            type="file"
-            id="file"
-            ref={(fp) => { this.fileUploader = fp; }}
-            onChange={e => this.uploadJSON(e.target.files)}
-            style={{ display: 'none' }}
-          />
-          {translate('upload_json')}
-        </Button>
+        <Dropzone onDrop={files => this.uploadJSON(files)}>
+          {({ getRootProps, getInputProps }) => (
+            <Button
+              {...getRootProps()}
+              variant="secondary"
+              size="sm"
+              style={{ marginLeft: 5, float: 'right' }}
+            >
+              <input
+                {...getInputProps()}
+                type="file"
+                id="file"
+                style={{ display: 'none' }}
+              />
+              {translate('upload_json')}
+            </Button>
+          )}
+        </Dropzone>
         <Button
           variant="secondary"
           size="sm"
