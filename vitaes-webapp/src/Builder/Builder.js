@@ -314,22 +314,22 @@ class Builder extends Component {
         {cvModelSuboptions}
         <br />
         <br />
-        <Dropzone onDrop={(files) => this.uploadJSON(files)}>
-        {({getRootProps, getInputProps}) => (
-          <Button
-            {...getRootProps()}
-            variant="secondary"
-            size="sm"
-            style={{ marginLeft: 5, float: 'right' }}
+        <Dropzone onDrop={files => this.uploadJSON(files)}>
+          {({ getRootProps, getInputProps }) => (
+            <Button
+              {...getRootProps()}
+              variant="secondary"
+              size="sm"
+              style={{ marginLeft: 5, float: 'right' }}
             >
-            <input
-              {...getInputProps()}
-              type="file"
-              id="file"
-              style={{ display: 'none' }}
+              <input
+                {...getInputProps()}
+                type="file"
+                id="file"
+                style={{ display: 'none' }}
               />
-            {translate('upload_json')}
-          </Button>
+              {translate('upload_json')}
+            </Button>
           )}
         </Dropzone>
         <Button
