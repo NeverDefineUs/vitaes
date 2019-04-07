@@ -103,7 +103,7 @@ class NavBar extends React.Component {
                       {translate('alert_manager')}
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      href="https://logs.vitaes.io/"
+                      href="https://grafana.vitaes.io/"
                     >
                       Grafana
                     </NavDropdown.Item>
