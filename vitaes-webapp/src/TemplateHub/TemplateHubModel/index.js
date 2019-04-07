@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { Card, Grid } from 'semantic-ui-react';
 
 import capitalize from 'utils/capitalize';
-import { translate } from 'i18n/locale';
-import getHostname from 'utils/getHostname';
 
 import './TemplateHubModel.css';
 import { TemplateModelPopup } from './TemplateModelPopup';
+import { likeTemplate } from './util';
 
 export const TemplateHubModel = (props) => {
   const [show, setShow] = useState(false);
@@ -45,31 +43,7 @@ export const TemplateHubModel = (props) => {
             <div
               className="template-button"
               role="button"
-              onClick={() => {
-                if (props.user) {
-                  fetch(
-                    `${window.location.protocol
-                    }//${
-                      getHostname()
-                    }/template/like/`,
-                    {
-                      method: 'POST',
-                      headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        uid: props.user.uid,
-                        templatename: props.keyName,
-                      }),
-                    },
-                  ).then(() => {
-                    props.fetchTemplates();
-                  });
-                } else {
-                  toast.error(translate('error_not_logged_in'));
-                }
-              }
+              onClick={() => likeTemplate(props.user, props.keyName, props.fetchTemplates())
             }
             >
               <a>
