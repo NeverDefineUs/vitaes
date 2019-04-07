@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import { Button } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
 
@@ -29,7 +30,9 @@ class Login extends Component {
             {translate('skip_login')}
           </Button>
           <Button
-            style={{ background: '#4285f4', border: '#4285f488' }}
+            style={{
+              background: '#4285f4', marginTop: 10, border: '#4285f488', color: '#fff',
+            }}
             className="Login-button"
             onClick={googleLogin}
             size="sm"
@@ -37,7 +40,9 @@ class Login extends Component {
             {translate('google_login')}
           </Button>
           <Button
-            style={{ background: '#4267b2', border: '#4267b288' }}
+            style={{
+              background: '#4267b2', marginTop: 10, border: '#4267b288', color: '#fff',
+            }}
             className="Login-button"
             onClick={facebookLogin}
             size="sm"
@@ -45,10 +50,12 @@ class Login extends Component {
             {translate('facebook_login')}
           </Button>
           <Button
-            style={{ background: '#333', border: '#3338' }}
+            style={{
+              background: '#333', marginTop: 10, border: '#3338', color: '#fff',
+            }}
             className="Login-button"
             onClick={githubLogin}
-            size="sm"
+            size="small"
           >
             {translate('github_login')}
           </Button>
