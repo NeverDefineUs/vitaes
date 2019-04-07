@@ -54,9 +54,6 @@ class TemplateHub extends Component {
         <Grid centered>
           <Grid.Row columns={(window.innerWidth > 700 ? 3 : 2)}>
             {templateList}
-            {templateList}
-            {templateList}
-            {templateList}
           </Grid.Row>
         </Grid>
         <br />
