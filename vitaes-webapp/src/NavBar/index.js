@@ -93,13 +93,11 @@ class NavBar extends React.Component {
                 ? (
                   <NavDropdown title={translate('dev_options')} id="basic-nav-dropdown">
                     <NavDropdown.Item
-                      key="create-template"
-                      href="/create-template"
+                      href="https://logs.vitaes.io"
                     >
-                      {translate('create_template')}
+                      Grafana
                     </NavDropdown.Item>
                     <NavDropdown.Item
-                      key="alert-manager"
                       href="/alert-manager"
                     >
                       {translate('alert_manager')}
