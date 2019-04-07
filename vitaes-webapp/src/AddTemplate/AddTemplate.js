@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Segment, Button } from 'semantic-ui-react';
 
+import getHostname from 'utils/getHostname';
+
 import { getEmptyTemplate } from './util';
 import TemplateField from './TemplateField';
 import OwnedTemplate from './OwnedTemplate';
@@ -19,7 +21,7 @@ class AddTemplate extends Component {
       (<OwnedTemplate template={template} key={template} />));
 
     const createTemplate = () => {
-      fetch('http://localhost:5000/template/', {
+      fetch(`http://${getHostname()}/template/`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
