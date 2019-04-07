@@ -19,17 +19,6 @@
   height: 1px;
 }
 
-.template-info {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  height: 9em;
-}
-
-.template-image {
-  height: 9em;
-}
-
 .template-button a {
   display: flex;
   flex-direction: row;
