@@ -51,7 +51,7 @@ services:
     networks:
     - net
   tsdb:
-    image: influxdb
+    image: influxdb:1.7.4
     container_name: tsdb
     restart: always
     volumes:
