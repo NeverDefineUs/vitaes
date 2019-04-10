@@ -137,7 +137,7 @@ class Builder extends Component {
               this.setState({ downloading: false });
             } else {
               toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
-              this.setState({ downloading: false });
+              this.setState({ showBugUi: true, downloading: false });
             }
           });
         });
