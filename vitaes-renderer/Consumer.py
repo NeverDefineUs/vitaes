@@ -44,16 +44,15 @@ def get_cv_queue(ch, method, properties, body):
     try:
         body=body.decode('utf-8')
         dic = json.loads(body)
+        cv_type = dic["render_key"]
+        email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
+        lang = dic["params"]["lang"]
         ans = render_from_cv_dict(dic)
         file = open('Output/' + ans + '.pdf', 'rb')
         ansb = file.read()
         file.close()
         db.set(name=ans, value=ansb, ex=600)
         mes = "OK"
-        dic = json.loads(body)
-        cv_type = dic["render_key"]
-        email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
-        lang = dic["params"]["lang"]
     except:
         mes = "err"
     email_hash = hashlib.sha256()
