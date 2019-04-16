@@ -1,4 +1,4 @@
-FROM vitaes-latexos
+FROM vitaes/latexos
 RUN mkdir exec
 WORKDIR /exec
 COPY requirements.txt . 
