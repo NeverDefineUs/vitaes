@@ -149,6 +149,10 @@ export const strings = {
     en_US: 'Description',
     pt_BR: 'Descrição',
   },
+  dev_options: {
+    en_US: 'Dev options',
+    pt_BR: 'Ferramentas de desenvolvedor',
+  },
   download_cv: {
     en_US: 'Download CV',
     pt_BR: 'Baixar CV',

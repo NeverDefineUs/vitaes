@@ -14,7 +14,7 @@ export const TemplateModelPopup = props => (
       <img
         alt="Template preview"
         className="template-image"
-        style={{ height: '40em' }}
+        style={{ height: '48em' }}
         src={props.image}
       />
     </Modal.Body>

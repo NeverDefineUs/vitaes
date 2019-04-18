@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { Segment, Button } from 'semantic-ui-react';
+
+import getHostname from 'utils/getHostname';
+
 import { getEmptyTemplate } from './util';
 import TemplateField from './TemplateField';
 import OwnedTemplate from './OwnedTemplate';
@@ -16,13 +20,25 @@ class AddTemplate extends Component {
     const ownedCvsNodes = ownedCvs.map(template =>
       (<OwnedTemplate template={template} key={template} />));
 
+    const createTemplate = () => {
+      fetch(`http://${getHostname()}/template/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.state.template),
+      });
+      this.setState({ template: getEmptyTemplate() });
+    };
+
     return (
-      <div className="Base">
+      <Segment secondary>
         <h1>Create a template:</h1>
         <TemplateField
           placeholder="awesome"
           label="Name"
-          value={this.state.name}
+          value={this.state.template.name}
           callback={(e) => {
             const { template } = this.state;
             template.name = e.target.value;
@@ -32,7 +48,7 @@ class AddTemplate extends Component {
         <TemplateField
           placeholder="pdflatex"
           label="Command"
-          value={this.state.command}
+          value={this.state.template.command}
           callback={(e) => {
             const { template } = this.state;
             template.command = e.target.value;
@@ -40,30 +56,18 @@ class AddTemplate extends Component {
           }}
         />
         <h2>Params:</h2>
-        <div className="Base-button">
-          <a
-            href="#"
-            onClick={() => {
-              fetch('http://localhost:5000/template/', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(this.state.template),
-              });
-              this.setState({ template: getEmptyTemplate() });
-            }}
-          >
+        <Button
+          secondary
+          size="small"
+          style={{ float: 'right' }}
+          onClick={createTemplate}
+        >
             Submit
-          </a>
-        </div>
-        <div className="Base-button">
-          <a href="#" onClick={() => { }}>Add New Param</a>
-        </div>
+        </Button>
+        <Button secondary size="small" style={{ float: 'right' }} onClick={() => { }}>Add New Param</Button>
         <hr style={{ marginTop: '3em' }} />
         {ownedCvsNodes}
-      </div>
+      </Segment>
     );
   }
 }

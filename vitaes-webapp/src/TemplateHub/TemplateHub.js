@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
+import { Segment, Grid } from 'semantic-ui-react';
 
 import TemplateHubModel from './TemplateHubModel';
 
@@ -48,11 +49,15 @@ class TemplateHub extends Component {
       );
     }
     return (
-      <div className="Base">
+      <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
         <h1>Template Hub</h1>
-        {templateList}
+        <Grid centered>
+          <Grid.Row columns={(window.innerWidth > 700 ? 3 : 2)}>
+            {templateList}
+          </Grid.Row>
+        </Grid>
         <br />
-      </div>
+      </Segment>
     );
   }
 }

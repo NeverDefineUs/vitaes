@@ -76,23 +76,6 @@ class NavBar extends React.Component {
               >
                 {translate('create_cv')}
               </Nav.Link>
-              {user !== null && permissions !== null && permissions[user.uid]
-                ? (
-                  [
-                    <Nav.Link
-                      key="create-template"
-                      href="/create-template"
-                    >
-                      {translate('create_template')}
-                    </Nav.Link>,
-                    <Nav.Link
-                      key="alert-manager"
-                      href="/alert-manager"
-                    >
-                      {translate('alert_manager')}
-                    </Nav.Link>,
-                  ]
-                ) : null}
               <Nav.Link
                 href="/hub"
               >
@@ -106,6 +89,28 @@ class NavBar extends React.Component {
                 <NavDropdown.Item onClick={() => onChangeLanguage('en_US')}>English</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</NavDropdown.Item>
               </NavDropdown>
+              {user !== null && permissions !== null && permissions[user.uid]
+                ? (
+                  <NavDropdown title={translate('dev_options')} id="basic-nav-dropdown">
+                    <NavDropdown.Item
+                      href="/create-template"
+                    >
+                      {translate('create_template')}
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      href="/alert-manager"
+                    >
+                      {translate('alert_manager')}
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      href="https://grafana.vitaes.io/"
+                    >
+                      Grafana
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                )
+                : null
+              }
             </Nav>
             <Nav className="mr-sm-2">
               {user !== null ? (

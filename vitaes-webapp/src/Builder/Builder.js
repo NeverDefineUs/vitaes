@@ -5,8 +5,9 @@ import fetch from 'fetch-retry';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import {
-  Button, Form, Card, Col, Row,
+  Button, Form, Col, Row,
 } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
 
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
@@ -16,6 +17,7 @@ import removeDisabled from 'utils/removeDisabled';
 import validateEmail from 'utils/validateEmail';
 import validateDate from 'utils/validateDate';
 
+import { Segment } from 'semantic-ui-react';
 import CvOrder from './CvOrder';
 import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
@@ -51,7 +53,6 @@ class Builder extends Component {
     this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
     this.setLabel = this.setLabel.bind(this);
-    this.startFilePicker = this.startFilePicker.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
 
     this.autoSave();
@@ -136,7 +137,7 @@ class Builder extends Component {
               this.setState({ downloading: false });
             } else {
               toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
-              this.setState({ downloading: false });
+              this.setState({ showBugUi: true, downloading: false });
             }
           });
         });
@@ -176,10 +177,6 @@ class Builder extends Component {
       delete aux.CvHeaderItem[event.target.name];
     }
     this.setCv(aux);
-  }
-
-  startFilePicker() {
-    this.fileUploader.click();
   }
 
   uploadJSON(selectorFiles) {
@@ -239,138 +236,139 @@ class Builder extends Component {
       }
     }
     return (
-      <Card bg="light">
-        <Card.Body>
-          <Button
-            variant="secondary"
-            style={{ float: 'right' }}
-            sm="2"
-            onClick={() => this.setState({ showBugUi: true })}
-          >
-            {translate('report_a_bug')}
-          </Button>
-          <h2>Curriculum Vitae:</h2>
-          <br />
-          <h3>
-            {translate('header')}
-            :
-          </h3>
-          <br />
-          <Form>
-            {_.map(headerFields, field => (
-              <CvHeaderField
-                stateChanger={this.handleChangeHeader}
-                curriculum={this.props.cv}
-                label={field.label}
-                id={field.id}
-                mandatory={field.mandatory}
-                placeholder={field.placeholder}
-              />
-            ))
-            }
-          </Form>
-          {_.map(cvFormFields, form => (
-            <CvItemForm
-              chosenLabel={this.state.chosenLabel}
-              label={form.label}
-              cvkey={form.cvkey}
+      <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
+        <Button
+          variant="secondary"
+          style={{ float: 'right' }}
+          sm="2"
+          onClick={() => this.setState({ showBugUi: true })}
+        >
+          {translate('report_a_bug')}
+        </Button>
+        <h2>Curriculum Vitae:</h2>
+        <br />
+        <h3>
+          {translate('header')}
+          :
+        </h3>
+        <br />
+        <Form>
+          {_.map(headerFields, field => (
+            <CvHeaderField
+              stateChanger={this.handleChangeHeader}
               curriculum={this.props.cv}
-              stateChanger={this.setCv}
-              labelChanger={this.setLabel}
-              fields={form.fields}
-              optFields={form.optFields}
+              label={field.label}
+              id={field.id}
+              mandatory={field.mandatory}
+              placeholder={field.placeholder}
             />
           ))
           }
-          <hr />
-          <h3>
-            {`${translate('reorder_cvareas')}:`}
-          </h3>
-          <br />
-          <CvOrder
-            setOrder={({ oldIndex, newIndex }) => this.setState({
-              cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex),
-            })
-            }
-            cvOrder={this.state.cv_order}
+        </Form>
+        {_.map(cvFormFields, form => (
+          <CvItemForm
+            chosenLabel={this.state.chosenLabel}
+            label={form.label}
+            cvkey={form.cvkey}
+            curriculum={this.props.cv}
+            stateChanger={this.setCv}
+            labelChanger={this.setLabel}
+            fields={form.fields}
+            optFields={form.optFields}
           />
-          <br />
-          <Form.Group as={Row}>
-            <Form.Label column sm="2">
-              {translate('model')}
-              :
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                as="select"
-                value={this.state.user_cv_model}
-                onChange={(e) => {
-                  this.setState({
-                    user_cv_model: e.target.value,
-                    params: this.props.cv_models[e.target.value].fixed_params,
-                  });
-                }}
-              >
-                {cvModelOptions}
-              </Form.Control>
-            </Col>
-          </Form.Group>
-          {cvModelSuboptions}
-          <br />
-          <br />
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={this.startFilePicker}
-            style={{ marginLeft: 5, float: 'right' }}
-          >
-            <input
-              type="file"
-              id="file"
-              ref={(fp) => { this.fileUploader = fp; }}
-              onChange={e => this.uploadJSON(e.target.files)}
-              style={{ display: 'none' }}
-            />
-            {translate('upload_json')}
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={this.downloadCvAsJson}
-            style={{ marginLeft: 5, float: 'right' }}
-          >
-            {translate('download_json')}
-          </Button>
-          <Button
-            disabled={this.state.downloading}
-            variant="secondary"
-            size="sm"
-            onClick={this.downloadCvAsPDF}
-            style={{ marginLeft: 5, float: 'right' }}
-          >
-            {translate('download_cv')}
-          </Button>
-          {this.props.user !== null ? (
+        ))
+        }
+        <hr />
+        <h3>
+          {`${translate('reorder_cvareas')}:`}
+        </h3>
+        <br />
+        <CvOrder
+          setOrder={({ oldIndex, newIndex }) => this.setState({
+            cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex),
+          })
+          }
+          cvOrder={this.state.cv_order}
+        />
+        <br />
+        <Form.Group as={Row}>
+          <Form.Label column sm="2">
+            {translate('model')}
+            :
+          </Form.Label>
+          <Col sm="10">
+            <Form.Control
+              as="select"
+              value={this.state.user_cv_model}
+              onChange={(e) => {
+                this.setState({
+                  user_cv_model: e.target.value,
+                  params: this.props.cv_models[e.target.value].fixed_params,
+                });
+              }}
+            >
+              {cvModelOptions}
+            </Form.Control>
+          </Col>
+        </Form.Group>
+        {cvModelSuboptions}
+        <br />
+        <br />
+        <Dropzone onDrop={files => this.uploadJSON(files)}>
+          {({ getRootProps, getInputProps }) => (
             <Button
+              {...getRootProps()}
               variant="secondary"
               size="sm"
-              onClick={this.saveOnAccount}
               style={{ marginLeft: 5, float: 'right' }}
             >
-              {translate('save_cv_on_account')}
+              <input
+                {...getInputProps()}
+                type="file"
+                id="file"
+                style={{ display: 'none' }}
+              />
+              {translate('upload_json')}
             </Button>
-          ) : null}
-          {this.props.user !== null ? (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => this.setState({ autoSave: !this.state.autoSave })}
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              {this.state.autoSave ? translate('autosave_on') : translate('autosave_off')}
-            </Button>
-          ) : null}
-        </Card.Body>
+          )}
+        </Dropzone>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={this.downloadCvAsJson}
+          style={{ marginLeft: 5, float: 'right' }}
+        >
+          {translate('download_json')}
+        </Button>
+        <Button
+          disabled={this.state.downloading}
+          variant="secondary"
+          size="sm"
+          onClick={this.downloadCvAsPDF}
+          style={{ marginLeft: 5, float: 'right' }}
+        >
+          {translate('download_cv')}
+        </Button>
+        {this.props.user !== null ? (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={this.saveOnAccount}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            {translate('save_cv_on_account')}
+          </Button>
+        ) : null}
+        {this.props.user !== null ? (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => this.setState({ autoSave: !this.state.autoSave })}
+            style={{ marginLeft: 5, float: 'right' }}
+          >
+            {this.state.autoSave ? translate('autosave_on') : translate('autosave_off')}
+          </Button>
+        ) : null}
         <BugReporter
           show={this.state.showBugUi}
           data={{
@@ -382,7 +380,7 @@ class Builder extends Component {
           }}
           onHide={() => this.setState({ showBugUi: false })}
         />
-      </Card>
+      </Segment>
     );
   }
 }
