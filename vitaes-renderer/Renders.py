@@ -184,8 +184,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
 
     def break_into_items(description, header=None, bottom=None, itemPrefix="", itemSuffix="", itemSpacing=None):
         lines = description.split('\n')
-        while len(lines) > 0 and lines[-1].strip() == '':
-            lines = lines[:-1]
+        lines = list(filter(lambda line: len(line.strip()) > 0, lines))
         itemOnTop = [itemSpacing] if len(lines) > 0 and len(lines[0]) > 1 and lines[0][0] == '*' else []
         itemOnBottom = [itemSpacing] if len(lines) > 0 and len(lines[-1]) > 1 and lines[-1][0] == '*' else []
         lines.append('')
