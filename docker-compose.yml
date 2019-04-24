@@ -30,6 +30,10 @@ services:
     ports:
     - "80:80"
     image: vitaes/nginxhttp
+    depends_on:
+    - grafana
+    - server
+    - webapp
     networks:
     - net
   rabbitmq:
