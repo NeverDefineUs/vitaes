@@ -17,7 +17,9 @@ def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 def parse_date(str):
-    return timestring.Date(str).date
+    datie = str.split('-')
+    dt = date(*map(int, datie))
+    return dt
 
 def get_field_or_none(req, field_name):
     if field_name in req.keys():
