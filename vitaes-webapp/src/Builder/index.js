@@ -23,7 +23,7 @@ const defaultUser = {
   cv: defaultCv,
   user_cv_model: 'awesome',
   params: {},
-  autoSave: false,
+  autosave: false,
   cv_order: [
     'work',
     'education',
