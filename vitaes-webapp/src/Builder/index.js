@@ -21,7 +21,7 @@ const defaultCv = {
 
 const defaultUser = {
   cv: defaultCv,
-  user_cv_model: 'awesome', 
+  user_cv_model: 'awesome',
   params: {},
   autoSave: false,
   cv_order: [
@@ -32,8 +32,8 @@ const defaultUser = {
     'academic',
     'language',
     'skill',
-  ]
-}
+  ],
+};
 
 class BuilderContainer extends React.Component {
   constructor(props) {

@@ -33,18 +33,6 @@ class Builder extends Component {
       downloading: false,
       showBugUi: false,
       chosenLabel: '',
-      user_cv_model: 'awesome',
-      cv_order: [
-        'work',
-        'education',
-        'achievement',
-        'project',
-        'academic',
-        'language',
-        'skill',
-      ],
-      params: {},
-      autoSave: false,
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
     this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
@@ -52,7 +40,7 @@ class Builder extends Component {
     this.saveOnAccount = this.saveOnAccount.bind(this);
     this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
-    this.setAutoSave = this.setAutoSave.bind(this);
+    this.updateUserData = this.updateUserData.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
 
@@ -63,16 +51,15 @@ class Builder extends Component {
     const { userData } = this.props;
     userData.cv = cv;
     this.props.userDataSetter(userData);
-  }  
-  
-  setAutoSave(autoSave) {
-    const { userData } = this.props;
-    userData.autoSave = autoSave;
-    this.props.userDataSetter(userData);
   }
 
   setLabel(label) {
     this.setState({ chosenLabel: label });
+  }
+
+  updateUserData(data) {
+    const { userData } = this.props;
+    this.props.userDataSetter(_.assign(userData, data));
   }
 
   downloadCvAsJson() {
@@ -234,7 +221,7 @@ class Builder extends Component {
                 onChange={(e) => {
                   const { params } = this.props.userData;
                   params[cvSuboption.name] = e.target.value;
-                  this.setState({ params });
+                  this.updateUserData({ params });
                 }}
               >
                 {cvModelSuboptionsItems}
@@ -293,7 +280,7 @@ class Builder extends Component {
         </h3>
         <br />
         <CvOrder
-          setOrder={({ oldIndex, newIndex }) => this.setState({
+          setOrder={({ oldIndex, newIndex }) => this.updateUserData({
             cv_order: arrayMove(this.props.userData.cv_order, oldIndex, newIndex),
           })
           }
@@ -310,7 +297,7 @@ class Builder extends Component {
               as="select"
               value={this.props.userData.user_cv_model}
               onChange={(e) => {
-                this.setState({
+                this.updateUserData({
                   user_cv_model: e.target.value,
                   params: this.props.cv_models[e.target.value].fixed_params,
                 });
@@ -372,7 +359,7 @@ class Builder extends Component {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => setAutoSave(!this.props.userData.autosave)}
+            onClick={() => this.updateUserData({ autosave: !this.props.userData.autosave })}
             style={{ marginLeft: 5, float: 'right' }}
           >
             {this.props.userData.autosave ? translate('autosave_on') : translate('autosave_off')}
