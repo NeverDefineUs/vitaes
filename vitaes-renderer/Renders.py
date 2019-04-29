@@ -130,6 +130,7 @@ def text_clean(text):
     return text
 class CvRenderCheetahTemplate(CvRenderBase):
     def add_dates(itemDict, key, baseDate: datetime):
+        baseDate = timestring.Date(baseDate).date
         itemDict[key] = baseDate
         return itemDict
     def extract_item(cv: CurriculumVitae, key):
