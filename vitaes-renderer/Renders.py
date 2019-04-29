@@ -12,7 +12,7 @@ def date_comparer(x):
     end_date=x.end_date
     start_date=x.start_date
     if end_date == None:
-        end_date = datetime.date(2100, 10, 10)
+        end_date = datetime.datetime(2100, 10, 10, 1, 1, 1)
     return (end_date, start_date)
 
 def date_comparer_2(x):
@@ -21,7 +21,7 @@ def date_comparer_2(x):
     if 'end_date' in x:
         end_date = x['end_date']
     else:
-        end_date = datetime.date(2100, 10, 10)
+        end_date = datetime.datetime(2100, 10, 10, 1, 1, 1)
     return (end_date, start_date)
     
 class CvRenderBase:
@@ -130,6 +130,7 @@ def text_clean(text):
     return text
 class CvRenderCheetahTemplate(CvRenderBase):
     def add_dates(itemDict, key, baseDate: datetime):
+        baseDate = timestring.Date(baseDate).date
         itemDict[key] = baseDate
         return itemDict
     def extract_item(cv: CurriculumVitae, key):
