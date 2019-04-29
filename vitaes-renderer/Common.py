@@ -21,6 +21,17 @@ def parse_date(str):
     dt = date(*map(int, datie))
     return dt
 
+def get_field_or_none(req, field_name):
+    if field_name in req.keys():
+        return req[field_name]
+    return None
+
+def get_date_field_or_none(req, field_name):
+    field = get_field_or_none(req, field_name)
+    if field is None:
+        return None
+    return datetime.strptime(field, '%Y-%m-%d').date()
+
 def get_parse_string(cv_key, item):
     gen_cv_item = cv_key + '('
 
