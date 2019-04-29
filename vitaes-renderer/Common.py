@@ -19,6 +19,17 @@ def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
 def parse_date(str):
     return timestring.Date(str).date
 
+def get_field_or_none(req, field_name):
+    if field_name in req.keys():
+        return req[field_name]
+    return None
+
+def get_date_field_or_none(req, field_name):
+    field = get_field_or_none(req, field_name)
+    if field is None:
+        return None
+    return datetime.strptime(field, '%Y-%m-%d').date()
+
 def get_parse_string(cv_key, item):
     gen_cv_item = cv_key + '('
 
