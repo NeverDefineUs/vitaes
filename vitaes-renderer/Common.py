@@ -17,9 +17,7 @@ def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 def parse_date(str):
-    datie = str.split('-')
-    dt = date(*map(int, datie))
-    return dt
+    return timestring.Date(str).date
 
 def get_parse_string(cv_key, item):
     gen_cv_item = cv_key + '('
