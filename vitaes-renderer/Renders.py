@@ -130,6 +130,7 @@ def text_clean(text):
     return text
 class CvRenderCheetahTemplate(CvRenderBase):
     def add_dates(itemDict, key, baseDate: datetime):
+        baseDate = timestring.Date(baseDate).date
         itemDict[key] = baseDate
         return itemDict
     def extract_item(cv: CurriculumVitae, key):
@@ -211,8 +212,6 @@ class CvRenderCheetahTemplate(CvRenderBase):
         return '\n'.join(retLines)
 
     def format_skill(skill_data):
-        print(skill_data)
-        sys.stdout.flush()
         formated_skills = []
         for skill in skill_data:
             if 'level' in skill and skill['level'] is not None:
