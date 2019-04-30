@@ -33,18 +33,6 @@ class Builder extends Component {
       downloading: false,
       showBugUi: false,
       chosenLabel: '',
-      user_cv_model: 'awesome',
-      cv_order: [
-        'work',
-        'education',
-        'achievement',
-        'project',
-        'academic',
-        'language',
-        'skill',
-      ],
-      params: {},
-      autoSave: false,
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
     this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
@@ -52,6 +40,7 @@ class Builder extends Component {
     this.saveOnAccount = this.saveOnAccount.bind(this);
     this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
+    this.updateUserData = this.updateUserData.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
 
@@ -59,16 +48,23 @@ class Builder extends Component {
   }
 
   setCv(cv) {
-    this.props.cvSetter(cv);
+    const { userData } = this.props;
+    userData.cv = cv;
+    this.props.userDataSetter(userData);
   }
 
   setLabel(label) {
     this.setState({ chosenLabel: label });
   }
 
+  updateUserData(data) {
+    const { userData } = this.props;
+    this.props.userDataSetter(_.assign(userData, data));
+  }
+
   downloadCvAsJson() {
     const element = document.createElement('a');
-    const file = new Blob([JSON.stringify(this.props.cv)], {
+    const file = new Blob([JSON.stringify(this.props.userData.cv)], {
       type: 'text/plain',
     });
     element.href = URL.createObjectURL(file);
@@ -80,24 +76,24 @@ class Builder extends Component {
     if (this.state.downloading) {
       return;
     }
-    if (!validateEmail(this.props.cv.CvHeaderItem.email)) {
+    if (!validateEmail(this.props.userData.cv.CvHeaderItem.email)) {
       toast.error(translate('invalid_email_format'));
       return;
     }
-    if (this.props.cv.CvHeaderItem.name === '') {
+    if (this.props.userData.cv.CvHeaderItem.name === '') {
       toast.error(translate('invalid_name_format'));
       return;
     }
-    if (this.props.cv.CvHeaderItem.birthday) {
-      if (!validateDate(this.props.cv.CvHeaderItem.birthday)) {
+    if (this.props.userData.cv.CvHeaderItem.birthday) {
+      if (!validateDate(this.props.userData.cv.CvHeaderItem.birthday)) {
         toast.error(translate('invalid_birthday_format'));
         return;
       }
     }
 
-    const cv = removeDisabled(this.props.cv);
+    const cv = removeDisabled(this.props.userData.cv);
     // TODO this should be receiving full locale
-    this.state.params.lang = getActiveLocale();
+    this.props.userData.user_cv_model.lang = getActiveLocale();
     this.setState({ downloading: true });
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
@@ -107,9 +103,9 @@ class Builder extends Component {
       },
       body: JSON.stringify({
         curriculum_vitae: cv,
-        section_order: this.state.cv_order,
-        render_key: this.state.user_cv_model,
-        params: this.state.params,
+        section_order: this.props.userData.cv_order,
+        render_key: this.props.userData.user_cv_model,
+        params: this.props.userData.params,
       }),
     }).then((response) => {
       if (response.ok) {
@@ -153,9 +149,9 @@ class Builder extends Component {
     if (user !== null) {
       const db = firebase
         .database()
-        .ref('cvs')
+        .ref('users')
         .child(user.uid);
-      db.set(this.props.cv);
+      db.set(this.props.userData);
       toast.success(translate('saved'), {
         toastId: 'autosv',
       });
@@ -164,14 +160,14 @@ class Builder extends Component {
 
   autoSave() {
     setInterval(() => {
-      if (this.state.autoSave) {
+      if (this.props.userData.autosave) {
         this.saveOnAccount();
       }
     }, autoSaveTime);
   }
 
   handleChangeHeader(event) {
-    const aux = this.props.cv;
+    const aux = this.props.userData.cv;
     aux.CvHeaderItem[event.target.name] = event.target.value;
     if (aux.CvHeaderItem[event.target.name] === '') {
       delete aux.CvHeaderItem[event.target.name];
@@ -202,8 +198,8 @@ class Builder extends Component {
     }
     const cvModelSuboptions = [];
     if (this.props.cv_models !== undefined
-      && this.props.cv_models[this.state.user_cv_model] !== undefined) {
-      for (const cvSuboption of this.props.cv_models[this.state.user_cv_model].params) {
+      && this.props.cv_models[this.props.userData.user_cv_model] !== undefined) {
+      for (const cvSuboption of this.props.cv_models[this.props.userData.user_cv_model].params) {
         const cvModelSuboptionsItems = [];
         for (const opt in cvSuboption.mapped_options) {
           cvModelSuboptionsItems.push(
@@ -221,11 +217,11 @@ class Builder extends Component {
             <Col sm="10">
               <Form.Control
                 as="select"
-                value={this.state.params[cvSuboption.name]}
+                value={this.props.userData.user_cv_model[cvSuboption.name]}
                 onChange={(e) => {
-                  const { params } = this.state;
+                  const { params } = this.props.userData;
                   params[cvSuboption.name] = e.target.value;
-                  this.setState({ params });
+                  this.updateUserData({ params });
                 }}
               >
                 {cvModelSuboptionsItems}
@@ -256,7 +252,7 @@ class Builder extends Component {
           {_.map(headerFields, field => (
             <CvHeaderField
               stateChanger={this.handleChangeHeader}
-              curriculum={this.props.cv}
+              curriculum={this.props.userData.cv}
               label={field.label}
               id={field.id}
               mandatory={field.mandatory}
@@ -270,7 +266,7 @@ class Builder extends Component {
             chosenLabel={this.state.chosenLabel}
             label={form.label}
             cvkey={form.cvkey}
-            curriculum={this.props.cv}
+            curriculum={this.props.userData.cv}
             stateChanger={this.setCv}
             labelChanger={this.setLabel}
             fields={form.fields}
@@ -284,11 +280,11 @@ class Builder extends Component {
         </h3>
         <br />
         <CvOrder
-          setOrder={({ oldIndex, newIndex }) => this.setState({
-            cv_order: arrayMove(this.state.cv_order, oldIndex, newIndex),
+          setOrder={({ oldIndex, newIndex }) => this.updateUserData({
+            cv_order: arrayMove(this.props.userData.cv_order, oldIndex, newIndex),
           })
           }
-          cvOrder={this.state.cv_order}
+          cvOrder={this.props.userData.cv_order}
         />
         <br />
         <Form.Group as={Row}>
@@ -299,9 +295,9 @@ class Builder extends Component {
           <Col sm="10">
             <Form.Control
               as="select"
-              value={this.state.user_cv_model}
+              value={this.props.userData.user_cv_model}
               onChange={(e) => {
-                this.setState({
+                this.updateUserData({
                   user_cv_model: e.target.value,
                   params: this.props.cv_models[e.target.value].fixed_params,
                 });
@@ -363,19 +359,16 @@ class Builder extends Component {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => this.setState({ autoSave: !this.state.autoSave })}
+            onClick={() => this.updateUserData({ autosave: !this.props.userData.autosave })}
             style={{ marginLeft: 5, float: 'right' }}
           >
-            {this.state.autoSave ? translate('autosave_on') : translate('autosave_off')}
+            {this.props.userData.autosave ? translate('autosave_on') : translate('autosave_off')}
           </Button>
         ) : null}
         <BugReporter
           show={this.state.showBugUi}
           data={{
-            cv: this.props.cv,
-            user_cv_model: this.state.user_cv_model,
-            params: this.state.params,
-            cv_order: this.state.cv_order,
+            userData: this.props.userData,
             lang: getActiveLocale(),
           }}
           onHide={() => this.setState({ showBugUi: false })}
