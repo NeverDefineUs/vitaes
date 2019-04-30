@@ -85,12 +85,25 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: vitaes
     networks:
     - net
+  sqlite-web:
+    image: coleifer/sqlite-web
+    restart: always
+    ports:
+    - 34964:8080
+    volumes:
+    - log-volume:/data
+    environment:
+      SQLITE_DATABASE: log.db
+    networks:
+    - net
 volumes:
   mongodb:
     external: true
   grafana-volume:
     external: true
   influxdb-volume:
+    external: true
+  log-volume:
     external: true
 networks:
   net:
