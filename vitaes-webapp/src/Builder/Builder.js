@@ -93,8 +93,8 @@ class Builder extends Component {
 
     const cv = removeDisabled(this.props.userData.cv);
     // TODO this should be receiving full locale
-    const params = this.props.userData.params;
-    params['lang'] = getActiveLocale();
+    const { params } = this.props.userData;
+    params.lang = getActiveLocale();
     this.setState({ downloading: true });
     fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
       method: 'POST',
@@ -106,7 +106,7 @@ class Builder extends Component {
         curriculum_vitae: cv,
         section_order: this.props.userData.cv_order,
         render_key: this.props.userData.user_cv_model,
-        params: params,
+        params,
       }),
     }).then((response) => {
       if (response.ok) {
