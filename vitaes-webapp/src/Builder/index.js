@@ -19,16 +19,32 @@ const defaultCv = {
   CvLanguageItem: [],
 };
 
+const defaultUser = {
+  cv: defaultCv,
+  user_cv_model: 'awesome',
+  params: {},
+  autosave: false,
+  cv_order: [
+    'work',
+    'education',
+    'achievement',
+    'project',
+    'academic',
+    'language',
+    'skill',
+  ],
+};
+
 class BuilderContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cv: defaultCv,
+      userData: defaultUser,
       cv_models: [],
       user: null,
     };
 
-    this.setCv = this.setCv.bind(this);
+    this.setUserData = this.setUserData.bind(this);
   }
 
   componentDidMount() {
@@ -44,7 +60,7 @@ class BuilderContainer extends React.Component {
 
           const db = firebase
             .database()
-            .ref('cvs')
+            .ref('users')
             .child(user.uid);
 
           db.on(
@@ -53,9 +69,9 @@ class BuilderContainer extends React.Component {
               toast.dismiss(loadingToast);
               const snap = snapshot.val();
               if (snap === null) {
-                db.set(defaultCv);
+                db.set(defaultUser);
               } else {
-                this.setState({ cv: snap });
+                this.setState({ userData: snap });
               }
             },
             () => {
@@ -83,8 +99,8 @@ class BuilderContainer extends React.Component {
     });
   }
 
-  setCv(cv) {
-    this.setState({ cv });
+  setUserData(userData) {
+    this.setState({ userData });
   }
 
   render() {
@@ -92,9 +108,9 @@ class BuilderContainer extends React.Component {
       <React.Fragment>
         <Builder
           cv_models={this.state.cv_models}
-          cv={this.state.cv}
-          cvSetter={this.setCv}
           user={this.state.user}
+          userData={this.state.userData}
+          userDataSetter={this.setUserData}
         />
       </React.Fragment>
     );
