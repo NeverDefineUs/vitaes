@@ -1,6 +1,5 @@
 FROM golang:1.12-alpine AS build-env
-RUN apk update && apk upgrade && apk add \
-    git
+RUN apk update && apk upgrade && apk add git build-base
 ENV GOPATH=/
 ENV GO111MODULE=on
 WORKDIR /src/github.com/neverdefineus/vitaes/vitaes-logging/

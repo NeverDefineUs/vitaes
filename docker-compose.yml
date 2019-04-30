@@ -68,7 +68,7 @@ services:
     volumes:
     - log-volume:/data
     environment:
-      SQLITE_DATABASE: log.db
+    - SQLITE_DATABASE
     networks:
     - net
   tsdb:
@@ -110,7 +110,7 @@ services:
     volumes:
     - log-volume:/data
     environment:
-      SQLITE_DATABASE: log.db
+    - SQLITE_DATABASE
     networks:
     - net
 volumes:
