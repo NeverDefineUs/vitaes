@@ -19,11 +19,11 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	err := r.ParseForm()
 	failOnError(err, "Failed to parse params")
 
-	hashedEmail := r.Form.Get("hashed_email")
-	hashedCv := r.Form.Get("hashed_cv")
+	email := r.Form.Get("email")
+	cvHash := r.Form.Get("cv_hash")
+	origin := r.Form.Get("origin")
 	step := r.Form.Get("step")
-	description := r.Form.Get("description")
-	exception := r.Form.Get("exception")
+	data := r.Form.Get("data")
 
 	logStmt := `
 	INSERT INTO "cv_gen_tracking" VALUES(
@@ -38,7 +38,7 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	stmt, err := db.Prepare(logStmt)
 	failOnError(err, "Failed to prepare logging query")
 	defer stmt.Close()
-	_, err = stmt.Exec(hashedEmail, hashedCv, step, description, exception)
+	_, err = stmt.Exec(email, cvHash, origin, step, data)
 	failOnError(err, "Failed to execute insert query")
 }
 
@@ -59,11 +59,11 @@ func main() {
 	CREATE TABLE IF NOT EXISTS "cv_gen_tracking" (
 		time TEXT NOT NULL,
 		email TEXT NOT NULL,
-		cv TEXT NOT NULL,
+		cv_hash TEXT NOT NULL,
+		origin TEXT,
 		step TEXT,
-		description TEXT,
-		exception TEXT,
-		PRIMARY KEY (time, email, cv)
+		data TEXT,
+		PRIMARY KEY (time, email, cv_hash)
 	);
 	`
 	_, err = db.Exec(createTableStmt)
