@@ -16,7 +16,7 @@ services:
     - "5000:5000"
     depends_on:
     - rabbitmq
-    - logging
+    - logger
     networks:
     - net
   renderer:
@@ -26,7 +26,7 @@ services:
     restart: always
     depends_on:
     - rabbitmq
-    - logging
+    - logger
     networks:
     - net
   nginx:
@@ -38,7 +38,7 @@ services:
     - grafana
     - server
     - webapp
-    - logging
+    - logger
     networks:
     - net
   rabbitmq:
@@ -59,9 +59,9 @@ services:
       - grafana-volume:/var/lib/grafana
     networks:
     - net
-  logging:
-    build: vitaes-logging/.
-    image: vitaes/logging
+  logger:
+    build: vitaes-logger/.
+    image: vitaes/logger
     restart: always
     ports:
       - 8017:8017

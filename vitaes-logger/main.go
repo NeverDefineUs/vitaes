@@ -37,7 +37,7 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	);
 	`
 	stmt, err := db.Prepare(logStmt)
-	failOnError(err, "Failed to prepare logging query")
+	failOnError(err, "Failed to prepare logger query")
 	defer stmt.Close()
 	_, err = stmt.Exec(email, cvHash, origin, step, data)
 	failOnError(err, "Failed to execute insert query")
