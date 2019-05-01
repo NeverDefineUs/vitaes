@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -68,6 +69,17 @@ func main() {
 	`
 	_, err = db.Exec(createTableStmt)
 	failOnError(err, "Failed to create table")
+
+	go func() {
+		for {
+			deleteStaleStmt := `
+			DELETE FROM "cv_gen_tracking" WHERE "time" < strftime('%Y-%m-%d %H-%M-%f', date('now', '-27 days'));
+			`
+			_, err = db.Exec(deleteStaleStmt)
+			failOnError(err, "Failed to delete stale rows")
+			time.Sleep(10 * time.Minute)
+		}
+	}()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		handler(w, r, db)
