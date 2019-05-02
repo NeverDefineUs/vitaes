@@ -26,21 +26,38 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	step := r.Form.Get("step")
 	data := r.Form.Get("data")
 
-	logStmt := `
-	INSERT INTO "cv_gen_tracking" VALUES(
-		strftime('%Y-%m-%d %H-%M-%f','now'),
-		?,
-		?,
-		?,
-		?,
-		?
-	);
-	`
-	stmt, err := db.Prepare(logStmt)
-	failOnError(err, "Failed to prepare logger query")
-	defer stmt.Close()
-	_, err = stmt.Exec(email, cvHash, origin, step, data)
-	failOnError(err, "Failed to execute insert query")
+	if data == "" {
+		logStmt := `
+		INSERT INTO "cv_gen_tracking"(time, email, cv_hash, origin, step) VALUES(
+			strftime('%Y-%m-%d %H-%M-%f','now'),
+			?,
+			?,
+			?,
+			?
+		);
+		`
+		stmt, err := db.Prepare(logStmt)
+		failOnError(err, "Failed to prepare logger query")
+		defer stmt.Close()
+		_, err = stmt.Exec(email, cvHash, origin, step)
+		failOnError(err, "Failed to execute insert query")
+	} else {
+		logStmt := `
+		INSERT INTO "cv_gen_tracking"(time, email, cv_hash, origin, step, data) VALUES(
+			strftime('%Y-%m-%d %H-%M-%f','now'),
+			?,
+			?,
+			?,
+			?,
+			?
+		);
+		`
+		stmt, err := db.Prepare(logStmt)
+		failOnError(err, "Failed to prepare logger query")
+		defer stmt.Close()
+		_, err = stmt.Exec(email, cvHash, origin, step, data)
+		failOnError(err, "Failed to execute insert query")
+	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
@@ -61,8 +78,8 @@ func main() {
 		time TEXT NOT NULL,
 		email TEXT NOT NULL,
 		cv_hash TEXT NOT NULL,
-		origin TEXT,
-		step TEXT,
+		origin TEXT NOT NULL,
+		step TEXT NOT NULL,
 		data TEXT,
 		PRIMARY KEY (time, email, cv_hash)
 	);
