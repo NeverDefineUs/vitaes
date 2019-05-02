@@ -8,6 +8,7 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/rs/cors"
 )
 
 func failOnError(err error, msg string) {
@@ -26,38 +27,24 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	step := r.Form.Get("step")
 	data := r.Form.Get("data")
 
-	if data == "" {
-		logStmt := `
-		INSERT INTO "cv_gen_tracking"(time, email, cv_hash, origin, step) VALUES(
-			strftime('%Y-%m-%d %H-%M-%f','now'),
-			?,
-			?,
-			?,
-			?
-		);
-		`
-		stmt, err := db.Prepare(logStmt)
-		failOnError(err, "Failed to prepare logger query")
-		defer stmt.Close()
-		_, err = stmt.Exec(email, cvHash, origin, step)
-		failOnError(err, "Failed to execute insert query")
-	} else {
-		logStmt := `
-		INSERT INTO "cv_gen_tracking"(time, email, cv_hash, origin, step, data) VALUES(
-			strftime('%Y-%m-%d %H-%M-%f','now'),
-			?,
-			?,
-			?,
-			?,
-			?
-		);
-		`
-		stmt, err := db.Prepare(logStmt)
-		failOnError(err, "Failed to prepare logger query")
-		defer stmt.Close()
+	logStmt := `
+	INSERT INTO "cv_gen_tracking"(email, cv_hash, origin, step, data) VALUES(
+		?,
+		?,
+		?,
+		?,
+		?
+	);
+	`
+	stmt, err := db.Prepare(logStmt)
+	failOnError(err, "Failed to prepare logger query")
+	defer stmt.Close()
+	if data != "" {
 		_, err = stmt.Exec(email, cvHash, origin, step, data)
-		failOnError(err, "Failed to execute insert query")
+	} else {
+		_, err = stmt.Exec(email, cvHash, origin, step, nil)
 	}
+	failOnError(err, "Failed to execute insert query")
 }
 
 func handler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
@@ -75,7 +62,7 @@ func main() {
 
 	createTableStmt := `
 	CREATE TABLE IF NOT EXISTS "cv_gen_tracking" (
-		time TEXT NOT NULL,
+		time TEXT DEFAULT(strftime('%Y-%m-%d %H-%M-%f','now')) NOT NULL,
 		email TEXT NOT NULL,
 		cv_hash TEXT NOT NULL,
 		origin TEXT NOT NULL,
@@ -98,8 +85,13 @@ func main() {
 		}
 	}()
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		handler(w, r, db)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
 	})
+	handler := c.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		handler(w, r, db)
+	}))
+	http.Handle("/", handler)
 	log.Fatal(http.ListenAndServe(":8017", nil))
 }
