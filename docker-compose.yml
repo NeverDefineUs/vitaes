@@ -14,6 +14,9 @@ services:
     image: vitaes/server
     ports:
     - "5000:5000"
+    depends_on:
+    - rabbitmq
+    - logger
     networks:
     - net
   renderer:
@@ -23,6 +26,7 @@ services:
     restart: always
     depends_on:
     - rabbitmq
+    - logger
     networks:
     - net
   nginx:
@@ -34,6 +38,7 @@ services:
     - grafana
     - server
     - webapp
+    - logger
     networks:
     - net
   rabbitmq:
@@ -52,6 +57,18 @@ services:
       - 3000:3000
     volumes:
       - grafana-volume:/var/lib/grafana
+    networks:
+    - net
+  logger:
+    build: vitaes-logger/.
+    image: vitaes/logger
+    restart: always
+    ports:
+      - 8017:8017
+    volumes:
+    - log-volume:/data
+    environment:
+    - SQLITE_DATABASE
     networks:
     - net
   tsdb:
@@ -93,7 +110,7 @@ services:
     volumes:
     - log-volume:/data
     environment:
-      SQLITE_DATABASE: log.db
+    - SQLITE_DATABASE
     networks:
     - net
 volumes:
