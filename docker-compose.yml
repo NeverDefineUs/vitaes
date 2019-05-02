@@ -9,6 +9,8 @@ services:
     command: yarn start
     networks:
     - net
+    environment:
+    - USE_PROD
   server:
     build: vitaes-renderer/.
     image: vitaes/server

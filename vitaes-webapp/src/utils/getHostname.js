@@ -1,7 +1,6 @@
 export default function getHostname() {
-  let hostname = `${window.location.hostname}:5000`;
-  if (hostname === 'vitaes.io:5000') {
-    hostname = 'renderer.vitaes.io';
+  if (process.env.NODE_ENV === 'development') {
+    return 'localhost:5000';
   }
-  return hostname;
+  return 'renderer.vitaes.io';
 }
