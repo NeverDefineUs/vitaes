@@ -3,7 +3,7 @@ import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
 from bson.objectid import ObjectId
 from CurriculumVitae import CurriculumVitae
-from Logger import log_renderer
+from Logger import log_from_renderer
 from I18n import *
 from Models import *
 import Renders
@@ -74,7 +74,7 @@ def render_from_cv_dict(req):
     cv = CurriculumVitae(req["path"])
     ret = ""
 
-    log_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "GENERATING_CV_AST")
+    log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "GENERATING_CV_AST")
 
     req_cv = req
     path = None
@@ -94,7 +94,7 @@ def render_from_cv_dict(req):
             params['section_order'] = req['section_order']
 
     if 'CvHeaderItem' not in req_cv:
-        log_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
+        log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
         abort(400, "Missing header")
 
     for cv_key in req_cv.keys():
@@ -111,7 +111,7 @@ def render_from_cv_dict(req):
             cv_item = parse_item(cv_key, item)
             cv.add(cv_item)
 
-    log_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
+    log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 
     baseFolder = render_map[render_key]['base_folder']
     if baseFolder.startswith("mongo://"):

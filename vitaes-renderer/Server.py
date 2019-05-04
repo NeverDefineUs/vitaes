@@ -4,7 +4,7 @@ from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
 from Common import render_map, render_from_cv_dict, refresh_render_map
-from Logger import log_server
+from Logger import log_from_server
 import pika
 import gridfs
 import pymongo 
@@ -99,7 +99,7 @@ def process_curr_delayed():
     channel = connection.channel()
     channel.queue_declare(queue='cv_requests')
     channel.basic_publish(exchange='',routing_key='cv_requests', body=json.dumps(req))
-    log_server(req["curriculum_vitae"]["CvHeaderItem"]["email"], req["path"], "SENT_TO_RABBITMQ")
+    log_from_server(req["curriculum_vitae"]["CvHeaderItem"]["email"], req["path"], "SENT_TO_RABBITMQ")
     return req['path']
 
 
