@@ -1,7 +1,7 @@
 from datetime import date, datetime
 import time
 import json, sys, hashlib
-from Common import render_map, render_from_cv_dict
+from Common import render_map, render_from_cv_dict, renderer_logger
 import pika
 import redis
 from influxdb import InfluxDBClient
@@ -43,7 +43,10 @@ def get_cv_queue(ch, method, properties, body):
     lang = ""
     try:
         body=body.decode('utf-8')
-        dic = json.loads(body)
+        raw_dic = json.loads(body)
+        renderer_logger(raw_dic['email'], raw_dic['cv_hash'], 'CONSUMED_FROM_RABBITMQ')
+        # TODO spread wrapping to log on other steps
+        dic = raw_dic['request_cv']
         cv_type = dic["render_key"]
         email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
         lang = dic["params"]["lang"]
