@@ -4,6 +4,7 @@ import subprocess, json
 import timestring
 from babel.dates import format_datetime
 from Cheetah.Template import Template
+from Logger import renderer_logger
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -35,13 +36,15 @@ class CvRenderTexToPdf(CvRenderBase):
         os.system("mkdir Output/" + path)
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
-        cv = cvRender.render(cv, params=params, baseFolder=baseFolder, resources=resources)
+        cvString = cvRender.render(cv, params=params, baseFolder=baseFolder, resources=resources)
+        renderer_logger(cv.header.email, cv.cv_hash, "FULLY_RENDERED")
         os.system("touch Output/" + path + "/main.tex")
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
-        file.write(cv)
+        file.write(cvString)
         file.close()
-        p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path)
+        p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path, stdout=subprocess.PIPE)
         p.wait()
+        renderer_logger(cv.header.email, cv.cv_hash, "LATEX_CMD_EXECUTED", p.stdout.read().decode("utf-8"))
         os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
         os.system("rm -r Output/" + path + "/")
         return path
@@ -248,6 +251,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
         for key in resources:
           resources[key] = text_clean(resources[key])
         cvDict["resources"] = resources
+        renderer_logger(cv.header.email, cv.cv_hash, "PRE_TEX")
         template = Template(templateString, cvDict)
+        renderer_logger(cv.header.email, cv.cv_hash, "POST_TEX")
         return str(template)
         

@@ -106,13 +106,9 @@ class Builder extends Component {
       render_key: this.props.userData.user_cv_model,
       params,
     };
-    const wrappedCv = {
-      email: cv.CvHeaderItem.email,
-      cv_hash: hashCv(requestCv),
-      request_cv: requestCv,
-    };
+    requestCv.path = hashCv(requestCv);
 
-    logger(wrappedCv, 'FRONT_REQUEST', JSON.stringify(requestCv));
+    logger(requestCv, 'FRONT_REQUEST', JSON.stringify(requestCv));
     this.setState({ downloading: true });
 
     const startTime = window.performance.now();
@@ -122,7 +118,7 @@ class Builder extends Component {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(wrappedCv),
+      body: JSON.stringify(requestCv),
     }).then((response) => {
       if (response.ok) {
         const idPromise = response.text();
@@ -146,11 +142,11 @@ class Builder extends Component {
                 element.click();
               });
               const serveTime = window.performance.now();
-              logger(wrappedCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
+              logger(requestCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
               toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
               this.setState({ downloading: false });
             } else {
-              logger(wrappedCv, 'FAILURE_NOTIFIED');
+              logger(requestCv, 'FAILURE_NOTIFIED');
               toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
               this.setState({ showBugUi: true, downloading: false });
             }

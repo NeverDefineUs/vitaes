@@ -3,6 +3,7 @@ import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
 from bson.objectid import ObjectId
 from CurriculumVitae import CurriculumVitae
+from Logger import renderer_logger
 from I18n import *
 from Models import *
 import Renders
@@ -12,22 +13,6 @@ from flask_cors import CORS
 import pika
 import gridfs
 import pymongo 
-import requests
-
-def renderer_logger(email, cv_hash, step, log_data=''):
-    logger(email, cv_hash, 'RENDERER', step, log_data)
-
-def server_logger(email, cv_hash, step, log_data=''):
-    logger(email, cv_hash, 'SERVER', step, log_data)
-
-def logger(email, cv_hash, origin, step, log_data):
-    requests.post('http://logger:8017/', data = {
-        'email': email,
-        'cv_hash': cv_hash,
-        'origin': origin,
-        'step': step,
-        'data': log_data,
-    })
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -86,8 +71,10 @@ def refresh_render_map():
 
 def render_from_cv_dict(req):
     refresh_render_map()
-    cv = CurriculumVitae()
+    cv = CurriculumVitae(req["path"])
     ret = ""
+
+    renderer_logger(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "GENERATING_CV_AST")
 
     req_cv = req
     path = None
@@ -107,6 +94,7 @@ def render_from_cv_dict(req):
             params['section_order'] = req['section_order']
 
     if 'CvHeaderItem' not in req_cv:
+        renderer_logger(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
         abort(400, "Missing header")
 
     for cv_key in req_cv.keys():
@@ -122,6 +110,9 @@ def render_from_cv_dict(req):
         for item in items:
             cv_item = parse_item(cv_key, item)
             cv.add(cv_item)
+
+    renderer_logger(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
+
     baseFolder = render_map[render_key]['base_folder']
     if baseFolder.startswith("mongo://"):
         db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes

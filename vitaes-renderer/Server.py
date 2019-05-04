@@ -3,7 +3,8 @@ import time, sys
 from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
-from Common import render_map, render_from_cv_dict, id_gen, refresh_render_map, server_logger
+from Common import render_map, render_from_cv_dict, refresh_render_map
+from Logger import server_logger
 import pika
 import gridfs
 import pymongo 
@@ -94,13 +95,12 @@ def like_template():
 @app.route('/cv/', methods=['POST'])
 def process_curr_delayed():
     req = request.json
-    req['request_cv']['path'] = id_gen(size=10)
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
     channel = connection.channel()
     channel.queue_declare(queue='cv_requests')
     channel.basic_publish(exchange='',routing_key='cv_requests', body=json.dumps(req))
-    server_logger(req['email'], req['cv_hash'], 'SENT_TO_RABBITMQ')
-    return req['request_cv']['path']
+    server_logger(req["curriculum_vitae"]["CvHeaderItem"]["email"], req["path"], "SENT_TO_RABBITMQ")
+    return req['path']
 
 
 @app.route('/cv/<cvid>/', methods=['GET'])
