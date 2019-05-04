@@ -2,7 +2,7 @@ from datetime import date, datetime
 import time
 import json, sys, hashlib
 from Common import render_map, render_from_cv_dict
-from Logger import renderer_logger
+from Logger import log_renderer
 import pika
 import redis
 from influxdb import InfluxDBClient
@@ -47,13 +47,13 @@ def get_cv_queue(ch, method, properties, body):
         dic = json.loads(body)
         cv_type = dic["render_key"]
         email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
-        renderer_logger(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
+        log_renderer(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
         lang = dic["params"]["lang"]
         ans = render_from_cv_dict(dic)
         file = open('Output/' + ans + '.pdf', 'rb')
         ansb = file.read()
         file.close()
-        renderer_logger(email, dic["path"], "STORING_IN_REDIS")
+        log_renderer(email, dic["path"], "STORING_IN_REDIS")
         db.set(name=ans, value=ansb, ex=600)
         mes = "OK"
     except:
