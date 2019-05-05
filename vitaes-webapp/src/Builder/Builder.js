@@ -12,7 +12,9 @@ import Dropzone from 'react-dropzone';
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
-import getHostname from 'utils/getHostname';
+import { getRendererHostname } from 'utils/getHostname';
+import hashCv from 'utils/hashCv';
+import logger from 'utils/logger';
 import removeDisabled from 'utils/removeDisabled';
 import validateEmail from 'utils/validateEmail';
 import validateDate from 'utils/validateDate';
@@ -92,30 +94,38 @@ class Builder extends Component {
     }
 
     const cv = removeDisabled(this.props.userData.cv);
+
     // TODO this should be receiving full locale
     let { params } = this.props.userData;
     params = {};
     params.lang = getActiveLocale();
+
+    const requestCv = {
+      curriculum_vitae: cv,
+      section_order: this.props.userData.cv_order,
+      render_key: this.props.userData.user_cv_model,
+      params,
+    };
+    requestCv.path = hashCv(requestCv);
+
+    logger(requestCv, 'FRONT_REQUEST', JSON.stringify(requestCv));
     this.setState({ downloading: true });
-    fetch(`${window.location.protocol}//${getHostname()}/cv/`, {
+
+    const startTime = window.performance.now();
+    fetch(`${window.location.protocol}//${getRendererHostname()}/cv/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        curriculum_vitae: cv,
-        section_order: this.props.userData.cv_order,
-        render_key: this.props.userData.user_cv_model,
-        params,
-      }),
+      body: JSON.stringify(requestCv),
     }).then((response) => {
       if (response.ok) {
         const idPromise = response.text();
         toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
           fetch(
-            `${window.location.protocol}//${getHostname()}/cv/${id}/`,
+            `${window.location.protocol}//${getRendererHostname()}/cv/${id}/`,
             {
               method: 'GET',
               retries: 20,
@@ -131,9 +141,12 @@ class Builder extends Component {
                 element.download = 'cv.pdf';
                 element.click();
               });
+              const serveTime = window.performance.now();
+              logger(requestCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
               toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
               this.setState({ downloading: false });
             } else {
+              logger(requestCv, 'FAILURE_NOTIFIED');
               toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
               this.setState({ showBugUi: true, downloading: false });
             }

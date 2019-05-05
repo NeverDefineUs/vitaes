@@ -16,6 +16,7 @@
     "influx": "^5.0.7",
     "lint-staged": "^8.1.5",
     "lodash": "^4.17.11",
+    "md5": "^2.2.1",
     "prop-types": "^15.7.2",
     "react": "^16.4.2",
     "react-autosize-textarea": "",

@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import { toast } from 'react-toastify';
 import { get } from 'lodash';
 
-import getHostname from 'utils/getHostname';
+import { getRendererHostname } from 'utils/getHostname';
 
 export function getEmptyTemplate() {
   return {
@@ -22,7 +22,7 @@ export function setTemplateFile(template, file) {
   fetch(
     `${window.location.protocol
     }//${
-      getHostname()
+      getRendererHostname()
     }/template/files/${
       template.name
     }/`,
