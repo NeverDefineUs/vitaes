@@ -8,6 +8,6 @@ const getHostname = (target, port) => {
 
 
 // TODO get data from ENV
-export const getRendererHostname = () => getHostname('renderer', 5000);
+export const getApiHostname = () => getHostname('api', 5000);
 
 export const getLoggerHostname = () => getHostname('logger', 8017);

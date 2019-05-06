@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { getRendererHostname } from 'utils/getHostname';
+import { getApiHostname } from 'utils/getHostname';
 import { translate } from 'i18n/locale';
 
 export const likeTemplate = (user, template, fetchTemplates) => {
@@ -8,7 +8,7 @@ export const likeTemplate = (user, template, fetchTemplates) => {
     fetch(
       `${window.location.protocol
       }//${
-        getRendererHostname()
+        getApiHostname()
       }/template/like/`,
       {
         method: 'POST',
