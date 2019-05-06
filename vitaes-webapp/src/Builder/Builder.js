@@ -12,7 +12,7 @@ import Dropzone from 'react-dropzone';
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
-import { getRendererHostname } from 'utils/getHostname';
+import { getApiHostname } from 'utils/getHostname';
 import hashCv from 'utils/hashCv';
 import logger from 'utils/logger';
 import removeDisabled from 'utils/removeDisabled';
@@ -112,7 +112,7 @@ class Builder extends Component {
     this.setState({ downloading: true });
 
     const startTime = window.performance.now();
-    fetch(`${window.location.protocol}//${getRendererHostname()}/cv/`, {
+    fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -125,7 +125,7 @@ class Builder extends Component {
         toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
           fetch(
-            `${window.location.protocol}//${getRendererHostname()}/cv/${id}/`,
+            `${window.location.protocol}//${getApiHostname()}/cv/${id}/`,
             {
               method: 'GET',
               retries: 20,

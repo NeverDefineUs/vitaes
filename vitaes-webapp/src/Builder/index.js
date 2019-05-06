@@ -3,7 +3,7 @@ import firebase from 'firebase';
 import { toast } from 'react-toastify';
 
 import { translate } from 'i18n/locale';
-import { getRendererHostname } from 'utils/getHostname';
+import { getApiHostname } from 'utils/getHostname';
 
 import Builder from './Builder';
 
@@ -80,7 +80,7 @@ class BuilderContainer extends React.Component {
         }
       });
 
-    fetch(`${window.location.protocol}//${getRendererHostname()}/template/`, {
+    fetch(`${window.location.protocol}//${getApiHostname()}/template/`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
