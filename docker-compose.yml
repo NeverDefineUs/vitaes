@@ -95,18 +95,6 @@ services:
     - ./mongobackup:/mbckp
     networks:
     - net
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-    - 8081:8081
-    depends_on:
-    - mongo
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: vitaes
-    networks:
-    - net
   sqlite-web:
     image: coleifer/sqlite-web
     restart: always
