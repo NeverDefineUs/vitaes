@@ -1,9 +1,8 @@
 const getHostname = (target, port) => {
-  let hostname = `${window.location.hostname}:${port}`;
-  if (hostname === `vitaes.io:${port}`) {
-    hostname = `${target}.vitaes.io`;
+  if (process.env.NODE_ENV === 'development') {
+    return `localhost:${port}`;
   }
-  return hostname;
+  return `${target}.vitaes.io`;
 };
 
 

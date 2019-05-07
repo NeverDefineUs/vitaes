@@ -3,12 +3,15 @@ services:
   webapp:
     volumes:
     - ./vitaes-webapp/src:/project/src
+    - webapp-volume:/project/build
     - ./vitaes-webapp/public:/project/public
     build: vitaes-webapp/.
     image: vitaes/webapp
     command: yarn start
     networks:
     - net
+    environment:
+    - USE_PROD
   server:
     build: vitaes-renderer/.
     image: vitaes/server
@@ -31,6 +34,8 @@ services:
     - net
   nginx:
     build: vitaes-nginx-http/.
+    volumes:
+    - webapp-volume:/project
     ports:
     - "80:80"
     image: vitaes/nginxhttp
@@ -109,6 +114,8 @@ volumes:
   influxdb-volume:
     external: true
   log-volume:
+    external: true
+  webapp-volume:
     external: true
 networks:
   net:
