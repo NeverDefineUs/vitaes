@@ -23,13 +23,8 @@
     "react-dom": "^16.4.2",
     "react-dropzone": "^10.1.3",
     "react-router-dom": "^5.0.0",
-<<<<<<< HEAD
     "react-scripts": "^2.0.0",
-    "react-sortable-hoc": "",
-=======
-    "react-scripts": "1.1.5",
     "react-sortable-hoc": "*",
->>>>>>> f2ccf8124260e999a32a3839df60e0e2ed4a966c
     "react-toastify": "^4.5.2",
     "semantic-ui-react": "^0.86.0"
   },
