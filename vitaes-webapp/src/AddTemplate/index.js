@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 
-import getHostname from 'utils/getHostname';
+import { getApiHostname } from 'utils/getHostname';
 import { translate } from 'i18n/locale';
 
 import AddTemplate from './AddTemplate';
@@ -15,7 +15,7 @@ class AddTemplateContainer extends Component {
   }
 
   componentDidMount() {
-    fetch(`${window.location.protocol}//${getHostname()}/template/`, {
+    fetch(`${window.location.protocol}//${getApiHostname()}/template/`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

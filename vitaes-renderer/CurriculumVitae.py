@@ -2,8 +2,9 @@ from Models import *
 
 
 class CurriculumVitae:
-    def __init__(self):
+    def __init__(self, cv_hash):
         self.header = None
+        self.cv_hash = cv_hash
 
         self.items = {}
         self.item_types = []

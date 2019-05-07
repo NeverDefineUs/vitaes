@@ -2,6 +2,7 @@ flask
 flask-cors
 timestring
 cheetah3
+requests
 pika
 redis
 pymongo
