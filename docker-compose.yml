@@ -3,6 +3,7 @@ services:
   webapp:
     volumes:
     - ./vitaes-webapp/src:/project/src
+    - webapp-volume:/project/build
     - ./vitaes-webapp/public:/project/public
     build: vitaes-webapp/.
     image: vitaes/webapp
@@ -29,6 +30,8 @@ services:
     - net
   nginx:
     build: vitaes-nginx-http/.
+    volumes:
+    - webapp-volume:/project
     ports:
     - "80:80"
     image: vitaes/nginxhttp
@@ -95,7 +98,7 @@ services:
     volumes:
     - log-volume:/data
     environment:
-      SQLITE_DATABASE: log.db
+    - SQLITE_DATABASE
     networks:
     - net
 volumes:
@@ -106,6 +109,8 @@ volumes:
   influxdb-volume:
     external: true
   log-volume:
+    external: true
+  webapp-volume:
     external: true
 networks:
   net:
