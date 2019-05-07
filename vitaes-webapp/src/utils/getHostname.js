@@ -3,7 +3,7 @@ const getHostname = (target, port) => {
     return `localhost:${port}`;
   }
   return `${target}.vitaes.io`;
-}
+};
 
 
 // TODO get data from ENV
