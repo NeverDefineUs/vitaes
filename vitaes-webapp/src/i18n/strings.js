@@ -13,9 +13,9 @@ export const territoryFallbackPriority = {
 };
 
 export const strings = {
-  about_the_project: {
-    en_US: 'About the project',
-    pt_BR: 'Sobre o projeto',
+  about: {
+    en_US: 'about',
+    pt_BR: 'sobre nós',
   },
   academic: {
     en_US: 'Academic experience',
@@ -129,9 +129,9 @@ export const strings = {
     en_US: 'Name of the course (e.g. Computer Science bachelor)',
     pt_BR: 'Nome do curso (ex. Ciência da Computação)',
   },
-  create_cv: {
-    en_US: 'Create your CV',
-    pt_BR: 'Crie seu curriculo',
+  make_cv: {
+    en_US: 'make cv',
+    pt_BR: 'criar cv',
   },
   create_template: {
     en_US: 'Create template',
@@ -200,6 +200,10 @@ export const strings = {
   error_not_logged_in: {
     en_US: 'You need to be logged in',
     pt_BR: 'Você precisa estar logado',
+  },
+  login: {
+    en_US: 'login',
+    pt_Br: 'login'
   },
   facebook_login: {
     en_US: 'Facebook login',

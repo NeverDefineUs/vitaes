@@ -31,7 +31,7 @@ class App extends Component {
       <React.Fragment>
         <ToastContainer position="bottom-right" />
         <NavBar onChangeLanguage={this.handleChangeLanguage} />
-        <AppRouter />
+        <AppRouter className="bg-secondary"/>
       </React.Fragment>
     );
   }
