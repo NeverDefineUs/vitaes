@@ -210,8 +210,8 @@ export const strings = {
     pt_BR: 'Entrar com o GitHub',
   },
   github_placeholder: {
-    en_US: 'GitHub url (e.g. github.com/youruser/)',
-    pt_BR: 'GitHub url (ex. github.com/seuusuario/)',
+    en_US: 'GitHub user',
+    pt_BR: 'Usuário do GitHub',
   },
   google_login: {
     en_US: 'Google login',
@@ -278,8 +278,8 @@ export const strings = {
     pt_BR: 'Idiomas',
   },
   linkedin_placeholder: {
-    en_US: 'Linkedin url (e.g. linkedin.com/in/youruser/)',
-    pt_BR: 'Linkedin url (ex. linkedin.com/in/seuusuario/)',
+    en_US: 'Linkedin User',
+    pt_BR: 'Usuário do Linkedin',
   },
   loading: {
     en_US: 'Loading',
