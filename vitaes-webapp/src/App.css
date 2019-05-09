@@ -1,9 +1,41 @@
 body { padding-top: 40px; }
+
 @media screen and (max-width: 768px) {
     body { padding-top: 0px; }
 }
 
-.Base {
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+body, .bg-secondary {
+  background-color: #16191B;
+}
+
+.bg-gradient-black {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
+  background: -moz-linear-gradient(top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.color-primary {
+  color: #ACCBE1;
+}
+
+.color-grey{
+  color: #474B4F;
+}
+
+.color-white {
+  color: #FAFCFD; 
+}
+
+.font-24 {
+  font-size: 24px;
+}
+
+/* .Base {
     margin: 20px;
     border: 2px;
     border-color: #fafafa;
@@ -75,4 +107,4 @@ body { padding-top: 40px; }
 
   #root > .container {
     margin-top: 40px;
-  }
+  } */
