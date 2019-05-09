@@ -168,7 +168,7 @@ class Builder extends Component {
         .ref('users')
         .child(user.uid);
       db.set(this.props.userData);
-      this.setState({lastSaved: JSON.stringify(this.props.userData)})
+      this.setState({ lastSaved: JSON.stringify(this.props.userData) });
       toast.success(translate('saved'), {
         toastId: 'autosv',
       });
@@ -177,7 +177,8 @@ class Builder extends Component {
 
   autoSave() {
     setInterval(() => {
-      if (this.props.userData.autosave && JSON.stringify(this.props.userData) != this.state.lastSaved) {
+      if (this.props.userData.autosave
+         && JSON.stringify(this.props.userData) !== this.state.lastSaved) {
         this.saveOnAccount();
       }
     }, autoSaveTime);
