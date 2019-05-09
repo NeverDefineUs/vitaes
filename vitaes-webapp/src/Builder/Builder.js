@@ -26,7 +26,7 @@ import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 
-const autoSaveTime = 120000;
+const autoSaveTime = 15000;
 
 class Builder extends Component {
   constructor(props) {
@@ -35,6 +35,7 @@ class Builder extends Component {
       downloading: false,
       showBugUi: false,
       chosenLabel: '',
+      lastSaved: '',
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
     this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
@@ -167,6 +168,7 @@ class Builder extends Component {
         .ref('users')
         .child(user.uid);
       db.set(this.props.userData);
+      this.setState({lastSaved: JSON.stringify(this.props.userData)})
       toast.success(translate('saved'), {
         toastId: 'autosv',
       });
@@ -175,7 +177,7 @@ class Builder extends Component {
 
   autoSave() {
     setInterval(() => {
-      if (this.props.userData.autosave) {
+      if (this.props.userData.autosave && JSON.stringify(this.props.userData) != this.state.lastSaved) {
         this.saveOnAccount();
       }
     }, autoSaveTime);
