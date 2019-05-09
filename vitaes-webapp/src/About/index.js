@@ -96,13 +96,14 @@ class About extends Component {
           {translate('repository')}
           :
         </h2>
-        <Button 
+        <Button
           secondary
           small
           icon
-          href="https://github.com/NeverDefineUs/vitaes">
-          <Icon name='github' />
-          {' ' + translate('view_on_github')}
+          href="https://github.com/NeverDefineUs/vitaes"
+        >
+          <Icon name="github" />
+          {` ${translate('view_on_github')}`}
         </Button>
         <br />
         <br />
