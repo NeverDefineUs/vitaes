@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Button, Icon } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
 
@@ -96,7 +96,14 @@ class About extends Component {
           {translate('repository')}
           :
         </h2>
-        https://github.com/NeverDefineUs/vitaes
+        <Button 
+          secondary
+          small
+          icon
+          href="https://github.com/NeverDefineUs/vitaes">
+          <Icon name='github' />
+          {' ' + translate('view_on_github')}
+        </Button>
         <br />
         <br />
       </Segment>
