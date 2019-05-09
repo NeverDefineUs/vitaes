@@ -107,6 +107,11 @@ class NavBar extends React.Component {
                     >
                       Grafana
                     </NavDropdown.Item>
+                    <NavDropdown.Item
+                      href="https://sqlite.vitaes.io/"
+                    >
+                      SQLite
+                    </NavDropdown.Item>
                   </NavDropdown>
                 )
                 : null
