@@ -1,4 +1,7 @@
-body { padding-top: 40px; }
+/*
+  Default
+*/
+body { padding-top: 80px; }
 
 @media screen and (max-width: 768px) {
     body { padding-top: 0px; }
@@ -11,12 +14,14 @@ body {
 body, .bg-secondary {
   background-color: #16191B;
 }
+/**/
 
+/* Colors */
 .bg-gradient-black {
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+0,0+100;Neutral+Density */
-  background: -moz-linear-gradient(top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
 .color-primary {
@@ -30,81 +35,59 @@ body, .bg-secondary {
 .color-white {
   color: #FAFCFD; 
 }
+/**/
 
+
+/*
+Change Bootstrap styles
+*/
+.navbar-gradient-black > div > div > a {
+  color: #474B4F;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.navbar-nav > .active, .navbar-nav > a {
+  position: relative;
+}
+
+.navbar-nav > .active, .navbar-nav > a:hover {
+  color: #FAFCFD;
+}
+
+@media screen and (max-width: 986px) {
+  .navbar-nav > .active:after {
+    margin: 0;
+    left: 0;
+    right: auto !important;
+  }
+}
+
+.navbar-nav > .active:after {
+  content: '';
+
+  position: absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  margin: auto;
+  width: 60%;
+  height: 2px;
+
+  background-color: #FAFCFD;
+}
+/**/
+
+/*
+Sizes
+*/
 .font-24 {
   font-size: 24px;
 }
 
-/* .Base {
-    margin: 20px;
-    border: 2px;
-    border-color: #fafafa;
-    background-color: #f9f9f9;
-    border-style: solid;
-    max-width: 1500px;
-    border-radius: 20px;
-    padding: 2em;
-    text-align: left;
-  }
-
-  .Base-profile {
-    width: 30%;
-  }
-
-  .Base-label {
-    font-size: 1em;
-    padding-right: 1em;
-    display: inline-block;
-  }
-
-  .Base-field {
-    display: flex;
-    width: 100%;
-    padding-bottom: 0em;
-    margin-bottom: 15px;
-  }
-
-  .Base-button a {
-    background-color: #000;
-    text-decoration: none;
-    font-size: 1em;
-    border-radius: 10px;
-    padding: 6px;
-    padding-left: 15px;
-    padding-right: 15px;
-    color: #fff;
-    position: relative;
-    float: right;
-    margin-left: 0.5em;
-    background-color: #000;
-  }
-  .Base-button a:hover {
-    background-color: #888;
-    color: #eee;
-  }
-
-  .Base-inputfield {
-    border-radius: 2px;
-    flex-grow: 100;
-    border: 1px;
-    font-size: 1em;
-    min-height: 1.2em;
-    border-style: solid;
-    border-color: #ddd;
-  }
-
-  .Base-item {
-    background-color: #eee;
-    padding: 5px;
-    padding-left: 10px;
-    margin-bottom: 5px;
-    height: 1.2em;
-  }
-
-  .Base-orderlist {
-    list-style-type: none;
-  }
-
-  #root > .container {
-    margin-top: 40px;
-  } */
+.w-40 {
+  width: 40px;
+}
+/**/
