@@ -1,160 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import firebase from 'firebase';
 
-import { translate } from 'i18n/locale';
+import { translate, getActiveLocale } from '../i18n/locale';
 import LanguageToggle from './LanguageToggle';
+import LanguageMenu from './LanguageMenu';
 
-import Login from 'Login';
+function NavBar(props) {
+  const [user, setUser] = useState(null);
+  const [permissions, setPerm] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const { onChangeLanguage } = props;
 
-class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
+  const currentPath = window.location.pathname;
+  let flag;
 
-    this.state = {
-      user: null,
-      permissions: null,
-      showLogin: false,
+  const setFlag = (locale) => {
+    flag = `/flag-${locale}.png`;
+  };
+
+  setFlag(getActiveLocale());
+
+  useEffect(() => {
+    const updatePermissions = () => {
+      firebase.database().ref('permissions').on('value', (snapshot) => { setPerm(snapshot.val()); });
     };
 
-    this.showLogin = this.showLogin.bind(this);
-    this.hideLogin = this.hideLogin.bind(this);
-    this.logout = this.logout.bind(this);
-  }
+    const updateUser = async () => {
+      await firebase.auth().getRedirectResult();
+      setUser(firebase.auth().currentUser);
+    };
 
-  componentDidMount() {
-    firebase
-      .database()
-      .ref('permissions')
-      .on('value', (snapshot) => {
-        this.setState({ permissions: snapshot.val() });
-      });
+    updatePermissions();
+    updateUser();
+  });
 
-    firebase
-      .auth()
-      .getRedirectResult()
-      .then(() => {
-        const user = firebase.auth().currentUser;
-        this.setState({ user });
-      });
-  }
+  const changeLanguage = (locale) => {
+    onChangeLanguage(locale);
+    setFlag(locale);
+  };
 
-  logout() {
-    firebase.auth().signOut();
-    this.setState({ user: null });
-  }
-
-  showLogin() {
-    this.setState({ showLogin: true });
-  }
-
-  hideLogin() {
-    this.setState({ showLogin: false });
-  }
-
-  render() {
-    const { onChangeLanguage } = this.props;
-    const { user, permissions, showLogin } = this.state;
-
-    return (
-      <React.Fragment>
-        <Navbar collapseOnSelect expand="lg" fixed="top" bg="gradient-black" variant="">
-            <Navbar.Brand href="/">
-                <img src="/logo.svg" width="80" height="45"/>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="font-24 ml-auto">
-                <Nav.Link className="color-white mr-3" href="/">{ translate("make_cv") }</Nav.Link>
-                <Nav.Link className="color-white mr-3" href="/about"> { translate("about") } </Nav.Link>
-                <Nav.Link className="color-white mr-4" href="/about"> { translate("login") } </Nav.Link>
-                <Dropdown className="mr-5 mt-2">
-                  <Dropdown.Toggle as={LanguageToggle} flag="/flag-brazil.png"></Dropdown.Toggle>
-                  <Dropdown.Menu className="w-10">
-                    <Dropdown.Item onClick={() => onChangeLanguage('en_US')}><img width="30px" height="20px" src="/flag-brazil.png"></img></Dropdown.Item>
-                    <Dropdown.Item onClick={() => onChangeLanguage('en_US')}><img width="30px" height="20px" src="/flag-us.png"></img></Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Nav>
-            </Navbar.Collapse>
-        </Navbar>
-      </React.Fragment>
-    )
-    //   <React.Fragment>
-    //     <Navbar collapseOnSelect expand="lg" fixed="top" bg="dark" variant="dark">
-    //       <Navbar.Brand href="/">
-    //         <img
-    //           alt=""
-    //           src="/mod5.svg"
-    //           width="30"
-    //           height="30"
-    //           className="d-inline-block align-top"
-    //         />
-    //         {' Vitaes'}
-    //       </Navbar.Brand>
-    //       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    //       <Navbar.Collapse id="basic-navbar-nav">
-    //         <Nav className="mr-auto">
-    //           <Nav.Link
-    //             href="/"
-    //           >
-    //             {translate('create_cv')}
-    //           </Nav.Link>
-    //           <Nav.Link
-    //             href="/hub"
-    //           >
-    //             Template Hub
-    //           </Nav.Link>
-    //           <NavDropdown title={translate('about_the_project')}>
-    //             <NavDropdown.Item href="/about">{translate('about_the_project')}</NavDropdown.Item>
-    //             <NavDropdown.Item href="/privacy">{translate('privacy_policy')}</NavDropdown.Item>
-    //           </NavDropdown>
-    //           <NavDropdown title={translate('language')} id="basic-nav-dropdown">
-    //             <NavDropdown.Item onClick={() => onChangeLanguage('en_US')}>English</NavDropdown.Item>
-    //             <NavDropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</NavDropdown.Item>
-    //           </NavDropdown>
-    //           {user !== null && permissions !== null && permissions[user.uid]
-    //             ? (
-    //               <NavDropdown title={translate('dev_options')} id="basic-nav-dropdown">
-    //                 <NavDropdown.Item
-    //                   href="/create-template"
-    //                 >
-    //                   {translate('create_template')}
-    //                 </NavDropdown.Item>
-    //                 <NavDropdown.Item
-    //                   href="/alert-manager"
-    //                 >
-    //                   {translate('alert_manager')}
-    //                 </NavDropdown.Item>
-    //                 <NavDropdown.Item
-    //                   href="https://grafana.vitaes.io/"
-    //                 >
-    //                   Grafana
-    //                 </NavDropdown.Item>
-    //               </NavDropdown>
-    //             )
-    //             : null
-    //           }
-    //         </Nav>
-    //         <Nav className="mr-sm-2">
-    //           {user !== null ? (
-    //             <Nav.Link onClick={this.logout}>{translate('sign_out')}</Nav.Link>
-    //           ) : (
-    //             <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
-    //           )}
-    //         </Nav>
-    //       </Navbar.Collapse>
-    //     </Navbar>
-    //     <Login
-    //       show={showLogin}
-    //       onHide={this.hideLogin}
-    //       skipLogin={() => {
-    //         this.hideLogin();
-    //       }}
-    //     />
-    //   </React.Fragment>
-    // );
-  }
+  return (
+    <Navbar collapseOnSelect expand="lg" fixed="top" bg="gradient-black" variant="gradient-black">
+      <Navbar.Brand href="/">
+        <img alt="vitaes logo" src="/logo.svg" width="80" height="45" />
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="font-24 ml-auto">
+          <Nav.Link className="mr-3" href="/" active={currentPath === '/'}>
+            { translate('make_cv') }
+          </Nav.Link>
+          <Nav.Link className="mr-3" href="/about" active={currentPath === '/about'}>
+            { translate('about') }
+          </Nav.Link>
+          <Nav.Link className="mr-4" href="/login" active={currentPath === '/login'}>
+            { translate('login') }
+          </Nav.Link>
+          <Dropdown className="mr-5 mt-2">
+            <Dropdown.Toggle as={LanguageToggle} flag={flag}></Dropdown.Toggle>
+            <Dropdown.Menu as={LanguageMenu} style={{ 'min-width': '1rem', 'max-width': '4rem', 'max-height': '6rem' }} className="p-2">
+              <Dropdown.Item className="pl-1 w-20" onClick={() => changeLanguage('pt_BR')}>
+                <img alt="brazil flag" width="30px" height="20px" src="/flag-pt_BR.png" />
+              </Dropdown.Item>
+              <Dropdown.Item className="pl-1 w-20" onClick={() => changeLanguage('en_US')}>
+                <img alt="united states flag" width="30px" height="20px" src="/flag-en_US.png" />
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
 }
 
 export default NavBar;
