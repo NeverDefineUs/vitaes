@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import firebase from 'firebase';
 import { ToastContainer } from 'react-toastify';
 
-import { setLocale } from 'i18n/locale';
+import { setLocale } from './i18n/locale';
 
 import config from './config';
 import { setupAlerts } from './AlertManager/util';
@@ -14,27 +14,28 @@ import NavBar from './NavBar';
 
 firebase.initializeApp(config);
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    setupAlerts();
-    this.handleChangeLanguage = this.handleChangeLanguage.bind(this);
-  }
+const forceUpdate = () => {
+  const [value, set] = useState(true); // boolean state
+  return () => set(!value); // toggle the state to force render
+};
 
-  handleChangeLanguage(locale) {
+function App() {
+  setupAlerts();
+
+  const useForceUpdate = forceUpdate();
+
+  const handleChangeLanguage = (locale) => {
     setLocale(locale);
-    this.forceUpdate();
-  }
+    useForceUpdate();
+  };
 
-  render() {
-    return (
-      <React.Fragment>
-        <ToastContainer position="bottom-right" />
-        <NavBar onChangeLanguage={this.handleChangeLanguage} />
-        <AppRouter className="bg-secondary"/>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <ToastContainer position="bottom-right" />
+      <NavBar onChangeLanguage={handleChangeLanguage} />
+      <AppRouter className="bg-secondary" />
+    </React.Fragment>
+  );
 }
 
 export default App;
