@@ -493,6 +493,10 @@ export const strings = {
     en_US: 'Send data',
     pt_BR: 'Enviar dados',
   },
+  view_on_github: {
+    en_US: 'View on GitHub',
+    pt_BR: 'Ver no GitHub',
+  },
   work: {
     en_US: 'Work',
     pt_BR: 'Trabalho',
