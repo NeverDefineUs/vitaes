@@ -3,10 +3,10 @@ import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import firebase from 'firebase';
 
 import { translate, getActiveLocale } from 'i18n/locale';
+import Login from 'Login';
 import LanguageToggle from './LanguageToggle';
 import LanguageMenu from './LanguageMenu';
 import DevMenu from './DevMenu';
-import Login from 'Login';
 
 function NavBar(props) {
   const [user, setUser] = useState(null);
@@ -26,7 +26,7 @@ function NavBar(props) {
   useEffect(() => {
     const getPermissions = () => {
       firebase.database().ref('permissions').on('value', (snapshot) => { setPerm(snapshot.val()); });
-    }
+    };
 
     const getUser = async () => {
       await firebase.auth().getRedirectResult();
@@ -53,7 +53,7 @@ function NavBar(props) {
     }
     return (<Nav.Link className="mr-4" onClick={() => setShowLogin(true)}>{ translate('sign_in') }</Nav.Link>);
   };
-  
+
   return (
     <React.Fragment>
       <Navbar collapseOnSelect expand="lg" fixed="top" bg="gradient-black" variant="gradient-black">
@@ -86,14 +86,14 @@ function NavBar(props) {
         </Navbar.Collapse>
       </Navbar>
       <Login
-          show={showLogin}
-          onHide={() => { 
-            setShowLogin(false); 
-          }}
-          skipLogin={() => {
-            setShowLogin(false);
-          }}
-        />
+        show={showLogin}
+        onHide={() => {
+          setShowLogin(false);
+        }}
+        skipLogin={() => {
+          setShowLogin(false);
+        }}
+      />
     </React.Fragment>
   );
 }

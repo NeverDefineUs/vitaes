@@ -203,7 +203,7 @@ export const strings = {
   },
   login: {
     en_US: 'login',
-    pt_Br: 'login'
+    pt_Br: 'login',
   },
   facebook_login: {
     en_US: 'Facebook login',
