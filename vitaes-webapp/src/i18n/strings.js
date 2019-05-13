@@ -422,12 +422,12 @@ export const strings = {
     pt_BR: 'Mostrar',
   },
   sign_in: {
-    en_US: 'Sign in',
-    pt_BR: 'Logar',
+    en_US: 'sign in',
+    pt_BR: 'login',
   },
   sign_out: {
-    en_US: 'Sign out',
-    pt_BR: 'Deslogar',
+    en_US: 'sign out',
+    pt_BR: 'sair',
   },
   skill: {
     en_US: 'Skill',
