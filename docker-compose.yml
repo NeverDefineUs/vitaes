@@ -17,6 +17,7 @@ services:
     image: vitaes/server
     ports:
     - "5000:5000"
+    restart: always
     depends_on:
     - rabbitmq
     - logger
@@ -36,6 +37,7 @@ services:
     build: vitaes-nginx-http/.
     volumes:
     - webapp-volume:/project
+    restart: always
     ports:
     - "80:80"
     image: vitaes/nginxhttp
@@ -48,10 +50,12 @@ services:
     - net
   rabbitmq:
     image: rabbitmq:alpine
+    restart: always
     networks:
     - net
   redis:
     image: redis
+    restart: always
     networks:
     - net
   grafana:
