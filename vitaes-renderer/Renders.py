@@ -2,6 +2,7 @@ import CurriculumVitae, Models, datetime, time
 import string, random, os
 import subprocess, json
 import timestring
+import traceback
 from babel.dates import format_datetime
 from Cheetah.Template import Template
 from Logger import log_from_renderer
@@ -37,14 +38,21 @@ class CvRenderTexToPdf(CvRenderBase):
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
         cvString = cvRender.render(cv, params=params, baseFolder=baseFolder, resources=resources)
-        log_from_renderer(cv.header.email, cv.cv_hash, "FULLY_RENDERED")
+        log_from_renderer(cv.header.email, cv.cv_hash, "TEX_FULLY_COMPILED")
         os.system("touch Output/" + path + "/main.tex")
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cvString)
         file.close()
         p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path, stdout=subprocess.PIPE)
         p.wait()
-        log_from_renderer(cv.header.email, cv.cv_hash, "LATEX_CMD_EXECUTED", p.stdout.read().decode("utf-8"))
+        p_output = ''
+        raise 'a'
+        try:
+          p_output = p.stdout.read().decode("utf-8", errors='ignore')
+        except Exception:
+          exc_type, exc_value, exc_traceback = sys.exc_info()
+          p_output = 'Error on process output: ' + repr(traceback.format_exception(exc_type, exc_value, exc_traceback)) 
+        log_from_renderer(cv.header.email, cv.cv_hash, "LATEX_CMD_EXECUTED", p_output)
         os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
         os.system("rm -r Output/" + path + "/")
         return path
