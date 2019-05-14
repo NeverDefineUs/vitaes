@@ -46,7 +46,6 @@ class CvRenderTexToPdf(CvRenderBase):
         p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path, stdout=subprocess.PIPE)
         p.wait()
         p_output = ''
-        raise 'a'
         try:
           p_output = p.stdout.read().decode("utf-8", errors='ignore')
         except Exception:
