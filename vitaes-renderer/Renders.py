@@ -45,12 +45,7 @@ class CvRenderTexToPdf(CvRenderBase):
         file.close()
         p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path, stdout=subprocess.PIPE)
         p.wait()
-        p_output = ''
-        try:
-          p_output = p.stdout.read().decode("utf-8", errors='ignore')
-        except Exception:
-          exc_type, exc_value, exc_traceback = sys.exc_info()
-          p_output = 'Error on process output: ' + repr(traceback.format_exception(exc_type, exc_value, exc_traceback)) 
+        p_output = p.stdout.read().decode("utf-8", errors='ignore')
         log_from_renderer(cv.header.email, cv.cv_hash, "LATEX_CMD_EXECUTED", p_output)
         os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
         os.system("rm -r Output/" + path + "/")
