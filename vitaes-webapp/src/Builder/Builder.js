@@ -7,7 +7,6 @@ import _ from 'lodash';
 import {
   Button, Form, Col, Row,
 } from 'react-bootstrap';
-import Dropzone from 'react-dropzone';
 
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
@@ -25,6 +24,7 @@ import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
+import CvActionMenu from './CvActionMenu';
 
 const autoSaveTime = 15000;
 
@@ -328,61 +328,15 @@ class Builder extends Component {
         {cvModelSuboptions}
         <br />
         <br />
-        <Dropzone onDrop={files => this.uploadJSON(files)}>
-          {({ getRootProps, getInputProps }) => (
-            <Button
-              {...getRootProps()}
-              variant="secondary"
-              size="sm"
-              style={{ marginLeft: 5, float: 'right' }}
-            >
-              <input
-                {...getInputProps()}
-                type="file"
-                id="file"
-                style={{ display: 'none' }}
-              />
-              {translate('upload_json')}
-            </Button>
-          )}
-        </Dropzone>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={this.downloadCvAsJson}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {translate('download_json')}
-        </Button>
-        <Button
-          disabled={this.state.downloading}
-          variant="secondary"
-          size="sm"
-          onClick={this.downloadCvAsPDF}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {translate('download_cv')}
-        </Button>
-        {this.props.user !== null ? (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={this.saveOnAccount}
-            style={{ marginLeft: 5, float: 'right' }}
-          >
-            {translate('save_cv_on_account')}
-          </Button>
-        ) : null}
-        {this.props.user !== null ? (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => this.updateUserData({ autosave: !this.props.userData.autosave })}
-            style={{ marginLeft: 5, float: 'right' }}
-          >
-            {this.props.userData.autosave ? translate('autosave_on') : translate('autosave_off')}
-          </Button>
-        ) : null}
+        <CvActionMenu
+          downloading={this.state.downloading}
+          user={this.props.user}
+          userData={this.props.userData}
+          uploadJSON={this.uploadJSON}
+          downloadCvAsJson={this.downloadCvAsJson}
+          downloadCvAsPDF={this.downloadCvAsPDF}
+          saveOnAccount={this.saveOnAccount}
+        />
         <BugReporter
           show={this.state.showBugUi}
           data={{
