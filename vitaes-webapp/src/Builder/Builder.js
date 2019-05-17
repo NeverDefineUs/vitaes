@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import arrayMove from 'array-move';
-import fetch from 'fetch-retry';
-import { toast } from 'react-toastify';
 import _ from 'lodash';
 import {
   Button, Form, Col, Row,
@@ -11,12 +8,6 @@ import {
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
-import { getApiHostname } from 'utils/getHostname';
-import hashCv from 'utils/hashCv';
-import logger from 'utils/logger';
-import removeDisabled from 'utils/removeDisabled';
-import validateEmail from 'utils/validateEmail';
-import validateDate from 'utils/validateDate';
 
 import { Segment } from 'semantic-ui-react';
 import CvOrder from './CvOrder';
@@ -26,28 +17,17 @@ import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 import CvActionMenu from './CvActionMenu';
 
-const autoSaveTime = 15000;
-
 class Builder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      downloading: false,
       showBugUi: false,
       chosenLabel: '',
-      lastSaved: '',
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
-    this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
-    this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this);
-    this.saveOnAccount = this.saveOnAccount.bind(this);
-    this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
     this.updateUserData = this.updateUserData.bind(this);
     this.setLabel = this.setLabel.bind(this);
-    this.uploadJSON = this.uploadJSON.bind(this);
-
-    this.autoSave();
   }
 
   setCv(cv) {
@@ -65,125 +45,6 @@ class Builder extends Component {
     this.props.userDataSetter(_.assign(userData, data));
   }
 
-  downloadCvAsJson() {
-    const element = document.createElement('a');
-    const file = new Blob([JSON.stringify(this.props.userData.cv)], {
-      type: 'text/plain',
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = 'cv.json';
-    element.click();
-  }
-
-  downloadCvAsPDF() {
-    if (this.state.downloading) {
-      return;
-    }
-    if (!validateEmail(this.props.userData.cv.CvHeaderItem.email)) {
-      toast.error(translate('invalid_email_format'));
-      return;
-    }
-    if (this.props.userData.cv.CvHeaderItem.name === '') {
-      toast.error(translate('invalid_name_format'));
-      return;
-    }
-    if (this.props.userData.cv.CvHeaderItem.birthday) {
-      if (!validateDate(this.props.userData.cv.CvHeaderItem.birthday)) {
-        toast.error(translate('invalid_birthday_format'));
-        return;
-      }
-    }
-
-    const cv = removeDisabled(this.props.userData.cv);
-
-    // TODO this should be receiving full locale
-    let { params } = this.props.userData;
-    params = {};
-    params.lang = getActiveLocale();
-
-    const requestCv = {
-      curriculum_vitae: cv,
-      section_order: this.props.userData.cv_order,
-      render_key: this.props.userData.user_cv_model,
-      params,
-    };
-    requestCv.path = hashCv(requestCv);
-
-    logger(requestCv, 'FRONT_REQUEST', JSON.stringify(requestCv));
-    this.setState({ downloading: true });
-
-    const startTime = window.performance.now();
-    fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestCv),
-    }).then((response) => {
-      if (response.ok) {
-        const idPromise = response.text();
-        toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
-        idPromise.then((id) => {
-          fetch(
-            `${window.location.protocol}//${getApiHostname()}/cv/${id}/`,
-            {
-              method: 'GET',
-              retries: 20,
-              retryDelay: 1000,
-              retryOn: [404],
-            },
-          ).then((cvresponse) => {
-            if (cvresponse.ok) {
-              const fileBlob = cvresponse.blob();
-              fileBlob.then((file) => {
-                const element = document.createElement('a');
-                element.href = URL.createObjectURL(file);
-                element.download = 'cv.pdf';
-                element.click();
-              });
-              const serveTime = window.performance.now();
-              logger(requestCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
-              toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
-              this.setState({ downloading: false });
-            } else {
-              logger(requestCv, 'FAILURE_NOTIFIED');
-              toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
-              this.setState({ showBugUi: true, downloading: false });
-            }
-          });
-        });
-      } else {
-        const textPromise = response.text();
-        textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
-      }
-    });
-  }
-
-  saveOnAccount() {
-    const { user } = this.props;
-    if (user !== null) {
-      const db = firebase
-        .database()
-        .ref('users')
-        .child(user.uid);
-      db.set(this.props.userData);
-      this.setState({ lastSaved: JSON.stringify(this.props.userData) });
-      toast.success(translate('saved'), {
-        toastId: 'autosv',
-      });
-    }
-  }
-
-  autoSave() {
-    setInterval(() => {
-      if (this.props.userData.autosave
-         && JSON.stringify(this.props.userData) !== this.state.lastSaved) {
-        this.saveOnAccount();
-      }
-    }, autoSaveTime);
-  }
-
   handleChangeHeader(event) {
     const aux = this.props.userData.cv;
     aux.CvHeaderItem[event.target.name] = event.target.value;
@@ -191,16 +52,6 @@ class Builder extends Component {
       delete aux.CvHeaderItem[event.target.name];
     }
     this.setCv(aux);
-  }
-
-  uploadJSON(selectorFiles) {
-    const fr = new FileReader();
-    // eslint-disable-next-line func-names
-    fr.onload = function () {
-      const json = fr.result;
-      this.setCv(JSON.parse(json));
-    }.bind(this);
-    fr.readAsText(selectorFiles[0]);
   }
 
   render() {
@@ -329,13 +180,10 @@ class Builder extends Component {
         <br />
         <br />
         <CvActionMenu
-          downloading={this.state.downloading}
+          setShowBugUi={value => this.setState({ showBugUi: value })}
+          setCv={this.setCv}
           user={this.props.user}
           userData={this.props.userData}
-          uploadJSON={this.uploadJSON}
-          downloadCvAsJson={this.downloadCvAsJson}
-          downloadCvAsPDF={this.downloadCvAsPDF}
-          saveOnAccount={this.saveOnAccount}
         />
         <BugReporter
           show={this.state.showBugUi}
