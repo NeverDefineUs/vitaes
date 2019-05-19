@@ -5,6 +5,7 @@ from Common import render_map, render_from_cv_dict
 from Logger import log_from_renderer
 import pika
 import redis
+import traceback
 from influxdb import InfluxDBClient
 
 tries = 0
@@ -56,7 +57,10 @@ def get_cv_queue(ch, method, properties, body):
         log_from_renderer(email, dic["path"], "STORING_IN_REDIS")
         db.set(name=ans, value=ansb, ex=600)
         mes = "OK"
-    except:
+    except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        p_output = repr(traceback.format_exception(exc_type, exc_value, exc_traceback)) 
+        log_from_renderer(email, dic["path"], "ERROR_REPORTED_IN_RENDERER", p_output)
         mes = "err"
     email_hash = hashlib.sha256()
     email_hash.update(str.encode(email))
