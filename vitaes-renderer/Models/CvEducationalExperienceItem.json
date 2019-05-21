@@ -1,0 +1,47 @@
+{
+  "typename": "CvEducationalExperienceItem",
+  "fields": {
+    "institution": {
+      "type": "CvInstitution",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "start_date": {
+      "type": "date",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "end_date": {
+      "type": "date",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "course": {
+      "type": "string",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "description": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "teacher": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "location": {
+      "type": "CvLocation",
+      "required": false,
+      "field_info": {},
+      "default": null
+    }
+  }
+}

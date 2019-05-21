@@ -7,7 +7,7 @@
       "field_info": {},
       "default": null
     },
-    "state": {
+    "location": {
       "type": "CvLocation",
       "required": false,
       "field_info": {},
