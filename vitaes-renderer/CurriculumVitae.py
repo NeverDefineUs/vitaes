@@ -9,13 +9,13 @@ class CurriculumVitae:
         self.items = {}
         self.item_types = []
 
-    def add(self, item: CvItem):
-        if type(item) is CvHeaderItem:
+    def add(self, item, key):
+        if key == 'CvHeaderItem':
             self.header = item
             return
 
-        if type(item) not in self.item_types:
-            self.item_types.append(type(item))
-            self.items[type(item)] = []
+        if key not in self.item_types:
+            self.item_types.append(key)
+            self.items[key] = []
 
-        self.items[type(item)].append(item)
+        self.items[key].append(item)

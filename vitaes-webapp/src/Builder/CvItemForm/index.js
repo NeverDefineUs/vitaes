@@ -62,12 +62,12 @@ class CvItemForm extends Component {
       cv[this.props.cvkey].splice(index, 1);
       this.props.stateChanger(cv);
       if (toAdd.institution !== undefined) {
-        toAdd.institution = toAdd.institution.CvInstitution.name;
+        toAdd.institution = toAdd.institution.name;
       }
       if (toAdd.location !== undefined) {
         for (const locField of locFields) {
-          if (toAdd.location.CvLocation[locField[0]] !== undefined) {
-            toAdd[locField[0]] = toAdd.location.CvLocation[locField[0]];
+          if (toAdd.location[locField[0]] !== undefined) {
+            toAdd[locField[0]] = toAdd.location[locField[0]];
           }
         }
         delete toAdd.location;
@@ -104,7 +104,7 @@ class CvItemForm extends Component {
       }
     }
     if (toAdd.institution !== undefined) {
-      const institution = { CvInstitution: { name: toAdd.institution } };
+      const institution = { name: toAdd.institution };
       toAdd.institution = institution;
     }
     if (
@@ -118,7 +118,7 @@ class CvItemForm extends Component {
           cvLocation[locField[0]] = toAdd[locField[0]];
         }
       }
-      toAdd.location = { CvLocation: cvLocation };
+      toAdd.location = cvLocation;
       for (const locField of locFields) {
         delete toAdd[locField[0]];
       }

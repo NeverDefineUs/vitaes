@@ -5,7 +5,6 @@ from bson.objectid import ObjectId
 from CurriculumVitae import CurriculumVitae
 from Logger import log_from_renderer
 from I18n import *
-from Models import *
 import Renders
 import json
 import timestring
@@ -101,19 +100,21 @@ def render_from_cv_dict(req):
         log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
         abort(400, "Missing header")
 
+    sm = SchemaManager('./Models/')
+    enc = Encoder(sm)
     for cv_key in req_cv.keys():
         req_key = req_cv[cv_key]
 
         items = []
-
+        sm.load(cv_key)
         if cv_key == 'CvHeaderItem':
             items.append(req_key)
         else:
             items = req_key
 
         for item in items:
-            cv_item = parse_item(cv_key, item)
-            cv.add(cv_item)
+            cv_item = enc.to_object(item, cv_key)
+            cv.add(cv_item, cv_key)
 
     log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 

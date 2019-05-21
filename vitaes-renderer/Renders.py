@@ -1,4 +1,4 @@
-import CurriculumVitae, Models, datetime, time
+import CurriculumVitae, datetime, time
 import string, random, os
 import subprocess, json
 import timestring
@@ -167,8 +167,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
     def extract_skills(cv):
         skills = []
         aggSkills = {}
-        if Models.CvSkillItem in cv.items and cv.items[Models.CvSkillItem] != []:
-            for skill in cv.items[Models.CvSkillItem]:
+        if 'CvSkillItem' in cv.items and cv.items['CvSkillItem'] != []:
+            for skill in cv.items['CvSkillItem']:
                 cleanName = text_clean(skill.skill_name)
                 cleanLevel = text_clean(skill.skill_level)
                 cleanType = text_clean(skill.skill_type)
@@ -239,12 +239,12 @@ class CvRenderCheetahTemplate(CvRenderBase):
             cvDict[var] = text_clean(eval("cv.header." + var))
         if cv.header.birthday != None:
             cvDict["birthday"] = timestring.Date(cv.header.birthday).date
-        cvDict["work_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvWorkExperienceItem)
-        cvDict["education_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvEducationalExperienceItem)
-        cvDict["academic_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAcademicProjectItem)
-        cvDict["language_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvLanguageItem)
-        cvDict["project_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvImplementationProjectItem)
-        cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, Models.CvAchievementItem)
+        cvDict["work_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvWorkExperienceItem')
+        cvDict["education_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvEducationalExperienceItem')
+        cvDict["academic_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvAcademicProjectItem')
+        cvDict["language_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvLanguageItem')
+        cvDict["project_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvImplementationProjectItem')
+        cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvAchievementItem')
         cvDict["skill_dict"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
         cvDict["break_into_items"] = CvRenderCheetahTemplate.break_into_items

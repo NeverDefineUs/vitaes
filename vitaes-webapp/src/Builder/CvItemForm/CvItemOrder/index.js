@@ -10,7 +10,7 @@ export const CvItemOrder = SortableContainer(props => (
       if (item.name !== undefined) {
         ({ name } = item);
       } else if (item.institution !== undefined) {
-        ({ name } = item.institution.CvInstitution);
+        ({ name } = item.institution);
       } else if (item.language !== undefined) {
         name = item.language;
       } else {
