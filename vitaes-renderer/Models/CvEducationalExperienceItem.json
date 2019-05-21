@@ -1,12 +1,6 @@
 {
   "typename": "CvEducationalExperienceItem",
   "fields": {
-    "name": {
-      "type": "string",
-      "required": true,
-      "field_info": {},
-      "default": null
-    },
     "institution": {
       "type": "CvInstitution",
       "required": true,
