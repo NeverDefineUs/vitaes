@@ -1,5 +1,5 @@
 {
-  "typename": "CvWorkExperienceItem",
+  "typename": "CvAcademicProjectItem",
   "fields": {
     "name": {
       "type": "string",
@@ -15,7 +15,7 @@
     },
     "start_date": {
       "type": "date",
-      "required": true,
+      "required": false,
       "field_info": {},
       "default": null
     },
@@ -25,13 +25,13 @@
       "field_info": {},
       "default": null
     },
-    "description": {
+    "article_link": {
       "type": "string",
       "required": false,
       "field_info": {},
       "default": null
     },
-    "role": {
+    "description": {
       "type": "string",
       "required": false,
       "field_info": {},

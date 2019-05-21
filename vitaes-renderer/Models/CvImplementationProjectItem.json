@@ -1,5 +1,5 @@
 {
-  "typename": "CvWorkExperienceItem",
+  "typename": "CvImplementationProjectItem",
   "fields": {
     "name": {
       "type": "string",
@@ -7,20 +7,20 @@
       "field_info": {},
       "default": null
     },
-    "institution": {
-      "type": "CvInstitution",
-      "required": true,
-      "field_info": {},
-      "default": null
-    },
     "start_date": {
       "type": "date",
-      "required": true,
+      "required": false,
       "field_info": {},
       "default": null
     },
     "end_date": {
       "type": "date",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "language": {
+      "type": "string",
       "required": false,
       "field_info": {},
       "default": null
@@ -31,7 +31,7 @@
       "field_info": {},
       "default": null
     },
-    "role": {
+    "repository_link": {
       "type": "string",
       "required": false,
       "field_info": {},
