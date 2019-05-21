@@ -2,7 +2,6 @@ from datetime import date, datetime
 import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
 from bson.objectid import ObjectId
-from CurriculumVitae import CurriculumVitae
 from Logger import log_from_renderer
 from I18n import *
 import Renders
@@ -28,10 +27,9 @@ def refresh_render_map():
 
 def render_from_cv_dict(req):
     refresh_render_map()
-    cv = CurriculumVitae(req["path"])
     ret = ""
 
-    log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "GENERATING_CV_AST")
+    log_from_renderer(req["curriculum_vitae"]["header"]["email"], req["path"], "GENERATING_CV_AST")
 
     path = None
     if 'path' in req:
@@ -48,25 +46,14 @@ def render_from_cv_dict(req):
     if 'section_order' in req:
         params['section_order'] = req['section_order']
 
-    if 'CvHeaderItem' not in req_cv:
-        log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
+    if 'header' not in req_cv:
+        log_from_renderer('', cv.cv_hash, "MISSING_HEADER")
         abort(400, "Missing header")
 
     sm = SchemaManager('./Models/')
+    sm.load('Cv')
     enc = Encoder(sm)
-    for cv_key in req_cv.keys():
-        req_key = req_cv[cv_key]
-
-        items = []
-        sm.load(cv_key)
-        if cv_key == 'CvHeaderItem':
-            items.append(req_key)
-        else:
-            items = req_key
-
-        for item in items:
-            cv_item = enc.to_object(item, cv_key)
-            cv.add(cv_item, cv_key)
+    cv = enc.to_object(req_cv, 'Cv')
 
     log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 

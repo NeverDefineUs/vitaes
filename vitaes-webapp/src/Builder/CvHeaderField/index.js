@@ -18,10 +18,10 @@ class CvHeaderField extends Component {
           <Form.Control
             type="text"
             value={
-              this.props.curriculum.CvHeaderItem[this.props.id]
+              this.props.curriculum.header[this.props.id]
                 === undefined
                 ? ''
-                : this.props.curriculum.CvHeaderItem[this.props.id]
+                : this.props.curriculum.header[this.props.id]
             }
             name={this.props.id}
             placeholder={this.props.placeholder}

@@ -4,7 +4,7 @@ import { getLoggerHostname } from 'utils/getHostname';
 
 export default function logger(req, step, data) {
   const formData = new URLSearchParams();
-  formData.append('email', req.curriculum_vitae.CvHeaderItem.email);
+  formData.append('email', req.curriculum_vitae.header.email);
   formData.append('cv_hash', req.path);
   formData.append('origin', 'WEBAPP');
   formData.append('step', step);

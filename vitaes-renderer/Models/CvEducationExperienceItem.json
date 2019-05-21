@@ -1,5 +1,5 @@
 {
-  "typename": "CvEducationalExperienceItem",
+  "typename": "CvEducationExperienceItem",
   "fields": {
     "institution": {
       "type": "CvInstitution",

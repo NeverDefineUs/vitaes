@@ -8,15 +8,15 @@ import { getApiHostname } from 'utils/getHostname';
 import Builder from './Builder';
 
 const defaultCv = {
-  CvHeaderItem: {
+  header: {
     name: '',
   },
-  CvWorkExperienceItem: [],
-  CvAcademicProjectItem: [],
-  CvImplementationProjectItem: [],
-  CvAchievementItem: [],
-  CvEducationalExperienceItem: [],
-  CvLanguageItem: [],
+  work: [],
+  academic: [],
+  project: [],
+  achievement: [],
+  education: [],
+  language: [],
 };
 
 const defaultUser = {

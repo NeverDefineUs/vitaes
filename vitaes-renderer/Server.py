@@ -99,7 +99,7 @@ def process_curr_delayed():
     channel = connection.channel()
     channel.queue_declare(queue='cv_requests')
     channel.basic_publish(exchange='',routing_key='cv_requests', body=json.dumps(req))
-    log_from_server(req["curriculum_vitae"]["CvHeaderItem"]["email"], req["path"], "SENT_TO_RABBITMQ")
+    log_from_server(req["curriculum_vitae"]["header"]["email"], req["path"], "SENT_TO_RABBITMQ")
     return req['path']
 
 

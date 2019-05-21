@@ -1,4 +1,4 @@
-import CurriculumVitae, datetime, time
+import datetime, time
 import string, random, os
 import subprocess, json
 import timestring
@@ -27,11 +27,11 @@ def date_comparer_2(x):
     return (end_date, start_date)
     
 class CvRenderBase:
-    def render(cv: CurriculumVitae):
+    def render(cv):
         raise NotImplementedError
 
 class CvRenderTexToPdf(CvRenderBase):   
-    def render(cv: CurriculumVitae, cvRender: CvRenderBase, baseFolder: str, path: str=None, command: str="pdflatex", params={}, resources={}):
+    def render(cv, cvRender: CvRenderBase, baseFolder: str, path: str=None, command: str="pdflatex", params={}, resources={}):
         if path == None:
             path=id_gen()
         os.system("mkdir Output/" + path)
@@ -75,7 +75,7 @@ class CvRenderJsonRequest(CvRenderBase):
         for item in cv.items:
             dic[item.__name__] = CvRenderJsonRequest.extract_list(cv.items[item])
         return dic
-    def render(cv: CurriculumVitae):
+    def render(cv):
         return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
 import sys
 def text_clean(text):
@@ -138,10 +138,10 @@ class CvRenderCheetahTemplate(CvRenderBase):
         baseDate = timestring.Date(baseDate).date
         itemDict[key] = baseDate
         return itemDict
-    def extract_item(cv: CurriculumVitae, key):
+    def extract_item(cv, key):
         ret = []
-        if key in cv.items:
-            for item in cv.items[key]:
+        if key in cv.__dict__:
+            for item in cv.__dict__[key]:
                 itemDict = {}
                 for var in vars(item):
                     if eval("item." + var) == None:
@@ -167,8 +167,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
     def extract_skills(cv):
         skills = []
         aggSkills = {}
-        if 'CvSkillItem' in cv.items and cv.items['CvSkillItem'] != []:
-            for skill in cv.items['CvSkillItem']:
+        if 'skill' in cv.__dict__ and cv.__dict__['skill'] != []:
+            for skill in cv.__dict__['skill']:
                 cleanName = text_clean(skill.skill_name)
                 cleanLevel = text_clean(skill.skill_level)
                 cleanType = text_clean(skill.skill_type)
@@ -226,7 +226,7 @@ class CvRenderCheetahTemplate(CvRenderBase):
         return ', '.join(formated_skills)
 
 
-    def render(cv: CurriculumVitae, baseFolder: str, params={}, resources={}):
+    def render(cv, baseFolder: str, params={}, resources={}):
         file = open("Templates/" + baseFolder + "/main.tex", "r", encoding="utf-8")
         templateString = file.read()
         file.close()
@@ -239,12 +239,12 @@ class CvRenderCheetahTemplate(CvRenderBase):
             cvDict[var] = text_clean(eval("cv.header." + var))
         if cv.header.birthday != None:
             cvDict["birthday"] = timestring.Date(cv.header.birthday).date
-        cvDict["work_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvWorkExperienceItem')
-        cvDict["education_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvEducationalExperienceItem')
-        cvDict["academic_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvAcademicProjectItem')
-        cvDict["language_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvLanguageItem')
-        cvDict["project_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvImplementationProjectItem')
-        cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, 'CvAchievementItem')
+        cvDict["work_array"] = CvRenderCheetahTemplate.extract_item(cv, 'work')
+        cvDict["education_array"] = CvRenderCheetahTemplate.extract_item(cv, 'education')
+        cvDict["academic_array"] = CvRenderCheetahTemplate.extract_item(cv, 'academic')
+        cvDict["language_array"] = CvRenderCheetahTemplate.extract_item(cv, 'language')
+        cvDict["project_array"] = CvRenderCheetahTemplate.extract_item(cv, 'project')
+        cvDict["achievement_array"] = CvRenderCheetahTemplate.extract_item(cv, 'achievement')
         cvDict["skill_dict"] = CvRenderCheetahTemplate.extract_skills(cv)
         cvDict["params"] = params
         cvDict["break_into_items"] = CvRenderCheetahTemplate.break_into_items
