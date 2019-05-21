@@ -1,0 +1,17 @@
+{
+  "typename": "CvInstitution",
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "state": {
+      "type": "CvLocation",
+      "required": false,
+      "field_info": {},
+      "default": null
+    }
+  }
+}

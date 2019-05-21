@@ -13,6 +13,7 @@ from flask_cors import CORS
 import pika
 import gridfs
 import pymongo 
+from fieldy import Encoder, SchemaManager
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -32,6 +33,11 @@ def get_date_field_or_none(req, field_name):
     return datetime.strptime(field, '%Y-%m-%d').date()
 
 def get_parse_string(cv_key, item):
+    if cv_key == 'CvLocation':
+      sm = SchemaManager('./Models/')
+      sm.load('CvLocation')
+      enc = Encoder(sm)
+      return enc.to_object(item, 'CvLocation')
     gen_cv_item = cv_key + '('
 
     for key, value in item.items():
@@ -76,22 +82,20 @@ def render_from_cv_dict(req):
 
     log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "GENERATING_CV_AST")
 
-    req_cv = req
     path = None
     if 'path' in req:
         path = req['path']
     params = {}
     render_key = "awesome"
     params['section_order'] = ['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill']
-    if 'curriculum_vitae' in req:
-        req_cv = req['curriculum_vitae']
-        if 'render_key' in req:
-            render_key = req['render_key']
-        params = render_map[render_key]['fixed_params']
-        if 'params' in req:
-            params.update(req['params'])
-        if 'section_order' in req:
-            params['section_order'] = req['section_order']
+    req_cv = req['curriculum_vitae']
+    if 'render_key' in req:
+        render_key = req['render_key']
+    params = render_map[render_key]['fixed_params']
+    if 'params' in req:
+        params.update(req['params'])
+    if 'section_order' in req:
+        params['section_order'] = req['section_order']
 
     if 'CvHeaderItem' not in req_cv:
         log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
