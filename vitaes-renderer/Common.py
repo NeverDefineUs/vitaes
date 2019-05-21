@@ -17,54 +17,6 @@ from fieldy import Encoder, SchemaManager
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-def parse_date(str):
-    return timestring.Date(str).date
-
-def get_field_or_none(req, field_name):
-    if field_name in req.keys():
-        return req[field_name]
-    return None
-
-def get_date_field_or_none(req, field_name):
-    field = get_field_or_none(req, field_name)
-    if field is None:
-        return None
-    return datetime.strptime(field, '%Y-%m-%d').date()
-
-def get_parse_string(cv_key, item):
-    if cv_key == 'CvLocation':
-      sm = SchemaManager('./Models/')
-      sm.load('CvLocation')
-      enc = Encoder(sm)
-      return enc.to_object(item, 'CvLocation')
-    gen_cv_item = cv_key + '('
-
-    for key, value in item.items():
-        gen_cv_item = gen_cv_item + "{0}=".format(key)
-        if type(value) is dict:
-            for in_key, in_value in value.items():
-                inside_item = get_parse_string(in_key, in_value)
-                gen_cv_item = gen_cv_item + "{0},".format(inside_item)
-                break
-        elif key[-4:] == "date":
-            gen_cv_item = gen_cv_item + "parse_date('{0}'),".format(value)
-        elif type(value) is str:
-            gen_cv_item = gen_cv_item + "\"\"\"{0}\"\"\",".format(value.replace("\"","\\\""))
-        else:
-            gen_cv_item = gen_cv_item + "'{0}',".format(value)
-
-    gen_cv_item = gen_cv_item + ')'
-
-    return gen_cv_item
-
-def parse_item(cv_key, item):
-    try:
-        cv_item = eval(get_parse_string(cv_key, item))
-    except TypeError as err:
-        abort(400, err)
-
-    return cv_item
-
 render_map = {}
 def refresh_render_map():
     db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
