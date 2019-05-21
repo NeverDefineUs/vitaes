@@ -1,35 +1,5 @@
 from datetime import datetime
 
-
-class CvItem:
-    def __init__(self):
-        self.item_type = self.__class__.__name__
-
-    def __str__(self):
-        x = "{ "
-        for var in vars(self):
-            if getattr(self, var) is not None:
-                var_str = str(getattr(self, var))
-                x += str(var) + ": " + var_str + ", "
-        x += "}"
-        return x
-
-
-class CvLanguageItem(CvItem):
-    def __init__(self, language: str, level: str = None):
-        CvItem.__init__(self)
-        self.language = language
-        self.level = level
-
-
-class CvSkillItem(CvItem):
-    def __init__(self, skill_name: str, skill_level: str = None, skill_type: str = None):
-        CvItem.__init__(self)
-        self.skill_name = skill_name
-        self.skill_level = skill_level
-        self.skill_type = skill_type
-
-
 class CvExperienceItem(CvItem):
     def __init__(self,
                  institution: CvInstitution,

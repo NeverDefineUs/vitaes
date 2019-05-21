@@ -1,0 +1,23 @@
+{
+  "typename": "CvSkillItem",
+  "fields": {
+    "skill_name": {
+      "type": "string",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "skill_level": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "skill_type": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    }
+  }
+}
