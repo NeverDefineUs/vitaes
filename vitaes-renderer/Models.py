@@ -1,20 +1,5 @@
 from datetime import datetime
 
-class CvAcademicProjectItem(CvProjectItem):
-    def __init__(self,
-                 name: str,
-                 description: str = None,
-                 institution: CvInstitution = None,
-                 location: CvLocation = None,
-                 article_link: str = None,
-                 start_date: datetime = None,
-                 end_date: datetime = None
-                 ):
-        CvProjectItem.__init__(self, name=name, description=description, location=location, start_date=start_date, end_date=end_date)
-        self.article_link = article_link
-        self.institution = institution
-
-
 class CvAchievementItem(CvItem):
     def __init__(self,
                  name: str,
