@@ -1,0 +1,47 @@
+{
+  "typename": "CvImplementationProjectItem",
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "start_date": {
+      "type": "date",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "end_date": {
+      "type": "date",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "language": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "description": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "repository_link": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "location": {
+      "type": "CvLocation",
+      "required": false,
+      "field_info": {},
+      "default": null
+    }
+  }
+}

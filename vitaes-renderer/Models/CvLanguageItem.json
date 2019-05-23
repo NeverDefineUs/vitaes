@@ -1,0 +1,17 @@
+{
+  "typename": "CvLanguageItem",
+  "fields": {
+    "language": {
+      "type": "string",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "level": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    }
+  }
+}

@@ -10,7 +10,7 @@ export function updateFormFields() {
   cvFormFields = [
     {
       label: translate('work'),
-      cvkey: 'CvWorkExperienceItem',
+      cvkey: 'work',
       fields: [
         fieldsDef.institution,
         fieldsDef.role,
@@ -26,7 +26,7 @@ export function updateFormFields() {
     },
     {
       label: translate('education'),
-      cvkey: 'CvEducationalExperienceItem',
+      cvkey: 'education',
       fields: [
         fieldsDef.institution,
         fieldsDef.course,
@@ -43,7 +43,7 @@ export function updateFormFields() {
     },
     {
       label: translate('academic'),
-      cvkey: 'CvAcademicProjectItem',
+      cvkey: 'academic',
       fields: [fieldsDef.projectName, fieldsDef.startDate],
       optFields: [
         fieldsDef.endDate,
@@ -57,7 +57,7 @@ export function updateFormFields() {
     },
     {
       label: translate('achievements'),
-      cvkey: 'CvAchievementItem',
+      cvkey: 'achievement',
       fields: [
         fieldsDef.achievementName,
         fieldsDef.startDate,
@@ -75,7 +75,7 @@ export function updateFormFields() {
     },
     {
       label: translate('projects'),
-      cvkey: 'CvImplementationProjectItem',
+      cvkey: 'project',
       fields: [fieldsDef.projectName, fieldsDef.startDate],
       optFields: [
         fieldsDef.endDate,
@@ -89,7 +89,7 @@ export function updateFormFields() {
     },
     {
       label: translate('languages'),
-      cvkey: 'CvLanguageItem',
+      cvkey: 'language',
       fields: [
         fieldsDef.language,
         fieldsDef.languageLevel,
@@ -98,7 +98,7 @@ export function updateFormFields() {
     },
     {
       label: translate('skills'),
-      cvkey: 'CvSkillItem',
+      cvkey: 'skill',
       fields: [
         fieldsDef.skillName,
         fieldsDef.skillType,

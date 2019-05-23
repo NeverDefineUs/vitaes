@@ -2,10 +2,8 @@ from datetime import date, datetime
 import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
 from bson.objectid import ObjectId
-from CurriculumVitae import CurriculumVitae
 from Logger import log_from_renderer
 from I18n import *
-from Models import *
 import Renders
 import json
 import timestring
@@ -13,52 +11,10 @@ from flask_cors import CORS
 import pika
 import gridfs
 import pymongo 
+from fieldy import Encoder, SchemaManager
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
-def parse_date(str):
-    return timestring.Date(str).date
-
-def get_field_or_none(req, field_name):
-    if field_name in req.keys():
-        return req[field_name]
-    return None
-
-def get_date_field_or_none(req, field_name):
-    field = get_field_or_none(req, field_name)
-    if field is None:
-        return None
-    return datetime.strptime(field, '%Y-%m-%d').date()
-
-def get_parse_string(cv_key, item):
-    gen_cv_item = cv_key + '('
-
-    for key, value in item.items():
-        gen_cv_item = gen_cv_item + "{0}=".format(key)
-        if type(value) is dict:
-            for in_key, in_value in value.items():
-                inside_item = get_parse_string(in_key, in_value)
-                gen_cv_item = gen_cv_item + "{0},".format(inside_item)
-                break
-        elif key[-4:] == "date":
-            gen_cv_item = gen_cv_item + "parse_date('{0}'),".format(value)
-        elif type(value) is str:
-            gen_cv_item = gen_cv_item + "\"\"\"{0}\"\"\",".format(value.replace("\"","\\\""))
-        else:
-            gen_cv_item = gen_cv_item + "'{0}',".format(value)
-
-    gen_cv_item = gen_cv_item + ')'
-
-    return gen_cv_item
-
-def parse_item(cv_key, item):
-    try:
-        cv_item = eval(get_parse_string(cv_key, item))
-    except TypeError as err:
-        abort(400, err)
-
-    return cv_item
 
 render_map = {}
 def refresh_render_map():
@@ -71,45 +27,33 @@ def refresh_render_map():
 
 def render_from_cv_dict(req):
     refresh_render_map()
-    cv = CurriculumVitae(req["path"])
     ret = ""
 
-    log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "GENERATING_CV_AST")
+    log_from_renderer(req["curriculum_vitae"]["header"]["email"], req["path"], "GENERATING_CV_AST")
 
-    req_cv = req
     path = None
     if 'path' in req:
         path = req['path']
     params = {}
     render_key = "awesome"
     params['section_order'] = ['work', 'education', 'achievement', 'project', 'academic', 'language', 'skill']
-    if 'curriculum_vitae' in req:
-        req_cv = req['curriculum_vitae']
-        if 'render_key' in req:
-            render_key = req['render_key']
-        params = render_map[render_key]['fixed_params']
-        if 'params' in req:
-            params.update(req['params'])
-        if 'section_order' in req:
-            params['section_order'] = req['section_order']
+    req_cv = req['curriculum_vitae']
+    if 'render_key' in req:
+        render_key = req['render_key']
+    params = render_map[render_key]['fixed_params']
+    if 'params' in req:
+        params.update(req['params'])
+    if 'section_order' in req:
+        params['section_order'] = req['section_order']
 
-    if 'CvHeaderItem' not in req_cv:
-        log_from_renderer(req["curriculum_vitae"]["CvHeaderItem"]["email"], cv.cv_hash, "MISSING_HEADER")
+    if 'header' not in req_cv:
+        log_from_renderer('', cv.cv_hash, "MISSING_HEADER")
         abort(400, "Missing header")
 
-    for cv_key in req_cv.keys():
-        req_key = req_cv[cv_key]
-
-        items = []
-
-        if cv_key == 'CvHeaderItem':
-            items.append(req_key)
-        else:
-            items = req_key
-
-        for item in items:
-            cv_item = parse_item(cv_key, item)
-            cv.add(cv_item)
+    sm = SchemaManager('./Models/')
+    sm.load('Cv')
+    enc = Encoder(sm)
+    cv = enc.to_object(req_cv, 'Cv')
 
     log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 

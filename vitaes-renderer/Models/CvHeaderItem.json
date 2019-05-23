@@ -1,0 +1,53 @@
+{
+  "typename": "CvHeaderItem",
+  "fields": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "email": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "phone": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "linkedin": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "github": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "address": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "birthday": {
+      "type": "date",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "homepage": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    }
+  }
+}
