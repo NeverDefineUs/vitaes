@@ -76,11 +76,6 @@ class NavBar extends React.Component {
               >
                 {translate('create_cv')}
               </Nav.Link>
-              <Nav.Link
-                href="/hub"
-              >
-                Template Hub
-              </Nav.Link>
               <NavDropdown title={translate('about_the_project')}>
                 <NavDropdown.Item href="/about">{translate('about_the_project')}</NavDropdown.Item>
                 <NavDropdown.Item href="/privacy">{translate('privacy_policy')}</NavDropdown.Item>
@@ -92,11 +87,6 @@ class NavBar extends React.Component {
               {user !== null && permissions !== null && permissions[user.uid]
                 ? (
                   <NavDropdown title={translate('dev_options')} id="basic-nav-dropdown">
-                    <NavDropdown.Item
-                      href="/create-template"
-                    >
-                      {translate('create_template')}
-                    </NavDropdown.Item>
                     <NavDropdown.Item
                       href="/alert-manager"
                     >
