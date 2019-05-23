@@ -79,16 +79,16 @@ class Builder extends Component {
     if (this.state.downloading) {
       return;
     }
-    if (!validateEmail(this.props.userData.cv.CvHeaderItem.email)) {
+    if (!validateEmail(this.props.userData.cv.header.email)) {
       toast.error(translate('invalid_email_format'));
       return;
     }
-    if (this.props.userData.cv.CvHeaderItem.name === '') {
+    if (this.props.userData.cv.header.name === '') {
       toast.error(translate('invalid_name_format'));
       return;
     }
-    if (this.props.userData.cv.CvHeaderItem.birthday) {
-      if (!validateDate(this.props.userData.cv.CvHeaderItem.birthday)) {
+    if (this.props.userData.cv.header.birthday) {
+      if (!validateDate(this.props.userData.cv.header.birthday)) {
         toast.error(translate('invalid_birthday_format'));
         return;
       }
@@ -186,9 +186,9 @@ class Builder extends Component {
 
   handleChangeHeader(event) {
     const aux = this.props.userData.cv;
-    aux.CvHeaderItem[event.target.name] = event.target.value;
-    if (aux.CvHeaderItem[event.target.name] === '') {
-      delete aux.CvHeaderItem[event.target.name];
+    aux.header[event.target.name] = event.target.value;
+    if (aux.header[event.target.name] === '') {
+      delete aux.header[event.target.name];
     }
     this.setCv(aux);
   }

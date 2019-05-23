@@ -1,0 +1,59 @@
+{
+  "typename": "Cv",
+  "fields": {
+    "cv_hash": {
+      "type": "string",
+      "required": false,
+      "field_info": {},
+      "default": null
+    },
+    "header": {
+      "type": "CvHeaderItem",
+      "required": true,
+      "field_info": {},
+      "default": null
+    },
+    "academic": {
+      "type": "[CvAcademicProjectItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    },
+    "achievement": {
+      "type": "[CvAchievementItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    },
+    "education": {
+      "type": "[CvEducationExperienceItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    },
+    "project": {
+      "type": "[CvImplementationProjectItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    },
+    "language": {
+      "type": "[CvLanguageItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    },
+    "skill": {
+      "type": "[CvSkillItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    },
+    "work": {
+      "type": "[CvWorkExperienceItem]",
+      "required": false,
+      "field_info": {},
+      "default": []
+    }
+  }
+}

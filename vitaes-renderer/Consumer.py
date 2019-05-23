@@ -47,7 +47,7 @@ def get_cv_queue(ch, method, properties, body):
         body=body.decode('utf-8')
         dic = json.loads(body)
         cv_type = dic["render_key"]
-        email = dic["curriculum_vitae"]["CvHeaderItem"]["email"]
+        email = dic["curriculum_vitae"]["header"]["email"]
         log_from_renderer(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
         lang = dic["params"]["lang"]
         ans = render_from_cv_dict(dic)
