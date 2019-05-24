@@ -3,11 +3,9 @@ import time, sys
 from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
-from Common import render_map, render_from_cv_dict, refresh_render_map
+from Common import render_map, refresh_render_map
 from Logger import log_from_server
 import pika
-import gridfs
-import pymongo 
 import redis
 
 app = Flask(__name__)
