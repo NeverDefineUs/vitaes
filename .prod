@@ -1,0 +1,2 @@
+export VITAES_ENV=production
+echo "Switching to production environment..."

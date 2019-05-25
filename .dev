@@ -1,0 +1,2 @@
+export VITAES_ENV=development
+echo "Switching to development environment..."

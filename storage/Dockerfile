@@ -1,10 +1,9 @@
 FROM golang:1.12-alpine AS build-env
 RUN apk update && apk upgrade && apk add --no-cache \
-    git \
-    build-base
+    git
 ENV GOPATH=/
 ENV GO111MODULE=on
-WORKDIR /project/
+WORKDIR /vitaes
 COPY go.mod .
 RUN go mod download
 COPY . .
@@ -13,5 +12,5 @@ RUN go build -o app
 
 FROM alpine
 WORKDIR /
-COPY --from=build-env /project/app /
+COPY --from=build-env /vitaes/app /
 ENTRYPOINT ./app

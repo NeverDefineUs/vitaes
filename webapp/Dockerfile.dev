@@ -1,5 +1,5 @@
-FROM node:11.14-slim as react-build
-WORKDIR /project
+FROM node:11.14-slim
+WORKDIR /vitaes
 COPY package.json yarn.lock ./
 RUN yarn
 COPY . .
