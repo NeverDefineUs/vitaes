@@ -4,7 +4,7 @@ import json, sys, hashlib
 from Common import render_map, render_from_cv_dict
 from Logger import log_from_renderer
 import pika
-import redis
+import requests
 import traceback
 from influxdb import InfluxDBClient
 
@@ -24,18 +24,16 @@ while tries < 10:
 while tries < 10:
     time.sleep(10)
     tries += 1
-    client = InfluxDBClient(host='tsdb', port=8086, username='root', password='root')
+    client = InfluxDBClient(host='influxdb', port=8086, username='root', password='root')
     try:
       try:
         client.create_database('logs')
       except:
-        print('tsdb already created')
+        print('influxdb already created')
       client.switch_database('logs')
       break
     except:
       print('retry')
-
-db = redis.Redis(host='redis')
 
 def get_cv_queue(ch, method, properties, body):
     mes = ""
@@ -54,8 +52,12 @@ def get_cv_queue(ch, method, properties, body):
         file = open('Output/' + ans + '.pdf', 'rb')
         ansb = file.read()
         file.close()
-        log_from_renderer(email, dic["path"], "STORING_IN_REDIS")
-        db.set(name=ans, value=ansb, ex=600)
+        log_from_renderer(email, dic["path"], "SENDING_TO_STORAGE")
+        requests.post('http://storage:6000/', data = {
+            'email': email,
+            'id': ans,
+            'content': ansb
+        })
         mes = "OK"
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()

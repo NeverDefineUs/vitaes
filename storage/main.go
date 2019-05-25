@@ -1,12 +1,13 @@
 package main
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func failOnError(err error, msg string) {
@@ -16,24 +17,28 @@ func failOnError(err error, msg string) {
 }
 
 func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
-	ids, ok := r.URL.Query()["id"]
-	if !ok || len(ids[0]) < 1 {
-		failOnError(errors.New("param missing"), "Failed to get url params")
-	}
-
-	id := ids[0]
+	vars := mux.Vars(r)
+	email := vars["email"]
+	id := vars["cvid"]
 
 	res, err := client.Exists(id).Result()
 	failOnError(err, "Failed to query redis")
 
 	if res == 0 {
 		w.WriteHeader(http.StatusNotFound)
+
+		log.Println(email, id, "STORAGE", "PDF_NOT_READY_YET", "")
+		// logger.LogStep(email, id, "STORAGE", "PDF_NOT_READY_YET", "")
 	} else {
 		w.WriteHeader(http.StatusAccepted)
+		w.Header().Set("Content-type", "application/pdf")
 
-		txt, err := client.Get(id).Result()
+		pdf, err := client.Get(id).Result()
 		failOnError(err, "Failed to query redis")
-		w.Write([]byte(txt))
+		w.Write([]byte(pdf))
+
+		log.Println(email, id, "STORAGE", "PDF_RETRIEVED_FROM_REDIS", "")
+		// logger.LogStep(email, id, "STORAGE", "PDF_RETRIEVED_FROM_REDIS", "")
 	}
 }
 
@@ -41,20 +46,15 @@ func storeFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	err := r.ParseForm()
 	failOnError(err, "Failed to parse params")
 
+	email := r.Form.Get("email")
 	id := r.Form.Get("id")
 	content := r.Form.Get("content")
 
 	err = client.Set(id, content, time.Duration(10)*time.Minute).Err()
 	failOnError(err, "Failed to store on redis")
-}
 
-func handler(w http.ResponseWriter, r *http.Request, client *redis.Client) {
-	switch r.Method {
-	case "GET":
-		retrieveFile(w, r, client)
-	case "POST":
-		storeFile(w, r, client)
-	}
+	log.Println(email, id, "STORAGE", "STORING_IN_REDIS", "")
+	// logger.LogStep(email, id, "STORAGE", "STORING_IN_REDIS", "")
 }
 
 func main() {
@@ -64,8 +64,13 @@ func main() {
 		DB:       0,  // use default DB
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		handler(w, r, client)
-	})
-	log.Fatal(http.ListenAndServe(":6000", nil))
+	router := mux.NewRouter()
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		storeFile(w, r, client)
+	}).Methods("POST")
+	router.HandleFunc("/{cvid}/{email}/", func(w http.ResponseWriter, r *http.Request) {
+		retrieveFile(w, r, client)
+	}).Methods("GET")
+	handler := cors.Default().Handler(router)
+	log.Fatal(http.ListenAndServe(":6000", handler))
 }

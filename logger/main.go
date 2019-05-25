@@ -7,7 +7,8 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/gorilla/mux"
+	_ "github.com/mattn/go-sqlite3" // sqlite
 	"github.com/rs/cors"
 )
 
@@ -17,16 +18,10 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	err := r.ParseForm()
-	failOnError(err, "Failed to parse params")
+var db *sql.DB
 
-	email := r.Form.Get("email")
-	cvHash := r.Form.Get("cv_hash")
-	origin := r.Form.Get("origin")
-	step := r.Form.Get("step")
-	data := r.Form.Get("data")
-
+// LogStep logs data
+func LogStep(email, cvHash, origin, step, data string) {
 	logStmt := `
 	INSERT INTO "cv_gen_tracking"(email, cv_hash, origin, step, data) VALUES(
 		?,
@@ -47,11 +42,17 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	failOnError(err, "Failed to execute insert query")
 }
 
-func handler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	switch r.Method {
-	case "POST":
-		vitaesLog(w, r, db)
-	}
+func logHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	failOnError(err, "Failed to parse params")
+
+	email := r.Form.Get("email")
+	cvHash := r.Form.Get("cv_hash")
+	origin := r.Form.Get("origin")
+	step := r.Form.Get("step")
+	data := r.Form.Get("data")
+
+	LogStep(email, cvHash, origin, step, data)
 }
 
 func main() {
@@ -85,13 +86,8 @@ func main() {
 		}
 	}()
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
-	})
-	handler := c.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		handler(w, r, db)
-	}))
-	http.Handle("/", handler)
-	log.Fatal(http.ListenAndServe(":6000", nil))
+	router := mux.NewRouter()
+	router.HandleFunc("/", logHandler).Methods("POST")
+	handler := cors.Default().Handler(router)
+	log.Fatal(http.ListenAndServe(":6000", handler))
 }

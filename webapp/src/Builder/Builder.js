@@ -12,7 +12,7 @@ import Dropzone from 'react-dropzone';
 import BugReporter from 'BugReporter';
 import { translate, getActiveLocale } from 'i18n/locale';
 import capitalize from 'utils/capitalize';
-import { getApiHostname } from 'utils/getHostname';
+import { getApiHostname, getStorageHostname } from 'utils/getHostname';
 import hashCv from 'utils/hashCv';
 import logger from 'utils/logger';
 import removeDisabled from 'utils/removeDisabled';
@@ -126,7 +126,7 @@ class Builder extends Component {
         toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
           fetch(
-            `${window.location.protocol}//${getApiHostname()}/cv/${id}/`,
+            `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/`,
             {
               method: 'GET',
               retries: 20,

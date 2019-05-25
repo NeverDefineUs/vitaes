@@ -4,7 +4,6 @@ timestring
 cheetah3
 requests
 pika
-redis
 babel
 influxdb
 fieldy

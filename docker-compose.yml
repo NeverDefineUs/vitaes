@@ -9,13 +9,16 @@ services:
     volumes:
     - ./webapp/src:/vitaes/src
     - ./webapp/public:/vitaes/public
+    depends_on:
+    - storage
     networks:
     - net
   api:
     container_name: api
-    build: renderer-api/.
+    build:
+      context: api/.
+      dockerfile: Dockerfile.dev
     image: dev-api
-    command: python3 Server.py
     restart: always
     ports:
     - 6001:6000
@@ -26,13 +29,14 @@ services:
     - net
   renderer:
     container_name: renderer
-    build: renderer-api/.
+    build: renderer/.
     image: dev-renderer
     command: python3 Consumer.py
     restart: always
     depends_on:
     - rabbitmq
     - logger
+    - storage
     networks:
     - net
   nginx:
@@ -47,6 +51,7 @@ services:
     - api
     - webapp
     - logger
+    - sqlite-web
     networks:
     - net
   rabbitmq:
@@ -66,14 +71,16 @@ services:
     image: grafana/grafana
     restart: always
     ports:
-    - 6003:3000
+    - 6004:3000
     volumes:
     - grafana-volume:/var/lib/grafana
     networks:
     - net
   logger:
     container_name: logger
-    build: logger/.
+    build:
+      context: logger/.
+      dockerfile: Dockerfile.dev
     image: dev-logger
     restart: always
     environment:
@@ -82,6 +89,19 @@ services:
     - 6002:6000
     volumes:
     - log-volume:/data
+    networks:
+    - net
+  storage:
+    container_name: storage
+    build:
+      context: storage/.
+      dockerfile: Dockerfile.dev
+    image: dev-storage
+    restart: always
+    ports:
+    - 6003:6000
+    depends_on:
+    - redis
     networks:
     - net
   influxdb:
@@ -97,7 +117,7 @@ services:
     image: coleifer/sqlite-web
     restart: always
     ports:
-    - 6004:8080
+    - 6005:8080
     environment:
     - SQLITE_DATABASE
     volumes:
