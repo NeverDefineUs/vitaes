@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -10,9 +11,13 @@ import (
 	"github.com/rs/cors"
 )
 
+func errMsg(err error, msg string) string {
+	return fmt.Sprintf("%s: %s", msg, err)
+}
+
 func failOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
+		log.Fatal(errMsg(err, msg))
 	}
 }
 
@@ -22,39 +27,63 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 	id := vars["cvid"]
 
 	res, err := client.Exists(id).Result()
-	failOnError(err, "Failed to query redis")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to query redis"), http.StatusInternalServerError)
+		return
+	}
 
 	if res == 0 {
 		w.WriteHeader(http.StatusNotFound)
 
 		log.Println(email, id, "STORAGE", "PDF_NOT_READY_YET", "")
-		// logger.LogStep(email, id, "STORAGE", "PDF_NOT_READY_YET", "")
+		// msg, err := logger.LogStep(email, id, "STORAGE", "PDF_NOT_READY_YET", "")
+		// if err != nil {
+		// 	http.Error(w, errMsg(err, msg), http.StatusInternalServerError)
+		// 	return
+		// }
 	} else {
 		w.WriteHeader(http.StatusAccepted)
 		w.Header().Set("Content-type", "application/pdf")
 
 		pdf, err := client.Get(id).Result()
-		failOnError(err, "Failed to query redis")
+		if err != nil {
+			http.Error(w, errMsg(err, "Failed to query redis"), http.StatusInternalServerError)
+			return
+		}
 		w.Write([]byte(pdf))
 
 		log.Println(email, id, "STORAGE", "PDF_RETRIEVED_FROM_REDIS", "")
-		// logger.LogStep(email, id, "STORAGE", "PDF_RETRIEVED_FROM_REDIS", "")
+		// msg, err := logger.LogStep(email, id, "STORAGE", "PDF_RETRIEVED_FROM_REDIS", "")
+		// if err != nil {
+		// 	http.Error(w, errMsg(err, msg), http.StatusInternalServerError)
+		// 	return
+		// }
 	}
 }
 
 func storeFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	err := r.ParseForm()
-	failOnError(err, "Failed to parse params")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to parse params"), http.StatusInternalServerError)
+		return
+	}
 
 	email := r.Form.Get("email")
 	id := r.Form.Get("id")
 	content := r.Form.Get("content")
 
 	err = client.Set(id, content, time.Duration(10)*time.Minute).Err()
-	failOnError(err, "Failed to store on redis")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to store on redis"), http.StatusInternalServerError)
+		return
+	}
 
 	log.Println(email, id, "STORAGE", "STORING_IN_REDIS", "")
-	// logger.LogStep(email, id, "STORAGE", "STORING_IN_REDIS", "")
+	// msg, err := logger.LogStep(email, id, "STORAGE", "STORING_IN_REDIS", "")
+	// if err != nil {
+	// 	http.Error(w, errMsg(err, msg), http.StatusInternalServerError)
+	// 	return
+	// }
 }
 
 func main() {

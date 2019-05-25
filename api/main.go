@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,29 +12,45 @@ import (
 	"github.com/streadway/amqp"
 )
 
+func errMsg(err error, msg string) string {
+	return fmt.Sprintf("%s: %s", msg, err)
+}
+
 func failOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
+		log.Fatal(errMsg(err, msg))
 	}
 }
 
 func templatesHandler(w http.ResponseWriter, r *http.Request) {
 	files, err := ioutil.ReadDir("/vitaes/templates/")
-	failOnError(err, "Failed to get templates")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to get templates"), http.StatusInternalServerError)
+		return
+	}
 
 	var templates map[string]interface{}
 	templates = make(map[string]interface{})
 	for _, file := range files {
 		var template map[string]interface{}
 		jsonFile, err := ioutil.ReadFile("/vitaes/templates/" + file.Name())
-		failOnError(err, "Failed to read JSON file contents")
+		if err != nil {
+			http.Error(w, errMsg(err, "Failed to read JSON file contents"), http.StatusInternalServerError)
+			return
+		}
 		err = json.Unmarshal(jsonFile, &template)
-		failOnError(err, "Failed to parse JSON file contents")
+		if err != nil {
+			http.Error(w, errMsg(err, "Failed to parse JSON file contents"), http.StatusInternalServerError)
+			return
+		}
 		templates[template["name"].(string)] = template
 	}
 
 	templatesBytes, err := json.Marshal(templates)
-	failOnError(err, "Failed to marshal templates JSON")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to marshal templates JSON"), http.StatusInternalServerError)
+		return
+	}
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(templatesBytes)
@@ -42,11 +59,17 @@ func templatesHandler(w http.ResponseWriter, r *http.Request) {
 func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, q amqp.Queue) {
 	body, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
-	failOnError(err, "Failed to parse body")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to parse body"), http.StatusInternalServerError)
+		return
+	}
 
 	var data map[string]interface{}
 	err = json.Unmarshal(body, &data)
-	failOnError(err, "Failed to parse json")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to parse json"), http.StatusInternalServerError)
+		return
+	}
 
 	err = ch.Publish(
 		"",     // exchange
@@ -58,7 +81,10 @@ func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, 
 			Body:        body,
 		},
 	)
-	failOnError(err, "Failed to publish a message")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to publish a message"), http.StatusInternalServerError)
+		return
+	}
 
 	cv := data["curriculum_vitae"].(map[string]interface{})
 	header := cv["header"].(map[string]interface{})
