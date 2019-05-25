@@ -4,7 +4,7 @@ from flask import Flask, request, abort, send_file
 import json
 from flask_cors import CORS
 from Common import render_map, refresh_render_map
-from Logger import log_from_server
+from Logger import log_from_api
 import pika
 import redis
 
@@ -30,7 +30,7 @@ def process_curr_delayed():
     channel = connection.channel()
     channel.queue_declare(queue='cv_requests')
     channel.basic_publish(exchange='',routing_key='cv_requests', body=json.dumps(req))
-    log_from_server(req["curriculum_vitae"]["header"]["email"], req["path"], "SENT_TO_RABBITMQ")
+    log_from_api(req["curriculum_vitae"]["header"]["email"], req["path"], "SENT_TO_RABBITMQ")
     return req['path']
 
 
@@ -46,4 +46,4 @@ def get_curr(cvid):
         abort(404, "Probably not ready")
     
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=6000)

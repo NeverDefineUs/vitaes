@@ -5,7 +5,6 @@ cheetah3
 requests
 pika
 redis
-pymongo
 babel
 influxdb
 fieldy

@@ -1,23 +1,22 @@
 version: '3'
 services:
   webapp:
+    build:
+      context: vitaes-webapp/.
+      dockerfile: Dockerfile.dev
+    image: vitaes/webapp
     volumes:
     - ./vitaes-webapp/src:/project/src
-    - webapp-volume:/project/build
     - ./vitaes-webapp/public:/project/public
-    build: vitaes-webapp/.
-    image: vitaes/webapp
-    command: yarn start
     networks:
     - net
-    environment:
-    - USE_PROD
-  server:
+  api:
     build: vitaes-renderer/.
-    image: vitaes/server
-    ports:
-    - "5000:5000"
+    image: vitaes/api
+    command: python3 Server.py
     restart: always
+    ports:
+    - 6001:6000
     depends_on:
     - rabbitmq
     - logger
@@ -25,8 +24,8 @@ services:
     - net
   renderer:
     build: vitaes-renderer/.
-    command: python3 Consumer.py
     image: vitaes/renderer
+    command: python3 Consumer.py
     restart: always
     depends_on:
     - rabbitmq
@@ -35,15 +34,13 @@ services:
     - net
   nginx:
     build: vitaes-nginx-http/.
-    volumes:
-    - webapp-volume:/project
     restart: always
-    ports:
-    - "80:80"
     image: vitaes/nginxhttp
+    ports:
+    - 80:80
     depends_on:
     - grafana
-    - server
+    - api
     - webapp
     - logger
     networks:
@@ -63,21 +60,21 @@ services:
     container_name: grafana
     restart: always
     ports:
-      - 3000:3000
+    - 6003:3000
     volumes:
-      - grafana-volume:/var/lib/grafana
+    - grafana-volume:/var/lib/grafana
     networks:
     - net
   logger:
     build: vitaes-logger/.
     image: vitaes/logger
     restart: always
-    ports:
-      - 8017:8017
-    volumes:
-    - log-volume:/data
     environment:
     - SQLITE_DATABASE
+    ports:
+    - 6002:6000
+    volumes:
+    - log-volume:/data
     networks:
     - net
   tsdb:
@@ -85,41 +82,26 @@ services:
     container_name: tsdb
     restart: always
     volumes:
-      - influxdb-volume:/var/lib/influxdb
-    networks:
-    - net
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: vitaes
-    volumes:
-    - mongodb:/data/db
-    - ./mongobackup:/mbckp
+    - influxdb-volume:/var/lib/influxdb
     networks:
     - net
   sqlite-web:
     image: coleifer/sqlite-web
     restart: always
     ports:
-    - 34964:8080
-    volumes:
-    - log-volume:/data
+    - 6004:8080
     environment:
     - SQLITE_DATABASE
+    volumes:
+    - log-volume:/data
     networks:
     - net
 volumes:
-  mongodb:
-    external: true
   grafana-volume:
     external: true
   influxdb-volume:
     external: true
   log-volume:
-    external: true
-  webapp-volume:
     external: true
 networks:
   net:

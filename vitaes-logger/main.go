@@ -56,7 +56,7 @@ func handler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 func main() {
 	file := os.Getenv("SQLITE_DATABASE")
-	db, err := sql.Open("sqlite3", "./data/"+file)
+	db, err := sql.Open("sqlite3", "/data/"+file)
 	failOnError(err, "Failed to initalize database connection")
 	defer db.Close()
 
@@ -93,5 +93,5 @@ func main() {
 		handler(w, r, db)
 	}))
 	http.Handle("/", handler)
-	log.Fatal(http.ListenAndServe(":8017", nil))
+	log.Fatal(http.ListenAndServe(":6000", nil))
 }

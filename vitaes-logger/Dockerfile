@@ -1,8 +1,10 @@
 FROM golang:1.12-alpine AS build-env
-RUN apk update && apk upgrade && apk add git build-base
+RUN apk update && apk upgrade && apk add --no-cache \
+    git \
+    build-base
 ENV GOPATH=/
 ENV GO111MODULE=on
-WORKDIR /src/github.com/neverdefineus/vitaes/vitaes-logger/
+WORKDIR /project/
 COPY go.mod .
 RUN go mod download
 COPY . .
@@ -11,6 +13,5 @@ RUN go build -o app
 
 FROM alpine
 WORKDIR /
-COPY --from=build-env /src/github.com/neverdefineus/vitaes/vitaes-logger/app /
-EXPOSE 8017
+COPY --from=build-env /project/app /
 ENTRYPOINT ./app

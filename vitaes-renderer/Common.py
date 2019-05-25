@@ -1,7 +1,6 @@
 from datetime import date, datetime
 import time, string, random, os, sys
 from flask import Flask, request, abort, send_file
-from bson.objectid import ObjectId
 from Logger import log_from_renderer
 from I18n import *
 import Renders
@@ -9,8 +8,7 @@ import json
 import timestring
 from flask_cors import CORS
 import pika
-import gridfs
-import pymongo 
+import glob
 from fieldy import Encoder, SchemaManager
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
@@ -18,12 +16,10 @@ def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
 
 render_map = {}
 def refresh_render_map():
-    db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
-    client = db.template_info
-    for model in client.find():
-        data = model.copy()
-        del data['_id']
-        render_map[data['name']] = data
+    for filename in glob.glob('Templates/*.json'):
+        with open(filename) as json_file:
+            data = json.load(json_file)
+            render_map[data['name']] = data
 
 def render_from_cv_dict(req):
     refresh_render_map()
@@ -58,23 +54,6 @@ def render_from_cv_dict(req):
     log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 
     baseFolder = render_map[render_key]['base_folder']
-    if baseFolder.startswith("mongo://"):
-        db = pymongo.MongoClient('mongodb://root:vitaes@mongo', 27017).vitaes
-        gfs = gridfs.GridFS(db)
-        mongoId = baseFolder[8:]
-        baseFolder = path
-        os.system("mkdir Templates/" + path)
-        zip_gout = gfs.find({"_id": ObjectId(mongoId)})
-        zip_file = zip_gout[0]
-        for zip_f in zip_gout:
-            if zip_f._id.__str__() == mongoId:
-                zip_file = zip_f
-        zip_file = zip_file.read()
-        os.system("touch Templates/" + path + "/main.zip")
-        file = open("Templates/" + path + "/main.zip", "wb")
-        file.write(zip_file)
-        file.close()
-        os.system("unzip Templates/" + path + "/main.zip -d Templates/" + path)
 
     if 'lang' not in params:
       params['lang'] = 'en_US'
