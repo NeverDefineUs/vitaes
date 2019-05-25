@@ -1,4 +1,4 @@
-FROM node:11.14-alpine as react-build
+FROM node:11.14-slim as react-build
 WORKDIR /project
 COPY package.json yarn.lock ./
 RUN yarn
