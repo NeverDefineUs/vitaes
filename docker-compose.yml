@@ -1,125 +1,135 @@
 version: '3'
 services:
   webapp:
+    container_name: webapp
+    build:
+      context: webapp/.
+      dockerfile: Dockerfile.dev
+    image: dev-webapp
     volumes:
-    - ./vitaes-webapp/src:/project/src
-    - webapp-volume:/project/build
-    - ./vitaes-webapp/public:/project/public
-    build: vitaes-webapp/.
-    image: vitaes/webapp
-    command: yarn start
+    - ./webapp/src:/vitaes/src
+    - ./webapp/public:/vitaes/public
+    depends_on:
+    - storage
     networks:
     - net
-    environment:
-    - USE_PROD
-  server:
-    build: vitaes-renderer/.
-    image: vitaes/server
-    ports:
-    - "5000:5000"
+  api:
+    container_name: api
+    build:
+      context: api/.
+      dockerfile: Dockerfile.dev
+    image: dev-api
     restart: always
+    ports:
+    - 6001:6000
     depends_on:
     - rabbitmq
     - logger
     networks:
     - net
   renderer:
-    build: vitaes-renderer/.
+    container_name: renderer
+    build: renderer/.
+    image: dev-renderer
     command: python3 Consumer.py
-    image: vitaes/renderer
     restart: always
     depends_on:
     - rabbitmq
     - logger
+    - storage
     networks:
     - net
   nginx:
-    build: vitaes-nginx-http/.
-    volumes:
-    - webapp-volume:/project
+    container_name: nginx
+    build: nginx/.
     restart: always
+    image: dev-nginx
     ports:
-    - "80:80"
-    image: vitaes/nginxhttp
+    - 80:80
     depends_on:
     - grafana
-    - server
+    - api
     - webapp
     - logger
+    - sqlite-web
     networks:
     - net
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:alpine
     restart: always
     networks:
     - net
   redis:
-    image: redis
+    container_name: redis
+    image: redis:alpine
     restart: always
     networks:
     - net
   grafana:
-    image: grafana/grafana
     container_name: grafana
+    image: grafana/grafana
     restart: always
     ports:
-      - 3000:3000
+    - 6004:3000
     volumes:
-      - grafana-volume:/var/lib/grafana
+    - grafana-volume:/var/lib/grafana
     networks:
     - net
   logger:
-    build: vitaes-logger/.
-    image: vitaes/logger
+    container_name: logger
+    build:
+      context: logger/.
+      dockerfile: Dockerfile.dev
+    image: dev-logger
     restart: always
-    ports:
-      - 8017:8017
-    volumes:
-    - log-volume:/data
     environment:
     - SQLITE_DATABASE
+    ports:
+    - 6002:6000
+    volumes:
+    - log-volume:/data
     networks:
     - net
-  tsdb:
+  storage:
+    container_name: storage
+    build:
+      context: storage/.
+      dockerfile: Dockerfile.dev
+    image: dev-storage
+    restart: always
+    ports:
+    - 6003:6000
+    depends_on:
+    - redis
+    networks:
+    - net
+  influxdb:
+    container_name: influxdb
     image: influxdb:1.7.4
-    container_name: tsdb
     restart: always
     volumes:
-      - influxdb-volume:/var/lib/influxdb
-    networks:
-    - net
-  mongo:
-    image: mongo
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: vitaes
-    volumes:
-    - mongodb:/data/db
-    - ./mongobackup:/mbckp
+    - influxdb-volume:/var/lib/influxdb
     networks:
     - net
   sqlite-web:
+    container_name: sqlite-web
     image: coleifer/sqlite-web
     restart: always
     ports:
-    - 34964:8080
-    volumes:
-    - log-volume:/data
+    - 6005:8080
     environment:
     - SQLITE_DATABASE
+    volumes:
+    - log-volume:/data
     networks:
     - net
 volumes:
-  mongodb:
-    external: true
   grafana-volume:
     external: true
   influxdb-volume:
     external: true
   log-volume:
-    external: true
-  webapp-volume:
     external: true
 networks:
   net:

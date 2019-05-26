@@ -1,0 +1,4 @@
+.dockerignore
+.DS_Store
+Dockerfile*
+node_modules/

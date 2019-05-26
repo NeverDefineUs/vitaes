@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logger
+spec:
+  selector:
+    matchLabels:
+      app: logger
+  template:
+    metadata:
+      labels:
+        app: logger
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: logger
+        image: vitaes/logger
+        imagePullPolicy: Always
+        env:
+        - name: SQLITE_DATABASE
+          value: "log.db"
+        volumeMounts:
+        - name: pvc-logger
+          mountPath: /data
+          subPath: logger
+      volumes:
+        - name: pvc-logger
+          persistentVolumeClaim:
+            claimName: pvc-logger
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlite-web
+spec:
+  selector:
+    matchLabels:
+      app: sqlite-web
+  template:
+    metadata:
+      labels:
+        app: sqlite-web
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: sqlite-web
+        image: coleifer/sqlite-web
+        imagePullPolicy: Always
+        env:
+        - name: SQLITE_DATABASE
+          value: "log.db"
+        volumeMounts:
+        - name: pvc-logger
+          mountPath: /data
+          subPath: logger
+      volumes:
+        - name: pvc-logger
+          persistentVolumeClaim:
+            claimName: pvc-logger
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: logger
+spec:
+  ports:
+  - port: 6000
+  selector:
+    app: logger
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqlite-web
+  annotations:
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-realm: sqlite-web
+    ingress.kubernetes.io/auth-secret: sqlite-web-pwd
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+  selector:
+    app: sqlite-web
