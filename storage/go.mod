@@ -1,10 +1,11 @@
-module github.com/NeverDefineUs/vitaes/storage
+module storage
 
 go 1.12
 
 require (
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/gorilla/mux v1.7.2
+	github.com/neverdefineus/vitaes/lib/stolas v0.0.0-20190526091426-9e52568381cd
 	github.com/onsi/ginkgo v1.8.0 // indirect
 	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/rs/cors v1.6.0
