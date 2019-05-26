@@ -38,6 +38,11 @@ func NewClient(dbFilePath string) (*Client, error) {
 	}, nil
 }
 
+// Close closes database connection
+func (c *Client) Close() {
+	c.sqliteClient.Close()
+}
+
 // LogStep logs data
 func (c *Client) LogStep(email, cvHash, origin, step, data, stacktrace string) error {
 	stmt, err := c.sqliteClient.Prepare(logStmt)
