@@ -8,10 +8,13 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/gorilla/mux"
+	"github.com/neverdefineus/vitaes/lib/stolas"
 	"github.com/rs/cors"
 )
 
 const origin = "STORAGE"
+
+var stl *stolas.Client
 
 func errMsg(err error, msg string) string {
 	return fmt.Sprintf("%s: %s", msg, err)
@@ -29,8 +32,7 @@ func throwHTTPError(
 ) {
 	message := errMsg(err, msg)
 	http.Error(w, message, statusCode)
-	log.Println(email, id, origin, step, message, "")
-	// logger.LogStep(email, id, origin, step, message, "")
+	stl.LogStep(email, id, origin, step, message, "")
 }
 
 func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
@@ -50,8 +52,7 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 	if res == 0 {
 		w.WriteHeader(http.StatusNotFound)
 
-		log.Println(email, id, origin, "PDF_NOT_READY_YET", "", "")
-		// logger.LogStep(email, id, origin, "PDF_NOT_READY_YET", "", "")
+		stl.LogStep(email, id, origin, "PDF_NOT_READY_YET", "", "")
 	} else {
 		w.WriteHeader(http.StatusAccepted)
 		w.Header().Set("Content-type", "application/pdf")
@@ -66,8 +67,7 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 		}
 		w.Write([]byte(pdf))
 
-		log.Println(email, id, origin, "PDF_RETRIEVED_FROM_REDIS", "", "")
-		// logger.LogStep(email, id, origin, "PDF_RETRIEVED_FROM_REDIS", "", "")
+		stl.LogStep(email, id, origin, "PDF_RETRIEVED_FROM_REDIS", "", "")
 	}
 }
 
@@ -94,8 +94,7 @@ func storeFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 		return
 	}
 
-	log.Println(email, id, "STORAGE", "STORING_ON_REDIS", "", "")
-	// logger.LogStep(email, id, "STORAGE", "STORING_ON_REDIS", "", "")
+	stl.LogStep(email, id, "STORAGE", "STORING_ON_REDIS", "", "")
 }
 
 func main() {
@@ -104,6 +103,7 @@ func main() {
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
+	stl = stolas.NewClient("http://logger:6000/")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{

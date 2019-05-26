@@ -1,6 +1,7 @@
 FROM golang:1.12-alpine AS build-env
 RUN apk update && apk upgrade && apk add --no-cache \
-    git
+    git \
+    build-base
 ENV GOPATH=/
 ENV GO111MODULE=on
 WORKDIR /vitaes
