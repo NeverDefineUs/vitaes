@@ -27,8 +27,10 @@ func NewClient(dbFilePath string) (*Client, error) {
 
 	go func() {
 		for {
-			_, err = db.Exec(deleteStaleStmt)
-			failOnError(err, "Failed to delete stale rows")
+			_, err := db.Exec(deleteStaleStmt)
+			if err != nil {
+				log.Println(err)
+			}
 			time.Sleep(10 * time.Minute)
 		}
 	}()
