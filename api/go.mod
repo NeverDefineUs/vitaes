@@ -1,4 +1,4 @@
-module github.com/NeverDefineUs/vitaes/api
+module github.com/neverdefineus/vitaes/api
 
 go 1.12
 
