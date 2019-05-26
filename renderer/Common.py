@@ -1,6 +1,6 @@
 from datetime import date, datetime
 import time, string, random, os, sys
-from Logger import log_from_renderer
+from Logger import log_step
 from I18n import *
 import Renders
 import json
@@ -22,7 +22,7 @@ def render_from_cv_dict(req):
     refresh_render_map()
     ret = ""
 
-    log_from_renderer(req["curriculum_vitae"]["header"]["email"], req["path"], "GENERATING_CV_AST")
+    log_step(req["curriculum_vitae"]["header"]["email"], req["path"], "GENERATING_CV_AST")
 
     path = None
     if 'path' in req:
@@ -40,7 +40,7 @@ def render_from_cv_dict(req):
         params['section_order'] = req['section_order']
 
     if 'header' not in req_cv:
-        log_from_renderer('', req['path'], "MISSING_HEADER")
+        log_step('', req['path'], "MISSING_HEADER")
         raise Exception('Header is missing')
 
     sm = SchemaManager('./Models/')
@@ -49,7 +49,7 @@ def render_from_cv_dict(req):
     cv = enc.to_object(req_cv, 'Cv')
     setattr(cv, 'cv_hash', req["path"])
 
-    log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
+    log_step(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 
     baseFolder = render_map[render_key]['base_folder']
 

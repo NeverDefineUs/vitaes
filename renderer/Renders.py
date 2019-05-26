@@ -5,7 +5,7 @@ import timestring
 import traceback
 from babel.dates import format_datetime
 from Cheetah.Template import Template
-from Logger import log_from_renderer
+from Logger import log_step
 
 def id_gen(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
@@ -38,7 +38,7 @@ class CvRenderTexToPdf(CvRenderBase):
         if baseFolder != None:
             os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
         cvString = cvRender.render(cv, params=params, baseFolder=baseFolder, resources=resources)
-        log_from_renderer(cv.header.email, cv.cv_hash, "TEX_FULLY_COMPILED")
+        log_step(cv.header.email, cv.cv_hash, "TEX_FULLY_COMPILED")
         os.system("touch Output/" + path + "/main.tex")
         file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
         file.write(cvString)
@@ -46,7 +46,7 @@ class CvRenderTexToPdf(CvRenderBase):
         p = subprocess.Popen([command,"main.tex"], cwd="Output/" + path, stdout=subprocess.PIPE)
         p.wait()
         p_output = p.stdout.read().decode("utf-8", errors='ignore')
-        log_from_renderer(cv.header.email, cv.cv_hash, "LATEX_CMD_EXECUTED", p_output)
+        log_step(cv.header.email, cv.cv_hash, "LATEX_CMD_EXECUTED", p_output)
         os.system("cp Output/" + path + "/main.pdf Output/" + path + ".pdf")
         os.system("rm -r Output/" + path + "/")
         return path
@@ -253,8 +253,8 @@ class CvRenderCheetahTemplate(CvRenderBase):
         for key in resources:
           resources[key] = text_clean(resources[key])
         cvDict["resources"] = resources
-        log_from_renderer(cv.header.email, cv.cv_hash, "GENERATING_TEX_FROM_CHEETAH")
+        log_step(cv.header.email, cv.cv_hash, "GENERATING_TEX_FROM_CHEETAH")
         template = Template(templateString, cvDict)
-        log_from_renderer(cv.header.email, cv.cv_hash, "GENERATED_TEX_FROM_CHEETAH")
+        log_step(cv.header.email, cv.cv_hash, "GENERATED_TEX_FROM_CHEETAH")
         return str(template)
         
