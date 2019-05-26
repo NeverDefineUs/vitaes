@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage
+spec:
+  selector:
+    matchLabels:
+      app: storage
+  template:
+    metadata:
+      labels:
+        app: storage
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: storage
+        image: vitaes/storage
+        imagePullPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage
+spec:
+  ports:
+  - port: 6000
+  selector:
+    app: storage
