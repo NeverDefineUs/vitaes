@@ -22,38 +22,32 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func templatesHandler(w http.ResponseWriter, r *http.Request) {
+var templatesCache []byte
+
+func cacheTemplates() {
 	files, err := ioutil.ReadDir("/vitaes/templates/")
-	if err != nil {
-		http.Error(w, errMsg(err, "Failed to get templates"), http.StatusInternalServerError)
-		return
-	}
+	failOnError(err, "Failed to get templates")
 
 	var templates map[string]interface{}
 	templates = make(map[string]interface{})
 	for _, file := range files {
 		var template map[string]interface{}
 		jsonFile, err := ioutil.ReadFile("/vitaes/templates/" + file.Name())
-		if err != nil {
-			http.Error(w, errMsg(err, "Failed to read JSON file contents"), http.StatusInternalServerError)
-			return
-		}
+		failOnError(err, "Failed to read JSON file contents")
 		err = json.Unmarshal(jsonFile, &template)
-		if err != nil {
-			http.Error(w, errMsg(err, "Failed to parse JSON file contents"), http.StatusInternalServerError)
-			return
-		}
+		failOnError(err, "Failed to parse JSON file contents")
 		templates[template["name"].(string)] = template
 	}
 
 	templatesBytes, err := json.Marshal(templates)
-	if err != nil {
-		http.Error(w, errMsg(err, "Failed to marshal templates JSON"), http.StatusInternalServerError)
-		return
-	}
+	failOnError(err, "Failed to marshal templates JSON")
 
+	templatesCache = templatesBytes
+}
+
+func templatesHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write(templatesBytes)
+	w.Write(templatesCache)
 }
 
 func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, q amqp.Queue) {
@@ -116,6 +110,8 @@ func main() {
 		nil,           // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
+
+	cacheTemplates()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/template/", templatesHandler).Methods("GET")
