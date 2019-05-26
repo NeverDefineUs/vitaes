@@ -40,13 +40,14 @@ def render_from_cv_dict(req):
         params['section_order'] = req['section_order']
 
     if 'header' not in req_cv:
-        log_from_renderer('', cv.cv_hash, "MISSING_HEADER")
+        log_from_renderer('', req['path'], "MISSING_HEADER")
         raise Exception('Header is missing')
 
     sm = SchemaManager('./Models/')
     sm.load('Cv')
     enc = Encoder(sm)
     cv = enc.to_object(req_cv, 'Cv')
+    setattr(cv, 'cv_hash', req["path"])
 
     log_from_renderer(cv.header.email, cv.cv_hash, "CV_AST_GENERATED")
 

@@ -62,7 +62,7 @@ def get_cv_queue(ch, method, properties, body):
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         p_output = repr(traceback.format_exception(exc_type, exc_value, exc_traceback)) 
-        log_from_renderer(email, dic["path"], "ERROR_REPORTED_IN_RENDERER", p_output)
+        log_from_renderer(email, dic["path"], "ERROR_REPORTED_IN_RENDERER", "", p_output)
         mes = "err"
     email_hash = hashlib.sha256()
     email_hash.update(str.encode(email))

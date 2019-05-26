@@ -25,10 +25,18 @@ func failOnError(err error, msg string) {
 
 var db *sql.DB
 
+func stringOrNil(value string) interface{} {
+	if value != "" {
+		return value
+	}
+	return nil
+}
+
 // LogStep logs data
-func LogStep(email, cvHash, origin, step, data string) (string, error) {
+func LogStep(email, cvHash, origin, step, data, stacktrace string) (string, error) {
 	logStmt := `
-	INSERT INTO "cv_gen_tracking"(email, cv_hash, origin, step, data) VALUES(
+	INSERT INTO "cv_gen_tracking"(email, cv_hash, origin, step, data, stacktrace) VALUES(
+		?,
 		?,
 		?,
 		?,
@@ -41,11 +49,15 @@ func LogStep(email, cvHash, origin, step, data string) (string, error) {
 		return "Failed to prepare logger query", err
 	}
 	defer stmt.Close()
-	if data != "" {
-		_, err = stmt.Exec(email, cvHash, origin, step, data)
-	} else {
-		_, err = stmt.Exec(email, cvHash, origin, step, nil)
-	}
+
+	_, err = stmt.Exec(
+		stringOrNil(email),
+		stringOrNil(cvHash),
+		stringOrNil(origin),
+		stringOrNil(step),
+		stringOrNil(data),
+		stringOrNil(stacktrace),
+	)
 	if err != nil {
 		return "Failed to execute insert query", err
 	}
@@ -64,8 +76,9 @@ func logHandler(w http.ResponseWriter, r *http.Request) {
 	origin := r.Form.Get("origin")
 	step := r.Form.Get("step")
 	data := r.Form.Get("data")
+	stacktrace := r.Form.Get("stacktrace")
 
-	msg, err := LogStep(email, cvHash, origin, step, data)
+	msg, err := LogStep(email, cvHash, origin, step, data, stacktrace)
 	if err != nil {
 		http.Error(w, errMsg(err, msg), http.StatusInternalServerError)
 		return
@@ -74,18 +87,20 @@ func logHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	file := os.Getenv("SQLITE_DATABASE")
-	db, err := sql.Open("sqlite3", "/data/"+file)
+	var err error
+	db, err = sql.Open("sqlite3", "/data/"+file)
 	failOnError(err, "Failed to initalize database connection")
 	defer db.Close()
 
 	createTableStmt := `
 	CREATE TABLE IF NOT EXISTS "cv_gen_tracking" (
 		time TEXT DEFAULT(strftime('%Y-%m-%d %H-%M-%f','now')) NOT NULL,
-		email TEXT NOT NULL,
-		cv_hash TEXT NOT NULL,
+		email TEXT,
+		cv_hash TEXT,
 		origin TEXT NOT NULL,
 		step TEXT NOT NULL,
 		data TEXT,
+		stacktrace TEXT,
 		PRIMARY KEY (time, email, cv_hash)
 	);
 	`
