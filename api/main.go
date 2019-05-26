@@ -131,11 +131,18 @@ func main() {
 
 	cacheTemplates()
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{
+			"http://localhost", "http://vitaes.io", "http://k8s.vitaes.io",
+			"https://localhost", "https://vitaes.io", "https://k8s.vitaes.io",
+		},
+		AllowCredentials: true,
+	})
 	router := mux.NewRouter()
 	router.HandleFunc("/template/", templatesHandler).Methods("GET")
 	router.HandleFunc("/cv/", func(w http.ResponseWriter, r *http.Request) {
 		requestCvHandler(w, r, ch, q)
 	}).Methods("POST")
-	handler := cors.Default().Handler(router)
+	handler := c.Handler(router)
 	log.Fatal(http.ListenAndServe(":6000", handler))
 }

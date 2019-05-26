@@ -105,6 +105,13 @@ func main() {
 		DB:       0,  // use default DB
 	})
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{
+			"http://localhost", "http://vitaes.io", "http://k8s.vitaes.io",
+			"https://localhost", "https://vitaes.io", "https://k8s.vitaes.io",
+		},
+		AllowCredentials: true,
+	})
 	router := mux.NewRouter()
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		storeFile(w, r, client)
@@ -112,6 +119,6 @@ func main() {
 	router.HandleFunc("/{cvid}/{email}/", func(w http.ResponseWriter, r *http.Request) {
 		retrieveFile(w, r, client)
 	}).Methods("GET")
-	handler := cors.Default().Handler(router)
+	handler := c.Handler(router)
 	log.Fatal(http.ListenAndServe(":6000", handler))
 }

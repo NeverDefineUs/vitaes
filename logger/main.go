@@ -118,8 +118,15 @@ func main() {
 		}
 	}()
 
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{
+			"http://localhost", "http://vitaes.io", "http://k8s.vitaes.io",
+			"https://localhost", "https://vitaes.io", "https://k8s.vitaes.io",
+		},
+		AllowCredentials: true,
+	})
 	router := mux.NewRouter()
 	router.HandleFunc("/", logHandler).Methods("POST")
-	handler := cors.Default().Handler(router)
+	handler := c.Handler(router)
 	log.Fatal(http.ListenAndServe(":6000", handler))
 }

@@ -15,7 +15,6 @@ spec:
       containers:
       - name: api
         image: vitaes/api
-        command: ['python3', 'Server.py']
         imagePullPolicy: Always
 
 ---

@@ -11,6 +11,8 @@ RUN go get -d -v ./...
 RUN go build -o app
 
 FROM alpine
-WORKDIR /
-COPY --from=build-env /vitaes/app /
+WORKDIR /vitaes
+COPY --from=build-env /vitaes/app /vitaes
+RUN mkdir templates
+COPY templates templates/
 ENTRYPOINT ./app

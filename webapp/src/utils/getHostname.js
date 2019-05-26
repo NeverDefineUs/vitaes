@@ -9,15 +9,11 @@ const isLocalhost = Boolean(
 );
 
 const getHostname = (target, port) => {
-  if (process.env.K8S) {
-    return `${target}.k8s.vitaes.io`;
-  }
-
   if (isLocalhost) {
     return `localhost:${port}`;
   }
 
-  return `${target}.vitaes.io`;
+  return `${target}.k8s.vitaes.io`;
 };
 
 
