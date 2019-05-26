@@ -1,6 +1,6 @@
 before_install:
   - cp vitaes-webapp/src/config-SAMPLE.js vitaes-webapp/src/config.js
-  - docker build -t vitaes/webapp ./vitaes-webapp
+  - docker build -t vitaes/webapp -f ./vitaes-webapp/Dockerfile.dev ./vitaes-webapp
 
 services:
   - docker
