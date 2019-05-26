@@ -3,18 +3,26 @@ package stolas
 import (
 	"database/sql"
 	"log"
+	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3" // sqlite
 )
 
-// Client vlogger client structure
-type Client struct {
+// Server stolas server structure
+type Server struct {
 	sqliteClient *sql.DB
 }
 
-// NewClient initialize vlogger client
-func NewClient(dbFilePath string) (*Client, error) {
+// Client stolas client structure
+type Client struct {
+	address string
+}
+
+// NewServer initialize stolas server
+func NewServer(dbFilePath string) (*Server, error) {
 	db, err := sql.Open("sqlite3", dbFilePath)
 	if err != nil {
 		return nil, err
@@ -35,19 +43,19 @@ func NewClient(dbFilePath string) (*Client, error) {
 		}
 	}()
 
-	return &Client{
+	return &Server{
 		sqliteClient: db,
 	}, nil
 }
 
 // Close closes database connection
-func (c *Client) Close() {
-	c.sqliteClient.Close()
+func (s *Server) Close() {
+	s.sqliteClient.Close()
 }
 
 // LogStep logs data
-func (c *Client) LogStep(email, cvHash, origin, step, data, stacktrace string) error {
-	stmt, err := c.sqliteClient.Prepare(logStmt)
+func (s *Server) LogStep(email, cvHash, origin, step, data, stacktrace string) error {
+	stmt, err := s.sqliteClient.Prepare(logStmt)
 	if err != nil {
 		return err
 	}
@@ -61,6 +69,32 @@ func (c *Client) LogStep(email, cvHash, origin, step, data, stacktrace string) e
 		stringOrNil(data),
 		stringOrNil(stacktrace),
 	)
+	return err
+}
+
+// NewClient initialize stolas client
+func NewClient(address string) *Client {
+	return &Client{
+		address: address,
+	}
+}
+
+// LogStep logs data
+func (c *Client) LogStep(email, cvHash, origin, step, data, stacktrace string) error {
+	client := &http.Client{}
+	form := url.Values{}
+	form.Add("email", email)
+	form.Add("cvHash", cvHash)
+	form.Add("origin", origin)
+	form.Add("step", step)
+	form.Add("data", data)
+	form.Add("stacktrace", stacktrace)
+	req, err := http.NewRequest("POST", c.address, strings.NewReader(form.Encode()))
+	if err != nil {
+		return err
+	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	_, err = client.Do(req)
 	return err
 }
 
