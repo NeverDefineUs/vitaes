@@ -17,7 +17,9 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func templatesHandler(w http.ResponseWriter, r *http.Request) {
+var templatesCache []byte
+
+func cacheTemplates() {
 	files, err := ioutil.ReadDir("/vitaes/templates/")
 	failOnError(err, "Failed to get templates")
 
@@ -33,10 +35,13 @@ func templatesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	templatesBytes, err := json.Marshal(templates)
-	failOnError(err, "Failed to marshal templates JSON")
 
+	templatesCache = templatesBytes
+}
+
+func templatesHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	w.Write(templatesBytes)
+	w.Write(templatesCache)
 }
 
 func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, q amqp.Queue) {
@@ -90,6 +95,8 @@ func main() {
 		nil,           // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
+
+	cacheTemplates()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/template/", templatesHandler).Methods("GET")
