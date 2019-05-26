@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -12,16 +13,20 @@ import (
 	"github.com/rs/cors"
 )
 
+func errMsg(err error, msg string) string {
+	return fmt.Sprintf("%s: %s", msg, err)
+}
+
 func failOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
+		log.Fatal(errMsg(err, msg))
 	}
 }
 
 var db *sql.DB
 
 // LogStep logs data
-func LogStep(email, cvHash, origin, step, data string) {
+func LogStep(email, cvHash, origin, step, data string) (string, error) {
 	logStmt := `
 	INSERT INTO "cv_gen_tracking"(email, cv_hash, origin, step, data) VALUES(
 		?,
@@ -32,19 +37,27 @@ func LogStep(email, cvHash, origin, step, data string) {
 	);
 	`
 	stmt, err := db.Prepare(logStmt)
-	failOnError(err, "Failed to prepare logger query")
+	if err != nil {
+		return "Failed to prepare logger query", err
+	}
 	defer stmt.Close()
 	if data != "" {
 		_, err = stmt.Exec(email, cvHash, origin, step, data)
 	} else {
 		_, err = stmt.Exec(email, cvHash, origin, step, nil)
 	}
-	failOnError(err, "Failed to execute insert query")
+	if err != nil {
+		return "Failed to execute insert query", err
+	}
+	return "success", nil
 }
 
 func logHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
-	failOnError(err, "Failed to parse params")
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to parse params"), http.StatusInternalServerError)
+		return
+	}
 
 	email := r.Form.Get("email")
 	cvHash := r.Form.Get("cv_hash")
@@ -52,7 +65,11 @@ func logHandler(w http.ResponseWriter, r *http.Request) {
 	step := r.Form.Get("step")
 	data := r.Form.Get("data")
 
-	LogStep(email, cvHash, origin, step, data)
+	msg, err := LogStep(email, cvHash, origin, step, data)
+	if err != nil {
+		http.Error(w, errMsg(err, msg), http.StatusInternalServerError)
+		return
+	}
 }
 
 func main() {
