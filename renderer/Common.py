@@ -1,12 +1,9 @@
 from datetime import date, datetime
 import time, string, random, os, sys
-from flask import Flask, request, abort, send_file
 from Logger import log_from_renderer
 from I18n import *
 import Renders
 import json
-import timestring
-from flask_cors import CORS
 import pika
 import glob
 from fieldy import Encoder, SchemaManager
@@ -44,7 +41,7 @@ def render_from_cv_dict(req):
 
     if 'header' not in req_cv:
         log_from_renderer('', cv.cv_hash, "MISSING_HEADER")
-        abort(400, "Missing header")
+        raise Exception('Header is missing')
 
     sm = SchemaManager('./Models/')
     sm.load('Cv')
