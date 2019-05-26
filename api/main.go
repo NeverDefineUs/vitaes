@@ -27,8 +27,8 @@ func failOnError(err error, msg string) {
 func throwHTTPError(w http.ResponseWriter, err error, msg string, statusCode int, email, cvHash, step string) {
 	message := errMsg(err, msg)
 	http.Error(w, message, statusCode)
-	log.Println(email, cvHash, origin, step, message)
-	// logger.LogStep(email, cvHash, origin, step, message)
+	log.Println(email, cvHash, origin, step, message, "")
+	// logger.LogStep(email, cvHash, origin, step, message, "")
 }
 
 var templatesCache []byte
@@ -103,8 +103,8 @@ func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, 
 		return
 	}
 
-	log.Println(email, cvHash, origin, "SENT_TO_RABBITMQ", "")
-	// logger.LogStep(email, cvHash, origin, "SENT_TO_RABBITMQ", "")
+	log.Println(email, cvHash, origin, "SENT_TO_RABBITMQ", "", "")
+	// logger.LogStep(email, cvHash, origin, "SENT_TO_RABBITMQ", "", "")
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(cvHash))

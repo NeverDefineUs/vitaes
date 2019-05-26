@@ -2,7 +2,7 @@ from datetime import date, datetime
 import time
 import json, sys, hashlib
 from Common import render_map, render_from_cv_dict
-from Logger import log_from_renderer
+from Logger import log_step
 import pika
 import requests
 import traceback
@@ -46,13 +46,13 @@ def get_cv_queue(ch, method, properties, body):
         dic = json.loads(body)
         cv_type = dic["render_key"]
         email = dic["curriculum_vitae"]["header"]["email"]
-        log_from_renderer(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
+        log_step(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
         lang = dic["params"]["lang"]
         ans = render_from_cv_dict(dic)
         file = open('Output/' + ans + '.pdf', 'rb')
         ansb = file.read()
         file.close()
-        log_from_renderer(email, dic["path"], "SENDING_TO_STORAGE")
+        log_step(email, dic["path"], "SENDING_TO_STORAGE")
         requests.post('http://storage:6000/', data = {
             'email': email,
             'id': ans,
@@ -62,7 +62,7 @@ def get_cv_queue(ch, method, properties, body):
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         p_output = repr(traceback.format_exception(exc_type, exc_value, exc_traceback)) 
-        log_from_renderer(email, dic["path"], "ERROR_REPORTED_IN_RENDERER", p_output)
+        log_step(email, dic["path"], "ERROR_REPORTED_IN_RENDERER", "", p_output)
         mes = "err"
     email_hash = hashlib.sha256()
     email_hash.update(str.encode(email))
