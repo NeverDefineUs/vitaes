@@ -4,16 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"time"
 
-	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-sqlite3" // sqlite
-	"github.com/rs/cors"
 )
 
-type Client {
+type Client struct {
 	db *sql.DB
 }
 
@@ -67,16 +64,16 @@ func (c *Client) LogStep(email, cvHash, origin, step, data, stacktrace string) (
 }
 
 func (c *Client) CleanUpJob() {
-	go func() {
+	go func(db *sql.DB) {
 		for {
 			deleteStaleStmt := `
 			DELETE FROM "cv_gen_tracking" WHERE "time" < strftime('%Y-%m-%d %H-%M-%f', date('now', '-27 days'));
 			`
-			_, err = c.db.Exec(deleteStaleStmt)
+			_, err := db.Exec(deleteStaleStmt)
 			failOnError(err, "Failed to delete stale rows")
 			time.Sleep(10 * time.Minute)
 		}
-	}()
+	}(c.db)
 }
 
 func (c *Client) Close() {
@@ -85,8 +82,7 @@ func (c *Client) Close() {
 
 func Init() *Client {
 	file := os.Getenv("SQLITE_DATABASE")
-	var err error
-	db, err = sql.Open("sqlite3", "/data/"+file)
+	db, err := sql.Open("sqlite3", "/data/"+file)
 	failOnError(err, "Failed to initalize database connection")
 
 	createTableStmt := `

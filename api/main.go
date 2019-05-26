@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/neverdefineus/vitaes/logger"
 	"github.com/rs/cors"
 	"github.com/streadway/amqp"
 )
@@ -118,6 +119,8 @@ func main() {
 	ch, err := conn.Channel()
 	defer ch.Close()
 	failOnError(err, "Failed to open a channel")
+
+	logger := logger.Init()
 
 	q, err := ch.QueueDeclare(
 		"cv_requests", // name

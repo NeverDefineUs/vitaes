@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	_ "github.com/mattn/go-sqlite3" // sqlite
 	"github.com/neverdefineus/vitaes/logger"
 	"github.com/rs/cors"
 )
