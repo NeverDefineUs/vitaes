@@ -1,4 +1,4 @@
-module github.com/NeverDefineUs/vitaes/storage
+module github.com/neverdefineus/vitaes/storage
 
 go 1.12
 
