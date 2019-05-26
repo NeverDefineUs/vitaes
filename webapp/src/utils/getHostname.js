@@ -25,3 +25,5 @@ const getHostname = (target, port) => {
 export const getApiHostname = () => getHostname('api', 6001);
 
 export const getLoggerHostname = () => getHostname('logger', 6002);
+
+export const getStorageHostname = () => getHostname('storage', 6003);

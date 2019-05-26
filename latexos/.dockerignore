@@ -1,3 +1,2 @@
 .dockerignore
 .DS_Store
-Dockerfile*

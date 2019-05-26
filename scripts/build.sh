@@ -5,8 +5,8 @@ then
     echo ""
     docker build --tag latexos latexos/
     docker build --tag webapp webapp/
-    docker build --tag renderer renderer-api/
-    docker build --tag api renderer-api/
+    docker build --tag renderer renderer/
+    docker build --tag api api/
     docker build --tag logger logger/
     docker build --tag storage storage/
     echo ""

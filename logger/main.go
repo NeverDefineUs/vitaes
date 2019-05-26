@@ -2,31 +2,31 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/gorilla/mux"
+	_ "github.com/mattn/go-sqlite3" // sqlite
 	"github.com/rs/cors"
 )
 
+func errMsg(err error, msg string) string {
+	return fmt.Sprintf("%s: %s", msg, err)
+}
+
 func failOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
+		log.Fatal(errMsg(err, msg))
 	}
 }
 
-func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	err := r.ParseForm()
-	failOnError(err, "Failed to parse params")
+var db *sql.DB
 
-	email := r.Form.Get("email")
-	cvHash := r.Form.Get("cv_hash")
-	origin := r.Form.Get("origin")
-	step := r.Form.Get("step")
-	data := r.Form.Get("data")
-
+// LogStep logs data
+func LogStep(email, cvHash, origin, step, data string) (string, error) {
 	logStmt := `
 	INSERT INTO "cv_gen_tracking"(email, cv_hash, origin, step, data) VALUES(
 		?,
@@ -37,20 +37,38 @@ func vitaesLog(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	);
 	`
 	stmt, err := db.Prepare(logStmt)
-	failOnError(err, "Failed to prepare logger query")
+	if err != nil {
+		return "Failed to prepare logger query", err
+	}
 	defer stmt.Close()
 	if data != "" {
 		_, err = stmt.Exec(email, cvHash, origin, step, data)
 	} else {
 		_, err = stmt.Exec(email, cvHash, origin, step, nil)
 	}
-	failOnError(err, "Failed to execute insert query")
+	if err != nil {
+		return "Failed to execute insert query", err
+	}
+	return "success", nil
 }
 
-func handler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
-	switch r.Method {
-	case "POST":
-		vitaesLog(w, r, db)
+func logHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, errMsg(err, "Failed to parse params"), http.StatusInternalServerError)
+		return
+	}
+
+	email := r.Form.Get("email")
+	cvHash := r.Form.Get("cv_hash")
+	origin := r.Form.Get("origin")
+	step := r.Form.Get("step")
+	data := r.Form.Get("data")
+
+	msg, err := LogStep(email, cvHash, origin, step, data)
+	if err != nil {
+		http.Error(w, errMsg(err, msg), http.StatusInternalServerError)
+		return
 	}
 }
 
@@ -85,13 +103,8 @@ func main() {
 		}
 	}()
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
-	})
-	handler := c.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		handler(w, r, db)
-	}))
-	http.Handle("/", handler)
-	log.Fatal(http.ListenAndServe(":6000", nil))
+	router := mux.NewRouter()
+	router.HandleFunc("/", logHandler).Methods("POST")
+	handler := cors.Default().Handler(router)
+	log.Fatal(http.ListenAndServe(":6000", handler))
 }

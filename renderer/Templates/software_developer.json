@@ -1,0 +1,7 @@
+{
+    "name": "software_developer",
+    "base_folder": "software_developer",
+    "command": "pdflatex",
+    "fixed_params": {},
+    "params": []
+}
