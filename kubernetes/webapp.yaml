@@ -16,9 +16,6 @@ spec:
       - name: webapp
         image: vitaes/webapp
         imagePullPolicy: Always
-        env:
-        - name: K8S
-          value: "true"
 
 ---
 
