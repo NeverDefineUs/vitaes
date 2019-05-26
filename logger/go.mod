@@ -1,4 +1,4 @@
-module github.com/NeverDefineUs/vitaes/logger
+module github.com/neverdefineus/vitaes/logger
 
 go 1.12
 
