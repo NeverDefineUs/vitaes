@@ -84,7 +84,7 @@ func (c *Client) LogStep(email, cvHash, origin, step, data, stacktrace string) e
 	client := &http.Client{}
 	form := url.Values{}
 	form.Add("email", email)
-	form.Add("cvHash", cvHash)
+	form.Add("cv_hash", cvHash)
 	form.Add("origin", origin)
 	form.Add("step", step)
 	form.Add("data", data)
