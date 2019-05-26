@@ -12,6 +12,8 @@ import (
 	"github.com/streadway/amqp"
 )
 
+const origin = "API"
+
 func errMsg(err error, msg string) string {
 	return fmt.Sprintf("%s: %s", msg, err)
 }
@@ -20,6 +22,13 @@ func failOnError(err error, msg string) {
 	if err != nil {
 		log.Fatal(errMsg(err, msg))
 	}
+}
+
+func throwHTTPError(w http.ResponseWriter, err error, msg string, statusCode int, email, cvHash, step string) {
+	message := errMsg(err, msg)
+	http.Error(w, message, statusCode)
+	log.Println(email, cvHash, origin, step, message)
+	// logger.LogStep(email, cvHash, origin, step, message)
 }
 
 var templatesCache []byte
@@ -54,16 +63,27 @@ func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, 
 	body, err := ioutil.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
-		http.Error(w, errMsg(err, "Failed to parse body"), http.StatusInternalServerError)
+		throwHTTPError(
+			w, err, "Failed to parse body", http.StatusInternalServerError,
+			"", "", "ERROR_REQUEST_CV_HANDLER",
+		)
 		return
 	}
 
 	var data map[string]interface{}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		http.Error(w, errMsg(err, "Failed to parse json"), http.StatusInternalServerError)
+		throwHTTPError(
+			w, err, "Failed to parse json", http.StatusInternalServerError,
+			"", "", "ERROR_REQUEST_CV_HANDLER",
+		)
 		return
 	}
+
+	cv := data["curriculum_vitae"].(map[string]interface{})
+	header := cv["header"].(map[string]interface{})
+	cvHash := data["path"].(string)
+	email := header["email"].(string)
 
 	err = ch.Publish(
 		"",     // exchange
@@ -76,17 +96,15 @@ func requestCvHandler(w http.ResponseWriter, r *http.Request, ch *amqp.Channel, 
 		},
 	)
 	if err != nil {
-		http.Error(w, errMsg(err, "Failed to publish a message"), http.StatusInternalServerError)
+		throwHTTPError(
+			w, err, "Failed to publish the CV on rabbitmq", http.StatusInternalServerError,
+			email, cvHash, "ERROR_REQUEST_CV_HANDLER",
+		)
 		return
 	}
 
-	cv := data["curriculum_vitae"].(map[string]interface{})
-	header := cv["header"].(map[string]interface{})
-	cvHash := data["path"].(string)
-	email := header["email"].(string)
-
-	log.Println(email, cvHash, "API", "SENT_TO_RABBITMQ", "")
-	// logger.LogStep(email, cvHash, "API", "SENT_TO_RABBITMQ", "")
+	log.Println(email, cvHash, origin, "SENT_TO_RABBITMQ", "")
+	// logger.LogStep(email, cvHash, origin, "SENT_TO_RABBITMQ", "")
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(cvHash))
