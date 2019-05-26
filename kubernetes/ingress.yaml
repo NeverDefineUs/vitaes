@@ -18,6 +18,12 @@ spec:
       - backend:
           serviceName: api
           servicePort: 6000
+  - host: storage.k8s.vitaes.io
+    http:
+      paths:
+      - backend:
+          serviceName: storage
+          servicePort: 6000
   - host: logger.k8s.vitaes.io
     http:
       paths:
