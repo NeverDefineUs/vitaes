@@ -1,0 +1,79 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: do-block-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+
+---
+
+# We need one of those for each kind of PVC
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-vitaes-1
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: do-block-storage
+  local:
+    path: /data/vitaes
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-vitaes-2
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: do-block-storage
+  local:
+    path: /data/vitaes
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-vitaes-3
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: do-block-storage
+  local:
+    path: /data/vitaes
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - minikube

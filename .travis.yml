@@ -1,9 +1,9 @@
 before_install:
-  - cp vitaes-webapp/src/config-SAMPLE.js vitaes-webapp/src/config.js
-  - docker build -t vitaes/webapp ./vitaes-webapp
+  - cp webapp/src/config-SAMPLE.js webapp/src/config.js
+  - docker build -t dev-webapp -f ./webapp/Dockerfile.dev ./webapp
 
 services:
   - docker
 
 script:
-  - docker run vitaes/webapp ./node_modules/.bin/eslint src --ext .jsx --ext .js
+  - docker run dev-webapp ./node_modules/.bin/eslint src --ext .jsx --ext .js

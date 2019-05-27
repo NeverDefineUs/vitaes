@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: renderer
+spec:
+  selector:
+    matchLabels:
+      app: renderer
+  template:
+    metadata:
+      labels:
+        app: renderer
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: renderer
+        image: vitaes/renderer
+        command: ['python3', 'Consumer.py']
+        imagePullPolicy: Always

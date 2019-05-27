@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+spec:
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: influxdb
+        image: influxdb:1.7.4
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: pvc-influxdb
+          mountPath: /var/lib/influxdb
+          subPath: influxdb
+      volumes:
+        - name: pvc-influxdb
+          persistentVolumeClaim:
+            claimName: pvc-influxdb
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: grafana
+        image: grafana/grafana
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: pvc-grafana
+          mountPath: /var/lib/grafana
+          subPath: grafana
+      securityContext:
+        fsGroup: 472
+      volumes:
+        - name: pvc-grafana
+          persistentVolumeClaim:
+            claimName: pvc-grafana
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+spec:
+  ports:
+  - port: 8086
+  selector:
+    app: influxdb
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+  selector:
+    app: grafana
