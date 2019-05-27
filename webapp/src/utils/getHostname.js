@@ -13,7 +13,7 @@ const getHostname = (target, port) => {
     return `localhost:${port}`;
   }
 
-  return `${target}.k8s.vitaes.io`;
+  return `${target}.vitaes.io`;
 };
 
 
