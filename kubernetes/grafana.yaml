@@ -18,7 +18,7 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
         - name: pvc-influxdb
-          mountPath: /data
+          mountPath: /var/lib/influxdb
           subPath: influxdb
       volumes:
         - name: pvc-influxdb
@@ -47,8 +47,10 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
         - name: pvc-grafana
-          mountPath: /data
+          mountPath: /var/lib/grafana
           subPath: grafana
+      securityContext:
+        fsGroup: 472
       volumes:
         - name: pvc-grafana
           persistentVolumeClaim:

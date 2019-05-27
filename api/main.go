@@ -136,8 +136,8 @@ func main() {
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{
-			"http://localhost", "http://vitaes.io", "http://k8s.vitaes.io",
-			"https://localhost", "https://vitaes.io", "https://k8s.vitaes.io",
+			"http://localhost", "http://vitaes.io",
+			"https://localhost", "https://vitaes.io",
 		},
 		AllowCredentials: true,
 	})

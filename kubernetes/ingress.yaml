@@ -6,37 +6,37 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: k8s.vitaes.io
+  - host: vitaes.io
     http:
       paths:
       - backend:
           serviceName: webapp
           servicePort: 80
-  - host: api.k8s.vitaes.io
+  - host: api.vitaes.io
     http:
       paths:
       - backend:
           serviceName: api
           servicePort: 6000
-  - host: storage.k8s.vitaes.io
+  - host: storage.vitaes.io
     http:
       paths:
       - backend:
           serviceName: storage
           servicePort: 6000
-  - host: logger.k8s.vitaes.io
+  - host: logger.vitaes.io
     http:
       paths:
       - backend:
           serviceName: logger
           servicePort: 6000
-  - host: sqlite.k8s.vitaes.io
+  - host: sqlite.vitaes.io
     http:
       paths:
       - backend:
           serviceName: sqlite-web
           servicePort: 8080
-  - host: grafana.k8s.vitaes.io
+  - host: grafana.vitaes.io
     http:
       paths:
       - backend:
