@@ -1,2 +1,2 @@
 export VITAES_ENV=production
-echo "Switching to production environment..."
+echo -e "\033[38;2;255;120;120mSwitching to production environment...\033[0m"
