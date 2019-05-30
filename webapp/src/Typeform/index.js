@@ -1,20 +1,19 @@
-import React, { useRef } from "react";
-import ScrollWatcher from "./ScrollWatcher";
+import React, { useRef } from 'react';
+import ScrollWatcher from './ScrollWatcher';
 
 function TypeForm(props) {
-    
-    const { children } = props;
+  const { children } = props;
 
-    return (
-        <ScrollWatcher>
-            {
+  return (
+    <ScrollWatcher>
+      {
                 React.Children.map(children, (child) => {
-                    const ref = useRef(null);
-                    return React.cloneElement(child, { ref });
-                })  
+                  const ref = useRef(null);
+                  return React.cloneElement(child, { ref });
+                })
             }
-        </ScrollWatcher>
-    ) 
+    </ScrollWatcher>
+  );
 }
 
 export default TypeForm;
