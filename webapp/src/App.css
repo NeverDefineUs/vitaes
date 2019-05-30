@@ -35,6 +35,10 @@ body, .bg-secondary {
 .color-white {
   color: #FAFCFD; 
 }
+
+.unfocused {
+  opacity: 0.1;
+}
 /**/
 
 

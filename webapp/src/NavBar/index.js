@@ -73,7 +73,7 @@ function NavBar(props) {
             <DevMenu hasPermissions={user && permissions ? permissions[user.uid] : null} />
             <Dropdown alignRight className="mr-5 mt-2">
               <Dropdown.Toggle as={LanguageToggle} flag={flag}></Dropdown.Toggle>
-              <Dropdown.Menu as={LanguageMenu} style={{ 'min-width': '1rem', 'max-width': '4rem', 'max-height': '6rem' }} className="p-2">
+              <Dropdown.Menu as={LanguageMenu} style={{ 'minWidth': '1rem', 'maxWidth': '4rem', 'maxHeight': '6rem' }} className="p-2">
                 <Dropdown.Item className="pl-1 w-20" onClick={() => changeLanguage('pt_BR')}>
                   <img alt="brazil flag" width="30px" height="20px" src="/flag-pt_BR.png" />
                 </Dropdown.Item>
