@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-import Builder from 'Builder';
+import BuilderV2 from 'BuilderV2';
 import AlertManager from 'AlertManager';
 import About from 'About';
 import PrivacyPolicy from 'PrivacyPolicy';
@@ -26,7 +26,7 @@ const getI18nPaths = (rawPaths) => {
 };
 
 export const rawPaths = [
-  { path: '/', component: () => <Builder />, exact: true },
+  { path: '/', component: () => <BuilderV2 />, exact: true },
   { path: '/alert-manager', component: () => <AlertManager />, exact: true },
   { path: '/about', component: () => <About />, exact: true },
   { path: '/privacy', component: () => <PrivacyPolicy />, exact: true },
