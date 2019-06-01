@@ -4,7 +4,7 @@ Vitaes is an open source tool with the purpose of making the curriculum creation
 It uses an abstract tree to model the curriculum and compiles it in a PDF.
 
 ---
-Please note that this project was setup and tested in macOS Mojava 10.14.4 and somethings might break in another environment.
+Please note that this project was setup and tested in macOS Mojave 10.14.4 and somethings might break in another environment.
 Every software and its versions that are listed bellow are the ones that were used in the tests, newer or earlier versions may work as well.
 
 ## Requirements
