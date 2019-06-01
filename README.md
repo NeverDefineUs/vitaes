@@ -1,6 +1,6 @@
 # Vitaes
 ## The Project
-This project(Vitaes) is an open source server with the purpose of making it easier resume creation.
+Vitaes is an open source tool with the purpose of making the curriculum creation process easier.
 It uses an abstract tree to model the curriculum and compiles it in a PDF.
 
 ---
