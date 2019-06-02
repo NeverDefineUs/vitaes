@@ -25,17 +25,24 @@ then
       echo "$VITAES_MAJOR.$VITAES_MINOR.$VITAES_PATCH" > scripts/version
       export VITAES_VERSION=$(cat scripts/version)
       echo "Creating Version $VITAES_VERSION"
-      exit 0
-      git tag $VITAES_VERSION
+      git tag "$VITAES_VERSION"
+      echo "Creating Version $VITAES_VERSION"
+
       git push --tags
       echo "Pushing docker images in $VITAES_ENV environment..."
       echo ""
-      docker tag storage vitaes/storage:$VITAES_VERSION
-      docker tag latexos vitaes/latexos:$VITAES_VERSION
-      docker tag webapp vitaes/webapp:$VITAES_VERSION
-      docker tag renderer vitaes/renderer:$VITAES_VERSION
-      docker tag api vitaes/api:$VITAES_VERSION
-      docker tag logger vitaes/logger:$VITAES_VERSION
+      docker tag storage "vitaes/storage:$VITAES_VERSION"
+      docker tag latexos "vitaes/latexos:$VITAES_VERSION"
+      docker tag webapp "vitaes/webapp:$VITAES_VERSION"
+      docker tag renderer "vitaes/renderer:$VITAES_VERSION"
+      docker tag api "vitaes/api:$VITAES_VERSION"
+      docker tag logger "vitaes/logger:$VITAES_VERSION"
+      docker push "vitaes/storage:$VITAES_VERSION"
+      docker push "vitaes/latexos:$VITAES_VERSION"
+      docker push "vitaes/webapp:$VITAES_VERSION"
+      docker push "vitaes/renderer:$VITAES_VERSION"
+      docker push "vitaes/api:$VITAES_VERSION"
+      docker push "vitaes/logger:$VITAES_VERSION"
     fi
     docker tag latexos vitaes/latexos
     docker tag webapp vitaes/webapp
