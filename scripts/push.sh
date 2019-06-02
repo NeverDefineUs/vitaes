@@ -4,7 +4,7 @@ then
     if [ ! -z '$1' ]; then
       git pull
       git checkout origin/master
-      export VITAES_VERSION=$(cat scripts/version)
+      export VITAES_VERSION=$(git describe --tags --abbrev=0)
       IFS='.' # hyphen (-) is set as delimiter
       read -ra VITAES_VERSION <<< "$VITAES_VERSION"
       export VITAES_MAJOR=${VITAES_VERSION[0]}
@@ -22,12 +22,10 @@ then
       else
         exit 1
       fi
-      echo "$VITAES_MAJOR.$VITAES_MINOR.$VITAES_PATCH" > scripts/version
-      export VITAES_VERSION=$(cat scripts/version)
+      git tag "$VITAES_MAJOR.$VITAES_MINOR.$VITAES_PATCH"
+      export VITAES_VERSION=$(git describe --tags --abbrev=0)
       echo "Creating Version $VITAES_VERSION"
       git tag "$VITAES_VERSION"
-      echo "Creating Version $VITAES_VERSION"
-
       git push --tags
       echo "Pushing docker images in $VITAES_ENV environment..."
       echo ""
