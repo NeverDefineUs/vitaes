@@ -60,7 +60,12 @@ then
     echo "Pushed docker images in $VITAES_ENV environment"
     if [ ! -z '$1' ]; then
       sh scripts/kill.sh
-      sh scripts/start.sh
+      sh scripts/start.sh    
+      kubectl patch deployment api -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+      kubectl patch deployment logger -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+      kubectl patch deployment renderer -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+      kubectl patch deployment storage -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
+      kubectl patch deployment webapp -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}"
     fi
 else
     echo "You can't run this in development env"
