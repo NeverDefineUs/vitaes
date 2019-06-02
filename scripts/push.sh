@@ -4,7 +4,7 @@ then
     if [ ! -z '$1' ]; then
       git pull
       git checkout origin/master
-      export VITAES_VERSION=$(git describe --tags --abbrev=0)
+      export VITAES_VERSION=$(git tag --points-at HEAD --sort -version:refname | head -1)
       IFS='.' # hyphen (-) is set as delimiter
       read -ra VITAES_VERSION <<< "$VITAES_VERSION"
       export VITAES_MAJOR=${VITAES_VERSION[0]}
@@ -23,7 +23,7 @@ then
         exit 1
       fi
       git tag "$VITAES_MAJOR.$VITAES_MINOR.$VITAES_PATCH"
-      export VITAES_VERSION=$(git describe --tags --abbrev=0)
+      export VITAES_VERSION=$(git tag --points-at HEAD --sort -version:refname | head -1)
       echo "Creating Version $VITAES_VERSION"
       git tag "$VITAES_VERSION"
       git push --tags
