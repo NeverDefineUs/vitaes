@@ -19,6 +19,7 @@ To work with this project you will need:
 
 ## Running the project
 Choose the environment by running:
+
 | ENVIRONMENT | COMMAND           | READY |
 | ----------- | ----------------- | ----: |
 | development | `source .dev`     | YES   |
@@ -28,7 +29,7 @@ Choose the environment by running:
 After switching environments, you have to run the following scripts (on project root):
 - `sh scritps/init.sh` (first time on environment only)
 - `sh scripts/build.sh`
-- `sh scripts/push.sh` (production only)
+- `sh scripts/push.sh` (production only, may specify a version (MAJOR, MINOR, PATCH))
 - `sh scripts/start.sh`
 
 To stop, run `sh scripts/kill.sh`
