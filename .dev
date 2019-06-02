@@ -1,2 +1,5 @@
 export VITAES_ENV=development
-echo -e "\033[38;2;255;255;120mSwitching to development environment...\033[0m"
+if  [ ! -z "$OLD_PS1" ]; then
+  export PS1=$OLD_PS1
+fi
+echo -e "\033[0;32mSwitching to development environment...\033[0m"
