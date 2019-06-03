@@ -1,6 +1,7 @@
 version: 2.1
 
-jobs:  
+jobs:
+
   build:
   
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/api
@@ -26,13 +27,15 @@ jobs:
           command: docker image build -t us.gcr.io/vitaes/api:$CIRCLE_BRANCH .
       - run:
           name: Login GCR
-          command: cat $GCLOUD_SERVICE_KEY | docker login -u _json_key --password-stdin https://us.gcr.io/vitaes/
+          command: cat ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://us.gcr.io/vitaes/
       - run:
           name: Pushing docker image to gcr
           command: docker image push us.gcr.io/vitaes/api:$CIRCLE_BRANCH
   
   static_analysis:
+
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/api
+    
     docker:
       - image: fabiocorreia/sonarscanner:3.3.0-alpine
 
