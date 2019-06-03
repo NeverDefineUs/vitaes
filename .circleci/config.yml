@@ -47,8 +47,69 @@ jobs:
           name: running analysis on API module
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes \
+            sonar-scanner -Dsonar.projectKey=vitaes_api_module \
+            -Dsonar.projectName='Vitaes API Module'
             -Dsonar.sources=api \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions= \
+            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARQUBE_TOKEN}
+      - run:
+          name: running analysis on Stolas module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_stolas_module \
+            -Dsonar.projectName='Vitaes Stolas Module'
+            -Dsonar.sources=lib/stolas \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions= \
+            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARQUBE_TOKEN}
+      - run:
+          name: running analysis on Logger module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_logger_module \
+            -Dsonar.projectName='Vitaes Logger Module'
+            -Dsonar.sources=logger \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions= \
+            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARQUBE_TOKEN}
+      - run:
+          name: running analysis on Logger module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
+            -Dsonar.projectName='Vitaes Renderer Module'
+            -Dsonar.sources=renderer \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions= \
+            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARQUBE_TOKEN}
+      - run:
+          name: running analysis on Storage module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_storage_module \
+            -Dsonar.projectName='Vitaes Storage Module'
+            -Dsonar.sources=renderer \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions= \
+            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARQUBE_TOKEN}
+      - run:
+          name: running analysis on Webapp module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_webapp_module \
+            -Dsonar.projectName='Vitaes Webapp Module'
+            -Dsonar.sources=webapp/src \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
             -Dsonar.host.url=https://sonarqube.vitaes.tk \
