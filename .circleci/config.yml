@@ -41,15 +41,18 @@ jobs:
 
     steps:
       - checkout
+      - setup_remote_docker
       - run:
         name: running analysis
-        command: sonar-scanner -Dsonar.projectKey=vitaes_api \
-                  -Dsonar.sources=. \
-                  -Dsonar.sourceEncoding=UTF-8 \
-                  -Dsonar.exclusions= \
-                  -Dsonar.host.url=https://sonarqube.vitaes.tk \
-                  -Dsonar.projectVersion=1.0 \
-                  -Dsonar.login=${SONARQUBE_TOKEN}
+        command: |
+          export SONAR_SCANNER_OPTS="-Xmx2048m"
+          sonar-scanner -Dsonar.projectKey=vitaes_api \
+          -Dsonar.sources=. \
+          -Dsonar.sourceEncoding=UTF-8 \
+          -Dsonar.exclusions= \
+          -Dsonar.host.url=https://sonarqube.vitaes.tk \
+          -Dsonar.projectVersion=1.0 \
+          -Dsonar.login=${SONARQUBE_TOKEN}
 
 workflows:
   version: 2
