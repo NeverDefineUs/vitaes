@@ -41,15 +41,14 @@ jobs:
       - image: fabiocorreia/sonarscanner:3.3.0-alpine
 
     steps:
-      - checkout:
-          path: ~/api
+      - checkout
       - setup_remote_docker
       - run:
-          name: running analysis
+          name: running analysis on API module
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
             sonar-scanner -Dsonar.projectKey=vitaes \
-            -Dsonar.sources=. \
+            -Dsonar.sources=api \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
             -Dsonar.host.url=https://sonarqube.vitaes.tk \
