@@ -46,7 +46,7 @@ jobs:
           name: running analysis
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_api \
+            sonar-scanner -Dsonar.projectKey=vitaes \
             -Dsonar.sources=. \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
