@@ -2,35 +2,35 @@ version: 2.1
 
 jobs:
 
-  build:
+  # build:
   
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/api
+  #   working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/api
   
-    docker:
-      # specify the version
-      - image: circleci/golang:1.9
+  #   docker:
+  #     # specify the version
+  #     - image: circleci/golang:1.9
 
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run: 
-          name: Installing depedencies
-          command: go get -v -t -d ./...
-      - run: 
-          name: Running tests
-          command: go test -v ./...
-      - run: 
-          name: Compiling
-          command: go build
-      - run:
-          name: Building docker image
-          command: docker image build -t us.gcr.io/vitaes/api:$CIRCLE_BRANCH .
-      - run:
-          name: Login GCR
-          command: cat ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://us.gcr.io/vitaes/
-      - run:
-          name: Pushing docker image to gcr
-          command: docker image push us.gcr.io/vitaes/api:$CIRCLE_BRANCH
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
+  #     - run: 
+  #         name: Installing depedencies
+  #         command: go get -v -t -d ./...
+  #     - run: 
+  #         name: Running tests
+  #         command: go test -v ./...
+  #     - run: 
+  #         name: Compiling
+  #         command: go build
+  #     - run:
+  #         name: Building docker image
+  #         command: docker image build -t us.gcr.io/vitaes/api:$CIRCLE_BRANCH .
+  #     - run:
+  #         name: Login GCR
+  #         command: cat ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://us.gcr.io/vitaes/
+  #     - run:
+  #         name: Pushing docker image to gcr
+  #         command: docker image push us.gcr.io/vitaes/api:$CIRCLE_BRANCH
   
   static_analysis:
 
