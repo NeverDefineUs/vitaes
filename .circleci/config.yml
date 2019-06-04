@@ -97,7 +97,7 @@ jobs:
             export SONAR_SCANNER_OPTS="-Xmx2048m"
             sonar-scanner -Dsonar.projectKey=vitaes_storage_module \
             -Dsonar.projectName='Vitaes Storage Module' \
-            -Dsonar.sources=renderer \
+            -Dsonar.sources=storage \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
             -Dsonar.host.url=https://sonarqube.vitaes.tk \
