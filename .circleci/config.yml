@@ -11,12 +11,8 @@ jobs:
       - image: circleci/golang:1.9
 
     steps:
-      - checkout:
-          path: ~/api
+      - checkout
       - setup_remote_docker
-      - run:
-          name: Setting up docker (Login GCR)
-          command: cat ${GCLOUD_SERVICE_KEY} | docker login -u _json_key --password-stdin https://us.gcr.io/vitaes/
       - run: 
           name: Installing API module depedencies
           command: cd api && go mod download
@@ -26,16 +22,10 @@ jobs:
       - run: 
           name: Compiling API module
           command: cd api && go build
-      - run:
-          name: Building API module docker image
-          command: docker image build -t us.gcr.io/vitaes/api:$CIRCLE_BRANCH .
-      - run:
-          name: Pushing docker image to gcr
-          command: docker image push us.gcr.io/vitaes/api:$CIRCLE_BRANCH
   
   static_analysis:
 
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/api
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     
     docker:
       - image: fabiocorreia/sonarscanner:3.3.0-alpine
