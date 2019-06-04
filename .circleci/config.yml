@@ -52,9 +52,9 @@ jobs:
             -Dsonar.sources=api \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
           name: running analysis on Stolas module
           command: |
@@ -64,9 +64,9 @@ jobs:
             -Dsonar.sources=lib/stolas \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
           name: running analysis on Logger module
           command: |
@@ -76,9 +76,9 @@ jobs:
             -Dsonar.sources=logger \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
           name: running analysis on Logger module
           command: |
@@ -88,9 +88,9 @@ jobs:
             -Dsonar.sources=renderer \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
           name: running analysis on Storage module
           command: |
@@ -100,9 +100,9 @@ jobs:
             -Dsonar.sources=storage \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
           name: running analysis on Webapp module
           command: |
@@ -112,9 +112,9 @@ jobs:
             -Dsonar.sources=webapp/src \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
           name: running analysis on Scripts module
           command: |
@@ -124,9 +124,9 @@ jobs:
             -Dsonar.sources=scripts \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.exclusions= \
-            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARQUBE_TOKEN}
+            -Dsonar.login=${SONARCLOUD_TOKEN}
 
 workflows:
   version: 2
