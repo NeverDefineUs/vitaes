@@ -115,6 +115,18 @@ jobs:
             -Dsonar.host.url=https://sonarqube.vitaes.tk \
             -Dsonar.projectVersion=1.0 \
             -Dsonar.login=${SONARQUBE_TOKEN}
+      - run:
+          name: running analysis on Scripts module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_scripts_module \
+            -Dsonar.projectName='Vitaes Scripts Module' \
+            -Dsonar.sources=scripts \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions= \
+            -Dsonar.host.url=https://sonarqube.vitaes.tk \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARQUBE_TOKEN}
 
 workflows:
   version: 2
