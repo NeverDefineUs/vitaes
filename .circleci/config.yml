@@ -80,7 +80,7 @@ jobs:
             -Dsonar.projectVersion=1.0 \
             -Dsonar.login=${SONARCLOUD_TOKEN}
       - run:
-          name: running analysis on Logger module
+          name: running analysis on Renderer module
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
             sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
