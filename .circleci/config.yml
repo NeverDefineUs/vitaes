@@ -1,0 +1,125 @@
+version: 2.1
+
+jobs:
+
+  build:
+  
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+  
+    docker:
+      # specify the version
+      - image: circleci/golang:1.9
+
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: 
+          name: Installing API module depedencies
+          command: cd api && go mod download
+      - run: 
+          name: Running API module tests
+          command: cd api && go test -v ./...
+      - run: 
+          name: Compiling API module
+          command: cd api && go build
+  
+  static_analysis:
+
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    
+    docker:
+      - image: fabiocorreia/sonarscanner:3.3.0-alpine
+
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: running analysis on API module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_api_module \
+            -Dsonar.projectName='Vitaes API Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=api \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      - run:
+          name: running analysis on Stolas module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_stolas_module \
+            -Dsonar.projectName='Vitaes Stolas Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=lib/stolas \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      - run:
+          name: running analysis on Logger module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_logger_module \
+            -Dsonar.projectName='Vitaes Logger Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=logger \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      - run:
+          name: running analysis on Renderer module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
+            -Dsonar.projectName='Vitaes Renderer Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=renderer \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      - run:
+          name: running analysis on Storage module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_storage_module \
+            -Dsonar.projectName='Vitaes Storage Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=storage \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      - run:
+          name: running analysis on Webapp module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_webapp_module \
+            -Dsonar.projectName='Vitaes Webapp Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=webapp/src \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      - run:
+          name: running analysis on Scripts module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_scripts_module \
+            -Dsonar.projectName='Vitaes Scripts Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=scripts \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+
+workflows:
+  version: 2
+  build_test_and_deliver:
+    jobs: 
+      - static_analysis

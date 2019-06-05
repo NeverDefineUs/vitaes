@@ -1,4 +1,14 @@
 # Vitaes
+
+| Module   | Status             | Coverage                     | Maintainability                    | Security                    |
+| -------- | ------------------ | ---------------------------- | ---------------------------------- | --------------------------- |
+| api      | ![status_api]      | ![status_api_coverage]       | ![status_api_maintainability]      | ![status_api_security]      |
+| stolas   | ![status_stolas]   | ![status_stolas_coverage]    | ![status_stolas_maintainability]   | ![status_stolas_security]   |
+| logger   | ![status_logger]   | ![status_logger_coverage]    | ![status_logger_maintainability]   | ![status_logger_security]   |
+| renderer | ![status_renderer] | ![status_renderer_coverage]  | ![status_renderer_maintainability] | ![status_renderer_security] |
+| storage  | ![status_storage]  | ![status_storage_coverage]   | ![status_storage_maintainability]  | ![status_storage_security]  |
+| webapp   | ![status_webapp]   | ![status_webapp_coverage]    | ![status_webapp_maintainability]   | ![status_webapp_security]   |
+
 ## The Project
 Vitaes is an open source tool with the purpose of making the curriculum creation process easier.
 It uses an abstract tree to model the curriculum and compiles it in a PDF.
@@ -42,3 +52,29 @@ Releases are made in random times, the server is currently running on [vitaes.io
 
 ## Notes
 In order to enable hot reloading for the webapp while developing in Windows, you need to change the `vitaes-webapp/package.json` start script to `CHOKIDAR_USEPOLLING=true react-scripts start`.
+
+
+[status_api]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_api_module&metric=alert_status
+[status_stolas]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_stolas_module&metric=alert_status
+[status_logger]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_logger_module&metric=alert_status
+[status_renderer]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_renderer_module&metric=alert_status
+[status_storage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_storage_module&metric=alert_status
+[status_webapp]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_webapp_module&metric=alert_status
+[status_api_coverage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_api_module&metric=coverage
+[status_stolas_coverage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_stolas_module&metric=coverage
+[status_logger_coverage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_logger_module&metric=coverage
+[status_renderer_coverage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_renderer_module&metric=coverage
+[status_storage_coverage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_storage_module&metric=coverage
+[status_webapp_coverage]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_webapp_module&metric=coverage
+[status_api_maintainability]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_api_module&metric=sqale_rating
+[status_stolas_maintainability]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_stolas_module&metric=sqale_rating
+[status_logger_maintainability]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_logger_module&metric=sqale_rating
+[status_renderer_maintainability]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_renderer_module&metric=sqale_rating
+[status_storage_maintainability]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_storage_module&metric=sqale_rating
+[status_webapp_maintainability]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_webapp_module&metric=sqale_rating
+[status_api_security]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_api_module&metric=security_rating
+[status_stolas_security]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_stolas_module&metric=security_rating
+[status_logger_security]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_logger_module&metric=security_rating
+[status_renderer_security]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_renderer_module&metric=security_rating
+[status_storage_security]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_storage_module&metric=security_rating
+[status_webapp_security]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_webapp_module&metric=security_rating
