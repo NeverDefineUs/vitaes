@@ -1,4 +1,4 @@
-# Vitaes
+# Vitaes ![circleci_status]
 
 | Module   | Status             | Coverage                     | Maintainability                    | Security                    |
 | -------- | ------------------ | ---------------------------- | ---------------------------------- | --------------------------- |
@@ -54,6 +54,7 @@ Releases are made in random times, the server is currently running on [vitaes.io
 In order to enable hot reloading for the webapp while developing in Windows, you need to change the `vitaes-webapp/package.json` start script to `CHOKIDAR_USEPOLLING=true react-scripts start`.
 
 
+[circleci_status]: https://circleci.com/gh/NeverDefineUs/vitaes/tree/master.svg?style=svg
 [status_api]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_api_module&metric=alert_status
 [status_stolas]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_stolas_module&metric=alert_status
 [status_logger]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_logger_module&metric=alert_status
