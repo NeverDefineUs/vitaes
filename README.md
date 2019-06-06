@@ -1,13 +1,11 @@
-# Vitaes
+# Vitaes ![circleci_status]
 
-| Module   | Status             | Coverage                     | Maintainability                    | Security                    |
-| -------- | ------------------ | ---------------------------- | ---------------------------------- | --------------------------- |
-| api      | ![status_api]      | ![status_api_coverage]       | ![status_api_maintainability]      | ![status_api_security]      |
-| stolas   | ![status_stolas]   | ![status_stolas_coverage]    | ![status_stolas_maintainability]   | ![status_stolas_security]   |
-| logger   | ![status_logger]   | ![status_logger_coverage]    | ![status_logger_maintainability]   | ![status_logger_security]   |
-| renderer | ![status_renderer] | ![status_renderer_coverage]  | ![status_renderer_maintainability] | ![status_renderer_security] |
-| storage  | ![status_storage]  | ![status_storage_coverage]   | ![status_storage_maintainability]  | ![status_storage_security]  |
-| webapp   | ![status_webapp]   | ![status_webapp_coverage]    | ![status_webapp_maintainability]   | ![status_webapp_security]   |
+| Api                           | Stolas                           | logger                           | renderer                           | storage                           | webapp                           |
+| ----------------------------- | -------------------------------- | -------------------------------- | ---------------------------------- | --------------------------------- | -------------------------------- |
+| ![status_api_security]        | ![status_stolas_security]        | ![status_logger_security]        | ![status_renderer_security]        | ![status_storage_security]        | ![status_webapp_security]        |
+| ![status_api_coverage]        | ![status_stolas_coverage]        | ![status_logger_coverage]        | ![status_renderer_coverage]        | ![status_storage_coverage]        | ![status_webapp_coverage]        |
+| ![status_api_maintainability] | ![status_stolas_maintainability] | ![status_logger_maintainability] | ![status_renderer_maintainability] | ![status_storage_maintainability] | ![status_webapp_maintainability] |
+| ![status_api]                 | ![status_stolas]                 | ![status_logger]                 | ![status_renderer]                 | ![status_storage]                 | ![status_webapp]                 |
 
 ## The Project
 Vitaes is an open source tool with the purpose of making the curriculum creation process easier.
@@ -32,9 +30,9 @@ Choose the environment by running:
 
 | ENVIRONMENT | COMMAND           | READY |
 | ----------- | ----------------- | ----: |
-| development | `source .dev`     | YES   |
-| production  | `source .prod`    | YES   |
-| staging     | `source .staging` | NO    |
+| development | `source .dev`     |   YES |
+| production  | `source .prod`    |   YES |
+| staging     | `source .staging` |    NO |
 
 After switching environments, you have to run the following scripts (on project root):
 - `sh scritps/init.sh` (first time on environment only)
@@ -54,6 +52,7 @@ Releases are made in random times, the server is currently running on [vitaes.io
 In order to enable hot reloading for the webapp while developing in Windows, you need to change the `vitaes-webapp/package.json` start script to `CHOKIDAR_USEPOLLING=true react-scripts start`.
 
 
+[circleci_status]: https://circleci.com/gh/NeverDefineUs/vitaes/tree/master.svg?style=svg
 [status_api]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_api_module&metric=alert_status
 [status_stolas]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_stolas_module&metric=alert_status
 [status_logger]: https://sonarcloud.io/api/project_badges/measure?project=vitaes_logger_module&metric=alert_status
