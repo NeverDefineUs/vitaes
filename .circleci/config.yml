@@ -2,6 +2,293 @@ version: 2.1
 
 jobs:
 
+  vitaes_start_job:
+    
+    working_directory: ~/project
+
+    docker:
+      - image: alpine:latest
+
+    steps:
+      - run:
+          command: |
+            echo  /\   /(_) |_ __ _  ___  ___  (_) ___   
+                  \ \ / / | __/ _` |/ _ \/ __| | |/ _ \  
+                   \ V /| | || (_| |  __/\__ \_| | (_) | 
+                    \_/ |_|\__\__,_|\___||___(_)_|\___/ 
+
+  api_module_steps:
+    
+    working_directory: ~/api_module
+
+    docker:
+      - image: alpine:latest
+      
+    steps:
+      - checkout
+      - setup_remote_docker
+      # Compilation validation step
+      - run: 
+          name: Installing API module depedencies
+          command: cd api && go mod download
+      - run: 
+          name: Compiling API module
+          command: cd api && go build
+      # Testing with coverage step
+      - run: 
+          name: Running API module tests with coverage
+          command: cd api && go test -coverprofile=coverage.out -v ./...
+      # Static Analysis with coverage import step
+      - run:
+          name: running analysis on API module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_api_module \
+            -Dsonar.projectName='Vitaes API Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=api \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.go.coverage.reportPaths=api/coverage.out \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      # Building docker image step
+      - run: 
+          name: Creating API docker image
+          command: docker image build api -t vitaes/api:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/api:dev
+
+  stolas_module_steps:
+
+    working_directory: ~/stolas_module
+
+    docker:
+      - image: alpine:latest
+      
+    steps:
+      - checkout
+      - setup_remote_docker
+      # Compilation validation step
+      - run: 
+          name: Installing API module depedencies
+          command: cd lib/stolas && go mod download
+      - run: 
+          name: Compiling API module
+          command: cd lib/stolas && go build
+      # Testing with coverage step
+      - run: 
+          name: Running API module tests with coverage
+          command: cd lib/stolas && go test -coverprofile=coverage.out -v ./...
+      # Static Analysis with coverage import step
+      - run:
+          name: running analysis on Stolas module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_stolas_module \
+            -Dsonar.projectName='Vitaes Stolas Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=lib/stolas \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.go.coverage.reportPaths=lib/stolas/coverage.out \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+
+  logger_module_steps:
+    
+    working_directory: ~/logger_module
+
+    docker:
+      - image: alpine:latest
+    
+    steps:
+      - checkout
+      - setup_remote_docker
+      # Compilation validation step
+      - run: 
+          name: Installing API module depedencies
+          command: cd logger && go mod download
+      - run: 
+          name: Compiling API module
+          command: cd logger && go build
+      # Testing with coverage step
+      - run: 
+          name: Running API module tests with coverage
+          command: cd logger && go test -coverprofile=coverage.out -v ./...
+      # Static Analysis with coverage import step
+      - run:
+          name: running analysis on Logger module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_logger_module \
+            -Dsonar.projectName='Vitaes Logger Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=logger \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.go.coverage.reportPaths=logger/coverage.out \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      # Building docker image step
+      - run: 
+          name: Creating API docker image
+          command: docker image build logger -t vitaes/logger:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/logger:dev
+
+  # Disabled
+  renderer_module_steps:
+    
+    working_directory: ~/renderer_module
+  
+    docker:
+      - image: alpine:latest
+    
+    steps:
+    - checkout
+    - setup_remote_docker
+    # Testing with coverage step
+    - run: 
+        name: Running Renderer module tests with coverage
+        command: cd renderer && python -m unittest discover
+    - run:
+        name: Running Renderer module coverage analysis
+        command: cd renderer && coverage run --branch --source= <program> 
+    - run:
+          name: running analysis on Renderer module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
+            -Dsonar.projectName='Vitaes Renderer Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=renderer \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+
+  storage_module_steps:
+    
+    working_directory: ~/storage_module
+
+    docker:
+      - image: alpine:latest
+      
+    steps:
+      - checkout
+      - setup_remote_docker
+      # Compilation validation step
+      - run: 
+          name: Installing API module depedencies
+          command: cd storage && go mod download
+      - run: 
+          name: Compiling API module
+          command: cd storage && go build
+      # Testing with coverage step
+      - run: 
+          name: Running API module tests with coverage
+          command: cd storage && go test -coverprofile=coverage.out -v ./...
+      - run:
+          name: running analysis on Storage module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_storage_module \
+            -Dsonar.projectName='Vitaes Storage Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=storage \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.go.coverage.reportPaths=storage/coverage.out \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      # Building docker image step
+      - run: 
+          name: Creating API docker image
+          command: docker image build storage -t vitaes/storage:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/storage:dev
+
+  webapp_module_steps:
+    
+    working_directory: ~/webapp_module
+
+    docker:
+      - image: alpine:latest
+    
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: running analysis on Webapp module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_webapp_module \
+            -Dsonar.projectName='Vitaes Webapp Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=webapp/src \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+      # Building docker image step
+      - run: 
+          name: Creating API docker image
+          command: docker image build storage -t vitaes/storage:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/storage:dev
+
+  scripts_module_steps:
+    
+    working_directory: ~/scripts_module
+
+    docker:
+      - image: alpine:latest
+      
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: test step
+          command: |
+            echo "Hello World!"
+      - run:
+          name: running analysis on Scripts module
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            sonar-scanner -Dsonar.projectKey=vitaes_scripts_module \
+            -Dsonar.projectName='Vitaes Scripts Module' \
+            -Dsonar.organization=vitaes \
+            -Dsonar.sources=scripts \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.login=${SONARCLOUD_TOKEN}
+
   build:
   
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
@@ -22,104 +309,16 @@ jobs:
       - run: 
           name: Compiling API module
           command: cd api && go build
-  
-  static_analysis:
 
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
-    
-    docker:
-      - image: fabiocorreia/sonarscanner:3.3.0-alpine
-
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: running analysis on API module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_api_module \
-            -Dsonar.projectName='Vitaes API Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=api \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
-      - run:
-          name: running analysis on Stolas module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_stolas_module \
-            -Dsonar.projectName='Vitaes Stolas Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=lib/stolas \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
-      - run:
-          name: running analysis on Logger module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_logger_module \
-            -Dsonar.projectName='Vitaes Logger Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=logger \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
-      - run:
-          name: running analysis on Renderer module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
-            -Dsonar.projectName='Vitaes Renderer Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=renderer \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
-      - run:
-          name: running analysis on Storage module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_storage_module \
-            -Dsonar.projectName='Vitaes Storage Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=storage \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
-      - run:
-          name: running analysis on Webapp module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_webapp_module \
-            -Dsonar.projectName='Vitaes Webapp Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=webapp/src \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
-      - run:
-          name: running analysis on Scripts module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_scripts_module \
-            -Dsonar.projectName='Vitaes Scripts Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=scripts \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
 
 workflows:
   version: 2
   build_test_and_deliver:
     jobs: 
-      - static_analysis
+      - api_module_steps
+      - stolas_module_steps
+      - logger_module_steps
+      #- renderer_module_steps
+      - storage_module_steps
+      - webapp_module_steps
+      - scripts_module_steps
