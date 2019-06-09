@@ -22,7 +22,8 @@ To work with this project you will need:
 
 ##### Production only requirements
 - [kubectl-aliases](https://github.com/ahmetb/kubectl-aliases) (**PLEASE READ CAREFULY**)
-- doctl
+- [linkerd](https://linkerd.io/2/getting-started/)
+- [doctl](https://github.com/digitalocean/doctl)
 ---
 
 ## Running the project
