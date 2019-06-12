@@ -5,8 +5,10 @@ RUN apk update && apk upgrade && apk add --no-cache \
 ENV GOPATH=/
 ENV GO111MODULE=on
 WORKDIR /vitaes
-COPY go.mod .
-RUN go mod download
+COPY Gopkg.lock .
+COPY Gopkg.toml .
+COPY vendor .
+RUN dep ensure
 COPY . .
 RUN go get -d -v ./...
 RUN go build -o app
