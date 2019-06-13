@@ -22,7 +22,7 @@ jobs:
     working_directory: ~/api_module
 
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
@@ -71,7 +71,7 @@ jobs:
     working_directory: ~/stolas_module
 
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
@@ -108,7 +108,7 @@ jobs:
     working_directory: ~/logger_module
 
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
     
     steps:
@@ -188,7 +188,7 @@ jobs:
     working_directory: ~/storage_module
 
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
@@ -295,7 +295,7 @@ jobs:
   
     docker:
       # specify the version
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
 
     steps:
       - checkout
