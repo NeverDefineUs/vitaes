@@ -22,7 +22,8 @@ jobs:
     working_directory: ~/api_module
 
     docker:
-      - image: alpine:latest
+      - image: circleci/golang:1.9
+      - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
       - checkout
@@ -70,7 +71,8 @@ jobs:
     working_directory: ~/stolas_module
 
     docker:
-      - image: alpine:latest
+      - image: circleci/golang:1.9
+      - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
       - checkout
@@ -106,7 +108,8 @@ jobs:
     working_directory: ~/logger_module
 
     docker:
-      - image: alpine:latest
+      - image: circleci/golang:1.9
+      - image: vitaes/sonarscanner:3.3.0-alpine
     
     steps:
       - checkout
@@ -185,7 +188,8 @@ jobs:
     working_directory: ~/storage_module
 
     docker:
-      - image: alpine:latest
+      - image: circleci/golang:1.9
+      - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
       - checkout
@@ -252,7 +256,7 @@ jobs:
       # Building docker image step
       - run: 
           name: Creating API docker image
-          command: docker image build storage -t vitaes/storage:dev
+          command: docker image build storage -t vitaes/webapp:dev
       # Docker login step
       - run: 
           name: Docker login
@@ -260,22 +264,18 @@ jobs:
       # Docker image push
       - run: 
           name: Delivering docker image
-          command: docker image push vitaes/storage:dev
+          command: docker image push vitaes/webapp:dev
 
   scripts_module_steps:
     
     working_directory: ~/scripts_module
 
     docker:
-      - image: alpine:latest
+      - image: vitaes/sonarscanner:3.3.0-alpine
       
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: test step
-          command: |
-            echo "Hello World!"
       - run:
           name: running analysis on Scripts module
           command: |
