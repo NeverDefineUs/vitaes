@@ -22,8 +22,8 @@ jobs:
     working_directory: ~/api_module
 
     docker:
-      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
+      - image: circleci/golang:1.11
       
     steps:
       - checkout
@@ -71,8 +71,8 @@ jobs:
     working_directory: ~/stolas_module
 
     docker:
-      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
+      - image: circleci/golang:1.11
       
     steps:
       - checkout
@@ -108,8 +108,8 @@ jobs:
     working_directory: ~/logger_module
 
     docker:
-      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
+      - image: circleci/golang:1.11
     
     steps:
       - checkout
@@ -188,8 +188,8 @@ jobs:
     working_directory: ~/storage_module
 
     docker:
-      - image: circleci/golang:1.11
       - image: vitaes/sonarscanner:3.3.0-alpine
+      - image: circleci/golang:1.11
       
     steps:
       - checkout
@@ -288,28 +288,6 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
             -Dsonar.login=${SONARCLOUD_TOKEN}
-
-  build:
-  
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
-  
-    docker:
-      # specify the version
-      - image: circleci/golang:1.11
-
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run: 
-          name: Installing API module depedencies
-          command: cd api && go mod download
-      - run: 
-          name: Running API module tests
-          command: cd api && go test -v ./...
-      - run: 
-          name: Compiling API module
-          command: cd api && go build
-
 
 workflows:
   version: 2
