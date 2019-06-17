@@ -166,7 +166,7 @@ jobs:
     # Testing with coverage step
     - run:
         name: Installing depedencies
-        command: cd renderer && pip install -r requirements.txt
+        command: cd renderer && pip install -r requirements.txt --user
     - run: 
         name: Running Renderer module tests with coverage
         command: cd renderer && python3 -m unittest discover
