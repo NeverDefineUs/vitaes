@@ -7,6 +7,8 @@ ENV GO111MODULE=on
 WORKDIR /vitaes
 COPY go.mod .
 RUN go mod download
+
+
 COPY . .
 RUN go get -d -v ./...
 RUN go build -o app
