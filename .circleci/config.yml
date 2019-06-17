@@ -22,8 +22,7 @@ jobs:
     working_directory: ~/api_module
 
     docker:
-      - image: vitaes/sonarscanner:3.3.0-alpine
-      - image: circleci/golang:1.11
+      - image: vitaes/pipeline_base_image:v1.1
       
     steps:
       - checkout
@@ -71,8 +70,7 @@ jobs:
     working_directory: ~/stolas_module
 
     docker:
-      - image: vitaes/sonarscanner:3.3.0-alpine
-      - image: circleci/golang:1.11
+      - image: vitaes/pipeline_base_image:v1.1
       
     steps:
       - checkout
@@ -108,8 +106,7 @@ jobs:
     working_directory: ~/logger_module
 
     docker:
-      - image: vitaes/sonarscanner:3.3.0-alpine
-      - image: circleci/golang:1.11
+      - image: vitaes/pipeline_base_image:v1.1
     
     steps:
       - checkout
@@ -158,18 +155,21 @@ jobs:
     working_directory: ~/renderer_module
   
     docker:
-      - image: alpine:latest
+      - image: vitaes/pipeline_base_image:v1.1
     
     steps:
     - checkout
     - setup_remote_docker
     # Testing with coverage step
+    - run:
+        name: Installing depedencies
+        command: cd renderer && pip install -r requirements.txt
     - run: 
         name: Running Renderer module tests with coverage
-        command: cd renderer && python -m unittest discover
+        command: cd renderer && python3 -m unittest discover
     - run:
         name: Running Renderer module coverage analysis
-        command: cd renderer && coverage run --branch --source= <program> 
+        command: cd renderer && coverage3 run --source=. Renders.py && coverage3 xml -o coverage.xml
     - run:
           name: running analysis on Renderer module
           command: |
@@ -179,6 +179,7 @@ jobs:
             -Dsonar.organization=vitaes \
             -Dsonar.sources=renderer \
             -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.python.coverage.reportPaths=renderer/ \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.projectVersion=1.0 \
             -Dsonar.login=${SONARCLOUD_TOKEN}
@@ -188,8 +189,7 @@ jobs:
     working_directory: ~/storage_module
 
     docker:
-      - image: vitaes/sonarscanner:3.3.0-alpine
-      - image: circleci/golang:1.11
+      - image: vitaes/pipeline_base_image:v1.1
       
     steps:
       - checkout
@@ -236,7 +236,7 @@ jobs:
     working_directory: ~/webapp_module
 
     docker:
-      - image: alpine:latest
+      - image: vitaes/pipeline_base_image:v1.1
     
     steps:
       - checkout
