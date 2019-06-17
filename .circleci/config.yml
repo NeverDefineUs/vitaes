@@ -167,9 +167,6 @@ jobs:
     - run:
         name: Installing depedencies
         command: cd renderer && pip install -r requirements.txt --user
-    - run: 
-        name: Running Renderer module tests with coverage
-        command: cd renderer && python3 -m unittest discover
     - run:
         name: Running Renderer module coverage analysis
         command: cd renderer && coverage3 run --source=. Renders.py && coverage3 xml -o coverage.xml
