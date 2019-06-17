@@ -59,14 +59,14 @@ jobs:
       - run: 
           name: Creating API docker image
           command: docker image build api -t vitaes/api:dev
-      # Docker login step
-      - run: 
-          name: Docker login
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
-      # Docker image push
-      - run: 
-          name: Delivering docker image
-          command: docker image push vitaes/api:dev
+      # # Docker login step
+      # - run: 
+      #     name: Docker login
+      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # # Docker image push
+      # - run: 
+      #     name: Delivering docker image
+      #     command: docker image push vitaes/api:dev
 
   stolas_module_steps:
 
@@ -143,14 +143,14 @@ jobs:
       - run: 
           name: Creating API docker image
           command: docker image build logger -t vitaes/logger:dev
-      # Docker login step
-      - run: 
-          name: Docker login
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
-      # Docker image push
-      - run: 
-          name: Delivering docker image
-          command: docker image push vitaes/logger:dev
+      # # Docker login step
+      # - run: 
+      #     name: Docker login
+      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # # Docker image push
+      # - run: 
+      #     name: Delivering docker image
+      #     command: docker image push vitaes/logger:dev
 
   # Disabled
   renderer_module_steps:
@@ -225,14 +225,14 @@ jobs:
       - run: 
           name: Creating API docker image
           command: docker image build storage -t vitaes/storage:dev
-      # Docker login step
-      - run: 
-          name: Docker login
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
-      # Docker image push
-      - run: 
-          name: Delivering docker image
-          command: docker image push vitaes/storage:dev
+      # # Docker login step
+      # - run: 
+      #     name: Docker login
+      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # # Docker image push
+      # - run: 
+      #     name: Delivering docker image
+      #     command: docker image push vitaes/storage:dev
 
   webapp_module_steps:
     
@@ -261,13 +261,13 @@ jobs:
           name: Creating API docker image
           command: docker image build storage -t vitaes/webapp:dev
       # Docker login step
-      - run: 
-          name: Docker login
-          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # - run: 
+      #     name: Docker login
+      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
       # Docker image push
-      - run: 
-          name: Delivering docker image
-          command: docker image push vitaes/webapp:dev
+      # - run: 
+      #     name: Delivering docker image
+      #     command: docker image push vitaes/webapp:dev
 
   scripts_module_steps:
     
@@ -299,7 +299,7 @@ workflows:
       - api_module_steps
       - stolas_module_steps
       - logger_module_steps
-      #- renderer_module_steps
+      - renderer_module_steps
       - storage_module_steps
       - webapp_module_steps
       - scripts_module_steps
