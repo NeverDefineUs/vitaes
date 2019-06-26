@@ -56,7 +56,9 @@ services:
     - net
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:alpine
+    image: rabbitmq:management-alpine
+    ports:
+    - 15672:15672
     restart: always
     networks:
     - net

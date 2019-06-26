@@ -13,6 +13,7 @@ then
     linkerd inject kubernetes/api.yaml | kubectl apply -f -
     linkerd inject kubernetes/storage.yaml | kubectl apply -f -
     linkerd inject kubernetes/ingress.yaml | kubectl apply -f -
+    kubectl apply -f kubernetes/renderer-autoscaler.yaml
     echo ""
     echo "Started in $VITAES_ENV environment"
 else
