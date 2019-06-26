@@ -87,10 +87,10 @@ def get_cv_queue(ch, method, properties, body):
       }
     ]
     client.write_points(log)
+    ch.basic_ack(delivery_tag = method.delivery_tag)
 
 channel.basic_consume(queue='cv_requests',
-                      on_message_callback=get_cv_queue,
-                      auto_ack=True)
+                      on_message_callback=get_cv_queue)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
