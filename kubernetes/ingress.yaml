@@ -30,6 +30,20 @@ spec:
       - backend:
           serviceName: logger
           servicePort: 6000
+
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-internal
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: internal-services
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+spec:
+  rules:
   - host: sqlite.vitaes.io
     http:
       paths:
