@@ -44,6 +44,7 @@ def get_cv_queue(ch, method, properties, body):
     try:
         body=body.decode('utf-8')
         dic = json.loads(body)
+        print('[*] Consuming job: '+dic["path"], flush=True)
         cv_type = dic["render_key"]
         email = dic["curriculum_vitae"]["header"]["email"]
         log_step(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
@@ -87,13 +88,10 @@ def get_cv_queue(ch, method, properties, body):
       }
     ]
     client.write_points(log)
+    ch.basic_ack(delivery_tag = method.delivery_tag)
 
 channel.basic_consume(queue='cv_requests',
-                      on_message_callback=get_cv_queue,
-                      auto_ack=True)
+                      on_message_callback=get_cv_queue)
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
+print('[*] Waiting for messages. To exit press CTRL+C', flush=True)
 channel.start_consuming()
-while True:
-    time.sleep(60)
-    print('I am alive')
