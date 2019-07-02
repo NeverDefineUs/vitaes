@@ -14,7 +14,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: rabbitmq
-        image: rabbitmq:alpine
+        image: rabbitmq:management-alpine
         imagePullPolicy: Always
 
 ---
@@ -24,7 +24,11 @@ kind: Service
 metadata:
   name: rabbitmq
 spec:
+  type: NodePort
   ports:
-  - port: 5672
+  - name: server
+    port: 5672
+  - name: api
+    port: 15672
   selector:
     app: rabbitmq
