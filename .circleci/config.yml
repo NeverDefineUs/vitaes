@@ -59,14 +59,14 @@ jobs:
       - run: 
           name: Creating API docker image
           command: docker image build api -t vitaes/api:dev
-      # # Docker login step
-      # - run: 
-      #     name: Docker login
-      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
-      # # Docker image push
-      # - run: 
-      #     name: Delivering docker image
-      #     command: docker image push vitaes/api:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/api:dev
 
   stolas_module_steps:
 
@@ -143,14 +143,14 @@ jobs:
       - run: 
           name: Creating API docker image
           command: docker image build logger -t vitaes/logger:dev
-      # # Docker login step
-      # - run: 
-      #     name: Docker login
-      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
-      # # Docker image push
-      # - run: 
-      #     name: Delivering docker image
-      #     command: docker image push vitaes/logger:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/logger:dev
 
   # Disabled
   renderer_module_steps:
@@ -171,18 +171,30 @@ jobs:
         name: Running Renderer module coverage analysis
         command: cd renderer && coverage3 run --source=. Renders.py && coverage3 xml -o coverage.xml
     - run:
-          name: running analysis on Renderer module
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
-            -Dsonar.projectName='Vitaes Renderer Module' \
-            -Dsonar.organization=vitaes \
-            -Dsonar.sources=renderer \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.python.coverage.reportPaths=renderer/coverage.xml \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.login=${SONARCLOUD_TOKEN}
+        name: running analysis on Renderer module
+        command: |
+          export SONAR_SCANNER_OPTS="-Xmx2048m"
+          sonar-scanner -Dsonar.projectKey=vitaes_renderer_module \
+          -Dsonar.projectName='Vitaes Renderer Module' \
+          -Dsonar.organization=vitaes \
+          -Dsonar.sources=renderer \
+          -Dsonar.sourceEncoding=UTF-8 \
+          -Dsonar.python.coverage.reportPaths=renderer/coverage.xml \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.projectVersion=1.0 \
+          -Dsonar.login=${SONARCLOUD_TOKEN}
+    # Building docker image step
+    - run: 
+        name: Creating Renderer docker image
+        command: docker image build renderer -t vitaes/renderer:dev
+    # Docker login step
+    - run: 
+        name: Docker login
+        command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+    # Docker image push
+    - run: 
+        name: Delivering docker image
+        command: docker image push vitaes/renderer:dev
 
   storage_module_steps:
     
@@ -222,14 +234,14 @@ jobs:
       - run: 
           name: Creating API docker image
           command: docker image build storage -t vitaes/storage:dev
-      # # Docker login step
-      # - run: 
-      #     name: Docker login
-      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
-      # # Docker image push
-      # - run: 
-      #     name: Delivering docker image
-      #     command: docker image push vitaes/storage:dev
+      # Docker login step
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      # Docker image push
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/storage:dev
 
   webapp_module_steps:
     
@@ -258,13 +270,13 @@ jobs:
           name: Creating API docker image
           command: docker image build storage -t vitaes/webapp:dev
       # Docker login step
-      # - run: 
-      #     name: Docker login
-      #     command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
+      - run: 
+          name: Docker login
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PW}
       # Docker image push
-      # - run: 
-      #     name: Delivering docker image
-      #     command: docker image push vitaes/webapp:dev
+      - run: 
+          name: Delivering docker image
+          command: docker image push vitaes/webapp:dev
 
   scripts_module_steps:
     
