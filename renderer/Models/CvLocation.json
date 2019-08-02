@@ -3,7 +3,7 @@
   "fields": {
     "country": {
       "type": "string",
-      "required": true,
+      "required": false,
       "field_info": {},
       "default": null
     },
