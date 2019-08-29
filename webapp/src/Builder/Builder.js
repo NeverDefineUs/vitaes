@@ -98,7 +98,6 @@ class Builder extends Component {
 
     // TODO this should be receiving full locale
     let { params } = this.props.userData;
-    params = {};
     params.lang = getActiveLocale();
 
     const requestCv = {
