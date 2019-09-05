@@ -237,7 +237,8 @@ class Builder extends Component {
                 as="select"
                 value={this.props.userData.user_cv_model[cvSuboption.name]}
                 onChange={(e) => {
-                  const { params } = this.props.userData;
+                  let { params } = this.props.userData;
+                  params = params || {};
                   params[cvSuboption.name] = e.target.value;
                   this.updateUserData({ params });
                 }}
