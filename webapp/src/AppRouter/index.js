@@ -6,7 +6,7 @@ import routes from './routes';
 
 const AppRouter = () => (
   <Router>
-    <Container>
+    <Container style={{width: "fill"}}>
       <Row className="justify-content-md-center">
         <Col>
           {routes.map(route => (

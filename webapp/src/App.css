@@ -1,8 +1,7 @@
-body { padding-top: 40px; }
-@media screen and (max-width: 768px) {
-    body { padding-top: 0px; }
+html, body, #root {
+  height: 100%;
+  margin-top: 0;
 }
-
 .Base {
     margin: 20px;
     border: 2px;
@@ -71,8 +70,4 @@ body { padding-top: 40px; }
 
   .Base-orderlist {
     list-style-type: none;
-  }
-
-  #root > .container {
-    margin-top: 40px;
   }
