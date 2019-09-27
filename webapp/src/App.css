@@ -1,30 +1,29 @@
 body {
   padding-top: 40px;
 }
+
 @media screen and (max-width: 768px) {
     body { padding-top: 0px; }
 }
 
+.Base-profile {
+  width: 30%;
+}
 
-  .Base-profile {
-    width: 30%;
-  }
+.Base-inputfield {
+  border-radius: 2px;
+  flex-grow: 100;
+  border: 1px;
+  font-size: 1em;
+  min-height: 1.2em;
+  border-style: solid;
+  border-color: #ddd;
+}
 
-  .Base-inputfield {
-    border-radius: 2px;
-    flex-grow: 100;
-    border: 1px;
-    font-size: 1em;
-    min-height: 1.2em;
-    border-style: solid;
-    border-color: #ddd;
-  }
+.Base-orderlist {
+  list-style-type: none;
+}
 
-
-  .Base-orderlist {
-    list-style-type: none;
-  }
-  
-  #root > .container {
-    margin-top: 40px;
-  }
+#root > .container {
+  margin-top: 40px;
+}
