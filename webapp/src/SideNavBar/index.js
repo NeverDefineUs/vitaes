@@ -1,13 +1,13 @@
 import React from 'react';
-import {createRef} from 'react';
-//import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import firebase from 'firebase';
-import { Header, Icon, Menu, Ref, Segment, Sidebar, Sticky } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu, Segment, Grid, } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
 
-// import Login from 'Login';
-const SidebarStyle = {margin: 0, padding: 0, border:0, borderRadius:0};
+import Login from 'Login';
+
+const SidebarStyle = {margin: 0, padding: 0, border:0, borderRadius:0, height: "100%"};
+const gridStyle = {padding: 0, margin: 0, height:'100%'};
 
 class SideNavBar extends React.Component {
   constructor(props) {
@@ -59,9 +59,11 @@ class SideNavBar extends React.Component {
 
     return (
       <React.Fragment>
-          <Sidebar.Pushable as={Segment} style={SidebarStyle}>
-              <Sidebar
-                as={Menu}
+          <Grid style={gridStyle} stretched>
+            <Grid.Column width={2} style={gridStyle}>
+              <Menu
+                secondary
+                style={SidebarStyle}
                 animation='push'
                 icon='labeled'
                 inverted
@@ -70,91 +72,76 @@ class SideNavBar extends React.Component {
                 visible
                 width='thin'
               >
-                <Menu.Item as='a' href="/">
-                  <Icon name='file' />
+                <Menu.Item as='a' href='/'>
+                  <Icon name='tasks' />
                   {translate('create_cv')}
                 </Menu.Item>
-                <Menu.Item as='a' href="/privacy">
+                <Menu.Item as='a' href='/privacy'>
                   <Icon name='book' />
                   {translate('privacy_policy')}
                 </Menu.Item>
-                <Menu.Item as='a' href="about">
+                <Menu.Item as='a' href='/about'>
                   <Icon name='info' />
                   {translate('about_the_project')}
                 </Menu.Item>
-              </Sidebar>
-            <Sidebar.Pusher style={{overflow: "auto", height:"100%"}}>
+                <Dropdown icon={false} style={{padding: 0}} text={(<Menu.Item><Icon name='world' />
+                {translate('language')}</Menu.Item>)} className='link item'>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => onChangeLanguage('en_US')}>English</Dropdown.Item>
+                    <Dropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                {user !== null ? (
+                  <Menu.Item onClick={this.logout}>
+                    <Icon name='user times' />
+                    {translate('sign_out')}
+                  </Menu.Item>
+                ) : (
+                  <Menu.Item onClick={this.showLogin}>
+                    <Icon name='user' />
+                    {translate('sign_in')}
+                  </Menu.Item>
+                )}
+                {user !== null && permissions !== null && permissions[user.uid]
+                ? (
+                    <Menu.Menu>
+                      <Menu.Item
+                        as="a"
+                        href="/alert-manager"
+                      >
+                        {translate('alert_manager')}
+                      </Menu.Item>
+                      <Menu.Item
+                        as="a"
+                        href="https://grafana.vitaes.io/"
+                      >
+                        Grafana
+                      </Menu.Item>
+                      <Menu.Item
+                        as="a"
+                        href="https://sqlite.vitaes.io/"
+                      >
+                        SQLite
+                      </Menu.Item>
+                    </Menu.Menu>
+                  )
+                  : null
+                }
+              </Menu>
+            </Grid.Column>
+            <Grid.Column width={14} style={{padding: 0, overflow: "auto", height:"100%"}}>
               <Segment basic style={{overflow: "auto", height:"100%"}}>
                 {this.props.children}
               </Segment>
-            </Sidebar.Pusher>
-          </Sidebar.Pushable>
-        {/* <Navbar collapseOnSelect expand="lg" fixed="left" bg="dark" variant="dark">
-          <Navbar.Brand href="/">
-            <img
-              alt=""
-              src="/mod5.svg"
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-            />
-            {' Vitaes'}
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link
-                href="/"
-              >
-                {translate('create_cv')}
-              </Nav.Link>
-              <NavDropdown title={translate('about_the_project')}>
-                <NavDropdown.Item href="/about">{translate('about_the_project')}</NavDropdown.Item>
-                <NavDropdown.Item href="/privacy">{translate('privacy_policy')}</NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title={translate('language')} id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={() => onChangeLanguage('en_US')}>English</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</NavDropdown.Item>
-              </NavDropdown>
-              {user !== null && permissions !== null && permissions[user.uid]
-                ? (
-                  <NavDropdown title={translate('dev_options')} id="basic-nav-dropdown">
-                    <NavDropdown.Item
-                      href="/alert-manager"
-                    >
-                      {translate('alert_manager')}
-                    </NavDropdown.Item>
-                    <NavDropdown.Item
-                      href="https://grafana.vitaes.io/"
-                    >
-                      Grafana
-                    </NavDropdown.Item>
-                    <NavDropdown.Item
-                      href="https://sqlite.vitaes.io/"
-                    >
-                      SQLite
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                )
-                : null
-              }
-            </Nav>
-            <Nav className="mr-sm-2">
-              {user !== null ? (
-                <Nav.Link onClick={this.logout}>{translate('sign_out')}</Nav.Link>
-              ) : (
-                <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar> */}
-        {/* <Login
+            </Grid.Column>
+            </Grid>
+        <Login
           show={showLogin}
           onHide={this.hideLogin}
           skipLogin={() => {
             this.hideLogin();
           }}
-        /> */}
+        />
       </React.Fragment>
     );
   }
