@@ -1,78 +1,29 @@
-body { padding-top: 40px; }
+body {
+  padding-top: 40px;
+}
+
 @media screen and (max-width: 768px) {
     body { padding-top: 0px; }
 }
 
-.Base {
-    margin: 20px;
-    border: 2px;
-    border-color: #fafafa;
-    background-color: #f9f9f9;
-    border-style: solid;
-    max-width: 1500px;
-    border-radius: 20px;
-    padding: 2em;
-    text-align: left;
-  }
+.Base-profile {
+  width: 30%;
+}
 
-  .Base-profile {
-    width: 30%;
-  }
+.Base-inputfield {
+  border-radius: 2px;
+  flex-grow: 100;
+  border: 1px;
+  font-size: 1em;
+  min-height: 1.2em;
+  border-style: solid;
+  border-color: #ddd;
+}
 
-  .Base-label {
-    font-size: 1em;
-    padding-right: 1em;
-    display: inline-block;
-  }
+.Base-orderlist {
+  list-style-type: none;
+}
 
-  .Base-field {
-    display: flex;
-    width: 100%;
-    padding-bottom: 0em;
-    margin-bottom: 15px;
-  }
-
-  .Base-button a {
-    background-color: #000;
-    text-decoration: none;
-    font-size: 1em;
-    border-radius: 10px;
-    padding: 6px;
-    padding-left: 15px;
-    padding-right: 15px;
-    color: #fff;
-    position: relative;
-    float: right;
-    margin-left: 0.5em;
-    background-color: #000;
-  }
-  .Base-button a:hover {
-    background-color: #888;
-    color: #eee;
-  }
-
-  .Base-inputfield {
-    border-radius: 2px;
-    flex-grow: 100;
-    border: 1px;
-    font-size: 1em;
-    min-height: 1.2em;
-    border-style: solid;
-    border-color: #ddd;
-  }
-
-  .Base-item {
-    background-color: #eee;
-    padding: 5px;
-    padding-left: 10px;
-    margin-bottom: 5px;
-    height: 1.2em;
-  }
-
-  .Base-orderlist {
-    list-style-type: none;
-  }
-
-  #root > .container {
-    margin-top: 40px;
-  }
+#root > .container {
+  margin-top: 40px;
+}
