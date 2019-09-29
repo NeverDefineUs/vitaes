@@ -303,5 +303,6 @@ workflows:
             branches:
               only:
                 - master
+                - backup
     jobs:
         - backup_digital_ocean_volumes
