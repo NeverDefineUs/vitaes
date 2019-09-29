@@ -1,14 +1,10 @@
 version: 2.1
 
 jobs:
-
   vitaes_start_job:
-    
     working_directory: ~/project
-
     docker:
       - image: alpine:latest
-
     steps:
       - run:
           command: |
@@ -18,12 +14,9 @@ jobs:
                     \_/ |_|\__\__,_|\___||___(_)_|\___/ 
 
   api_module_steps:
-    
     working_directory: ~/api_module
-
     docker:
-      - image: vitaes/pipeline_base_image:v1.1
-      
+      - image: vitaes/pipeline_base_image:v1.1 
     steps:
       - checkout
       - setup_remote_docker
@@ -69,12 +62,9 @@ jobs:
           command: docker image push vitaes/api:dev
 
   stolas_module_steps:
-
     working_directory: ~/stolas_module
-
     docker:
       - image: vitaes/pipeline_base_image:v1.1
-      
     steps:
       - checkout
       - setup_remote_docker
@@ -105,12 +95,9 @@ jobs:
             -Dsonar.login=${SONARCLOUD_TOKEN}
 
   logger_module_steps:
-    
     working_directory: ~/logger_module
-
     docker:
       - image: vitaes/pipeline_base_image:v1.1
-    
     steps:
       - checkout
       - setup_remote_docker
@@ -152,14 +139,10 @@ jobs:
           name: Delivering docker image
           command: docker image push vitaes/logger:dev
 
-  # Disabled
   renderer_module_steps:
-    
     working_directory: ~/renderer_module
-  
     docker:
       - image: vitaes/pipeline_base_image:v1.1
-    
     steps:
     - checkout
     - setup_remote_docker
@@ -197,12 +180,9 @@ jobs:
         command: docker image push vitaes/renderer:dev
 
   storage_module_steps:
-    
     working_directory: ~/storage_module
-
     docker:
       - image: vitaes/pipeline_base_image:v1.1
-      
     steps:
       - checkout
       - setup_remote_docker
@@ -244,12 +224,9 @@ jobs:
           command: docker image push vitaes/storage:dev
 
   webapp_module_steps:
-    
     working_directory: ~/webapp_module
-
     docker:
       - image: vitaes/pipeline_base_image:v1.1
-    
     steps:
       - checkout
       - setup_remote_docker
@@ -279,12 +256,9 @@ jobs:
           command: docker image push vitaes/webapp:dev
 
   scripts_module_steps:
-    
     working_directory: ~/scripts_module
-
     docker:
-      - image: vitaes/sonarscanner:3.3.0-alpine
-      
+      - image: vitaes/sonarscanner:3.3.0-alpine 
     steps:
       - checkout
       - setup_remote_docker
@@ -301,10 +275,19 @@ jobs:
             -Dsonar.projectVersion=1.0 \
             -Dsonar.login=${SONARCLOUD_TOKEN}
 
+  backup_digital_ocean_volumes:
+    working_directory: ~/backup
+    docker:
+      - image: python:3.6-alpine
+    steps:
+      - checkout
+      - run: pip install goutte
+      - run: goutte goutte.toml
+        
 workflows:
   version: 2
   build_test_and_deliver:
-    jobs: 
+    jobs:
       - api_module_steps
       - stolas_module_steps
       - logger_module_steps
@@ -312,3 +295,13 @@ workflows:
       - storage_module_steps
       - webapp_module_steps
       - scripts_module_steps
+  backup:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 1"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+        - backup_digital_ocean_volumes
