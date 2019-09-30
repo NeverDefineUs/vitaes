@@ -1,12 +1,12 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Dropdown, Icon, Menu, Segment, Grid, } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu, Popup, Segment, Grid, } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
 
 import Login from 'Login';
 
-const SidebarStyle = {margin: 0, padding: 0, border:0, borderRadius:0, height: "100%"};
+const SidebarStyle = {margin: 0, padding: 0, border:0, borderRadius:0, height: "100%", background:'#343a40'};
 const gridStyle = {padding: 0, margin: 0, height:'100%'};
 
 class SideNavBar extends React.Component {
@@ -16,6 +16,7 @@ class SideNavBar extends React.Component {
       user: null,
       permissions: null,
       showLogin: false,
+      showLanguage: false,
     };
 
     this.showLogin = this.showLogin.bind(this);
@@ -67,7 +68,6 @@ class SideNavBar extends React.Component {
                 animation='push'
                 icon='labeled'
                 inverted
-                color="grey"
                 vertical
                 visible
                 width='thin'
@@ -84,13 +84,16 @@ class SideNavBar extends React.Component {
                   <Icon name='info' />
                   {translate('about_the_project')}
                 </Menu.Item>
-                <Dropdown icon={false} style={{padding: 0}} text={(<Menu.Item><Icon name='world' />
-                {translate('language')}</Menu.Item>)} className='link item'>
+                <Menu.Item as='a' onClick={() => this.setState({showLanguage: !this.state.showLanguage})}>
+                  <Icon name='world' />
+                  {translate('language')}
+                </Menu.Item>
+                {(this.state.showLanguage ?
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => onChangeLanguage('en_US')}>English</Dropdown.Item>
                     <Dropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                  </Dropdown.Menu> : null)
+                }
                 {user !== null ? (
                   <Menu.Item onClick={this.logout}>
                     <Icon name='user times' />
@@ -122,6 +125,12 @@ class SideNavBar extends React.Component {
                         href="https://sqlite.vitaes.io/"
                       >
                         SQLite
+                      </Menu.Item>
+                      <Menu.Item
+                        as="a"
+                        href="https://github.com/NeverDefineUs/vitaes"
+                      >
+                        GitHub
                       </Menu.Item>
                     </Menu.Menu>
                   )
