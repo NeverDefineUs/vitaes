@@ -296,6 +296,8 @@ workflows:
       - webapp_module_steps
       - scripts_module_steps
   backup:
+    jobs:
+        - backup_digital_ocean_volumes
     triggers:
       - schedule:
           cron: "0 0 * * 1"
@@ -303,6 +305,3 @@ workflows:
             branches:
               only:
                 - master
-                - backup
-    jobs:
-        - backup_digital_ocean_volumes
