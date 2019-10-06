@@ -9,8 +9,8 @@ import { setupAlerts } from './AlertManager/util';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 import AppRouter from './AppRouter';
-import NavBar from './SideNavBar';
-
+import SideNavBar from './SideNavBar';
+import NavBar from './NavBar';
 
 firebase.initializeApp(config);
 
@@ -30,9 +30,15 @@ class App extends Component {
     return (
       <React.Fragment>
         <ToastContainer position="bottom-right" />
-        <NavBar onChangeLanguage={this.handleChangeLanguage}>
-        <AppRouter />
-        </NavBar>
+        { window.innerWidth < 1024 ? 
+        <React.Fragment>
+          <NavBar onChangeLanguage={this.handleChangeLanguage}>
+            <AppRouter />
+          </NavBar>
+        </React.Fragment> :
+        <SideNavBar onChangeLanguage={this.handleChangeLanguage}>
+          <AppRouter />
+        </SideNavBar>}
       </React.Fragment>
     );
   }

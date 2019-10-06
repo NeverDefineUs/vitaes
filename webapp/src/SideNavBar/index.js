@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Dropdown, Icon, Menu, Popup, Segment, Grid, } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu, Segment, Grid, } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
 

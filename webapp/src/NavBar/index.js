@@ -1,10 +1,13 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import firebase from 'firebase';
+import { getActiveLanguage } from 'i18n/locale';
+import { Dropdown, Menu, Segment } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
 
 import Login from 'Login';
+
+const NavbarStyle = {margin: 0, padding: 0, border:0, borderRadius:0, width: "100%", flex: '0 1 3em', background:'#343a40'};
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -53,69 +56,46 @@ class NavBar extends React.Component {
 
   render() {
     const { onChangeLanguage } = this.props;
-    const { user, permissions, showLogin } = this.state;
+    const { user, showLogin } = this.state;
 
     return (
       <React.Fragment>
-        <Navbar collapseOnSelect expand="lg" fixed="top" bg="dark" variant="dark">
-          <Navbar.Brand href="/">
-            <img
-              alt=""
-              src="/mod5.svg"
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-            />
-            {' Vitaes'}
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link
-                href="/"
-              >
-                {translate('create_cv')}
-              </Nav.Link>
-              <NavDropdown title={translate('about_the_project')}>
-                <NavDropdown.Item href="/about">{translate('about_the_project')}</NavDropdown.Item>
-                <NavDropdown.Item href="/privacy">{translate('privacy_policy')}</NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title={translate('language')} id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={() => onChangeLanguage('en_US')}>English</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => onChangeLanguage('pt_BR')}>Português</NavDropdown.Item>
-              </NavDropdown>
-              {user !== null && permissions !== null && permissions[user.uid]
-                ? (
-                  <NavDropdown title={translate('dev_options')} id="basic-nav-dropdown">
-                    <NavDropdown.Item
-                      href="/alert-manager"
-                    >
-                      {translate('alert_manager')}
-                    </NavDropdown.Item>
-                    <NavDropdown.Item
-                      href="https://grafana.vitaes.io/"
-                    >
-                      Grafana
-                    </NavDropdown.Item>
-                    <NavDropdown.Item
-                      href="https://sqlite.vitaes.io/"
-                    >
-                      SQLite
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                )
-                : null
-              }
-            </Nav>
-            <Nav className="mr-sm-2">
-              {user !== null ? (
-                <Nav.Link onClick={this.logout}>{translate('sign_out')}</Nav.Link>
-              ) : (
-                <Nav.Link onClick={this.showLogin}>{translate('sign_in')}</Nav.Link>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+        <div style={{height: '100%', display: 'flex', maxHeight: '100%', flexDirection: 'column'}}>
+          <Menu
+            inverted
+            style={NavbarStyle}
+            secondary
+          >
+            <Menu.Item
+              name='editorials'
+            >
+              Vitaes
+            </Menu.Item>
+            <Menu.Menu position='right'>
+              <Dropdown item text={getActiveLanguage().toUpperCase()}>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => onChangeLanguage('en_US')} text="English" />
+                  <Dropdown.Item onClick={() => onChangeLanguage('pt_BR')} text="Português" />
+                </Dropdown.Menu>
+              </Dropdown>
+              <Dropdown item icon='bars'>
+                <Dropdown.Menu>
+                  <Dropdown.Item as='a' href='/' text={translate('create_cv')} />
+                  <Dropdown.Item as='a' href='/about' text={translate('about_the_project')} />
+                  <Dropdown.Item as='a' href='/privacy' text={translate('privacy_policy')} />
+                  { user !== null ? 
+                    <Dropdown.Item onClick={this.logout}>{translate('sign_out')}</Dropdown.Item>
+                  : 
+                    <Dropdown.Item onClick={this.showLogin}>{translate('sign_in')}</Dropdown.Item>
+                  }
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu.Menu>
+          </Menu>
+          <Segment basic style={{overflow: "auto", flex: "1 1 auto", padding: 0, margin: 0}}>
+            {this.props.children}
+          </Segment>
+        </div>
         <Login
           show={showLogin}
           onHide={this.hideLogin}
