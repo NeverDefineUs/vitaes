@@ -149,17 +149,17 @@ class CvRenderCheetahTemplate(CvRenderBase):
                     if var == "item_type":
                         continue
                     if var == "location":
-                        itemDict["country"] = eval("item." + var).country
-                        itemDict["city"] = eval("item." + var).city
-                        itemDict["state"] = eval("item." + var).state
+                        itemDict["country"] = text_clean(eval("item." + var).country)
+                        itemDict["city"] = text_clean(eval("item." + var).city)
+                        itemDict["state"] = text_clean(eval("item." + var).state)
                     elif var == "institution": 
-                        itemDict[var] = item.institution.name
+                        itemDict[var] = text_clean(item.institution.name)
                     elif var[-4:] == "date":
                         itemDict = CvRenderCheetahTemplate.add_dates(itemDict, var, eval("item." + var))
                     elif type(eval("item." + var)) == str:
                         itemDict[var] = text_clean(eval("item." + var))
                     else:
-                        itemDict[var] = eval("item." + var)
+                        itemDict[var] = text_clean(eval("item." + var))
                 ret.append(itemDict)
         if ret != [] and 'start_date' in ret[0]:
             ret.sort(key = date_comparer_2, reverse = True)
