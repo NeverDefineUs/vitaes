@@ -55,9 +55,9 @@ class SideNavBar extends React.Component {
   }
 
   render() {
-    const { onChangeLanguage } = this.props;
     const { user, permissions, showLogin } = this.state;
-
+    const onChangeLanguage = (a) => {this.props.onChangeLanguage(a); this.setState({showLanguage: false})};
+    
     return (
       <React.Fragment>
           <Grid style={gridStyle} stretched>
