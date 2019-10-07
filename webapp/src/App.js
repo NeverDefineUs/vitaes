@@ -31,11 +31,9 @@ class App extends Component {
       <React.Fragment>
         <ToastContainer position="bottom-right" />
         { window.innerWidth < 1024 ? 
-        <React.Fragment>
-          <NavBar onChangeLanguage={this.handleChangeLanguage}>
-            <AppRouter />
-          </NavBar>
-        </React.Fragment> :
+        <NavBar onChangeLanguage={this.handleChangeLanguage}>
+          <AppRouter />
+        </NavBar> :
         <SideNavBar onChangeLanguage={this.handleChangeLanguage}>
           <AppRouter />
         </SideNavBar>}
