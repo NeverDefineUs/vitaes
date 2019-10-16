@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Segment, Button, Icon } from 'semantic-ui-react';
 
 import { translate } from 'i18n/locale';
+import ReactPixel from 'react-facebook-pixel';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
@@ -10,6 +11,12 @@ const imagesSrcs = {
 };
 
 class About extends Component {
+
+  componentDidMount() {
+    ReactPixel.init('898969540474999');
+    ReactPixel.pageView(); 
+  }
+
   render() {
     return (
       <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
