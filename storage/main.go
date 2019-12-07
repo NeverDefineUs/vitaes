@@ -40,8 +40,6 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 	email := vars["email"]
 	id := vars["cvid"]
 
-	log.Println("hahaha %s", email)
-
 	res, err := client.Exists(id).Result()
 	if err != nil {
 		throwHTTPError(
@@ -50,8 +48,6 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 		)
 		return
 	}
-
-	log.Println("oi %d", res)
 
 	if res == 0 {
 		w.WriteHeader(http.StatusNotFound)
