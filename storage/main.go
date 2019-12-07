@@ -40,6 +40,8 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 	email := vars["email"]
 	id := vars["cvid"]
 
+	log.Println("hahaha %s", email)
+
 	res, err := client.Exists(id).Result()
 	if err != nil {
 		throwHTTPError(
@@ -48,6 +50,8 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 		)
 		return
 	}
+
+	log.Println("oi %d", res)
 
 	if res == 0 {
 		w.WriteHeader(http.StatusNotFound)
@@ -105,13 +109,6 @@ func main() {
 	})
 	stl = stolas.NewClient("http://logger:6000/")
 
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{
-			"http://localhost", "http://vitaes.io",
-			"https://localhost", "https://vitaes.io",
-		},
-		AllowCredentials: true,
-	})
 	router := mux.NewRouter()
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		storeFile(w, r, client)
@@ -119,6 +116,6 @@ func main() {
 	router.HandleFunc("/{cvid}/{email}/", func(w http.ResponseWriter, r *http.Request) {
 		retrieveFile(w, r, client)
 	}).Methods("GET")
-	handler := c.Handler(router)
+	handler := cors.AllowAll().Handler(router)
 	log.Fatal(http.ListenAndServe(":6000", handler))
 }
