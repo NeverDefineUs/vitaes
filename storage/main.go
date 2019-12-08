@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -54,9 +55,6 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 
 		stl.LogStep(email, id, origin, "PDF_NOT_READY_YET", "", "")
 	} else {
-		w.WriteHeader(http.StatusAccepted)
-		w.Header().Set("Content-type", "application/pdf")
-
 		pdf, err := client.Get(id).Result()
 		if err != nil {
 			throwHTTPError(
@@ -65,7 +63,12 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 			)
 			return
 		}
-		w.Write([]byte(pdf))
+		file := []byte(pdf)
+
+		w.Header().Set("Content-Type", "application/pdf")
+		w.Header().Set("Content-Length", strconv.Itoa(len(file)))
+		w.WriteHeader(http.StatusAccepted)
+		w.Write(file)
 
 		stl.LogStep(email, id, origin, "PDF_RETRIEVED_FROM_REDIS", "", "")
 	}
