@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
@@ -54,9 +55,6 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 
 		stl.LogStep(email, id, origin, "PDF_NOT_READY_YET", "", "")
 	} else {
-		w.WriteHeader(http.StatusAccepted)
-		w.Header().Set("Content-type", "application/pdf")
-
 		pdf, err := client.Get(id).Result()
 		if err != nil {
 			throwHTTPError(
@@ -65,7 +63,12 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 			)
 			return
 		}
-		w.Write([]byte(pdf))
+		file := []byte(pdf)
+
+		w.Header().Set("Content-Type", "application/pdf")
+		w.Header().Set("Content-Length", strconv.Itoa(len(file)))
+		w.WriteHeader(http.StatusAccepted)
+		w.Write(file)
 
 		stl.LogStep(email, id, origin, "PDF_RETRIEVED_FROM_REDIS", "", "")
 	}
@@ -105,13 +108,6 @@ func main() {
 	})
 	stl = stolas.NewClient("http://logger:6000/")
 
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{
-			"http://localhost", "http://vitaes.io",
-			"https://localhost", "https://vitaes.io",
-		},
-		AllowCredentials: true,
-	})
 	router := mux.NewRouter()
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		storeFile(w, r, client)
@@ -119,6 +115,6 @@ func main() {
 	router.HandleFunc("/{cvid}/{email}/", func(w http.ResponseWriter, r *http.Request) {
 		retrieveFile(w, r, client)
 	}).Methods("GET")
-	handler := c.Handler(router)
+	handler := cors.AllowAll().Handler(router)
 	log.Fatal(http.ListenAndServe(":6000", handler))
 }

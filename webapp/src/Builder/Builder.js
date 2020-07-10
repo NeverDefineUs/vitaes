@@ -25,6 +25,7 @@ import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
+import ReactPixel from 'react-facebook-pixel';
 
 const autoSaveTime = 15000;
 
@@ -201,6 +202,11 @@ class Builder extends Component {
       this.setCv(JSON.parse(json));
     }.bind(this);
     fr.readAsText(selectorFiles[0]);
+  }
+
+  componentDidMount() {
+    ReactPixel.init('898969540474999');
+    ReactPixel.pageView(); 
   }
 
   render() {
