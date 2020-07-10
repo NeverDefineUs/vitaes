@@ -21,6 +21,7 @@ To work with this project you will need:
 - golang (optional. Get it if you plan to make big changes on any of the golang services. Used v1.12.4)
 
 ##### Production only requirements
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [kubectl-aliases](https://github.com/ahmetb/kubectl-aliases) (**PLEASE READ CAREFULY**)
 - [linkerd](https://linkerd.io/2/getting-started/)
 - [doctl](https://github.com/digitalocean/doctl)
