@@ -1,2 +1,0 @@
-export VITAES_ENV=staging
-echo -e "\033[0;33mSwitching to staging environment...\033[0m"

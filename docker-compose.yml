@@ -86,7 +86,7 @@ services:
     image: dev-logger
     restart: always
     environment:
-    - SQLITE_DATABASE
+    - SQLITE_DATABASE=log.db
     ports:
     - 6002:6000
     volumes:
@@ -121,7 +121,7 @@ services:
     ports:
     - 6005:8080
     environment:
-    - SQLITE_DATABASE
+    - SQLITE_DATABASE=log.db
     volumes:
     - log-volume:/data
     networks:
