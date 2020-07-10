@@ -18,6 +18,7 @@ Every software and its versions that are listed bellow are the ones that were us
 ## Requirements
 To work with this project you will need:
 - docker-compose
+- python3 (used to run scripts)
 - golang (optional. Get it if you plan to make big changes on any of the golang services. Used v1.12.4)
 
 ##### Production only requirements
