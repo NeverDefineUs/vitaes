@@ -6,6 +6,7 @@ services:
       context: webapp/.
       dockerfile: Dockerfile.dev
     image: dev-webapp
+    stdin_open: true
     volumes:
     - ./webapp/src:/vitaes/src
     - ./webapp/public:/vitaes/public
