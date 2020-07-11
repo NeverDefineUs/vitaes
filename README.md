@@ -22,21 +22,16 @@ To work with this project you will need:
 ---
 
 ## Running the project
-Choose the environment by running:
 
-| ENVIRONMENT | COMMAND           | READY |
-| ----------- | ----------------- | ----: |
-| development | `source .dev`     |   YES |
-| production  | `source .prod`    |   YES |
-| staging     | `source .staging` |    NO |
+Following scripts available (on project root):
+- `python3 scritps/init.py` (first time on environment only)
+- `python3 scripts/build.py`
+- `python3 scripts/push.py` (production only)
+- `python3 scripts/start.py`
 
-After switching environments, you have to run the following scripts (on project root):
-- `sh scritps/init.sh` (first time on environment only)
-- `sh scripts/build.sh`
-- `sh scripts/push.sh` (production only, may specify a version (MAJOR, MINOR, PATCH))
-- `sh scripts/start.sh`
+To stop, run `python3 scripts/kill.py`
 
-To stop, run `sh scripts/kill.sh`
+You can choose the environment to run the script by adding `--prod`(`-p`) or `--staging`(`-s`) to the command. (defaults to development without any options)
 
 ## Contributing
 You can fork and make a pull request at anytime, fixing an issue or adding a feature you think would be useful.
