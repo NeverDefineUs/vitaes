@@ -1,11 +1,4 @@
-# Vitaes ![circleci_status]
-
-| Api                           | Stolas                           | logger                           | renderer                           | storage                           | webapp                           |
-| ----------------------------- | -------------------------------- | -------------------------------- | ---------------------------------- | --------------------------------- | -------------------------------- |
-| ![status_api_security]        | ![status_stolas_security]        | ![status_logger_security]        | ![status_renderer_security]        | ![status_storage_security]        | ![status_webapp_security]        |
-| ![status_api_coverage]        | ![status_stolas_coverage]        | ![status_logger_coverage]        | ![status_renderer_coverage]        | ![status_storage_coverage]        | ![status_webapp_coverage]        |
-| ![status_api_maintainability] | ![status_stolas_maintainability] | ![status_logger_maintainability] | ![status_renderer_maintainability] | ![status_storage_maintainability] | ![status_webapp_maintainability] |
-| ![status_api]                 | ![status_stolas]                 | ![status_logger]                 | ![status_renderer]                 | ![status_storage]                 | ![status_webapp]                 |
+# Vitaes
 
 ## The Project
 Vitaes is an open source tool with the purpose of making the curriculum creation process easier.
