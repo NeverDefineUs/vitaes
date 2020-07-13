@@ -24,14 +24,16 @@ To work with this project you will need:
 ## Running the project
 
 Following scripts available (on project root):
-- `python3 scritps/init.py` (first time on environment only)
-- `python3 scripts/build.py`
-- `python3 scripts/push.py` (production only)
-- `python3 scripts/start.py`
+- `python scritps/init.py` (first time on environment only)
+- `python scripts/build.py`
+- `python scripts/push.py` (production only)
+- `python scripts/start.py`
 
-To stop, run `python3 scripts/kill.py`
+To stop, run `python scripts/kill.py`
 
 You can choose the environment to run the script by adding `--prod`(`-p`) or `--staging`(`-s`) to the command. (defaults to development without any options)
+
+You should be using python 3.
 
 ## Contributing
 You can fork and make a pull request at anytime, fixing an issue or adding a feature you think would be useful.
