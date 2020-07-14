@@ -1,5 +1,5 @@
 import os
-from parser import env
+from vitaes_parser import env
 
 if env == 'production' or env == 'staging':
     print('Stopping services in %s environment...' % env)
