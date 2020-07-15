@@ -39,8 +39,7 @@ class Builder extends Component {
       lastSaved: '',
     };
     this.handleChangeHeader = this.handleChangeHeader.bind(this);
-    this.downloadCvAsJson = this.downloadCvAsJson.bind(this);
-    this.downloadCvAsPDF = this.downloadCvAsPDF.bind(this);
+    this.downloadCv = this.downloadCv.bind(this);
     this.saveOnAccount = this.saveOnAccount.bind(this);
     this.autoSave = this.autoSave.bind(this);
     this.setCv = this.setCv.bind(this);
@@ -65,18 +64,8 @@ class Builder extends Component {
     const { userData } = this.props;
     this.props.userDataSetter(_.assign(userData, data));
   }
-
-  downloadCvAsJson() {
-    const element = document.createElement('a');
-    const file = new Blob([JSON.stringify(this.props.userData.cv)], {
-      type: 'text/plain',
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = 'cv.json';
-    element.click();
-  }
-
-  downloadCvAsPDF() {
+  
+  downloadCv(format) {
     if (this.state.downloading) {
       return;
     }
@@ -106,6 +95,7 @@ class Builder extends Component {
       curriculum_vitae: cv,
       section_order: this.props.userData.cv_order,
       render_key: this.props.userData.user_cv_model,
+      render_format: format,
       params,
     };
     requestCv.path = hashCv(requestCv);
@@ -127,7 +117,7 @@ class Builder extends Component {
         toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
           fetch(
-            `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/`,
+            `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/?file_format=${format}`,
             {
               method: 'GET',
               retries: 20,
@@ -140,7 +130,7 @@ class Builder extends Component {
               fileBlob.then((file) => {
                 const element = document.createElement('a');
                 element.href = URL.createObjectURL(file);
-                element.download = 'cv.pdf';
+                element.download = `cv.${format}`;
                 element.click();
               });
               const serveTime = window.performance.now();
@@ -354,9 +344,10 @@ class Builder extends Component {
           )}
         </Dropzone>
         <Button
+          disabled={this.state.downloading}
           variant="secondary"
           size="sm"
-          onClick={this.downloadCvAsJson}
+          onClick={() => this.downloadCv("json")}
           style={{ marginLeft: 5, float: 'right' }}
         >
           {translate('download_json')}
@@ -365,7 +356,7 @@ class Builder extends Component {
           disabled={this.state.downloading}
           variant="secondary"
           size="sm"
-          onClick={this.downloadCvAsPDF}
+          onClick={() => this.downloadCv("pdf")}
           style={{ marginLeft: 5, float: 'right' }}
         >
           {translate('download_cv')}

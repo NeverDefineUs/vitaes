@@ -36,16 +36,26 @@ func throwHTTPError(
 	stl.LogStep(email, id, origin, step, message, "")
 }
 
+func parseQueryParam(param string, r *http.Request) string {
+	keys, ok := r.URL.Query()[param]
+	if !ok || len(keys[0]) < 1 {
+		return ""
+	}
+	return keys[0]
+}
+
 func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	vars := mux.Vars(r)
 	email := vars["email"]
 	id := vars["cvid"]
 
+	fileFormat := parseQueryParam("file_format", r)
+
 	res, err := client.Exists(id).Result()
 	if err != nil {
 		throwHTTPError(
 			w, err, "Failed to query redis (exists)", http.StatusInternalServerError,
-			email, id, "ERROR_RETRIEVE_FILE",
+			email, id, "ERROR_RETRIEVING_FILE",
 		)
 		return
 	}
@@ -53,24 +63,24 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 	if res == 0 {
 		w.WriteHeader(http.StatusNotFound)
 
-		stl.LogStep(email, id, origin, "PDF_NOT_READY_YET", "", "")
+		stl.LogStep(email, id, origin, "FILE_NOT_READY_YET", "", "")
 	} else {
-		pdf, err := client.Get(id).Result()
+		data, err := client.Get(id).Result()
 		if err != nil {
 			throwHTTPError(
 				w, err, "Failed to query redis (get)", http.StatusInternalServerError,
-				email, id, "ERROR_RETRIEVE_FILE",
+				email, id, "ERROR_RETRIEVING_FILE",
 			)
 			return
 		}
-		file := []byte(pdf)
+		file := []byte(data)
 
-		w.Header().Set("Content-Type", "application/pdf")
+		w.Header().Set("Content-Type", "application/"+fileFormat)
 		w.Header().Set("Content-Length", strconv.Itoa(len(file)))
 		w.WriteHeader(http.StatusAccepted)
 		w.Write(file)
 
-		stl.LogStep(email, id, origin, "PDF_RETRIEVED_FROM_REDIS", "", "")
+		stl.LogStep(email, id, origin, "FILE_RETRIEVED_FROM_REDIS", "", "")
 	}
 }
 
@@ -79,7 +89,7 @@ func storeFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	if err != nil {
 		throwHTTPError(
 			w, err, "Failed to parse params", http.StatusInternalServerError,
-			"", "", "ERROR_STORE_FILE",
+			"", "", "ERROR_STORING_FILE",
 		)
 		return
 	}
@@ -92,7 +102,7 @@ func storeFile(w http.ResponseWriter, r *http.Request, client *redis.Client) {
 	if err != nil {
 		throwHTTPError(
 			w, err, "Failed to store on redis", http.StatusInternalServerError,
-			email, id, "ERROR_STORE_FILE",
+			email, id, "ERROR_STORING_FILE",
 		)
 		return
 	}
