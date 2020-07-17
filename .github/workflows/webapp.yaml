@@ -12,7 +12,6 @@ on:
     paths:
     - 'webapp/**'
 
-
 env:
   IMAGE_NAME: vitaes/webapp
 
