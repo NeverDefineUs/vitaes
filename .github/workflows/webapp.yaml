@@ -9,8 +9,6 @@ on:
     paths:
     - 'webapp/**'
   release:
-    paths:
-    - 'webapp/**'
 
 env:
   IMAGE_NAME: vitaes/webapp
