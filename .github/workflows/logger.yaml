@@ -1,22 +1,22 @@
-name: api
+name: logger
 
 on:
   push:
     branches: [ master ]
     paths:
-    - 'api/**'
+    - 'logger/**'
   pull_request:
     # paths:
-    # - 'api/**'
+    # - 'logger/**'
   release:
     types: [ published ]
 
 env:
-  IMAGE_NAME: api
+  IMAGE_NAME: logger
 
 defaults:
   run:
-    working-directory: ./api
+    working-directory: ./logger
 
 jobs:
   build:
