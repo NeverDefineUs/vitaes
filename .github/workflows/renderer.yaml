@@ -6,8 +6,8 @@ on:
     paths:
     - 'renderer/**'
   pull_request:
-    # paths:
-    # - 'renderer/**'
+    paths:
+    - 'renderer/**'
   release:
     types: [ published ]
 
