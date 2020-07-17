@@ -6,8 +6,8 @@ on:
     paths:
     - 'api/**'
   pull_request:
-    paths:
-    - 'api/**'
+    # paths:
+    # - 'api/**'
   release:
     types: [ published ]
 
