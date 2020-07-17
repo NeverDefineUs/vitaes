@@ -31,6 +31,7 @@ jobs:
     - run: yarn
     - run: yarn build
     - run: yarn test
+    - run: echo ${{ github.ref }}
   push:
     needs: build
     if: contains(github.ref, 'release')
