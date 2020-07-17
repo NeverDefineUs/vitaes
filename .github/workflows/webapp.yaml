@@ -9,9 +9,10 @@ on:
     paths:
     - 'webapp/**'
   release:
+    types: [ published ]
 
 env:
-  IMAGE_NAME: vitaes/webapp
+  IMAGE_NAME: webapp
 
 defaults:
   run:
@@ -33,23 +34,25 @@ jobs:
     needs: build
     if: contains(github.ref, 'tags')
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.build_step.outputs.version }}
     steps:
     - uses: actions/checkout@v2
     - name: Build image
+      id: build_step
       run: |
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        echo "::set-env name=VERSION::$VERSION"
-        docker build -t $IMAGE_NAME:latest .
-        docker tag $IMAGE_NAME:latest $IMAGE_NAME:$VERSION
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/v\(.*\),\1,')
+        docker build -t vitaes/$IMAGE_NAME:latest .
+        docker tag vitaes/$IMAGE_NAME:latest vitaes/$IMAGE_NAME:$VERSION
     - name: Login to Docker hub
       run: |
         echo ${{ secrets.DOCKER_HUB_PASSWORD }} | \
         docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
     - name: Push image
       run: |
-        docker push $IMAGE_NAME:latest
-        docker push $IMAGE_NAME:$VERSION
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/v\(.*\),\1,')
+        docker push vitaes/$IMAGE_NAME:latest
+        docker push vitaes/$IMAGE_NAME:$VERSION
     - name: Logout from Docker hub
       run: docker logout
   deploy:
@@ -66,4 +69,7 @@ jobs:
     - name: Setup kubeconfig
       run: doctl kubernetes cluster kubeconfig save vitaes
     - name: Rollout new container
-      run: kubectl set image deployment/webapp webapp=$IMAGE_NAME:$VERSION
+      run: |
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/v\(.*\),\1,')
+        kubectl set image deployment/$IMAGE_NAME \
+          $IMAGE_NAME=vitaes/$IMAGE_NAME:$VERSION
