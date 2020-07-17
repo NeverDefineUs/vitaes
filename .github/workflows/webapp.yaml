@@ -41,7 +41,7 @@ jobs:
     - name: Build image
       id: build_step
       run: |
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/v\(.*\),\1,')
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         docker build -t vitaes/$IMAGE_NAME:latest .
         docker tag vitaes/$IMAGE_NAME:latest vitaes/$IMAGE_NAME:$VERSION
     - name: Login to Docker hub
@@ -50,7 +50,7 @@ jobs:
         docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
     - name: Push image
       run: |
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/v\(.*\),\1,')
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         docker push vitaes/$IMAGE_NAME:latest
         docker push vitaes/$IMAGE_NAME:$VERSION
     - name: Logout from Docker hub
@@ -70,6 +70,6 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save vitaes
     - name: Rollout new container
       run: |
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/v\(.*\),\1,')
+        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         kubectl set image deployment/$IMAGE_NAME \
           $IMAGE_NAME=vitaes/$IMAGE_NAME:$VERSION
