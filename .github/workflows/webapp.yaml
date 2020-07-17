@@ -8,6 +8,10 @@ on:
   pull_request:
     paths:
     - 'webapp/**'
+  release:
+    paths:
+    - 'webapp/**'
+
 
 env:
   IMAGE_NAME: vitaes/webapp
@@ -30,7 +34,7 @@ jobs:
     - run: yarn test
   push:
     needs: build
-    if: github.event_name == 'push' && contains(github.ref, 'release')
+    if: contains(github.ref, 'release')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
