@@ -6,8 +6,8 @@ on:
     paths:
     - 'logger/**'
   pull_request:
-    # paths:
-    # - 'logger/**'
+    paths:
+    - 'logger/**'
   release:
     types: [ published ]
 

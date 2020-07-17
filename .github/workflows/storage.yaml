@@ -6,8 +6,8 @@ on:
     paths:
     - 'storage/**'
   pull_request:
-    # paths:
-    # - 'storage/**'
+    paths:
+    - 'storage/**'
   release:
     types: [ published ]
 
