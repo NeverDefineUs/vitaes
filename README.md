@@ -1,5 +1,7 @@
 # Vitaes
 
+![webapp](https://github.com/NeverDefineUs/vitaes/workflows/webapp/badge.svg)
+
 ## The Project
 Vitaes is an open source tool with the purpose of making the curriculum creation process easier.
 It uses an abstract tree to model the curriculum and compiles it in a PDF.
