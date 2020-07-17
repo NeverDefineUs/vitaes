@@ -1,35 +1,36 @@
-name: webapp
+name: api
 
 on:
   push:
     branches: [ master ]
     paths:
-    - 'webapp/**'
+    - 'api/**'
   pull_request:
     paths:
-    - 'webapp/**'
+    - 'api/**'
   release:
     types: [ published ]
 
 env:
-  IMAGE_NAME: webapp
+  IMAGE_NAME: api
 
 defaults:
   run:
-    working-directory: ./webapp
+    working-directory: ./api
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Use Node.js 11.14
-      uses: actions/setup-node@v1
+    - name: Set up Go 1.12
+      uses: actions/setup-go@v2
       with:
-        node-version: 11.14
+        go-version: 1.12
     - uses: actions/checkout@v2
-    - run: yarn install --frozen-lockfile
-    - run: yarn build
-    - run: yarn test
+    - run: go mod download
+    - run: go get -v -t -d ./...
+    - run: go build -v -o app
+    - run: go test -v .
   push:
     needs: build
     if: contains(github.ref, 'tags')
