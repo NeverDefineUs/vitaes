@@ -188,8 +188,11 @@ class Builder extends Component {
     const fr = new FileReader();
     // eslint-disable-next-line func-names
     fr.onload = function () {
-      const json = fr.result;
-      this.setCv(JSON.parse(json));
+      var json = JSON.parse(fr.result);
+      if (json.hasOwnProperty('curriculum_vitae')) {
+        json = json['curriculum_vitae'];
+      }
+      this.setCv(json);
     }.bind(this);
     fr.readAsText(selectorFiles[0]);
   }
