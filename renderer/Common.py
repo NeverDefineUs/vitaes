@@ -63,3 +63,5 @@ def render_from_cv_dict(req):
         return Renders.CvRenderToJson.render(req_cv, path=path)
     elif render_format == "pdf":
         return Renders.CvRenderToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, command=render_map[render_key]['command'], params=params, resources=resources)
+    elif render_format == "zip":
+        return Renders.CvRenderToTex.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, params=params, resources=resources)

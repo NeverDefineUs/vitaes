@@ -364,6 +364,15 @@ class Builder extends Component {
         >
           {translate('download_cv')}
         </Button>
+        <Button
+          disabled={this.state.downloading}
+          variant="secondary"
+          size="sm"
+          onClick={() => this.downloadCv("zip")}
+          style={{ marginLeft: 5, float: 'right' }}
+        >
+          {translate('download_tex')}
+        </Button>
         {this.props.user !== null ? (
           <Button
             variant="secondary"

@@ -161,6 +161,10 @@ export const strings = {
     en_US: 'Download JSON',
     pt_BR: 'Baixar JSON',
   },
+  download_tex: {
+    en_US: 'Download TEX',
+    pt_BR: 'Baixar TEX',
+  },
   edit: {
     en_US: 'Edit',
     pt_BR: 'Editar',
