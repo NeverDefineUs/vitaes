@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Button, Icon } from 'semantic-ui-react';
+import gh from './github_service';
 
 import { translate } from 'i18n/locale';
 import ReactPixel from 'react-facebook-pixel';
@@ -11,8 +12,27 @@ const imagesSrcs = {
 };
 
 class About extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      collaborators: [],
+      stats: []
+    };
+  }
+
+  loadGithub = async () => {
+    const collaborators = await gh.getCollaborators();
+    const stats = await gh.getContributorStats();
+    console.log(collaborators);
+    console.log(stats);
+    this.setState({collaborators : collaborators});
+    this.setState({stats : stats});
+    console.log(this.state)
+  }
+
 
   componentDidMount() {
+    this.loadGithub();
     ReactPixel.init('898969540474999');
     ReactPixel.pageView(); 
   }

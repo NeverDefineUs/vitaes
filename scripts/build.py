@@ -1,5 +1,5 @@
 import os
-from parser import env
+from parse import env
 
 if env == 'production' or env == 'staging':
     print('Building for %s environment...' % env)

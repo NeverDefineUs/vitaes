@@ -6,3 +6,5 @@ __pycache__/*
 CVCS.pem
 db/
 ./go.*
+node_modules
+webapp/src/About/tokens.js
