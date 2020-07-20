@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Button, Icon } from 'semantic-ui-react';
+import { Segment, Button, Card, Icon, Image, Loader } from 'semantic-ui-react';
 import gh from './github_service';
 
 import { translate } from 'i18n/locale';
@@ -16,7 +16,8 @@ class About extends Component {
     super(props);
     this.state = {
       collaborators: [],
-      stats: []
+      stats: [], 
+      loaded: false
     };
   }
 
@@ -24,10 +25,23 @@ class About extends Component {
     const collaborators = await gh.getCollaborators();
     const stats = await gh.getContributorStats();
     console.log(collaborators);
-    console.log(stats);
     this.setState({collaborators : collaborators});
+    stats.forEach(element => {
+        let add = 0;
+        let dell = 0;
+        element.weeks.forEach(week => {
+          add += week.a;
+          dell += week.d;
+        })
+        element.additions = add;
+        element.deletions = dell;
+
+        element.login = element.author.login
+          
+    });
+    console.log(stats);
     this.setState({stats : stats});
-    console.log(this.state)
+    this.setState({loaded : true});
   }
 
 
@@ -35,11 +49,13 @@ class About extends Component {
     this.loadGithub();
     ReactPixel.init('898969540474999');
     ReactPixel.pageView(); 
+    
   }
 
   render() {
     return (
-      <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
+      <div>
+        {this.state.loaded?<Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
         <h1>
           {translate('about_the_project')}
           :
@@ -49,27 +65,69 @@ class About extends Component {
           {translate('major_contributors')}
           :
         </h2>
-        <h3> Arthurlpgc</h3>
-        <img src={imagesSrcs.Arthurlpgc} alt="" className="Base-profile" />
-        <br />
-        {translate('contact_email')}
-        : latache@vitaes.io
-        <br />
-        <br />
-        <h3> RamonSaboya</h3>
-        <img src={imagesSrcs.RamonSaboya} alt="" className="Base-profile" />
-        <br />
-        {translate('contact_email')}
-        : saboya@vitaes.io
-        <br />
-        <br />
-        <h3> Magsouza</h3>
-        <img src={imagesSrcs.Magsouza} alt="" className="Base-profile" />
-        <br />
-        {translate('contact_email')}
-        : mag@vitaes.io
-        <br />
-        <br />
+        <Card.Group centered>
+          <Card style={{ margin : 20 }}>
+            <Image src={imagesSrcs.Arthurlpgc} wrapped ui={false} />
+            <Card.Content>
+              <Card.Header href="https://github.com/Arthurlpgc">Arthurlpgc</Card.Header>
+              <Card.Meta>
+                <span className='date'>latache@vitaes.io</span>
+              </Card.Meta>
+              <Card.Description>
+                
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+                <span>{this.state.stats.find(el => el.login == "Arthurlpgc").total} commits </span>
+                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login == "Arthurlpgc").additions}++ </span> 
+                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login == "Arthurlpgc").deletions}-- </span> 
+             </Card.Content>
+          </Card>
+
+          <Card style={{ margin : 20 }}>
+            <Image src={imagesSrcs.RamonSaboya} wrapped ui={false} />
+            <Card.Content>
+              <Card.Header href="https://github.com/RamonSaboya">RamonSaboya</Card.Header>
+              <Card.Meta>
+                <span className='date'>saboya@vitaes.io</span>
+              </Card.Meta>
+              <Card.Description>
+                
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+          
+                <span>{this.state.stats.find(el => el.login == "ramonsaboya").total} commits </span>
+                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login == "ramonsaboya").additions}++ </span> 
+                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login == "ramonsaboya").deletions}-- </span> 
+              
+             </Card.Content>
+          </Card>
+
+          <Card style={{ margin : 20 }}>
+            <Image src={imagesSrcs.Magsouza} wrapped ui={false} />
+            <Card.Content>
+              <Card.Header href="https://github.com/Magsouza">Magsouza</Card.Header>
+              <Card.Meta>
+                <span className='date'>mag@vitaes.io</span>
+              </Card.Meta>
+              <Card.Description>
+                
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              
+                <span>{this.state.stats.find(el => el.login == "magsouza").total} commits </span>
+                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login == "magsouza").additions}++ </span> 
+                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login == "magsouza").deletions}-- </span>
+             
+             </Card.Content>
+          </Card>
+
+
+        </Card.Group>
+
+
         <h2>
           {translate('other_contributors')}
           :
@@ -135,7 +193,9 @@ class About extends Component {
         <br />
         <br />
       </Segment>
-    );
+      :<Segment><Loader active /></Segment>}
+      </div>
+      );
   }
 }
 
