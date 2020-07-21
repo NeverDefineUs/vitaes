@@ -153,13 +153,21 @@ export const strings = {
     en_US: 'Dev options',
     pt_BR: 'Ferramentas de desenvolvedor',
   },
-  download_cv: {
-    en_US: 'Download CV',
-    pt_BR: 'Baixar CV',
+  download_as: {
+    en_US: 'Download as',
+    pt_BR: 'Baixar como',
   },
-  download_json: {
-    en_US: 'Download JSON',
-    pt_BR: 'Baixar JSON',
+  pdf_descriptor: {
+    en_US: 'PDF',
+    pt_BR: 'PDF',
+  },
+  json_descriptor: {
+    en_US: 'JSON',
+    pt_BR: 'JSON',
+  },
+  tex_descriptor: {
+    en_US: 'TEX',
+    pt_BR: 'TEX',
   },
   edit: {
     en_US: 'Edit',

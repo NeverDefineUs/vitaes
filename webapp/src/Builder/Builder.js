@@ -5,7 +5,8 @@ import fetch from 'fetch-retry';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import {
-  Button, Form, Col, Row,
+  Button, Form, Col, Row, 
+  DropdownButton, ButtonGroup, Dropdown
 } from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
 
@@ -25,6 +26,7 @@ import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
 import headerFields from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
+import cvDownloadFormats from './cvDownloadFormats';
 import ReactPixel from 'react-facebook-pixel';
 
 const autoSaveTime = 15000;
@@ -65,7 +67,7 @@ class Builder extends Component {
     this.props.userDataSetter(_.assign(userData, data));
   }
   
-  downloadCv(format) {
+  downloadCv(format, mimeContentType, fileFormat) {
     if (this.state.downloading) {
       return;
     }
@@ -95,7 +97,10 @@ class Builder extends Component {
       curriculum_vitae: cv,
       section_order: this.props.userData.cv_order,
       render_key: this.props.userData.user_cv_model,
-      render_format: format,
+      render_format: {
+        internal: format,
+        file: fileFormat,
+      },
       params,
     };
     requestCv.path = hashCv(requestCv);
@@ -117,7 +122,7 @@ class Builder extends Component {
         toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
         idPromise.then((id) => {
           fetch(
-            `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/?file_format=${format}`,
+            `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/?mime_content_type=${mimeContentType}`,
             {
               method: 'GET',
               retries: 20,
@@ -130,7 +135,7 @@ class Builder extends Component {
               fileBlob.then((file) => {
                 const element = document.createElement('a');
                 element.href = URL.createObjectURL(file);
-                element.download = `cv.${format}`;
+                element.download = `cv.${fileFormat}`;
                 element.click();
               });
               const serveTime = window.performance.now();
@@ -328,6 +333,26 @@ class Builder extends Component {
         {cvModelSuboptions}
         <br />
         <br />
+        <DropdownButton
+          disabled={this.state.downloading}
+          as={ButtonGroup}
+          title={translate('download_as')}
+          variant="secondary"
+          size="sm"
+          style={{ marginLeft: 5, float: 'right' }}
+        >
+        {_.map(cvDownloadFormats, downloadFormat => (
+          <Dropdown.Item 
+            onClick={() => this.downloadCv(
+              downloadFormat.id,
+              downloadFormat.mimeContentType,
+              downloadFormat.fileFormat
+            )}
+          >
+            {downloadFormat.descriptor}
+          </Dropdown.Item>
+        ))}
+        </DropdownButton>
         <Dropzone onDrop={files => this.uploadJSON(files)}>
           {({ getRootProps, getInputProps }) => (
             <Button
@@ -346,24 +371,6 @@ class Builder extends Component {
             </Button>
           )}
         </Dropzone>
-        <Button
-          disabled={this.state.downloading}
-          variant="secondary"
-          size="sm"
-          onClick={() => this.downloadCv("json")}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {translate('download_json')}
-        </Button>
-        <Button
-          disabled={this.state.downloading}
-          variant="secondary"
-          size="sm"
-          onClick={() => this.downloadCv("pdf")}
-          style={{ marginLeft: 5, float: 'right' }}
-        >
-          {translate('download_cv')}
-        </Button>
         {this.props.user !== null ? (
           <Button
             variant="secondary"

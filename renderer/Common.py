@@ -58,8 +58,10 @@ def render_from_cv_dict(req):
       
     resources = get_resources(params['lang'][:2])
 
-    render_format = req["render_format"]
+    render_format = req["render_format"]["internal"]
     if render_format == "json":
         return Renders.CvRenderToJson.render(req_cv, path=path)
     elif render_format == "pdf":
         return Renders.CvRenderToPdf.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, command=render_map[render_key]['command'], params=params, resources=resources)
+    elif render_format == "tex":
+        return Renders.CvRenderToTex.render(cv, path=path, cvRender=Renders.CvRenderCheetahTemplate, baseFolder=baseFolder, params=params, resources=resources)
