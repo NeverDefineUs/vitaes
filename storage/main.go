@@ -49,7 +49,7 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 	email := vars["email"]
 	id := vars["cvid"]
 
-	fileFormat := parseQueryParam("file_format", r)
+	mimeContentType := parseQueryParam("mime_content_type", r)
 
 	res, err := client.Exists(id).Result()
 	if err != nil {
@@ -75,7 +75,7 @@ func retrieveFile(w http.ResponseWriter, r *http.Request, client *redis.Client) 
 		}
 		file := []byte(data)
 
-		w.Header().Set("Content-Type", "application/"+fileFormat)
+		w.Header().Set("Content-Type", mimeContentType)
 		w.Header().Set("Content-Length", strconv.Itoa(len(file)))
 		w.WriteHeader(http.StatusAccepted)
 		w.Write(file)
