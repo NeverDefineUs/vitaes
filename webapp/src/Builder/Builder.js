@@ -18,6 +18,7 @@ import logger from 'utils/logger';
 import removeDisabled from 'utils/removeDisabled';
 import validateEmail from 'utils/validateEmail';
 import validateDate from 'utils/validateDate';
+import isLocalHost from 'utils/isLocalHost';
 
 import { Segment } from 'semantic-ui-react';
 import CvOrder from './CvOrder';
@@ -77,6 +78,10 @@ class Builder extends Component {
   }
 
   downloadCvAsPDF() {
+    let isCacheAvailable = {value:false}
+
+    const isUsingCache = isLocalHost();
+
     if (this.state.downloading) {
       return;
     }
@@ -106,6 +111,7 @@ class Builder extends Component {
       curriculum_vitae: cv,
       section_order: this.props.userData.cv_order,
       render_key: this.props.userData.user_cv_model,
+      is_using_cache: isUsingCache,
       params,
     };
     requestCv.path = hashCv(requestCv);
@@ -114,51 +120,42 @@ class Builder extends Component {
     this.setState({ downloading: true });
 
     const startTime = window.performance.now();
-    fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestCv),
-    }).then((response) => {
-      if (response.ok) {
-        const idPromise = response.text();
-        toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
-        idPromise.then((id) => {
-          fetch(
-            `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/`,
-            {
-              method: 'GET',
-              retries: 20,
-              retryDelay: 1000,
-              retryOn: [404],
-            },
-          ).then((cvresponse) => {
-            if (cvresponse.ok) {
-              const fileBlob = cvresponse.blob();
-              fileBlob.then((file) => {
-                const element = document.createElement('a');
-                element.href = URL.createObjectURL(file);
-                element.download = 'cv.pdf';
-                element.click();
-              });
-              const serveTime = window.performance.now();
-              logger(requestCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
-              toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
-              this.setState({ downloading: false });
-            } else {
-              logger(requestCv, 'FAILURE_NOTIFIED');
-              toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
-              this.setState({ showBugUi: true, downloading: false });
-            }
+
+    connectToStorage(
+      fetch(
+        `${window.location.protocol}//${getStorageHostname()}/${requestCv}/${this.props.userData.cv.header.email}/?isUsingCache=${isUsingCache}`,
+        { method: 'GET',},
+      ), requestCv, startTime, isCacheAvailable, isUsingCache);
+
+    if(!isCacheAvailable.value) {
+      fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestCv),
+      }).then((response) => {
+        if (response.ok) {
+          const idPromise = response.text();
+          toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
+          idPromise.then((id) => {
+            connectToStorage(fetch(
+              `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/`,
+              {
+                method: 'GET',
+                retries: 20,
+                retryDelay: 1000,
+                retryOn: [404],
+              },
+            ),idPromise, startTime, isCacheAvailable, isUsingCache)
           });
-        });
-      } else {
-        const textPromise = response.text();
-        textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
-      }
-    });
+        } else {
+          const textPromise = response.text();
+          textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
+        }
+      });
+    }
   }
 
   saveOnAccount() {
@@ -404,6 +401,31 @@ class Builder extends Component {
       </Segment>
     );
   }
+}
+
+function connectToStorage(fetchedObj, requestCv, startTime, isCacheAvailable, isUsingCache) {
+  fetchedObj.then((cvresponse) => {
+    if (cvresponse.ok) {
+      const fileBlob = cvresponse.blob();
+      fileBlob.then((file) => {
+        const element = document.createElement('a');
+        element.href = URL.createObjectURL(file);
+        element.download = 'cv.pdf';
+        element.click();
+      });
+      const serveTime = window.performance.now();
+      logger(requestCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
+      if(isUsingCache){
+        isCacheAvailable.value = true;
+      }
+      toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
+      this.setState({ downloading: false });
+    } else {
+      logger(requestCv, 'FAILURE_NOTIFIED');
+      toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
+      this.setState({ showBugUi: true, downloading: false });
+    }
+  });
 }
 
 export default Builder;
