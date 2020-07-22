@@ -120,7 +120,7 @@ class Builder extends Component {
       fetch(
         `${window.location.protocol}//${getStorageHostname()}/${requestCv}/${this.props.userData.cv.header.email}/?isUsingCache=${isUsingCache}&mime_content_type=${mimeContentType}`,
         { method: 'GET',},
-      ), requestCv, startTime, isCacheAvailable, isUsingCache);
+      ), requestCv, startTime, isCacheAvailable, isUsingCache, fileFormat);
 
     if(!isCacheAvailable.value) {
       fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, {
@@ -143,7 +143,7 @@ class Builder extends Component {
                 retryDelay: 1000,
                 retryOn: [404],
               },
-            ),idPromise, startTime, isCacheAvailable, isUsingCache)
+            ),idPromise, startTime, isCacheAvailable, isUsingCache, fileFormat)
           });
         } else {
           const textPromise = response.text();
@@ -401,14 +401,14 @@ class Builder extends Component {
   }
 }
 
-function connectToStorage(fetchedObj, requestCv, startTime, isCacheAvailable, isUsingCache) {
+function connectToStorage(fetchedObj, requestCv, startTime, isCacheAvailable, isUsingCache, fileFormat) {
   fetchedObj.then((cvresponse) => {
     if (cvresponse.ok) {
       const fileBlob = cvresponse.blob();
       fileBlob.then((file) => {
         const element = document.createElement('a');
         element.href = URL.createObjectURL(file);
-        element.download = 'cv.pdf';
+        element.download = `cv.${fileFormat}`;
         element.click();
       });
       const serveTime = window.performance.now();
