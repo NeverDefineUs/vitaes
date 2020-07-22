@@ -50,7 +50,7 @@ def get_cv_queue(ch, method, properties, body):
         log_step(email, dic["path"], "CONSUMED_FROM_RABBITMQ")
         lang = dic["params"]["lang"]
         ans = render_from_cv_dict(dic)
-        file = open('Output/' + ans + '.pdf', 'rb')
+        file = open('Output/' + ans + '.' + dic["render_format"]["file"], 'rb')
         ansb = file.read()
         file.close()
         log_step(email, dic["path"], "SENDING_TO_STORAGE")

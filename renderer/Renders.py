@@ -1,4 +1,5 @@
 import datetime, time
+import shutil
 import string, random, os
 import subprocess, json
 import timestring
@@ -30,7 +31,7 @@ class CvRenderBase:
     def render(cv):
         raise NotImplementedError
 
-class CvRenderTexToPdf(CvRenderBase):   
+class CvRenderToPdf(CvRenderBase):   
     def render(cv, cvRender: CvRenderBase, baseFolder: str, path: str=None, command: str="pdflatex", params={}, resources={}):
         if path == None:
             path=id_gen()
@@ -51,32 +52,31 @@ class CvRenderTexToPdf(CvRenderBase):
         os.system("rm -r Output/" + path + "/")
         return path
 
-class CvRenderJsonRequest(CvRenderBase):
-    def extract_item(x):
-        dic = {}
-        for varname in vars(x):
-            var = eval('x.' + varname)
-            if var is None or varname == "item_type":
-                continue
-            elif var.__class__.__name__[0:2] == "Cv":
-                var = {var.__class__.__name__: CvRenderJsonRequest.extract_item(var)}
-            elif var.__class__.__name__ == "date":
-                var = var.strftime("%y-%m-%d")
-            dic[varname] = var
-        return dic
-    def extract_list(raw_arr):
-        arr = []
-        for elem in raw_arr:
-            arr.append(CvRenderJsonRequest.extract_item(elem))
-        return arr
-    def cv_to_dict(cv):
-        dic = {}
-        dic['CvHeaderItem'] = CvRenderJsonRequest.extract_item(cv.header)
-        for item in cv.items:
-            dic[item.__name__] = CvRenderJsonRequest.extract_list(cv.items[item])
-        return dic
-    def render(cv):
-        return json.dumps(CvRenderJsonRequest.cv_to_dict(cv), indent=4)
+class CvRenderToTex(CvRenderBase):
+    def render(cv, cvRender: CvRenderBase, baseFolder: str, path: str=None, params={}, resources={}):
+        if path == None:
+            path=id_gen()
+        os.system("mkdir Output/" + path)
+        if baseFolder != None:
+            os.system("cp -r Templates/" + baseFolder + "/* Output/" + path + "/")
+        cvString = cvRender.render(cv, params=params, baseFolder=baseFolder, resources=resources)
+        log_step(cv.header.email, cv.cv_hash, "TEX_FULLY_COMPILED")
+        os.system("touch Output/" + path + "/main.tex")
+        file = open("Output/" + path + "/main.tex","w", encoding="utf-8") 
+        file.write(cvString)
+        file.close()
+        shutil.make_archive("Output/" + path, "zip", "Output/" + path + "/")
+        os.system("rm -r Output/" + path + "/")
+        return path
+
+class CvRenderToJson(CvRenderBase):
+    def render(cv, cvRender: CvRenderBase=None, baseFolder: str=None, path: str=None, command: str="pdflatex", params={}, resources={}):
+        cv_file_content = json.dumps(cv, indent=None, separators=(',', ':'))
+        file = open("Output/" + path + ".json","w", encoding="utf-8")
+        file.write(cv_file_content)
+        file.close()
+        log_step(cv["header"]["email"], path, "JSON_FILE_RENDERED", cv_file_content)
+        return path
 import sys
 def text_clean(text):
     if text == None:
