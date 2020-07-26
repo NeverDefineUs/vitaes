@@ -76,7 +76,7 @@ class Builder extends Component {
   }
 
   downloadCvPromise(cvresponse, startTime, fileFormat) {
-    if (cvresponse.status == 202) {
+    if (cvresponse.status == 202) { // eslint-disable-line
       const fileBlob = cvresponse.blob();
       fileBlob.then((file) => {
         const element = document.createElement('a');
@@ -89,7 +89,7 @@ class Builder extends Component {
       toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
       this.setState({ downloading: false });
       return true;
-    } else if (cvresponse.status != 204) {
+    } else if (cvresponse.status != 204) { // eslint-disable-line
       logger(cvresponse, 'FAILURE_NOTIFIED');
       toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
       this.setState({ showBugUi: true, downloading: false });
@@ -156,7 +156,7 @@ class Builder extends Component {
           },
           body: JSON.stringify(requestCv),
         }).then(response => {
-          if (response.status != 202) {
+          if (response.status != 202) { // eslint-disable-line
             const textPromise = response.text();
             textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
             return false;
