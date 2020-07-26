@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import arrayMove from 'array-move';
-import fetch from 'fetch-retry';
+import fetchRetry from 'fetch-retry';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import {
@@ -49,6 +49,8 @@ class Builder extends Component {
     this.updateUserData = this.updateUserData.bind(this);
     this.setLabel = this.setLabel.bind(this);
     this.uploadJSON = this.uploadJSON.bind(this);
+    this.fetch = this.fetch.bind(this);
+    this.downloadCvPromise = this.downloadCvPromise.bind(this);
 
     this.autoSave();
   }
@@ -67,12 +69,35 @@ class Builder extends Component {
     const { userData } = this.props;
     this.props.userDataSetter(_.assign(userData, data));
   }
-  
-  downloadCv(format, mimeContentType, fileFormat) {
-    let isCacheAvailable = {value:false}
 
-    const isUsingCache = isLocalHost();
-    
+  fetch(path, queryParams, options) {
+    const params = new URLSearchParams(queryParams).toString();
+    return fetchRetry(`${window.location.protocol}//${path}/?${params}`, options);
+  }
+
+  downloadCvPromise(cvresponse, startTime, fileFormat) {
+    if (cvresponse.status == 202) {
+      const fileBlob = cvresponse.blob();
+      fileBlob.then((file) => {
+        const element = document.createElement('a');
+        element.href = URL.createObjectURL(file);
+        element.download = `cv.${fileFormat}`;
+        element.click();
+      });
+      const serveTime = window.performance.now();
+      logger(cvresponse, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
+      toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
+      this.setState({ downloading: false });
+      return true;
+    } else if (cvresponse.status != 204) {
+      logger(cvresponse, 'FAILURE_NOTIFIED');
+      toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
+      this.setState({ showBugUi: true, downloading: false });
+    }
+    return false;
+  }
+  
+  downloadCv(format, mimeContentType, fileFormat) {    
     if (this.state.downloading) {
       return;
     }
@@ -92,6 +117,7 @@ class Builder extends Component {
     }
 
     const cv = removeDisabled(this.props.userData.cv);
+    const useCache = !isLocalHost();
 
     // TODO this should be receiving full locale
     let { params } = this.props.userData;
@@ -102,7 +128,7 @@ class Builder extends Component {
       curriculum_vitae: cv,
       section_order: this.props.userData.cv_order,
       render_key: this.props.userData.user_cv_model,
-      is_using_cache: isUsingCache,
+      is_using_cache: useCache,
       render_format: {
         internal: format,
         file: fileFormat,
@@ -116,41 +142,41 @@ class Builder extends Component {
 
     const startTime = window.performance.now();
 
-    connectToStorage(
-      fetch(
-        `${window.location.protocol}//${getStorageHostname()}/${requestCv}/${this.props.userData.cv.header.email}/?isUsingCache=${isUsingCache}&mime_content_type=${mimeContentType}`,
-        { method: 'GET',},
-      ), requestCv, startTime, isCacheAvailable, isUsingCache, fileFormat);
-
-    if(!isCacheAvailable.value) {
-      fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestCv),
-      }).then((response) => {
-        if (response.ok) {
-          const idPromise = response.text();
+    this.fetch(`${window.location.protocol}//${getStorageHostname()}/${requestCv}/${this.props.userData.cv.header.email}`,
+    {mime_content_type: mimeContentType, use_cache: useCache},
+    {method: 'GET'})
+    .then(cvresponse => { this.downloadCvPromise(cvresponse, startTime, fileFormat) })
+    .then(downloaded => {
+      if (!downloaded) {
+        this.fetch(`${window.location.protocol}//${getApiHostname()}/cv/`, "", {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestCv),
+        }).then(response => {
+          if (response.status != 202) {
+            const textPromise = response.text();
+            textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
+            return false;
+          }
           toast(`${translate('loading')}...`, { autoClose: false, toastId: 'downloading' });
-          idPromise.then((id) => {
-            connectToStorage(fetch(
-              `${window.location.protocol}//${getStorageHostname()}/${id}/${this.props.userData.cv.header.email}/?mime_content_type=${mimeContentType}`,
-              {
-                method: 'GET',
-                retries: 20,
-                retryDelay: 1000,
-                retryOn: [404],
-              },
-            ),idPromise, startTime, isCacheAvailable, isUsingCache, fileFormat)
-          });
-        } else {
-          const textPromise = response.text();
-          textPromise.then(text => toast.error(`${translate('error')}: ${text}`));
-        }
-      });
-    }
+          return true;
+        }).then(startPooling => {
+          if (startPooling) {
+            this.fetch(`${window.location.protocol}//${getStorageHostname()}/${requestCv}/${this.props.userData.cv.header.email}`,
+            {mime_content_type: mimeContentType},
+            {
+              method: 'GET',
+              retries: 20,
+              retryDelay: 1000,
+              retryOn: [404],
+            }).then(cvresponse => { this.downloadCvPromise(cvresponse, startTime, fileFormat) })
+          }
+        })
+      }
+    })
   }
 
   saveOnAccount() {
@@ -399,31 +425,6 @@ class Builder extends Component {
       </Segment>
     );
   }
-}
-
-function connectToStorage(fetchedObj, requestCv, startTime, isCacheAvailable, isUsingCache, fileFormat) {
-  fetchedObj.then((cvresponse) => {
-    if (cvresponse.ok) {
-      const fileBlob = cvresponse.blob();
-      fileBlob.then((file) => {
-        const element = document.createElement('a');
-        element.href = URL.createObjectURL(file);
-        element.download = `cv.${fileFormat}`;
-        element.click();
-      });
-      const serveTime = window.performance.now();
-      logger(requestCv, 'SERVED_FOR_DOWNLOAD', serveTime - startTime);
-      if(isUsingCache){
-        isCacheAvailable.value = true;
-      }
-      toast.update('downloading', { render: `${translate('ready')}!`, autoClose: 5000, type: toast.TYPE.INFO });
-      this.setState({ downloading: false });
-    } else {
-      logger(requestCv, 'FAILURE_NOTIFIED');
-      toast.update('downloading', { render: translate('error_processing_file'), autoClose: 5000, type: toast.TYPE.ERROR });
-      this.setState({ showBugUi: true, downloading: false });
-    }
-  });
 }
 
 export default Builder;
