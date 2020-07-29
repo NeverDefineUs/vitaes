@@ -24,7 +24,7 @@ import { Segment } from 'semantic-ui-react';
 import CvOrder from './CvOrder';
 import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
-import headerFields from './headerFields';
+import {headerFields, updateHeaderFields} from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 import cvDownloadFormats from './cvDownloadFormats';
 import ReactPixel from 'react-facebook-pixel';
@@ -186,6 +186,7 @@ class Builder extends Component {
     if (aux.header[event.target.name] === '') {
       delete aux.header[event.target.name];
     }
+    
     this.setCv(aux);
   }
 
@@ -209,6 +210,7 @@ class Builder extends Component {
 
   render() {
     updateFormFields();
+    updateHeaderFields();
     const cvModelOptions = [];
     for (const cvModelName in this.props.cv_models) {
       const cvModel = this.props.cv_models[cvModelName];
