@@ -185,10 +185,10 @@ class Builder extends Component {
     aux.header[event.target.name] = event.target.value;
     if (aux.header[event.target.name] === '') {
       delete aux.header[event.target.name];
-    }    
+    }
     this.setCv(aux);
   }
-
+  
   uploadJSON(selectorFiles) {
     const fr = new FileReader();
     // eslint-disable-next-line func-names
