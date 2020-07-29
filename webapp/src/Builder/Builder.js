@@ -5,7 +5,7 @@ import fetch from 'fetch-retry';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import {
-  Button, Form, Col, Row,
+  Button, Form, Col, Row, 
   DropdownButton, ButtonGroup, Dropdown
 } from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
@@ -24,7 +24,7 @@ import { Segment } from 'semantic-ui-react';
 import CvOrder from './CvOrder';
 import CvHeaderField from './CvHeaderField';
 import CvItemForm from './CvItemForm';
-import { headerFields, updateHeaderFields } from './headerFields';
+import {headerFields, updateHeaderFields} from './headerFields';
 import { cvFormFields, updateFormFields } from './cvFormFields';
 import cvDownloadFormats from './cvDownloadFormats';
 import ReactPixel from 'react-facebook-pixel';
@@ -66,7 +66,7 @@ class Builder extends Component {
     const { userData } = this.props;
     this.props.userDataSetter(_.assign(userData, data));
   }
-
+  
   downloadCv(format, mimeContentType, fileFormat) {
     if (this.state.downloading) {
       return;
@@ -174,7 +174,7 @@ class Builder extends Component {
   autoSave() {
     setInterval(() => {
       if (this.props.userData.autosave
-        && JSON.stringify(this.props.userData) !== this.state.lastSaved) {
+         && JSON.stringify(this.props.userData) !== this.state.lastSaved) {
         this.saveOnAccount();
       }
     }, autoSaveTime);
@@ -204,7 +204,7 @@ class Builder extends Component {
 
   componentDidMount() {
     ReactPixel.init('898969540474999');
-    ReactPixel.pageView();
+    ReactPixel.pageView(); 
   }
 
   render() {
@@ -342,17 +342,17 @@ class Builder extends Component {
           size="sm"
           style={{ marginLeft: 5, float: 'right' }}
         >
-          {_.map(cvDownloadFormats, downloadFormat => (
-            <Dropdown.Item
-              onClick={() => this.downloadCv(
-                downloadFormat.id,
-                downloadFormat.mimeContentType,
-                downloadFormat.fileFormat
-              )}
-            >
-              {downloadFormat.descriptor}
-            </Dropdown.Item>
-          ))}
+        {_.map(cvDownloadFormats, downloadFormat => (
+          <Dropdown.Item 
+            onClick={() => this.downloadCv(
+              downloadFormat.id,
+              downloadFormat.mimeContentType,
+              downloadFormat.fileFormat
+            )}
+          >
+            {downloadFormat.descriptor}
+          </Dropdown.Item>
+        ))}
         </DropdownButton>
         <Dropzone onDrop={files => this.uploadJSON(files)}>
           {({ getRootProps, getInputProps }) => (
