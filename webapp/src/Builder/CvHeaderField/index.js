@@ -12,7 +12,7 @@ class CvHeaderField extends Component {
         <Form.Label column sm="2">
           {capitalize(this.props.label)}
           {this.props.mandatory ? ` (${translate('required')})` : ''}
-          
+          :
         </Form.Label>
         <Col sm="10">
           <Form.Control

@@ -185,8 +185,7 @@ class Builder extends Component {
     aux.header[event.target.name] = event.target.value;
     if (aux.header[event.target.name] === '') {
       delete aux.header[event.target.name];
-    }
-    
+    }    
     this.setCv(aux);
   }
 

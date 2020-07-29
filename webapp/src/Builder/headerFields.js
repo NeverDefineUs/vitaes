@@ -1,11 +1,7 @@
 import { translate } from '../i18n/locale';
 
-
 export let headerFields = []
-
-
 export function updateHeaderFields(){
-
   headerFields = [
     {
       label: translate('name'), id: 'name', mandatory: true, placeholder: translate('name_placeholder'),
@@ -32,8 +28,4 @@ export function updateHeaderFields(){
       label: translate('address'), id: 'address', mandatory: false, placeholder: translate('address_placeholder'),
     },
   ];
-
 }
-
-
-
