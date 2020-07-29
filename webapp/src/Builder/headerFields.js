@@ -1,6 +1,7 @@
 import { translate } from '../i18n/locale';
 
 export let headerFields = []
+
 export function updateHeaderFields(){
   headerFields = [
     {
