@@ -57,7 +57,7 @@ services:
     - net
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:management-alpine
+    image: rabbitmq:alpine
     ports:
     - 15672:15672
     restart: always
@@ -127,7 +127,33 @@ services:
     - log-volume:/data
     networks:
     - net
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.0.2
+    restart: always
+    ports:
+    - 6006:80
+    environment:
+    - PMA_HOST=mysql
+    depends_on:
+    - mysql
+    networks:
+    - net
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+    - 3306:3306
+    restart: always
+    environment:
+    - MYSQL_ROOT_PASSWORD=vitaes
+    volumes:
+    - mysql-volume:/var/lib/mysql
+    networks:
+    - net
 volumes:
+  mysql-volume:
+    external: true
   grafana-volume:
     external: true
   influxdb-volume:

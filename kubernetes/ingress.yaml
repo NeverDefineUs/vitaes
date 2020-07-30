@@ -56,3 +56,9 @@ spec:
       - backend:
           serviceName: grafana
           servicePort: 3000
+  - host: phpmyadmin.vitaes.io
+    http:
+      paths:
+      - backend:
+          serviceName: phpmyadmin
+          servicePort: 80
