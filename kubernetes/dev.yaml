@@ -54,12 +54,36 @@ spec:
           values:
           - minikube
 
+          ---
+          
+          apiVersion: v1
+          kind: PersistentVolume
+          metadata:
+            name: pv-vitaes-3
+          spec:
+            capacity:
+              storage: 1Gi
+            accessModes:
+            - ReadWriteOnce
+            persistentVolumeReclaimPolicy: Retain
+            storageClassName: do-block-storage
+            local:
+              path: /data/vitaes
+            nodeAffinity:
+              required:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                    - minikube
+
 ---
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-vitaes-3
+  name: pv-vitaes-4
 spec:
   capacity:
     storage: 1Gi

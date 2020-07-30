@@ -11,6 +11,7 @@ if env == 'production' or env == 'staging':
 else:
     print('Setting up in development environment...')
     print()
+    os.system('docker volume create mysql-volume')
     os.system('docker volume create grafana-volume')
     os.system('docker volume create influxdb-volume')
     os.system('docker volume create log-volume')

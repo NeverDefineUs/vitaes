@@ -1,19 +1,5 @@
 version: '3'
 services:
-  webapp:
-    container_name: webapp
-    build:
-      context: webapp/.
-      dockerfile: Dockerfile.dev
-    image: dev-webapp
-    stdin_open: true
-    volumes:
-    - ./webapp/src:/vitaes/src
-    - ./webapp/public:/vitaes/public
-    depends_on:
-    - storage
-    networks:
-    - net
   api:
     container_name: api
     build:
@@ -28,6 +14,21 @@ services:
     - logger
     networks:
     - net
+  logger:
+    container_name: logger
+    build:
+      context: logger/.
+      dockerfile: Dockerfile.dev
+    image: dev-logger
+    restart: always
+    environment:
+    - SQLITE_DATABASE=log.db
+    ports:
+    - 6002:6000
+    volumes:
+    - log-volume:/data
+    networks:
+    - net
   renderer:
     container_name: renderer
     build: renderer/.
@@ -40,6 +41,34 @@ services:
     - storage
     networks:
     - net
+  storage:
+    container_name: storage
+    build:
+      context: storage/.
+      dockerfile: Dockerfile.dev
+    image: dev-storage
+    restart: always
+    ports:
+    - 6003:6000
+    depends_on:
+    - redis
+    networks:
+    - net
+  webapp:
+    container_name: webapp
+    build:
+      context: webapp/.
+      dockerfile: Dockerfile.dev
+    image: dev-webapp
+    stdin_open: true
+    volumes:
+    - ./webapp/src:/vitaes/src
+    - ./webapp/public:/vitaes/public
+    depends_on:
+    - storage
+    networks:
+    - net
+
   nginx:
     container_name: nginx
     build: nginx/.
@@ -55,9 +84,22 @@ services:
     - sqlite-web
     networks:
     - net
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+    - 3306:3306
+    restart: always
+    environment:
+    - MYSQL_ROOT_PASSWORD=vitaes
+    volumes:
+    - mysql-volume:/var/lib/mysql
+    networks:
+    - net
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:management-alpine
+    image: rabbitmq:alpine
     ports:
     - 15672:15672
     restart: always
@@ -79,40 +121,25 @@ services:
     - grafana-volume:/var/lib/grafana
     networks:
     - net
-  logger:
-    container_name: logger
-    build:
-      context: logger/.
-      dockerfile: Dockerfile.dev
-    image: dev-logger
-    restart: always
-    environment:
-    - SQLITE_DATABASE=log.db
-    ports:
-    - 6002:6000
-    volumes:
-    - log-volume:/data
-    networks:
-    - net
-  storage:
-    container_name: storage
-    build:
-      context: storage/.
-      dockerfile: Dockerfile.dev
-    image: dev-storage
-    restart: always
-    ports:
-    - 6003:6000
-    depends_on:
-    - redis
-    networks:
-    - net
   influxdb:
     container_name: influxdb
     image: influxdb:1.7.4
     restart: always
     volumes:
     - influxdb-volume:/var/lib/influxdb
+    networks:
+    - net
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.0.2
+    restart: always
+    ports:
+    - 6006:80
+    environment:
+    - PMA_HOST=mysql
+    depends_on:
+    - mysql
     networks:
     - net
   sqlite-web:
@@ -128,6 +155,8 @@ services:
     networks:
     - net
 volumes:
+  mysql-volume:
+    external: true
   grafana-volume:
     external: true
   influxdb-volume:

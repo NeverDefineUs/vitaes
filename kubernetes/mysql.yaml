@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        imagePullPolicy: Always
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "vitaes"
+        volumeMounts:
+        - name: pvc-mysql
+          mountPath: /var/lib/mysql
+          subPath: mysql
+      volumes:
+        - name: pvc-mysql
+          persistentVolumeClaim:
+            claimName: pvc-mysql
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+spec:
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: phpmyadmin
+        image: phpmyadmin/phpmyadmin:5.0.2
+        imagePullPolicy: Always
+        env:
+        - name: PMA_HOST
+          value: "mysql"
+        - name: PMA_ABSOLUTE_URI
+          value: "https://phpmyadmin.vitaes.io/"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+  selector:
+    app: phpmyadmin
