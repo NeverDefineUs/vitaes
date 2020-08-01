@@ -11,7 +11,7 @@ const SortableItem = SortableElement(({ value }) => (
 
 const SortableList = SortableContainer(({ cvOrder }) => (
   <div style={{
-    display: "flex",
+    display: "block",
     justifyContent: "center",
     alignItems: "center"
   }}>
