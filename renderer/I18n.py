@@ -9,6 +9,7 @@ def get_raw_resources(lang):
     return {}
 
 
+
 def get_resources(lang):
   resources = get_raw_resources('en')
   resources.update(get_raw_resources(lang))
