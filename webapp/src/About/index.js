@@ -21,27 +21,63 @@ class About extends Component {
     };
   }
 
+  dealStats = (stats) => {
+    stats.forEach(element => {
+      let add = 0;
+      let dell = 0;
+      element.weeks.forEach(week => {
+        add += week.a;
+        dell += week.d;
+      })
+      element.additions = add;
+      element.deletions = dell;
+
+      element.login = element.author.login;
+        
+    });
+    
+    return stats;
+  }
+
+  makeMinorContributors = (stats) =>{
+    function isMinor(value){
+      return value.login != "Arthurlpgc" && value.login != "ramonsaboya" && value.login != "magsouza"
+    }
+    let coll = [];
+    let minorStats = stats.filter(isMinor);
+    minorStats.sort((a, b) => a.additions + a.deletions < b.additions + b.deletions);
+    console.log(minorStats)
+    minorStats.forEach(stat => {
+      coll.push(
+        <Card>
+        <Card.Content>
+          <Image
+            floated='right'
+            size='mini'
+            src={stat.author.avatar_url}
+          />
+          <Card.Header href={stat.author.html_url}>{stat.login}</Card.Header>
+        </Card.Content>
+        <Card.Content extra>
+              <span>{stat.total} commits </span>
+              <span style={{color : 'green'}}>{stat.additions}++ </span> 
+              <span style={{color : 'red'}}>{stat.deletions}-- </span> 
+        </Card.Content>
+        </Card>
+      )
+    })
+    this.setState({minors : coll})
+  }
+
   loadGithub = async () => {
     const collaborators = await gh.getCollaborators();
     const stats = await gh.getContributorStats();
-    console.log(collaborators);
     this.setState({collaborators : collaborators});
-    stats.forEach(element => {
-        let add = 0;
-        let dell = 0;
-        element.weeks.forEach(week => {
-          add += week.a;
-          dell += week.d;
-        })
-        element.additions = add;
-        element.deletions = dell;
-
-        element.login = element.author.login
-          
-    });
-    console.log(stats);
+    stats = this.dealStats(stats);
+    this.makeMinorContributors(stats);
     this.setState({stats : stats});
     this.setState({loaded : true});
+    
   }
 
 
@@ -127,39 +163,17 @@ class About extends Component {
 
         </Card.Group>
 
-
         <h2>
           {translate('other_contributors')}
           :
         </h2>
-        <ul>
-          <li>
-            <strong>acrc2:</strong>
-            {' '}
-            Made the birthday validation.
-          </li>
-          <li>
-            <strong>Hildemir:</strong>
-            {' '}
-            Refactors on the validation functions.
-          </li>
-          <li>
-            <strong>jvsn19:</strong>
-            {' '}
-            Helped modeling the base classes.
-          </li>
-          <li>
-            <strong>rfrl:</strong>
-            {' '}
-            Helped testing and deploying.
-          </li>
-          <li>
-            <strong>vjsl:</strong>
-            {' '}
-            Helped uncover a bug with accents and on
-                        adding https.
-          </li>
-        </ul>
+
+        <Card.Group centered>
+          {this.state.minors}
+        </Card.Group>
+
+
+        
         <br />
         <h2>
           {translate('template_contributors')}

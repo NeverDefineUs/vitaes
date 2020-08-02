@@ -1,5 +1,6 @@
-const { Octokit } = require("@octokit/core");
-const token = require("./tokens.js")
+const { Octokit } = require('@octokit/core');
+const token = require('./tokens.js')
+
 const octokit = new Octokit({ auth: token.default });
 
 const gh = {
