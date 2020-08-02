@@ -20,6 +20,8 @@ services:
       context: gravitaesql/.
       dockerfile: Dockerfile.dev
     image: dev-gravitaesql
+    ports:
+    - 6007:4000
     volumes:
     - ./gravitaesql/src:/vitaes/src
     depends_on:
