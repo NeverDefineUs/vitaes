@@ -6,3 +6,5 @@ __pycache__/*
 CVCS.pem
 db/
 ./go.*
+dist/
+src/generated/
