@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gravitaesql
+spec:
+  selector:
+    matchLabels:
+      app: gravitaesql
+  template:
+    metadata:
+      labels:
+        app: gravitaesql
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: gravitaesql
+        image: vitaes/gravitaesql
+        imagePullPolicy: Always
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gravitaesql
+spec:
+  type: NodePort
+  ports:
+  - port: 4000
+  selector:
+    app: gravitaesql

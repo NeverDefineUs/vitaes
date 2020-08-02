@@ -14,6 +14,18 @@ services:
     - logger
     networks:
     - net
+  gravitaesql:
+    container_name: gravitaesql
+    build:
+      context: gravitaesql/.
+      dockerfile: Dockerfile.dev
+    image: dev-gravitaesql
+    volumes:
+    - ./gravitaesql/src:/vitaes/src
+    depends_on:
+    - mysql
+    networks:
+    - net
   logger:
     container_name: logger
     build:
@@ -66,6 +78,7 @@ services:
     - ./webapp/public:/vitaes/public
     depends_on:
     - storage
+    - gravitaesql
     networks:
     - net
 
