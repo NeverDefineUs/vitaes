@@ -1,6 +1,6 @@
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:vitaes@localhost:3306/vitaes"
+  url      = "mysql://root:vitaes@mysql:3306/vitaes"
 }
 
 generator prisma_client {
