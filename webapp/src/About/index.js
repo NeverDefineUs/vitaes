@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Button, Icon } from 'semantic-ui-react';
+import fetch from 'fetch-retry';
+import _ from 'lodash';
 
 import { translate } from 'i18n/locale';
 import ReactPixel from 'react-facebook-pixel';
@@ -11,15 +13,50 @@ const imagesSrcs = {
 };
 
 class About extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      users: [],
+    };
+  }
 
   componentDidMount() {
     ReactPixel.init('898969540474999');
     ReactPixel.pageView(); 
+
+    fetch('http://localhost:6007/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query GetUsers {
+          users {
+            vid
+            autosave
+          }
+        }`,
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ users: res.data.users });
+      });
   }
 
   render() {
     return (
       <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
+        <h1>
+          {_.map(this.state.users, user => (
+            <div key={user.vid}>
+              ID: {user.vid}
+            </div>
+          ))}
+        </h1>
+        <br />
         <h1>
           {translate('about_the_project')}
           :
