@@ -10,7 +10,6 @@
     "generate": "yarn generate:prisma && yarn generate:nexus",
     "generate:prisma": "prisma generate",
     "generate:nexus": "ts-node --transpile-only src/schema",
-    "postinstall": "yarn generate",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server"
   },
   "devDependencies": {
