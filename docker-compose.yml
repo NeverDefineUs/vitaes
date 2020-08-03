@@ -24,6 +24,7 @@ services:
     - 6007:4000
     volumes:
     - ./gravitaesql/src:/vitaes/src
+    - ./gravitaesql/service-account-file.json:/vitaes/service-account-file.json
     depends_on:
     - mysql
     networks:

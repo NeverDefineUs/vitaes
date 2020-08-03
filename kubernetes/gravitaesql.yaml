@@ -16,6 +16,14 @@ spec:
       - name: gravitaesql
         image: vitaes/gravitaesql
         imagePullPolicy: Always
+        volumeMounts:
+          - name: firebase-service-account
+            mountPath: /vitaes
+            readOnly: true
+      volumes:
+        - name: firebase-service-account
+          secret:
+            secretName: firebase-service-account
 
 ---
 

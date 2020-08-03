@@ -18,6 +18,12 @@ const Query = objectType({
         return ctx.prisma.user.findMany()
       },
     })
+    t.field('auth', {
+      type: 'String',
+      resolve: (_root, _args, ctx) => {
+        return ctx.userId || "not authenticated"
+      },
+    })
   },
 })
 
