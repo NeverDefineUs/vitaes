@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import fetch from 'fetch-retry';
 import _ from 'lodash';
+import firebase from 'firebase';
 
 import { translate } from 'i18n/locale';
 import ReactPixel from 'react-facebook-pixel';
@@ -21,42 +22,51 @@ class About extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     ReactPixel.init('898969540474999');
-    ReactPixel.pageView(); 
+    ReactPixel.pageView();
 
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+
+
+    await firebase.auth().getRedirectResult()
+    const user = firebase.auth().currentUser;
+    if (user) {
+      headers = {
+        ...headers, 
+        'Authorization': 'Bearer ' + await user.getIdToken(),
+      }
+    }
     fetch('http://localhost:6007/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
-        query: `query GetUsers {
-          users {
-            vid
-            autosave
-          }
+        query: `query TestAuth {
+          auth
         }`,
       })
     })
       .then(res => res.json())
       .then(res => {
-        this.setState({ users: res.data.users });
+        console.log(res.data);
+        // this.setState({ users: res.data.users });
       });
   }
 
   render() {
     return (
       <Segment secondary style={{ paddingBottom: 30, marginBottom: 10 }}>
-        <h1>
+        {/* <h1>
           {_.map(this.state.users, user => (
             <div key={user.vid}>
               ID: {user.vid}
             </div>
           ))}
         </h1>
-        <br />
+        <br /> */}
         <h1>
           {translate('about_the_project')}
           :
