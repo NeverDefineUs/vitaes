@@ -15,10 +15,11 @@ export interface Context {
 }
 
 export async function createContext(req: express.Request): Promise<Context> {
-  const token = (req.headers && req.headers.authorization) ? req.headers.authorization : null
-  if (token == null) {
+  const tokenWithBearer = (req.headers && req.headers.authorization) ? req.headers.authorization : null
+  if (tokenWithBearer == null) {
     return { prisma }
   }
+  const token = tokenWithBearer.replace('Bearer ', '')
 
   const decodedToken = await admin.auth().verifyIdToken(token)
   return {
