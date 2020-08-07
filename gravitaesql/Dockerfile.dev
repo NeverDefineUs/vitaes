@@ -1,5 +1,4 @@
 FROM node:11.14-alpine
-ENV GOOGLE_APPLICATION_CREDENTIALS="/vitaes/service-account-file.json"
 ENV MYSQL_HOST="mysql"
 ENV DATABASE_URL="mysql://root:vitaes@mysql:3306/vitaes"
 WORKDIR /vitaes
