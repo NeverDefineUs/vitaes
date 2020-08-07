@@ -2,11 +2,32 @@
 ### Do not make changes to this file directly
 
 
+type Gatekeeper {
+  description: String
+  name: String!
+  vid: String!
+}
+
+input GatekeeperWhereUniqueInput {
+  name: String
+  vid: String
+}
+
 type Query {
+  auth: String!
+  current_user: User!
   users: [User!]!
+}
+
+type RecordOwner {
+  sectionOrder: String
+  vid: String!
 }
 
 type User {
   autosave: Boolean!
-  vid: Int!
+  firebaseId: String!
+  gatekeepers(after: GatekeeperWhereUniqueInput, before: GatekeeperWhereUniqueInput, first: Int, last: Int): [Gatekeeper!]!
+  recordOwner: RecordOwner!
+  vid: String!
 }
