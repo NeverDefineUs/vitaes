@@ -61,27 +61,15 @@ services:
       dockerfile: Dockerfile.dev
     image: dev-webapp
     stdin_open: true
+    restart: always
+    ports:
+    - 80:3000
     volumes:
     - ./webapp/src:/vitaes/src
     - ./webapp/public:/vitaes/public
     depends_on:
-    - storage
-    networks:
-    - net
-
-  nginx:
-    container_name: nginx
-    build: nginx/.
-    restart: always
-    image: dev-nginx
-    ports:
-    - 80:80
-    depends_on:
-    - grafana
     - api
-    - webapp
-    - logger
-    - sqlite-web
+    - storage
     networks:
     - net
 
@@ -119,6 +107,8 @@ services:
     - 6004:3000
     volumes:
     - grafana-volume:/var/lib/grafana
+    depends_on:
+    - influxdb
     networks:
     - net
   influxdb:
