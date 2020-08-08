@@ -1,8 +1,14 @@
 import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema"
-import { makeSchema } from '@nexus/schema'
+import { decorateType, makeSchema } from '@nexus/schema'
+import { GraphQLDate } from 'graphql-scalars'
 
 import models from './models'
-import { RootQuery } from './root'
+import { RootQuery } from './query'
+
+export const GQLDate = decorateType(GraphQLDate, {
+  rootTyping: 'DateTime',
+  asNexusMethod: 'date',
+})
 
 export const schema = makeSchema({
   types: [models, RootQuery],

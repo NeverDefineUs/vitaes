@@ -61,7 +61,6 @@ model RecordAcademic {
 
   location        Location?     @relation(fields: [locationVid], references: [vid])
   locationVid     String?
-
   institution     Institution?  @relation(fields: [institutionVid], references: [vid])
   institutionVid  String?
 
@@ -80,7 +79,6 @@ model RecordAchievement {
 
   location        Location?     @relation(fields: [locationVid], references: [vid])
   locationVid     String?
-
   institution     Institution?  @relation(fields: [institutionVid], references: [vid])
   institutionVid  String?
 
@@ -98,7 +96,6 @@ model RecordEducation {
 
   location        Location?     @relation(fields: [locationVid], references: [vid])
   locationVid     String?
-
   institution     Institution?  @relation(fields: [institutionVid], references: [vid])
   institutionVid  String?
 
@@ -150,7 +147,6 @@ model RecordWork {
 
   location        Location?     @relation(fields: [locationVid], references: [vid])
   locationVid     String?
-
   institution     Institution?  @relation(fields: [institutionVid], references: [vid])
   institutionVid  String?
 
@@ -162,11 +158,6 @@ model Institution {
   vid                 String              @id
   name                String
   abbreviaton         String
-
-  academicRecords     RecordAcademic[]
-  achievementRecords  RecordAchievement[]
-  educationRecords    RecordEducation[]
-  workRecords         RecordWork[]
 }
 
 model Location {
@@ -174,12 +165,6 @@ model Location {
   country             String
   governingDistrict   String
   cityTown            String
-
-  academicRecords     RecordAcademic[]
-  achievementRecords  RecordAchievement[]
-  educationRecords    RecordEducation[]
-  projectRecords      RecordProject[]
-  workRecords         RecordWork[]
 }
 
 model BugReport {

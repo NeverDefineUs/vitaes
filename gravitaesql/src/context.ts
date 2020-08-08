@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 
 admin.initializeApp({
   credential: admin.credential.cert(require("../service-account-file.json")),
-  databaseURL: "https://vitaes-57424.firebaseio.com"
 });
 
 export interface Context {

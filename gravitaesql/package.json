@@ -29,6 +29,7 @@
     "db-migrate-mysql": "^2.1.1",
     "firebase-admin": "^9.0.0",
     "graphql": "^15.3.0",
+    "graphql-scalars": "^1.2.6",
     "nexus-plugin-prisma": "^0.16.1"
   }
 }
