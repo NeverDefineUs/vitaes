@@ -5,8 +5,7 @@ import * as admin from 'firebase-admin'
 const prisma = new PrismaClient()
 
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  databaseURL: "https://vitaes-57424.firebaseio.com"
+  credential: admin.credential.cert(require("../service-account-file.json")),
 });
 
 export interface Context {
@@ -15,10 +14,11 @@ export interface Context {
 }
 
 export async function createContext(req: express.Request): Promise<Context> {
-  const token = (req.headers && req.headers.authorization) ? req.headers.authorization : null
-  if (token == null) {
+  const tokenWithBearer = (req.headers && req.headers.authorization) ? req.headers.authorization : null
+  if (tokenWithBearer == null) {
     return { prisma }
   }
+  const token = tokenWithBearer.replace('Bearer ', '')
 
   const decodedToken = await admin.auth().verifyIdToken(token)
   return {

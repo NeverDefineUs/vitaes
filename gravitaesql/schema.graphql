@@ -2,11 +2,175 @@
 ### Do not make changes to this file directly
 
 
+type Alert {
+  author: User!
+  message: String!
+  type: AlertType!
+  vid: String!
+}
+
+enum AlertType {
+  ERROR
+  INFO
+  WARN
+}
+
+type BugReport {
+  author: User
+  data: String
+  description: String
+  email: String
+  title: String
+  vid: String!
+}
+
+scalar DateTime
+
+type Gatekeeper {
+  description: String
+  name: String!
+  vid: String!
+}
+
+input GatekeeperWhereUniqueInput {
+  name: String
+  vid: String
+}
+
+type Institution {
+  abbreviaton: String!
+  name: String!
+  vid: String!
+}
+
+type Location {
+  cityTown: String!
+  country: String!
+  governingDistrict: String!
+  vid: String!
+}
+
 type Query {
-  users: [User!]!
+  current_user: User!
+}
+
+type RecordAcademic {
+  articleLink: String
+  description: String
+  endDate: DateTime
+  institution: Institution
+  location: Location
+  recordOwner: RecordOwner!
+  startDate: DateTime!
+  title: String!
+  vid: String!
+}
+
+type RecordAchievement {
+  certificateLink: String
+  description: String
+  endDate: DateTime
+  institution: Institution
+  location: Location
+  position: String
+  recordOwner: RecordOwner!
+  startDate: DateTime!
+  title: String!
+  vid: String!
+}
+
+type RecordEducation {
+  course: String!
+  description: String
+  endDate: DateTime
+  institution: Institution
+  location: Location
+  recordOwner: RecordOwner!
+  startDate: DateTime!
+  teacher: String
+  vid: String!
+}
+
+type RecordLanguage {
+  level: String!
+  name: String!
+  recordOwner: RecordOwner!
+  vid: String!
+}
+
+type RecordOwner {
+  sectionOrder: String
+  vid: String!
+}
+
+type RecordProject {
+  description: String
+  endDate: DateTime
+  location: Location
+  programmingLanguage: String
+  recordOwner: RecordOwner!
+  repositoryLink: String
+  startDate: DateTime!
+  title: String!
+  vid: String!
+}
+
+type RecordSet {
+  owner: User!
+  recordOwner: RecordOwner!
+  title: String!
+  vid: String!
+}
+
+input RecordSetWhereUniqueInput {
+  vid: String
+}
+
+type RecordSkill {
+  level: String
+  name: String!
+  recordOwner: RecordOwner!
+  type: String!
+  vid: String!
+}
+
+type RecordWork {
+  description: String
+  endDate: DateTime
+  institution: Institution
+  location: Location
+  recordOwner: RecordOwner!
+  role: String!
+  startDate: DateTime!
+  vid: String!
+}
+
+type Template {
+  baseFolder: String!
+  command: String!
+  name: String!
+  params(after: TemplateParamWhereUniqueInput, before: TemplateParamWhereUniqueInput, first: Int, last: Int): [TemplateParam!]!
+  vid: String!
+}
+
+type TemplateParam {
+  defaultValue: String!
+  displayName: String!
+  name: String!
+  template: Template!
+  values: String!
+  vid: String!
+}
+
+input TemplateParamWhereUniqueInput {
+  vid: String
 }
 
 type User {
   autosave: Boolean!
-  vid: Int!
+  firebaseId: String!
+  gatekeepers(after: GatekeeperWhereUniqueInput, before: GatekeeperWhereUniqueInput, first: Int, last: Int): [Gatekeeper!]!
+  recordOwner: RecordOwner!
+  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  vid: String!
 }

@@ -1,15 +1,222 @@
 datasource db {
-  provider = "mysql"
-  url      = "mysql://root:vitaes@mysql:3306/vitaes"
+  provider  = "mysql"
+  url       = env("DATABASE_URL")
 }
 
 generator prisma_client {
-  provider = "prisma-client-js"
+  provider  = "prisma-client-js"
 }
-     
+
 model User {
-  vid       Int      @id
-  autosave  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  vid         String        @id
+  firebaseId  String        @unique
+  autosave    Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  recordOwner RecordOwner
+
+  recordSets  RecordSet[]
+  gatekeepers Gatekeeper[]
+  alerts      Alert[]
+  bugReports  BugReport[]
+}
+
+model RecordSet {
+  vid         String      @id
+  title       String
+
+  recordOwner RecordOwner
+
+  owner       User        @relation(fields: [ownerVid], references: [vid])
+  ownerVid    String
+}
+
+model RecordOwner {
+  vid                 String              @id
+  sectionOrder        String?
+
+  user                User?               @relation(fields: [userVid], references: [vid])
+  userVid             String?
+
+  set                 RecordSet?          @relation(fields: [setVid], references: [vid])
+  setVid              String?
+
+  academicRecords     RecordAcademic[]
+  achievementRecords  RecordAchievement[]
+  educationRecords    RecordEducation[]
+  languageRecords     RecordLanguage[]
+  projectRecords      RecordProject[]
+  skillRecords        RecordSkill[]
+  workRecords         RecordWork[]
+}
+
+model RecordAcademic {
+  vid             String        @id
+  title           String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+  articleLink     String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  recordOwner     RecordOwner   @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid  String
+}
+
+model RecordAchievement {
+  vid             String        @id
+  title           String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+  position        String?
+  certificateLink String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  recordOwner     RecordOwner   @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid  String
+}
+
+model RecordEducation {
+  vid             String        @id
+  course          String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+  teacher         String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  recordOwner     RecordOwner   @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid  String
+}
+
+model RecordLanguage {
+  vid             String      @id
+  name            String
+  level           String
+
+  recordOwner     RecordOwner @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid  String
+}
+
+model RecordProject {
+  vid                 String      @id
+  title               String
+  startDate           DateTime
+  endDate             DateTime?
+  description         String?
+  programmingLanguage String?
+  repositoryLink      String?
+
+  location            Location?   @relation(fields: [locationVid], references: [vid])
+  locationVid         String?
+
+  recordOwner         RecordOwner @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid      String
+}
+
+model RecordSkill {
+  vid             String      @id
+  name            String
+  type            String
+  level           String?
+
+  recordOwner     RecordOwner @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid  String
+}
+
+model RecordWork {
+  vid             String        @id
+  role            String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  recordOwner     RecordOwner   @relation(fields: [recordOwnerVid], references: [vid])
+  recordOwnerVid  String
+}
+
+model Institution {
+  vid                 String              @id
+  name                String
+  abbreviaton         String
+}
+
+model Location {
+  vid                 String              @id
+  country             String
+  governingDistrict   String
+  cityTown            String
+}
+
+model BugReport {
+  vid         String  @id
+  title       String?
+  email       String?
+  description String?
+  data        String?
+
+  author      User?   @relation(fields: [authorVid], references: [vid])
+  authorVid   String?
+}
+
+enum AlertType {
+  INFO
+  WARN
+  ERROR
+}
+
+model Alert {
+  vid       String    @id
+  message   String
+  type      AlertType
+
+  author    User      @relation(fields: [authorVid], references: [vid])
+  authorVid String
+}
+
+model Gatekeeper {
+  vid           String  @id
+  name          String  @unique
+  description   String?
+  
+  allowedUsers  User[]
+}
+
+model Template {
+  vid         String          @id
+  name        String          @unique
+  baseFolder  String
+  command     String
+
+  params      TemplateParam[]
+}
+
+model TemplateParam {
+  vid           String    @id
+  name          String
+  displayName   String
+  defaultValue  String
+  values        String
+
+  template      Template  @relation(fields: [templateVid], references: [vid])
+  templateVid   String
 }
