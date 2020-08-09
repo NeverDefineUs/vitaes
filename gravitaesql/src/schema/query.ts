@@ -1,19 +1,18 @@
-import { objectType } from '@nexus/schema'
+import { queryType } from '@nexus/schema'
 
-const RootQuery = objectType({
-  name: 'Query',
+export default queryType({
   definition(t) {
-    t.field('current_user', {
+    t.field('currentUser', {
       type: 'User',
       resolve: async (_root, _args, ctx) => {
-        const userId = ctx.userId
-        if (!userId) {
+        const firebaseId = ctx.firebaseId
+        if (!firebaseId) {
           throw new Error("User not authenticated")
         }
         
         const user = await ctx.prisma.user.findOne({
           where: {
-            firebaseId: userId,
+            firebaseId: firebaseId,
           }
         })
         if (!user) {
@@ -24,7 +23,3 @@ const RootQuery = objectType({
     })
   },
 })
-
-export {
-  RootQuery,
-}

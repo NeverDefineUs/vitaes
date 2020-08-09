@@ -13,16 +13,20 @@
     "migrate": "yarn migrate:prisma && yarn migrate:db-migrate",
     "migrate:prisma": "prisma migrate up --experimental",
     "migrate:db-migrate": "db-migrate up fix-data-types",
+    "test": "jest",
     "dev": "yarn migrate && ts-node-dev --no-notify --respawn --transpile-only src/server"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.9",
     "@types/node": "^14.0.27",
+    "jest": "^26.2.2",
+    "ts-jest": "^26.1.4",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@nexus/schema": "^0.14.0",
+    "@nexus/schema": "^0.15.0",
     "@types/node-fetch": "^2.5.7",
     "apollo-server": "^2.16.1",
     "db-migrate": "^0.11.11",
