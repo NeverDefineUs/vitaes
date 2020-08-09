@@ -21,6 +21,7 @@ export default mutationType({
         })
       }
     })
+  
     t.crud.createOneRecordSet()
     t.crud.createOneRecordAcademic()
     t.crud.createOneRecordAchievement()
