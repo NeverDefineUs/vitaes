@@ -3,7 +3,8 @@ import { decorateType, makeSchema } from '@nexus/schema'
 import { GraphQLDate } from 'graphql-scalars'
 
 import models from './models'
-import { RootQuery } from './query'
+import Query from './query'
+import Mutation from './mutation'
 
 export const GQLDate = decorateType(GraphQLDate, {
   rootTyping: 'DateTime',
@@ -11,8 +12,10 @@ export const GQLDate = decorateType(GraphQLDate, {
 })
 
 export const schema = makeSchema({
-  types: [models, RootQuery],
-  plugins: [nexusSchemaPrisma()],
+  types: [models, Query, Mutation],
+  plugins: [nexusSchemaPrisma({
+    experimentalCRUD: true
+  })],
   outputs: {
     schema: __dirname + '/../../schema.graphql',
     typegen: __dirname + '/../generated/nexus.ts',

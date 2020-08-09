@@ -9,7 +9,7 @@ admin.initializeApp({
 });
 
 export interface Context {
-  userId?: string, 
+  firebaseId?: string, 
   prisma: PrismaClient,
 }
 
@@ -22,7 +22,7 @@ export async function createContext(req: express.Request): Promise<Context> {
 
   const decodedToken = await admin.auth().verifyIdToken(token)
   return {
-    userId: decodedToken.uid,
+    firebaseId: decodedToken.uid,
     prisma
   }
 }

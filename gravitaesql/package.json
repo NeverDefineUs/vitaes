@@ -22,7 +22,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@nexus/schema": "^0.14.0",
+    "@nexus/schema": "^0.15.0",
     "@types/node-fetch": "^2.5.7",
     "apollo-server": "^2.16.1",
     "db-migrate": "^0.11.11",
