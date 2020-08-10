@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server'
 
 import { schema } from './schema'
 import { createContext } from './context'
-import { initNtpUlidSync } from './ntpUlid'
+import { initNtpUlidSync } from './utils/ntpUlid'
 
 initNtpUlidSync()
 

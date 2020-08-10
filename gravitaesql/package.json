@@ -15,7 +15,7 @@
     "migrate:db-migrate": "db-migrate up fix-data-types",
     "test": "jest",
     "dev": "yarn migrate && ts-node-dev --no-notify --respawn --transpile-only src/server",
-    "firebase": "ts-node --transpile-only src/firebaseMigrationScript"
+    "firebase": "ts-node --transpile-only src/scripts/firebaseMigrationScript"
   },
   "devDependencies": {
     "@types/jest": "^26.0.9",
