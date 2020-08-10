@@ -28,6 +28,9 @@ model RecordSet {
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
+  personalInfo        PersonalInfo?       @relation(fields: [personalInfoVid], references: [vid])
+  personalInfoVid     String?
+
   academicRecords     RecordAcademic[]
   achievementRecords  RecordAchievement[]
   educationRecords    RecordEducation[]
@@ -40,6 +43,18 @@ model RecordSet {
   ownerVid            String
 }
 
+model PersonalInfo {
+  vid       String    @id
+  name      String?
+  email     String?
+  homepage  String?
+  phone     String?
+  address   String?
+  linkedin  String?
+  github    String?
+  birthday  DateTime?
+}
+
 model RecordAcademic {
   vid             String        @id
   title           String
@@ -47,6 +62,7 @@ model RecordAcademic {
   endDate         DateTime?
   description     String?
   articleLink     String?
+  hidden          Boolean       @default(false)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -66,6 +82,7 @@ model RecordAchievement {
   description     String?
   position        String?
   certificateLink String?
+  hidden          Boolean       @default(false)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -84,6 +101,7 @@ model RecordEducation {
   endDate         DateTime?
   description     String?
   teacher         String?
+  hidden          Boolean       @default(false)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -99,6 +117,7 @@ model RecordLanguage {
   vid         String      @id
   name        String
   level       String
+  hidden      Boolean     @default(false)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -113,6 +132,7 @@ model RecordProject {
   description         String?
   programmingLanguage String?
   repositoryLink      String?
+  hidden              Boolean     @default(false)
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
 
@@ -127,6 +147,7 @@ model RecordSkill {
   name        String
   type        String
   level       String?
+  hidden      Boolean     @default(false)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -139,6 +160,7 @@ model RecordWork {
   startDate       DateTime
   endDate         DateTime?
   description     String?
+  hidden          Boolean       @default(false)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -153,16 +175,16 @@ model RecordWork {
 model Institution {
   vid         String    @id
   name        String
-  abbreviaton String
+  abbreviaton String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model Location {
   vid               String    @id
-  country           String
-  governingDistrict String
-  cityTown          String
+  country           String?
+  governingDistrict String?
+  cityTown          String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
