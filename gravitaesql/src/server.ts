@@ -1,8 +1,8 @@
 import { ApolloServer } from 'apollo-server'
+import { initNtpUlidSync } from 'ntp-ulid'
 
 import { schema } from './schema'
 import { createContext } from './context'
-import { initNtpUlidSync } from './utils/ntpUlid'
 
 initNtpUlidSync()
 

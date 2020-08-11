@@ -4940,6 +4940,14 @@ npm-run-path@^4.0.0:
   dependencies:
     path-key "^3.0.0"
 
+ntp-ulid@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ntp-ulid/-/ntp-ulid-1.0.0.tgz#59880c57abb5a6b1c8586078538072e98f38b442"
+  integrity sha512-k2pi1W7El0grmh23sTqirvloc0QyIdKp3lYs4xJj7wrNtYX++AAuqmf9I8pbON5S5lkDqSUEIuI7l0O8f6Wq0g==
+  dependencies:
+    ntpclient "^1.0.2"
+    ulid "^2.3.0"
+
 ntpclient@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ntpclient/-/ntpclient-1.0.2.tgz#69cf5deba1390128fbb15146d310dc3bc12daffe"

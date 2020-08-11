@@ -37,6 +37,7 @@
     "graphql": "^15.3.0",
     "graphql-scalars": "^1.2.6",
     "nexus-plugin-prisma": "^0.16.1",
+    "ntp-ulid": "^1.0.0",
     "ntpclient": "^1.0.2",
     "ulid": "^2.3.0"
   }

@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import moment from 'moment'
+import { ulid } from 'ntp-ulid'
 
 import admin from '../firebase'
-import { ulid } from '../utils/ntpUlid'
 import { exit } from 'process'
 
 const prisma = new PrismaClient()
