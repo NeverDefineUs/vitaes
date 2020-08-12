@@ -1,12 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import express from 'express'
-import * as admin from 'firebase-admin'
+import admin from './firebase'
 
 const prisma = new PrismaClient()
-
-admin.initializeApp({
-  credential: admin.credential.cert(require("../service-account-file.json")),
-});
 
 export interface Context {
   firebaseId?: string, 

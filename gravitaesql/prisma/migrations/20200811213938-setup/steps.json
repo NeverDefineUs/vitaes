@@ -107,6 +107,13 @@
     {
       "tag": "CreateField",
       "model": "User",
+      "field": "sectionOrder",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
       "field": "createdAt",
       "type": "DateTime",
       "arity": "Required"
@@ -157,8 +164,15 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "recordSets",
-      "type": "RecordSet",
+      "field": "records",
+      "type": "Record",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "cvs",
+      "type": "CV",
       "arity": "List"
     },
     {
@@ -184,11 +198,11 @@
     },
     {
       "tag": "CreateModel",
-      "model": "RecordSet"
+      "model": "CV"
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "vid",
       "type": "String",
       "arity": "Required"
@@ -198,7 +212,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "vid"
         },
         "directive": "id"
@@ -206,53 +220,21 @@
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "mainSet",
-      "type": "Boolean",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordSet",
-          "field": "mainSet"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "RecordSet",
-          "field": "mainSet"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "false"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "title",
       "type": "String",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "sectionOrder",
       "type": "String",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "createdAt",
       "type": "DateTime",
       "arity": "Required"
@@ -262,7 +244,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "createdAt"
         },
         "directive": "default"
@@ -274,7 +256,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "createdAt"
         },
         "directive": "default"
@@ -284,7 +266,7 @@
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "updatedAt",
       "type": "DateTime",
       "arity": "Required"
@@ -294,7 +276,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "updatedAt"
         },
         "directive": "updatedAt"
@@ -302,56 +284,14 @@
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "academicRecords",
-      "type": "RecordAcademic",
+      "model": "CV",
+      "field": "records",
+      "type": "Record",
       "arity": "List"
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "achievementRecords",
-      "type": "RecordAchievement",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "educationRecords",
-      "type": "RecordEducation",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "languageRecords",
-      "type": "RecordLanguage",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "projectRecords",
-      "type": "RecordProject",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "skillRecords",
-      "type": "RecordSkill",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
-      "field": "workRecords",
-      "type": "RecordWork",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "owner",
       "type": "User",
       "arity": "Required"
@@ -361,7 +301,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "owner"
         },
         "directive": "relation"
@@ -373,7 +313,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "owner"
         },
         "directive": "relation"
@@ -387,7 +327,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "RecordSet",
+          "model": "CV",
           "field": "owner"
         },
         "directive": "relation"
@@ -397,18 +337,18 @@
     },
     {
       "tag": "CreateField",
-      "model": "RecordSet",
+      "model": "CV",
       "field": "ownerVid",
       "type": "String",
       "arity": "Required"
     },
     {
       "tag": "CreateModel",
-      "model": "RecordAcademic"
+      "model": "Record"
     },
     {
       "tag": "CreateField",
-      "model": "RecordAcademic",
+      "model": "Record",
       "field": "vid",
       "type": "String",
       "arity": "Required"
@@ -418,11 +358,157 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordAcademic",
+          "model": "Record",
           "field": "vid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Record",
+      "field": "hidden",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "hidden"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "hidden"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Record",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Record",
+      "field": "updatedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "updatedAt"
+        },
+        "directive": "updatedAt"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Record",
+      "field": "cvs",
+      "type": "CV",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Record",
+      "field": "owner",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "owner"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "owner"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[ownerVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Record",
+          "field": "owner"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Record",
+      "field": "ownerVid",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordAcademic"
     },
     {
       "tag": "CreateField",
@@ -458,56 +544,6 @@
       "field": "articleLink",
       "type": "String",
       "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordAcademic",
-      "field": "createdAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordAcademic",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "RecordAcademic",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "now()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordAcademic",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordAcademic",
-          "field": "updatedAt"
-        },
-        "directive": "updatedAt"
-      }
     },
     {
       "tag": "CreateField",
@@ -618,18 +654,53 @@
     {
       "tag": "CreateField",
       "model": "RecordAcademic",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
+      "field": "record",
+      "type": "Record",
+      "arity": "Required"
     },
     {
-      "tag": "CreateModel",
-      "model": "RecordAchievement"
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordAcademic",
+          "field": "record"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordAcademic",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[recordVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordAcademic",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
     },
     {
       "tag": "CreateField",
-      "model": "RecordAchievement",
-      "field": "vid",
+      "model": "RecordAcademic",
+      "field": "recordVid",
       "type": "String",
       "arity": "Required"
     },
@@ -638,11 +709,15 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordAchievement",
-          "field": "vid"
+          "model": "RecordAcademic",
+          "field": "recordVid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordAchievement"
     },
     {
       "tag": "CreateField",
@@ -689,56 +764,6 @@
     {
       "tag": "CreateField",
       "model": "RecordAchievement",
-      "field": "createdAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordAchievement",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "RecordAchievement",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "now()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordAchievement",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordAchievement",
-          "field": "updatedAt"
-        },
-        "directive": "updatedAt"
-      }
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordAchievement",
       "field": "location",
       "type": "Location",
       "arity": "Optional"
@@ -845,18 +870,53 @@
     {
       "tag": "CreateField",
       "model": "RecordAchievement",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
+      "field": "record",
+      "type": "Record",
+      "arity": "Required"
     },
     {
-      "tag": "CreateModel",
-      "model": "RecordEducation"
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordAchievement",
+          "field": "record"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordAchievement",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[recordVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordAchievement",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
     },
     {
       "tag": "CreateField",
-      "model": "RecordEducation",
-      "field": "vid",
+      "model": "RecordAchievement",
+      "field": "recordVid",
       "type": "String",
       "arity": "Required"
     },
@@ -865,11 +925,15 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordEducation",
-          "field": "vid"
+          "model": "RecordAchievement",
+          "field": "recordVid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordEducation"
     },
     {
       "tag": "CreateField",
@@ -909,56 +973,6 @@
     {
       "tag": "CreateField",
       "model": "RecordEducation",
-      "field": "createdAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordEducation",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "RecordEducation",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "now()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordEducation",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordEducation",
-          "field": "updatedAt"
-        },
-        "directive": "updatedAt"
-      }
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordEducation",
       "field": "location",
       "type": "Location",
       "arity": "Optional"
@@ -1065,18 +1079,53 @@
     {
       "tag": "CreateField",
       "model": "RecordEducation",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
+      "field": "record",
+      "type": "Record",
+      "arity": "Required"
     },
     {
-      "tag": "CreateModel",
-      "model": "RecordLanguage"
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordEducation",
+          "field": "record"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordEducation",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[recordVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordEducation",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
     },
     {
       "tag": "CreateField",
-      "model": "RecordLanguage",
-      "field": "vid",
+      "model": "RecordEducation",
+      "field": "recordVid",
       "type": "String",
       "arity": "Required"
     },
@@ -1085,11 +1134,15 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordLanguage",
-          "field": "vid"
+          "model": "RecordEducation",
+          "field": "recordVid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordLanguage"
     },
     {
       "tag": "CreateField",
@@ -1108,8 +1161,8 @@
     {
       "tag": "CreateField",
       "model": "RecordLanguage",
-      "field": "createdAt",
-      "type": "DateTime",
+      "field": "record",
+      "type": "Record",
       "arity": "Required"
     },
     {
@@ -1118,9 +1171,9 @@
         "path": {
           "tag": "Field",
           "model": "RecordLanguage",
-          "field": "createdAt"
+          "field": "record"
         },
-        "directive": "default"
+        "directive": "relation"
       }
     },
     {
@@ -1130,46 +1183,31 @@
         "path": {
           "tag": "Field",
           "model": "RecordLanguage",
-          "field": "createdAt"
+          "field": "record"
         },
-        "directive": "default"
+        "directive": "relation"
       },
-      "argument": "",
-      "value": "now()"
+      "argument": "fields",
+      "value": "[recordVid]"
     },
     {
-      "tag": "CreateField",
-      "model": "RecordLanguage",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
+      "tag": "CreateArgument",
       "location": {
+        "tag": "Directive",
         "path": {
           "tag": "Field",
           "model": "RecordLanguage",
-          "field": "updatedAt"
+          "field": "record"
         },
-        "directive": "updatedAt"
-      }
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
     },
     {
       "tag": "CreateField",
       "model": "RecordLanguage",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateModel",
-      "model": "RecordProject"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordProject",
-      "field": "vid",
+      "field": "recordVid",
       "type": "String",
       "arity": "Required"
     },
@@ -1178,11 +1216,139 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordProject",
-          "field": "vid"
+          "model": "RecordLanguage",
+          "field": "recordVid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordPersonal"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "name",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "email",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "homepage",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "phone",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "address",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "linkedin",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "github",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "birthday",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "record",
+      "type": "Record",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordPersonal",
+          "field": "record"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordPersonal",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[recordVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordPersonal",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordPersonal",
+      "field": "recordVid",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordPersonal",
+          "field": "recordVid"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordProject"
     },
     {
       "tag": "CreateField",
@@ -1229,56 +1395,6 @@
     {
       "tag": "CreateField",
       "model": "RecordProject",
-      "field": "createdAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordProject",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "RecordProject",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "now()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordProject",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordProject",
-          "field": "updatedAt"
-        },
-        "directive": "updatedAt"
-      }
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordProject",
       "field": "location",
       "type": "Location",
       "arity": "Optional"
@@ -1332,18 +1448,53 @@
     {
       "tag": "CreateField",
       "model": "RecordProject",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
+      "field": "record",
+      "type": "Record",
+      "arity": "Required"
     },
     {
-      "tag": "CreateModel",
-      "model": "RecordSkill"
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordProject",
+          "field": "record"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordProject",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[recordVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordProject",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
     },
     {
       "tag": "CreateField",
-      "model": "RecordSkill",
-      "field": "vid",
+      "model": "RecordProject",
+      "field": "recordVid",
       "type": "String",
       "arity": "Required"
     },
@@ -1352,11 +1503,15 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordSkill",
-          "field": "vid"
+          "model": "RecordProject",
+          "field": "recordVid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordSkill"
     },
     {
       "tag": "CreateField",
@@ -1382,8 +1537,8 @@
     {
       "tag": "CreateField",
       "model": "RecordSkill",
-      "field": "createdAt",
-      "type": "DateTime",
+      "field": "record",
+      "type": "Record",
       "arity": "Required"
     },
     {
@@ -1392,9 +1547,9 @@
         "path": {
           "tag": "Field",
           "model": "RecordSkill",
-          "field": "createdAt"
+          "field": "record"
         },
-        "directive": "default"
+        "directive": "relation"
       }
     },
     {
@@ -1404,46 +1559,31 @@
         "path": {
           "tag": "Field",
           "model": "RecordSkill",
-          "field": "createdAt"
+          "field": "record"
         },
-        "directive": "default"
+        "directive": "relation"
       },
-      "argument": "",
-      "value": "now()"
+      "argument": "fields",
+      "value": "[recordVid]"
     },
     {
-      "tag": "CreateField",
-      "model": "RecordSkill",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
+      "tag": "CreateArgument",
       "location": {
+        "tag": "Directive",
         "path": {
           "tag": "Field",
           "model": "RecordSkill",
-          "field": "updatedAt"
+          "field": "record"
         },
-        "directive": "updatedAt"
-      }
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
     },
     {
       "tag": "CreateField",
       "model": "RecordSkill",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateModel",
-      "model": "RecordWork"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordWork",
-      "field": "vid",
+      "field": "recordVid",
       "type": "String",
       "arity": "Required"
     },
@@ -1452,11 +1592,15 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecordWork",
-          "field": "vid"
+          "model": "RecordSkill",
+          "field": "recordVid"
         },
         "directive": "id"
       }
+    },
+    {
+      "tag": "CreateModel",
+      "model": "RecordWork"
     },
     {
       "tag": "CreateField",
@@ -1485,56 +1629,6 @@
       "field": "description",
       "type": "String",
       "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordWork",
-      "field": "createdAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordWork",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "RecordWork",
-          "field": "createdAt"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "now()"
-    },
-    {
-      "tag": "CreateField",
-      "model": "RecordWork",
-      "field": "updatedAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "RecordWork",
-          "field": "updatedAt"
-        },
-        "directive": "updatedAt"
-      }
     },
     {
       "tag": "CreateField",
@@ -1645,9 +1739,66 @@
     {
       "tag": "CreateField",
       "model": "RecordWork",
-      "field": "recordSets",
-      "type": "RecordSet",
-      "arity": "List"
+      "field": "record",
+      "type": "Record",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordWork",
+          "field": "record"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordWork",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[recordVid]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "RecordWork",
+          "field": "record"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[vid]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "RecordWork",
+      "field": "recordVid",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "RecordWork",
+          "field": "recordVid"
+        },
+        "directive": "id"
+      }
     },
     {
       "tag": "CreateModel",
@@ -1683,7 +1834,7 @@
       "model": "Institution",
       "field": "abbreviaton",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
@@ -1762,21 +1913,21 @@
       "model": "Location",
       "field": "country",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "Location",
       "field": "governingDistrict",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "Location",
       "field": "cityTown",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",

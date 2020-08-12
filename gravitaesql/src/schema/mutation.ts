@@ -22,11 +22,12 @@ export default mutationType({
       }
     })
   
-    t.crud.createOneRecordSet()
+    t.crud.createOneCV()
     t.crud.createOneRecordAcademic()
     t.crud.createOneRecordAchievement()
     t.crud.createOneRecordEducation()
     t.crud.createOneRecordLanguage()
+    t.crud.createOneRecordPersonal()
     t.crud.createOneRecordProject()
     t.crud.createOneRecordSkill()
     t.crud.createOneRecordWork()
@@ -34,11 +35,12 @@ export default mutationType({
     t.crud.createOneAlert()
     t.crud.createOneGatekeeper()
 
-    t.crud.updateOneRecordSet()
+    t.crud.updateOneCV()
     t.crud.updateOneRecordAcademic()
     t.crud.updateOneRecordAchievement()
     t.crud.updateOneRecordEducation()
     t.crud.updateOneRecordLanguage()
+    t.crud.updateOneRecordPersonal()
     t.crud.updateOneRecordProject()
     t.crud.updateOneRecordSkill()
     t.crud.updateOneRecordWork()

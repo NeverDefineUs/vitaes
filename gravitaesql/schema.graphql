@@ -11,8 +11,10 @@ type Alert {
 
 input AlertCreateInput {
   author: UserCreateOneWithoutAlertsInput!
+  createdAt: DateTime
   message: String!
   type: AlertType!
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -22,8 +24,10 @@ input AlertCreateManyWithoutAuthorInput {
 }
 
 input AlertCreateWithoutAuthorInput {
+  createdAt: DateTime
   message: String!
   type: AlertType!
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -36,10 +40,12 @@ input AlertFilter {
 input AlertScalarWhereInput {
   AND: [AlertScalarWhereInput!]
   authorVid: StringFilter
+  createdAt: DateTimeFilter
   message: StringFilter
   NOT: [AlertScalarWhereInput!]
   OR: [AlertScalarWhereInput!]
   type: AlertType
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
@@ -51,14 +57,18 @@ enum AlertType {
 
 input AlertUpdateInput {
   author: UserUpdateOneRequiredWithoutAlertsInput
+  createdAt: DateTime
   message: String
   type: AlertType
+  updatedAt: DateTime
   vid: String
 }
 
 input AlertUpdateManyDataInput {
+  createdAt: DateTime
   message: String
   type: AlertType
+  updatedAt: DateTime
   vid: String
 }
 
@@ -80,8 +90,10 @@ input AlertUpdateManyWithWhereNestedInput {
 }
 
 input AlertUpdateWithoutAuthorDataInput {
+  createdAt: DateTime
   message: String
   type: AlertType
+  updatedAt: DateTime
   vid: String
 }
 
@@ -100,10 +112,12 @@ input AlertWhereInput {
   AND: [AlertWhereInput!]
   author: UserWhereInput
   authorVid: StringFilter
+  createdAt: DateTimeFilter
   message: StringFilter
   NOT: [AlertWhereInput!]
   OR: [AlertWhereInput!]
   type: AlertType
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
@@ -127,10 +141,12 @@ type BugReport {
 
 input BugReportCreateInput {
   author: UserCreateOneWithoutBugReportsInput
+  createdAt: DateTime
   data: String
   description: String
   email: String
   title: String
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -140,10 +156,12 @@ input BugReportCreateManyWithoutAuthorInput {
 }
 
 input BugReportCreateWithoutAuthorInput {
+  createdAt: DateTime
   data: String
   description: String
   email: String
   title: String
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -156,20 +174,24 @@ input BugReportFilter {
 input BugReportScalarWhereInput {
   AND: [BugReportScalarWhereInput!]
   authorVid: NullableStringFilter
+  createdAt: DateTimeFilter
   data: NullableStringFilter
   description: NullableStringFilter
   email: NullableStringFilter
   NOT: [BugReportScalarWhereInput!]
   OR: [BugReportScalarWhereInput!]
   title: NullableStringFilter
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
 input BugReportUpdateManyDataInput {
+  createdAt: DateTime
   data: String
   description: String
   email: String
   title: String
+  updatedAt: DateTime
   vid: String
 }
 
@@ -191,10 +213,12 @@ input BugReportUpdateManyWithWhereNestedInput {
 }
 
 input BugReportUpdateWithoutAuthorDataInput {
+  createdAt: DateTime
   data: String
   description: String
   email: String
   title: String
+  updatedAt: DateTime
   vid: String
 }
 
@@ -213,16 +237,188 @@ input BugReportWhereInput {
   AND: [BugReportWhereInput!]
   author: UserWhereInput
   authorVid: NullableStringFilter
+  createdAt: DateTimeFilter
   data: NullableStringFilter
   description: NullableStringFilter
   email: NullableStringFilter
   NOT: [BugReportWhereInput!]
   OR: [BugReportWhereInput!]
   title: NullableStringFilter
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
 input BugReportWhereUniqueInput {
+  vid: String
+}
+
+type CV {
+  owner: User!
+  records(after: RecordWhereUniqueInput, before: RecordWhereUniqueInput, first: Int, last: Int): [Record!]!
+  sectionOrder: String
+  title: String
+  vid: String!
+}
+
+input CVCreateInput {
+  createdAt: DateTime
+  owner: UserCreateOneWithoutCvsInput!
+  records: RecordCreateManyWithoutCvsInput
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String!
+}
+
+input CVCreateManyWithoutOwnerInput {
+  connect: [CVWhereUniqueInput!]
+  create: [CVCreateWithoutOwnerInput!]
+}
+
+input CVCreateManyWithoutRecordsInput {
+  connect: [CVWhereUniqueInput!]
+  create: [CVCreateWithoutRecordsInput!]
+}
+
+input CVCreateWithoutOwnerInput {
+  createdAt: DateTime
+  records: RecordCreateManyWithoutCvsInput
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String!
+}
+
+input CVCreateWithoutRecordsInput {
+  createdAt: DateTime
+  owner: UserCreateOneWithoutCvsInput!
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String!
+}
+
+input CVFilter {
+  every: CVWhereInput
+  none: CVWhereInput
+  some: CVWhereInput
+}
+
+input CVScalarWhereInput {
+  AND: [CVScalarWhereInput!]
+  createdAt: DateTimeFilter
+  NOT: [CVScalarWhereInput!]
+  OR: [CVScalarWhereInput!]
+  ownerVid: StringFilter
+  records: RecordFilter
+  sectionOrder: NullableStringFilter
+  title: NullableStringFilter
+  updatedAt: DateTimeFilter
+  vid: StringFilter
+}
+
+input CVUpdateInput {
+  createdAt: DateTime
+  owner: UserUpdateOneRequiredWithoutCvsInput
+  records: RecordUpdateManyWithoutCvsInput
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String
+}
+
+input CVUpdateManyDataInput {
+  createdAt: DateTime
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String
+}
+
+input CVUpdateManyWithoutOwnerInput {
+  connect: [CVWhereUniqueInput!]
+  create: [CVCreateWithoutOwnerInput!]
+  delete: [CVWhereUniqueInput!]
+  deleteMany: [CVScalarWhereInput!]
+  disconnect: [CVWhereUniqueInput!]
+  set: [CVWhereUniqueInput!]
+  update: [CVUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [CVUpdateManyWithWhereNestedInput!]
+  upsert: [CVUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input CVUpdateManyWithoutRecordsInput {
+  connect: [CVWhereUniqueInput!]
+  create: [CVCreateWithoutRecordsInput!]
+  delete: [CVWhereUniqueInput!]
+  deleteMany: [CVScalarWhereInput!]
+  disconnect: [CVWhereUniqueInput!]
+  set: [CVWhereUniqueInput!]
+  update: [CVUpdateWithWhereUniqueWithoutRecordsInput!]
+  updateMany: [CVUpdateManyWithWhereNestedInput!]
+  upsert: [CVUpsertWithWhereUniqueWithoutRecordsInput!]
+}
+
+input CVUpdateManyWithWhereNestedInput {
+  data: CVUpdateManyDataInput!
+  where: CVScalarWhereInput!
+}
+
+input CVUpdateWithoutOwnerDataInput {
+  createdAt: DateTime
+  records: RecordUpdateManyWithoutCvsInput
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String
+}
+
+input CVUpdateWithoutRecordsDataInput {
+  createdAt: DateTime
+  owner: UserUpdateOneRequiredWithoutCvsInput
+  sectionOrder: String
+  title: String
+  updatedAt: DateTime
+  vid: String
+}
+
+input CVUpdateWithWhereUniqueWithoutOwnerInput {
+  data: CVUpdateWithoutOwnerDataInput!
+  where: CVWhereUniqueInput!
+}
+
+input CVUpdateWithWhereUniqueWithoutRecordsInput {
+  data: CVUpdateWithoutRecordsDataInput!
+  where: CVWhereUniqueInput!
+}
+
+input CVUpsertWithWhereUniqueWithoutOwnerInput {
+  create: CVCreateWithoutOwnerInput!
+  update: CVUpdateWithoutOwnerDataInput!
+  where: CVWhereUniqueInput!
+}
+
+input CVUpsertWithWhereUniqueWithoutRecordsInput {
+  create: CVCreateWithoutRecordsInput!
+  update: CVUpdateWithoutRecordsDataInput!
+  where: CVWhereUniqueInput!
+}
+
+input CVWhereInput {
+  AND: [CVWhereInput!]
+  createdAt: DateTimeFilter
+  NOT: [CVWhereInput!]
+  OR: [CVWhereInput!]
+  owner: UserWhereInput
+  ownerVid: StringFilter
+  records: RecordFilter
+  sectionOrder: NullableStringFilter
+  title: NullableStringFilter
+  updatedAt: DateTimeFilter
+  vid: StringFilter
+}
+
+input CVWhereUniqueInput {
   vid: String
 }
 
@@ -247,8 +443,10 @@ type Gatekeeper {
 
 input GatekeeperCreateInput {
   allowedUsers: UserCreateManyWithoutGatekeepersInput
+  createdAt: DateTime
   description: String
   name: String!
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -258,8 +456,10 @@ input GatekeeperCreateManyWithoutAllowedUsersInput {
 }
 
 input GatekeeperCreateWithoutAllowedUsersInput {
+  createdAt: DateTime
   description: String
   name: String!
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -272,23 +472,29 @@ input GatekeeperFilter {
 input GatekeeperScalarWhereInput {
   allowedUsers: UserFilter
   AND: [GatekeeperScalarWhereInput!]
+  createdAt: DateTimeFilter
   description: NullableStringFilter
   name: StringFilter
   NOT: [GatekeeperScalarWhereInput!]
   OR: [GatekeeperScalarWhereInput!]
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
 input GatekeeperUpdateInput {
   allowedUsers: UserUpdateManyWithoutGatekeepersInput
+  createdAt: DateTime
   description: String
   name: String
+  updatedAt: DateTime
   vid: String
 }
 
 input GatekeeperUpdateManyDataInput {
+  createdAt: DateTime
   description: String
   name: String
+  updatedAt: DateTime
   vid: String
 }
 
@@ -310,8 +516,10 @@ input GatekeeperUpdateManyWithWhereNestedInput {
 }
 
 input GatekeeperUpdateWithoutAllowedUsersDataInput {
+  createdAt: DateTime
   description: String
   name: String
+  updatedAt: DateTime
   vid: String
 }
 
@@ -329,10 +537,12 @@ input GatekeeperUpsertWithWhereUniqueWithoutAllowedUsersInput {
 input GatekeeperWhereInput {
   allowedUsers: UserFilter
   AND: [GatekeeperWhereInput!]
+  createdAt: DateTimeFilter
   description: NullableStringFilter
   name: StringFilter
   NOT: [GatekeeperWhereInput!]
   OR: [GatekeeperWhereInput!]
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
@@ -342,7 +552,7 @@ input GatekeeperWhereUniqueInput {
 }
 
 type Institution {
-  abbreviaton: String!
+  abbreviaton: String
   name: String!
   vid: String!
 }
@@ -368,38 +578,46 @@ input InstitutionCreateOneWithoutRecordWorkInput {
 }
 
 input InstitutionCreateWithoutRecordAcademicInput {
-  abbreviaton: String!
+  abbreviaton: String
+  createdAt: DateTime
   name: String!
   RecordAchievement: RecordAchievementCreateManyWithoutInstitutionInput
   RecordEducation: RecordEducationCreateManyWithoutInstitutionInput
   RecordWork: RecordWorkCreateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input InstitutionCreateWithoutRecordAchievementInput {
-  abbreviaton: String!
+  abbreviaton: String
+  createdAt: DateTime
   name: String!
   RecordAcademic: RecordAcademicCreateManyWithoutInstitutionInput
   RecordEducation: RecordEducationCreateManyWithoutInstitutionInput
   RecordWork: RecordWorkCreateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input InstitutionCreateWithoutRecordEducationInput {
-  abbreviaton: String!
+  abbreviaton: String
+  createdAt: DateTime
   name: String!
   RecordAcademic: RecordAcademicCreateManyWithoutInstitutionInput
   RecordAchievement: RecordAchievementCreateManyWithoutInstitutionInput
   RecordWork: RecordWorkCreateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input InstitutionCreateWithoutRecordWorkInput {
-  abbreviaton: String!
+  abbreviaton: String
+  createdAt: DateTime
   name: String!
   RecordAcademic: RecordAcademicCreateManyWithoutInstitutionInput
   RecordAchievement: RecordAchievementCreateManyWithoutInstitutionInput
   RecordEducation: RecordEducationCreateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -441,37 +659,45 @@ input InstitutionUpdateOneWithoutRecordWorkInput {
 
 input InstitutionUpdateWithoutRecordAcademicDataInput {
   abbreviaton: String
+  createdAt: DateTime
   name: String
   RecordAchievement: RecordAchievementUpdateManyWithoutInstitutionInput
   RecordEducation: RecordEducationUpdateManyWithoutInstitutionInput
   RecordWork: RecordWorkUpdateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String
 }
 
 input InstitutionUpdateWithoutRecordAchievementDataInput {
   abbreviaton: String
+  createdAt: DateTime
   name: String
   RecordAcademic: RecordAcademicUpdateManyWithoutInstitutionInput
   RecordEducation: RecordEducationUpdateManyWithoutInstitutionInput
   RecordWork: RecordWorkUpdateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String
 }
 
 input InstitutionUpdateWithoutRecordEducationDataInput {
   abbreviaton: String
+  createdAt: DateTime
   name: String
   RecordAcademic: RecordAcademicUpdateManyWithoutInstitutionInput
   RecordAchievement: RecordAchievementUpdateManyWithoutInstitutionInput
   RecordWork: RecordWorkUpdateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String
 }
 
 input InstitutionUpdateWithoutRecordWorkDataInput {
   abbreviaton: String
+  createdAt: DateTime
   name: String
   RecordAcademic: RecordAcademicUpdateManyWithoutInstitutionInput
   RecordAchievement: RecordAchievementUpdateManyWithoutInstitutionInput
   RecordEducation: RecordEducationUpdateManyWithoutInstitutionInput
+  updatedAt: DateTime
   vid: String
 }
 
@@ -496,8 +722,9 @@ input InstitutionUpsertWithoutRecordWorkInput {
 }
 
 input InstitutionWhereInput {
-  abbreviaton: StringFilter
+  abbreviaton: NullableStringFilter
   AND: [InstitutionWhereInput!]
+  createdAt: DateTimeFilter
   name: StringFilter
   NOT: [InstitutionWhereInput!]
   OR: [InstitutionWhereInput!]
@@ -505,6 +732,7 @@ input InstitutionWhereInput {
   RecordAchievement: RecordAchievementFilter
   RecordEducation: RecordEducationFilter
   RecordWork: RecordWorkFilter
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
@@ -513,9 +741,9 @@ input InstitutionWhereUniqueInput {
 }
 
 type Location {
-  cityTown: String!
-  country: String!
-  governingDistrict: String!
+  cityTown: String
+  country: String
+  governingDistrict: String
   vid: String!
 }
 
@@ -545,57 +773,67 @@ input LocationCreateOneWithoutRecordWorkInput {
 }
 
 input LocationCreateWithoutRecordAcademicInput {
-  cityTown: String!
-  country: String!
-  governingDistrict: String!
+  cityTown: String
+  country: String
+  createdAt: DateTime
+  governingDistrict: String
   RecordAchievement: RecordAchievementCreateManyWithoutLocationInput
   RecordEducation: RecordEducationCreateManyWithoutLocationInput
   RecordProject: RecordProjectCreateManyWithoutLocationInput
   RecordWork: RecordWorkCreateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input LocationCreateWithoutRecordAchievementInput {
-  cityTown: String!
-  country: String!
-  governingDistrict: String!
+  cityTown: String
+  country: String
+  createdAt: DateTime
+  governingDistrict: String
   RecordAcademic: RecordAcademicCreateManyWithoutLocationInput
   RecordEducation: RecordEducationCreateManyWithoutLocationInput
   RecordProject: RecordProjectCreateManyWithoutLocationInput
   RecordWork: RecordWorkCreateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input LocationCreateWithoutRecordEducationInput {
-  cityTown: String!
-  country: String!
-  governingDistrict: String!
+  cityTown: String
+  country: String
+  createdAt: DateTime
+  governingDistrict: String
   RecordAcademic: RecordAcademicCreateManyWithoutLocationInput
   RecordAchievement: RecordAchievementCreateManyWithoutLocationInput
   RecordProject: RecordProjectCreateManyWithoutLocationInput
   RecordWork: RecordWorkCreateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input LocationCreateWithoutRecordProjectInput {
-  cityTown: String!
-  country: String!
-  governingDistrict: String!
+  cityTown: String
+  country: String
+  createdAt: DateTime
+  governingDistrict: String
   RecordAcademic: RecordAcademicCreateManyWithoutLocationInput
   RecordAchievement: RecordAchievementCreateManyWithoutLocationInput
   RecordEducation: RecordEducationCreateManyWithoutLocationInput
   RecordWork: RecordWorkCreateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String!
 }
 
 input LocationCreateWithoutRecordWorkInput {
-  cityTown: String!
-  country: String!
-  governingDistrict: String!
+  cityTown: String
+  country: String
+  createdAt: DateTime
+  governingDistrict: String
   RecordAcademic: RecordAcademicCreateManyWithoutLocationInput
   RecordAchievement: RecordAchievementCreateManyWithoutLocationInput
   RecordEducation: RecordEducationCreateManyWithoutLocationInput
   RecordProject: RecordProjectCreateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String!
 }
 
@@ -647,55 +885,65 @@ input LocationUpdateOneWithoutRecordWorkInput {
 input LocationUpdateWithoutRecordAcademicDataInput {
   cityTown: String
   country: String
+  createdAt: DateTime
   governingDistrict: String
   RecordAchievement: RecordAchievementUpdateManyWithoutLocationInput
   RecordEducation: RecordEducationUpdateManyWithoutLocationInput
   RecordProject: RecordProjectUpdateManyWithoutLocationInput
   RecordWork: RecordWorkUpdateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String
 }
 
 input LocationUpdateWithoutRecordAchievementDataInput {
   cityTown: String
   country: String
+  createdAt: DateTime
   governingDistrict: String
   RecordAcademic: RecordAcademicUpdateManyWithoutLocationInput
   RecordEducation: RecordEducationUpdateManyWithoutLocationInput
   RecordProject: RecordProjectUpdateManyWithoutLocationInput
   RecordWork: RecordWorkUpdateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String
 }
 
 input LocationUpdateWithoutRecordEducationDataInput {
   cityTown: String
   country: String
+  createdAt: DateTime
   governingDistrict: String
   RecordAcademic: RecordAcademicUpdateManyWithoutLocationInput
   RecordAchievement: RecordAchievementUpdateManyWithoutLocationInput
   RecordProject: RecordProjectUpdateManyWithoutLocationInput
   RecordWork: RecordWorkUpdateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String
 }
 
 input LocationUpdateWithoutRecordProjectDataInput {
   cityTown: String
   country: String
+  createdAt: DateTime
   governingDistrict: String
   RecordAcademic: RecordAcademicUpdateManyWithoutLocationInput
   RecordAchievement: RecordAchievementUpdateManyWithoutLocationInput
   RecordEducation: RecordEducationUpdateManyWithoutLocationInput
   RecordWork: RecordWorkUpdateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String
 }
 
 input LocationUpdateWithoutRecordWorkDataInput {
   cityTown: String
   country: String
+  createdAt: DateTime
   governingDistrict: String
   RecordAcademic: RecordAcademicUpdateManyWithoutLocationInput
   RecordAchievement: RecordAchievementUpdateManyWithoutLocationInput
   RecordEducation: RecordEducationUpdateManyWithoutLocationInput
   RecordProject: RecordProjectUpdateManyWithoutLocationInput
+  updatedAt: DateTime
   vid: String
 }
 
@@ -726,9 +974,10 @@ input LocationUpsertWithoutRecordWorkInput {
 
 input LocationWhereInput {
   AND: [LocationWhereInput!]
-  cityTown: StringFilter
-  country: StringFilter
-  governingDistrict: StringFilter
+  cityTown: NullableStringFilter
+  country: NullableStringFilter
+  createdAt: DateTimeFilter
+  governingDistrict: NullableStringFilter
   NOT: [LocationWhereInput!]
   OR: [LocationWhereInput!]
   RecordAcademic: RecordAcademicFilter
@@ -736,6 +985,7 @@ input LocationWhereInput {
   RecordEducation: RecordEducationFilter
   RecordProject: RecordProjectFilter
   RecordWork: RecordWorkFilter
+  updatedAt: DateTimeFilter
   vid: StringFilter
 }
 
@@ -746,24 +996,26 @@ input LocationWhereUniqueInput {
 type Mutation {
   createOneAlert(data: AlertCreateInput!): Alert!
   createOneBugReport(data: BugReportCreateInput!): BugReport!
+  createOneCV(data: CVCreateInput!): CV!
   createOneGatekeeper(data: GatekeeperCreateInput!): Gatekeeper!
   createOneRecordAcademic(data: RecordAcademicCreateInput!): RecordAcademic!
   createOneRecordAchievement(data: RecordAchievementCreateInput!): RecordAchievement!
   createOneRecordEducation(data: RecordEducationCreateInput!): RecordEducation!
   createOneRecordLanguage(data: RecordLanguageCreateInput!): RecordLanguage!
+  createOneRecordPersonal(data: RecordPersonalCreateInput!): RecordPersonal!
   createOneRecordProject(data: RecordProjectCreateInput!): RecordProject!
-  createOneRecordSet(data: RecordSetCreateInput!): RecordSet!
   createOneRecordSkill(data: RecordSkillCreateInput!): RecordSkill!
   createOneRecordWork(data: RecordWorkCreateInput!): RecordWork!
   createUser(vid: String!): User!
   updateOneAlert(data: AlertUpdateInput!, where: AlertWhereUniqueInput!): Alert
+  updateOneCV(data: CVUpdateInput!, where: CVWhereUniqueInput!): CV
   updateOneGatekeeper(data: GatekeeperUpdateInput!, where: GatekeeperWhereUniqueInput!): Gatekeeper
   updateOneRecordAcademic(data: RecordAcademicUpdateInput!, where: RecordAcademicWhereUniqueInput!): RecordAcademic
   updateOneRecordAchievement(data: RecordAchievementUpdateInput!, where: RecordAchievementWhereUniqueInput!): RecordAchievement
   updateOneRecordEducation(data: RecordEducationUpdateInput!, where: RecordEducationWhereUniqueInput!): RecordEducation
   updateOneRecordLanguage(data: RecordLanguageUpdateInput!, where: RecordLanguageWhereUniqueInput!): RecordLanguage
+  updateOneRecordPersonal(data: RecordPersonalUpdateInput!, where: RecordPersonalWhereUniqueInput!): RecordPersonal
   updateOneRecordProject(data: RecordProjectUpdateInput!, where: RecordProjectWhereUniqueInput!): RecordProject
-  updateOneRecordSet(data: RecordSetUpdateInput!, where: RecordSetWhereUniqueInput!): RecordSet
   updateOneRecordSkill(data: RecordSkillUpdateInput!, where: RecordSkillWhereUniqueInput!): RecordSkill
   updateOneRecordWork(data: RecordWorkUpdateInput!, where: RecordWorkWhereUniqueInput!): RecordWork
 }
@@ -795,6 +1047,14 @@ input NullableStringFilter {
 
 type Query {
   currentUser: User!
+  toLegacyJSON(userVid: String!): String!
+}
+
+type Record {
+  cvs(after: CVWhereUniqueInput, before: CVWhereUniqueInput, first: Int, last: Int): [CV!]!
+  hidden: Boolean!
+  owner: User!
+  vid: String!
 }
 
 type RecordAcademic {
@@ -803,10 +1063,9 @@ type RecordAcademic {
   endDate: DateTime
   institution: Institution
   location: Location
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  record: Record!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAcademicCreateInput {
@@ -815,10 +1074,9 @@ input RecordAcademicCreateInput {
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordAcademicInput
   location: LocationCreateOneWithoutRecordAcademicInput
-  recordSets: RecordSetCreateManyWithoutAcademicRecordsInput
+  record: RecordCreateOneWithoutRecordAcademicInput!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAcademicCreateManyWithoutInstitutionInput {
@@ -831,9 +1089,9 @@ input RecordAcademicCreateManyWithoutLocationInput {
   create: [RecordAcademicCreateWithoutLocationInput!]
 }
 
-input RecordAcademicCreateManyWithoutRecordSetsInput {
+input RecordAcademicCreateManyWithoutRecordInput {
   connect: [RecordAcademicWhereUniqueInput!]
-  create: [RecordAcademicCreateWithoutRecordSetsInput!]
+  create: [RecordAcademicCreateWithoutRecordInput!]
 }
 
 input RecordAcademicCreateWithoutInstitutionInput {
@@ -841,10 +1099,9 @@ input RecordAcademicCreateWithoutInstitutionInput {
   description: String
   endDate: DateTime
   location: LocationCreateOneWithoutRecordAcademicInput
-  recordSets: RecordSetCreateManyWithoutAcademicRecordsInput
+  record: RecordCreateOneWithoutRecordAcademicInput!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAcademicCreateWithoutLocationInput {
@@ -852,13 +1109,12 @@ input RecordAcademicCreateWithoutLocationInput {
   description: String
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordAcademicInput
-  recordSets: RecordSetCreateManyWithoutAcademicRecordsInput
+  record: RecordCreateOneWithoutRecordAcademicInput!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
-input RecordAcademicCreateWithoutRecordSetsInput {
+input RecordAcademicCreateWithoutRecordInput {
   articleLink: String
   description: String
   endDate: DateTime
@@ -866,7 +1122,6 @@ input RecordAcademicCreateWithoutRecordSetsInput {
   location: LocationCreateOneWithoutRecordAcademicInput
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAcademicFilter {
@@ -884,10 +1139,9 @@ input RecordAcademicScalarWhereInput {
   locationVid: NullableStringFilter
   NOT: [RecordAcademicScalarWhereInput!]
   OR: [RecordAcademicScalarWhereInput!]
-  recordSets: RecordSetFilter
+  recordVid: StringFilter
   startDate: DateTimeFilter
   title: StringFilter
-  vid: StringFilter
 }
 
 input RecordAcademicUpdateInput {
@@ -896,10 +1150,9 @@ input RecordAcademicUpdateInput {
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordAcademicInput
   location: LocationUpdateOneWithoutRecordAcademicInput
-  recordSets: RecordSetUpdateManyWithoutAcademicRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordAcademicInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAcademicUpdateManyDataInput {
@@ -908,7 +1161,6 @@ input RecordAcademicUpdateManyDataInput {
   endDate: DateTime
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAcademicUpdateManyWithoutInstitutionInput {
@@ -935,16 +1187,16 @@ input RecordAcademicUpdateManyWithoutLocationInput {
   upsert: [RecordAcademicUpsertWithWhereUniqueWithoutLocationInput!]
 }
 
-input RecordAcademicUpdateManyWithoutRecordSetsInput {
+input RecordAcademicUpdateManyWithoutRecordInput {
   connect: [RecordAcademicWhereUniqueInput!]
-  create: [RecordAcademicCreateWithoutRecordSetsInput!]
+  create: [RecordAcademicCreateWithoutRecordInput!]
   delete: [RecordAcademicWhereUniqueInput!]
   deleteMany: [RecordAcademicScalarWhereInput!]
   disconnect: [RecordAcademicWhereUniqueInput!]
   set: [RecordAcademicWhereUniqueInput!]
-  update: [RecordAcademicUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordAcademicUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordAcademicUpdateManyWithWhereNestedInput!]
-  upsert: [RecordAcademicUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordAcademicUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordAcademicUpdateManyWithWhereNestedInput {
@@ -957,10 +1209,9 @@ input RecordAcademicUpdateWithoutInstitutionDataInput {
   description: String
   endDate: DateTime
   location: LocationUpdateOneWithoutRecordAcademicInput
-  recordSets: RecordSetUpdateManyWithoutAcademicRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordAcademicInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAcademicUpdateWithoutLocationDataInput {
@@ -968,13 +1219,12 @@ input RecordAcademicUpdateWithoutLocationDataInput {
   description: String
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordAcademicInput
-  recordSets: RecordSetUpdateManyWithoutAcademicRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordAcademicInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
-input RecordAcademicUpdateWithoutRecordSetsDataInput {
+input RecordAcademicUpdateWithoutRecordDataInput {
   articleLink: String
   description: String
   endDate: DateTime
@@ -982,7 +1232,6 @@ input RecordAcademicUpdateWithoutRecordSetsDataInput {
   location: LocationUpdateOneWithoutRecordAcademicInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAcademicUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -995,8 +1244,8 @@ input RecordAcademicUpdateWithWhereUniqueWithoutLocationInput {
   where: RecordAcademicWhereUniqueInput!
 }
 
-input RecordAcademicUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordAcademicUpdateWithoutRecordSetsDataInput!
+input RecordAcademicUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordAcademicUpdateWithoutRecordDataInput!
   where: RecordAcademicWhereUniqueInput!
 }
 
@@ -1012,9 +1261,9 @@ input RecordAcademicUpsertWithWhereUniqueWithoutLocationInput {
   where: RecordAcademicWhereUniqueInput!
 }
 
-input RecordAcademicUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordAcademicCreateWithoutRecordSetsInput!
-  update: RecordAcademicUpdateWithoutRecordSetsDataInput!
+input RecordAcademicUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordAcademicCreateWithoutRecordInput!
+  update: RecordAcademicUpdateWithoutRecordDataInput!
   where: RecordAcademicWhereUniqueInput!
 }
 
@@ -1029,14 +1278,14 @@ input RecordAcademicWhereInput {
   locationVid: NullableStringFilter
   NOT: [RecordAcademicWhereInput!]
   OR: [RecordAcademicWhereInput!]
-  recordSets: RecordSetFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
   startDate: DateTimeFilter
   title: StringFilter
-  vid: StringFilter
 }
 
 input RecordAcademicWhereUniqueInput {
-  vid: String
+  recordVid: String
 }
 
 type RecordAchievement {
@@ -1046,10 +1295,9 @@ type RecordAchievement {
   institution: Institution
   location: Location
   position: String
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  record: Record!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAchievementCreateInput {
@@ -1059,10 +1307,9 @@ input RecordAchievementCreateInput {
   institution: InstitutionCreateOneWithoutRecordAchievementInput
   location: LocationCreateOneWithoutRecordAchievementInput
   position: String
-  recordSets: RecordSetCreateManyWithoutAchievementRecordsInput
+  record: RecordCreateOneWithoutRecordAchievementInput!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAchievementCreateManyWithoutInstitutionInput {
@@ -1075,9 +1322,9 @@ input RecordAchievementCreateManyWithoutLocationInput {
   create: [RecordAchievementCreateWithoutLocationInput!]
 }
 
-input RecordAchievementCreateManyWithoutRecordSetsInput {
+input RecordAchievementCreateManyWithoutRecordInput {
   connect: [RecordAchievementWhereUniqueInput!]
-  create: [RecordAchievementCreateWithoutRecordSetsInput!]
+  create: [RecordAchievementCreateWithoutRecordInput!]
 }
 
 input RecordAchievementCreateWithoutInstitutionInput {
@@ -1086,10 +1333,9 @@ input RecordAchievementCreateWithoutInstitutionInput {
   endDate: DateTime
   location: LocationCreateOneWithoutRecordAchievementInput
   position: String
-  recordSets: RecordSetCreateManyWithoutAchievementRecordsInput
+  record: RecordCreateOneWithoutRecordAchievementInput!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAchievementCreateWithoutLocationInput {
@@ -1098,13 +1344,12 @@ input RecordAchievementCreateWithoutLocationInput {
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordAchievementInput
   position: String
-  recordSets: RecordSetCreateManyWithoutAchievementRecordsInput
+  record: RecordCreateOneWithoutRecordAchievementInput!
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
-input RecordAchievementCreateWithoutRecordSetsInput {
+input RecordAchievementCreateWithoutRecordInput {
   certificateLink: String
   description: String
   endDate: DateTime
@@ -1113,7 +1358,6 @@ input RecordAchievementCreateWithoutRecordSetsInput {
   position: String
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordAchievementFilter {
@@ -1132,10 +1376,9 @@ input RecordAchievementScalarWhereInput {
   NOT: [RecordAchievementScalarWhereInput!]
   OR: [RecordAchievementScalarWhereInput!]
   position: NullableStringFilter
-  recordSets: RecordSetFilter
+  recordVid: StringFilter
   startDate: DateTimeFilter
   title: StringFilter
-  vid: StringFilter
 }
 
 input RecordAchievementUpdateInput {
@@ -1145,10 +1388,9 @@ input RecordAchievementUpdateInput {
   institution: InstitutionUpdateOneWithoutRecordAchievementInput
   location: LocationUpdateOneWithoutRecordAchievementInput
   position: String
-  recordSets: RecordSetUpdateManyWithoutAchievementRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordAchievementInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAchievementUpdateManyDataInput {
@@ -1158,7 +1400,6 @@ input RecordAchievementUpdateManyDataInput {
   position: String
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAchievementUpdateManyWithoutInstitutionInput {
@@ -1185,16 +1426,16 @@ input RecordAchievementUpdateManyWithoutLocationInput {
   upsert: [RecordAchievementUpsertWithWhereUniqueWithoutLocationInput!]
 }
 
-input RecordAchievementUpdateManyWithoutRecordSetsInput {
+input RecordAchievementUpdateManyWithoutRecordInput {
   connect: [RecordAchievementWhereUniqueInput!]
-  create: [RecordAchievementCreateWithoutRecordSetsInput!]
+  create: [RecordAchievementCreateWithoutRecordInput!]
   delete: [RecordAchievementWhereUniqueInput!]
   deleteMany: [RecordAchievementScalarWhereInput!]
   disconnect: [RecordAchievementWhereUniqueInput!]
   set: [RecordAchievementWhereUniqueInput!]
-  update: [RecordAchievementUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordAchievementUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordAchievementUpdateManyWithWhereNestedInput!]
-  upsert: [RecordAchievementUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordAchievementUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordAchievementUpdateManyWithWhereNestedInput {
@@ -1208,10 +1449,9 @@ input RecordAchievementUpdateWithoutInstitutionDataInput {
   endDate: DateTime
   location: LocationUpdateOneWithoutRecordAchievementInput
   position: String
-  recordSets: RecordSetUpdateManyWithoutAchievementRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordAchievementInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAchievementUpdateWithoutLocationDataInput {
@@ -1220,13 +1460,12 @@ input RecordAchievementUpdateWithoutLocationDataInput {
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordAchievementInput
   position: String
-  recordSets: RecordSetUpdateManyWithoutAchievementRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordAchievementInput
   startDate: DateTime
   title: String
-  vid: String
 }
 
-input RecordAchievementUpdateWithoutRecordSetsDataInput {
+input RecordAchievementUpdateWithoutRecordDataInput {
   certificateLink: String
   description: String
   endDate: DateTime
@@ -1235,7 +1474,6 @@ input RecordAchievementUpdateWithoutRecordSetsDataInput {
   position: String
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordAchievementUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -1248,8 +1486,8 @@ input RecordAchievementUpdateWithWhereUniqueWithoutLocationInput {
   where: RecordAchievementWhereUniqueInput!
 }
 
-input RecordAchievementUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordAchievementUpdateWithoutRecordSetsDataInput!
+input RecordAchievementUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordAchievementUpdateWithoutRecordDataInput!
   where: RecordAchievementWhereUniqueInput!
 }
 
@@ -1265,9 +1503,9 @@ input RecordAchievementUpsertWithWhereUniqueWithoutLocationInput {
   where: RecordAchievementWhereUniqueInput!
 }
 
-input RecordAchievementUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordAchievementCreateWithoutRecordSetsInput!
-  update: RecordAchievementUpdateWithoutRecordSetsDataInput!
+input RecordAchievementUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordAchievementCreateWithoutRecordInput!
+  update: RecordAchievementUpdateWithoutRecordDataInput!
   where: RecordAchievementWhereUniqueInput!
 }
 
@@ -1283,14 +1521,224 @@ input RecordAchievementWhereInput {
   NOT: [RecordAchievementWhereInput!]
   OR: [RecordAchievementWhereInput!]
   position: NullableStringFilter
-  recordSets: RecordSetFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
   startDate: DateTimeFilter
   title: StringFilter
-  vid: StringFilter
 }
 
 input RecordAchievementWhereUniqueInput {
-  vid: String
+  recordVid: String
+}
+
+input RecordCreateManyWithoutCvsInput {
+  connect: [RecordWhereUniqueInput!]
+  create: [RecordCreateWithoutCvsInput!]
+}
+
+input RecordCreateManyWithoutOwnerInput {
+  connect: [RecordWhereUniqueInput!]
+  create: [RecordCreateWithoutOwnerInput!]
+}
+
+input RecordCreateOneWithoutRecordAcademicInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordAcademicInput
+}
+
+input RecordCreateOneWithoutRecordAchievementInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordAchievementInput
+}
+
+input RecordCreateOneWithoutRecordEducationInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordEducationInput
+}
+
+input RecordCreateOneWithoutRecordLanguageInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordLanguageInput
+}
+
+input RecordCreateOneWithoutRecordPersonalInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordPersonalInput
+}
+
+input RecordCreateOneWithoutRecordProjectInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordProjectInput
+}
+
+input RecordCreateOneWithoutRecordSkillInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordSkillInput
+}
+
+input RecordCreateOneWithoutRecordWorkInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordWorkInput
+}
+
+input RecordCreateWithoutCvsInput {
+  createdAt: DateTime
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutOwnerInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordAcademicInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordAchievementInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordEducationInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordLanguageInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordPersonalInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordProjectInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordSkillInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordWork: RecordWorkCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
+}
+
+input RecordCreateWithoutRecordWorkInput {
+  createdAt: DateTime
+  cvs: CVCreateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserCreateOneWithoutRecordsInput!
+  RecordAcademic: RecordAcademicCreateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementCreateManyWithoutRecordInput
+  RecordEducation: RecordEducationCreateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageCreateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalCreateManyWithoutRecordInput
+  RecordProject: RecordProjectCreateManyWithoutRecordInput
+  RecordSkill: RecordSkillCreateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String!
 }
 
 type RecordEducation {
@@ -1299,10 +1747,9 @@ type RecordEducation {
   endDate: DateTime
   institution: Institution
   location: Location
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  record: Record!
   startDate: DateTime!
   teacher: String
-  vid: String!
 }
 
 input RecordEducationCreateInput {
@@ -1311,10 +1758,9 @@ input RecordEducationCreateInput {
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordEducationInput
   location: LocationCreateOneWithoutRecordEducationInput
-  recordSets: RecordSetCreateManyWithoutEducationRecordsInput
+  record: RecordCreateOneWithoutRecordEducationInput!
   startDate: DateTime!
   teacher: String
-  vid: String!
 }
 
 input RecordEducationCreateManyWithoutInstitutionInput {
@@ -1327,9 +1773,9 @@ input RecordEducationCreateManyWithoutLocationInput {
   create: [RecordEducationCreateWithoutLocationInput!]
 }
 
-input RecordEducationCreateManyWithoutRecordSetsInput {
+input RecordEducationCreateManyWithoutRecordInput {
   connect: [RecordEducationWhereUniqueInput!]
-  create: [RecordEducationCreateWithoutRecordSetsInput!]
+  create: [RecordEducationCreateWithoutRecordInput!]
 }
 
 input RecordEducationCreateWithoutInstitutionInput {
@@ -1337,10 +1783,9 @@ input RecordEducationCreateWithoutInstitutionInput {
   description: String
   endDate: DateTime
   location: LocationCreateOneWithoutRecordEducationInput
-  recordSets: RecordSetCreateManyWithoutEducationRecordsInput
+  record: RecordCreateOneWithoutRecordEducationInput!
   startDate: DateTime!
   teacher: String
-  vid: String!
 }
 
 input RecordEducationCreateWithoutLocationInput {
@@ -1348,13 +1793,12 @@ input RecordEducationCreateWithoutLocationInput {
   description: String
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordEducationInput
-  recordSets: RecordSetCreateManyWithoutEducationRecordsInput
+  record: RecordCreateOneWithoutRecordEducationInput!
   startDate: DateTime!
   teacher: String
-  vid: String!
 }
 
-input RecordEducationCreateWithoutRecordSetsInput {
+input RecordEducationCreateWithoutRecordInput {
   course: String!
   description: String
   endDate: DateTime
@@ -1362,7 +1806,6 @@ input RecordEducationCreateWithoutRecordSetsInput {
   location: LocationCreateOneWithoutRecordEducationInput
   startDate: DateTime!
   teacher: String
-  vid: String!
 }
 
 input RecordEducationFilter {
@@ -1380,10 +1823,9 @@ input RecordEducationScalarWhereInput {
   locationVid: NullableStringFilter
   NOT: [RecordEducationScalarWhereInput!]
   OR: [RecordEducationScalarWhereInput!]
-  recordSets: RecordSetFilter
+  recordVid: StringFilter
   startDate: DateTimeFilter
   teacher: NullableStringFilter
-  vid: StringFilter
 }
 
 input RecordEducationUpdateInput {
@@ -1392,10 +1834,9 @@ input RecordEducationUpdateInput {
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordEducationInput
   location: LocationUpdateOneWithoutRecordEducationInput
-  recordSets: RecordSetUpdateManyWithoutEducationRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordEducationInput
   startDate: DateTime
   teacher: String
-  vid: String
 }
 
 input RecordEducationUpdateManyDataInput {
@@ -1404,7 +1845,6 @@ input RecordEducationUpdateManyDataInput {
   endDate: DateTime
   startDate: DateTime
   teacher: String
-  vid: String
 }
 
 input RecordEducationUpdateManyWithoutInstitutionInput {
@@ -1431,16 +1871,16 @@ input RecordEducationUpdateManyWithoutLocationInput {
   upsert: [RecordEducationUpsertWithWhereUniqueWithoutLocationInput!]
 }
 
-input RecordEducationUpdateManyWithoutRecordSetsInput {
+input RecordEducationUpdateManyWithoutRecordInput {
   connect: [RecordEducationWhereUniqueInput!]
-  create: [RecordEducationCreateWithoutRecordSetsInput!]
+  create: [RecordEducationCreateWithoutRecordInput!]
   delete: [RecordEducationWhereUniqueInput!]
   deleteMany: [RecordEducationScalarWhereInput!]
   disconnect: [RecordEducationWhereUniqueInput!]
   set: [RecordEducationWhereUniqueInput!]
-  update: [RecordEducationUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordEducationUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordEducationUpdateManyWithWhereNestedInput!]
-  upsert: [RecordEducationUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordEducationUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordEducationUpdateManyWithWhereNestedInput {
@@ -1453,10 +1893,9 @@ input RecordEducationUpdateWithoutInstitutionDataInput {
   description: String
   endDate: DateTime
   location: LocationUpdateOneWithoutRecordEducationInput
-  recordSets: RecordSetUpdateManyWithoutEducationRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordEducationInput
   startDate: DateTime
   teacher: String
-  vid: String
 }
 
 input RecordEducationUpdateWithoutLocationDataInput {
@@ -1464,13 +1903,12 @@ input RecordEducationUpdateWithoutLocationDataInput {
   description: String
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordEducationInput
-  recordSets: RecordSetUpdateManyWithoutEducationRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordEducationInput
   startDate: DateTime
   teacher: String
-  vid: String
 }
 
-input RecordEducationUpdateWithoutRecordSetsDataInput {
+input RecordEducationUpdateWithoutRecordDataInput {
   course: String
   description: String
   endDate: DateTime
@@ -1478,7 +1916,6 @@ input RecordEducationUpdateWithoutRecordSetsDataInput {
   location: LocationUpdateOneWithoutRecordEducationInput
   startDate: DateTime
   teacher: String
-  vid: String
 }
 
 input RecordEducationUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -1491,8 +1928,8 @@ input RecordEducationUpdateWithWhereUniqueWithoutLocationInput {
   where: RecordEducationWhereUniqueInput!
 }
 
-input RecordEducationUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordEducationUpdateWithoutRecordSetsDataInput!
+input RecordEducationUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordEducationUpdateWithoutRecordDataInput!
   where: RecordEducationWhereUniqueInput!
 }
 
@@ -1508,9 +1945,9 @@ input RecordEducationUpsertWithWhereUniqueWithoutLocationInput {
   where: RecordEducationWhereUniqueInput!
 }
 
-input RecordEducationUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordEducationCreateWithoutRecordSetsInput!
-  update: RecordEducationUpdateWithoutRecordSetsDataInput!
+input RecordEducationUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordEducationCreateWithoutRecordInput!
+  update: RecordEducationUpdateWithoutRecordDataInput!
   where: RecordEducationWhereUniqueInput!
 }
 
@@ -1525,39 +1962,42 @@ input RecordEducationWhereInput {
   locationVid: NullableStringFilter
   NOT: [RecordEducationWhereInput!]
   OR: [RecordEducationWhereInput!]
-  recordSets: RecordSetFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
   startDate: DateTimeFilter
   teacher: NullableStringFilter
-  vid: StringFilter
 }
 
 input RecordEducationWhereUniqueInput {
-  vid: String
+  recordVid: String
+}
+
+input RecordFilter {
+  every: RecordWhereInput
+  none: RecordWhereInput
+  some: RecordWhereInput
 }
 
 type RecordLanguage {
   level: String!
   name: String!
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
-  vid: String!
+  record: Record!
 }
 
 input RecordLanguageCreateInput {
   level: String!
   name: String!
-  recordSets: RecordSetCreateManyWithoutLanguageRecordsInput
-  vid: String!
+  record: RecordCreateOneWithoutRecordLanguageInput!
 }
 
-input RecordLanguageCreateManyWithoutRecordSetsInput {
+input RecordLanguageCreateManyWithoutRecordInput {
   connect: [RecordLanguageWhereUniqueInput!]
-  create: [RecordLanguageCreateWithoutRecordSetsInput!]
+  create: [RecordLanguageCreateWithoutRecordInput!]
 }
 
-input RecordLanguageCreateWithoutRecordSetsInput {
+input RecordLanguageCreateWithoutRecordInput {
   level: String!
   name: String!
-  vid: String!
 }
 
 input RecordLanguageFilter {
@@ -1572,33 +2012,30 @@ input RecordLanguageScalarWhereInput {
   name: StringFilter
   NOT: [RecordLanguageScalarWhereInput!]
   OR: [RecordLanguageScalarWhereInput!]
-  recordSets: RecordSetFilter
-  vid: StringFilter
+  recordVid: StringFilter
 }
 
 input RecordLanguageUpdateInput {
   level: String
   name: String
-  recordSets: RecordSetUpdateManyWithoutLanguageRecordsInput
-  vid: String
+  record: RecordUpdateOneRequiredWithoutRecordLanguageInput
 }
 
 input RecordLanguageUpdateManyDataInput {
   level: String
   name: String
-  vid: String
 }
 
-input RecordLanguageUpdateManyWithoutRecordSetsInput {
+input RecordLanguageUpdateManyWithoutRecordInput {
   connect: [RecordLanguageWhereUniqueInput!]
-  create: [RecordLanguageCreateWithoutRecordSetsInput!]
+  create: [RecordLanguageCreateWithoutRecordInput!]
   delete: [RecordLanguageWhereUniqueInput!]
   deleteMany: [RecordLanguageScalarWhereInput!]
   disconnect: [RecordLanguageWhereUniqueInput!]
   set: [RecordLanguageWhereUniqueInput!]
-  update: [RecordLanguageUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordLanguageUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordLanguageUpdateManyWithWhereNestedInput!]
-  upsert: [RecordLanguageUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordLanguageUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordLanguageUpdateManyWithWhereNestedInput {
@@ -1606,20 +2043,19 @@ input RecordLanguageUpdateManyWithWhereNestedInput {
   where: RecordLanguageScalarWhereInput!
 }
 
-input RecordLanguageUpdateWithoutRecordSetsDataInput {
+input RecordLanguageUpdateWithoutRecordDataInput {
   level: String
   name: String
-  vid: String
 }
 
-input RecordLanguageUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordLanguageUpdateWithoutRecordSetsDataInput!
+input RecordLanguageUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordLanguageUpdateWithoutRecordDataInput!
   where: RecordLanguageWhereUniqueInput!
 }
 
-input RecordLanguageUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordLanguageCreateWithoutRecordSetsInput!
-  update: RecordLanguageUpdateWithoutRecordSetsDataInput!
+input RecordLanguageUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordLanguageCreateWithoutRecordInput!
+  update: RecordLanguageUpdateWithoutRecordDataInput!
   where: RecordLanguageWhereUniqueInput!
 }
 
@@ -1629,12 +2065,155 @@ input RecordLanguageWhereInput {
   name: StringFilter
   NOT: [RecordLanguageWhereInput!]
   OR: [RecordLanguageWhereInput!]
-  recordSets: RecordSetFilter
-  vid: StringFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
 }
 
 input RecordLanguageWhereUniqueInput {
-  vid: String
+  recordVid: String
+}
+
+type RecordPersonal {
+  address: String
+  birthday: DateTime
+  email: String
+  github: String
+  homepage: String
+  linkedin: String
+  name: String
+  phone: String
+  record: Record!
+}
+
+input RecordPersonalCreateInput {
+  address: String
+  birthday: DateTime
+  email: String
+  github: String
+  homepage: String
+  linkedin: String
+  name: String
+  phone: String
+  record: RecordCreateOneWithoutRecordPersonalInput!
+}
+
+input RecordPersonalCreateManyWithoutRecordInput {
+  connect: [RecordPersonalWhereUniqueInput!]
+  create: [RecordPersonalCreateWithoutRecordInput!]
+}
+
+input RecordPersonalCreateWithoutRecordInput {
+  address: String
+  birthday: DateTime
+  email: String
+  github: String
+  homepage: String
+  linkedin: String
+  name: String
+  phone: String
+}
+
+input RecordPersonalFilter {
+  every: RecordPersonalWhereInput
+  none: RecordPersonalWhereInput
+  some: RecordPersonalWhereInput
+}
+
+input RecordPersonalScalarWhereInput {
+  address: NullableStringFilter
+  AND: [RecordPersonalScalarWhereInput!]
+  birthday: NullableDateTimeFilter
+  email: NullableStringFilter
+  github: NullableStringFilter
+  homepage: NullableStringFilter
+  linkedin: NullableStringFilter
+  name: NullableStringFilter
+  NOT: [RecordPersonalScalarWhereInput!]
+  OR: [RecordPersonalScalarWhereInput!]
+  phone: NullableStringFilter
+  recordVid: StringFilter
+}
+
+input RecordPersonalUpdateInput {
+  address: String
+  birthday: DateTime
+  email: String
+  github: String
+  homepage: String
+  linkedin: String
+  name: String
+  phone: String
+  record: RecordUpdateOneRequiredWithoutRecordPersonalInput
+}
+
+input RecordPersonalUpdateManyDataInput {
+  address: String
+  birthday: DateTime
+  email: String
+  github: String
+  homepage: String
+  linkedin: String
+  name: String
+  phone: String
+}
+
+input RecordPersonalUpdateManyWithoutRecordInput {
+  connect: [RecordPersonalWhereUniqueInput!]
+  create: [RecordPersonalCreateWithoutRecordInput!]
+  delete: [RecordPersonalWhereUniqueInput!]
+  deleteMany: [RecordPersonalScalarWhereInput!]
+  disconnect: [RecordPersonalWhereUniqueInput!]
+  set: [RecordPersonalWhereUniqueInput!]
+  update: [RecordPersonalUpdateWithWhereUniqueWithoutRecordInput!]
+  updateMany: [RecordPersonalUpdateManyWithWhereNestedInput!]
+  upsert: [RecordPersonalUpsertWithWhereUniqueWithoutRecordInput!]
+}
+
+input RecordPersonalUpdateManyWithWhereNestedInput {
+  data: RecordPersonalUpdateManyDataInput!
+  where: RecordPersonalScalarWhereInput!
+}
+
+input RecordPersonalUpdateWithoutRecordDataInput {
+  address: String
+  birthday: DateTime
+  email: String
+  github: String
+  homepage: String
+  linkedin: String
+  name: String
+  phone: String
+}
+
+input RecordPersonalUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordPersonalUpdateWithoutRecordDataInput!
+  where: RecordPersonalWhereUniqueInput!
+}
+
+input RecordPersonalUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordPersonalCreateWithoutRecordInput!
+  update: RecordPersonalUpdateWithoutRecordDataInput!
+  where: RecordPersonalWhereUniqueInput!
+}
+
+input RecordPersonalWhereInput {
+  address: NullableStringFilter
+  AND: [RecordPersonalWhereInput!]
+  birthday: NullableDateTimeFilter
+  email: NullableStringFilter
+  github: NullableStringFilter
+  homepage: NullableStringFilter
+  linkedin: NullableStringFilter
+  name: NullableStringFilter
+  NOT: [RecordPersonalWhereInput!]
+  OR: [RecordPersonalWhereInput!]
+  phone: NullableStringFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
+}
+
+input RecordPersonalWhereUniqueInput {
+  recordVid: String
 }
 
 type RecordProject {
@@ -1642,11 +2221,10 @@ type RecordProject {
   endDate: DateTime
   location: Location
   programmingLanguage: String
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  record: Record!
   repositoryLink: String
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordProjectCreateInput {
@@ -1654,11 +2232,10 @@ input RecordProjectCreateInput {
   endDate: DateTime
   location: LocationCreateOneWithoutRecordProjectInput
   programmingLanguage: String
-  recordSets: RecordSetCreateManyWithoutProjectRecordsInput
+  record: RecordCreateOneWithoutRecordProjectInput!
   repositoryLink: String
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordProjectCreateManyWithoutLocationInput {
@@ -1666,23 +2243,22 @@ input RecordProjectCreateManyWithoutLocationInput {
   create: [RecordProjectCreateWithoutLocationInput!]
 }
 
-input RecordProjectCreateManyWithoutRecordSetsInput {
+input RecordProjectCreateManyWithoutRecordInput {
   connect: [RecordProjectWhereUniqueInput!]
-  create: [RecordProjectCreateWithoutRecordSetsInput!]
+  create: [RecordProjectCreateWithoutRecordInput!]
 }
 
 input RecordProjectCreateWithoutLocationInput {
   description: String
   endDate: DateTime
   programmingLanguage: String
-  recordSets: RecordSetCreateManyWithoutProjectRecordsInput
+  record: RecordCreateOneWithoutRecordProjectInput!
   repositoryLink: String
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
-input RecordProjectCreateWithoutRecordSetsInput {
+input RecordProjectCreateWithoutRecordInput {
   description: String
   endDate: DateTime
   location: LocationCreateOneWithoutRecordProjectInput
@@ -1690,7 +2266,6 @@ input RecordProjectCreateWithoutRecordSetsInput {
   repositoryLink: String
   startDate: DateTime!
   title: String!
-  vid: String!
 }
 
 input RecordProjectFilter {
@@ -1707,11 +2282,10 @@ input RecordProjectScalarWhereInput {
   NOT: [RecordProjectScalarWhereInput!]
   OR: [RecordProjectScalarWhereInput!]
   programmingLanguage: NullableStringFilter
-  recordSets: RecordSetFilter
+  recordVid: StringFilter
   repositoryLink: NullableStringFilter
   startDate: DateTimeFilter
   title: StringFilter
-  vid: StringFilter
 }
 
 input RecordProjectUpdateInput {
@@ -1719,11 +2293,10 @@ input RecordProjectUpdateInput {
   endDate: DateTime
   location: LocationUpdateOneWithoutRecordProjectInput
   programmingLanguage: String
-  recordSets: RecordSetUpdateManyWithoutProjectRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordProjectInput
   repositoryLink: String
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordProjectUpdateManyDataInput {
@@ -1733,7 +2306,6 @@ input RecordProjectUpdateManyDataInput {
   repositoryLink: String
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordProjectUpdateManyWithoutLocationInput {
@@ -1748,16 +2320,16 @@ input RecordProjectUpdateManyWithoutLocationInput {
   upsert: [RecordProjectUpsertWithWhereUniqueWithoutLocationInput!]
 }
 
-input RecordProjectUpdateManyWithoutRecordSetsInput {
+input RecordProjectUpdateManyWithoutRecordInput {
   connect: [RecordProjectWhereUniqueInput!]
-  create: [RecordProjectCreateWithoutRecordSetsInput!]
+  create: [RecordProjectCreateWithoutRecordInput!]
   delete: [RecordProjectWhereUniqueInput!]
   deleteMany: [RecordProjectScalarWhereInput!]
   disconnect: [RecordProjectWhereUniqueInput!]
   set: [RecordProjectWhereUniqueInput!]
-  update: [RecordProjectUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordProjectUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordProjectUpdateManyWithWhereNestedInput!]
-  upsert: [RecordProjectUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordProjectUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordProjectUpdateManyWithWhereNestedInput {
@@ -1769,14 +2341,13 @@ input RecordProjectUpdateWithoutLocationDataInput {
   description: String
   endDate: DateTime
   programmingLanguage: String
-  recordSets: RecordSetUpdateManyWithoutProjectRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordProjectInput
   repositoryLink: String
   startDate: DateTime
   title: String
-  vid: String
 }
 
-input RecordProjectUpdateWithoutRecordSetsDataInput {
+input RecordProjectUpdateWithoutRecordDataInput {
   description: String
   endDate: DateTime
   location: LocationUpdateOneWithoutRecordProjectInput
@@ -1784,7 +2355,6 @@ input RecordProjectUpdateWithoutRecordSetsDataInput {
   repositoryLink: String
   startDate: DateTime
   title: String
-  vid: String
 }
 
 input RecordProjectUpdateWithWhereUniqueWithoutLocationInput {
@@ -1792,8 +2362,8 @@ input RecordProjectUpdateWithWhereUniqueWithoutLocationInput {
   where: RecordProjectWhereUniqueInput!
 }
 
-input RecordProjectUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordProjectUpdateWithoutRecordSetsDataInput!
+input RecordProjectUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordProjectUpdateWithoutRecordDataInput!
   where: RecordProjectWhereUniqueInput!
 }
 
@@ -1803,9 +2373,9 @@ input RecordProjectUpsertWithWhereUniqueWithoutLocationInput {
   where: RecordProjectWhereUniqueInput!
 }
 
-input RecordProjectUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordProjectCreateWithoutRecordSetsInput!
-  update: RecordProjectUpdateWithoutRecordSetsDataInput!
+input RecordProjectUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordProjectCreateWithoutRecordInput!
+  update: RecordProjectUpdateWithoutRecordDataInput!
   where: RecordProjectWhereUniqueInput!
 }
 
@@ -1818,595 +2388,60 @@ input RecordProjectWhereInput {
   NOT: [RecordProjectWhereInput!]
   OR: [RecordProjectWhereInput!]
   programmingLanguage: NullableStringFilter
-  recordSets: RecordSetFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
   repositoryLink: NullableStringFilter
   startDate: DateTimeFilter
   title: StringFilter
-  vid: StringFilter
 }
 
 input RecordProjectWhereUniqueInput {
-  vid: String
+  recordVid: String
 }
 
-type RecordSet {
-  academicRecords(after: RecordAcademicWhereUniqueInput, before: RecordAcademicWhereUniqueInput, first: Int, last: Int): [RecordAcademic!]!
-  achievementRecords(after: RecordAchievementWhereUniqueInput, before: RecordAchievementWhereUniqueInput, first: Int, last: Int): [RecordAchievement!]!
-  educationRecords(after: RecordEducationWhereUniqueInput, before: RecordEducationWhereUniqueInput, first: Int, last: Int): [RecordEducation!]!
-  languageRecords(after: RecordLanguageWhereUniqueInput, before: RecordLanguageWhereUniqueInput, first: Int, last: Int): [RecordLanguage!]!
-  mainSet: Boolean!
-  owner: User!
-  projectRecords(after: RecordProjectWhereUniqueInput, before: RecordProjectWhereUniqueInput, first: Int, last: Int): [RecordProject!]!
-  sectionOrder: String
-  skillRecords(after: RecordSkillWhereUniqueInput, before: RecordSkillWhereUniqueInput, first: Int, last: Int): [RecordSkill!]!
-  title: String
-  vid: String!
-  workRecords(after: RecordWorkWhereUniqueInput, before: RecordWorkWhereUniqueInput, first: Int, last: Int): [RecordWork!]!
-}
-
-input RecordSetCreateInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateManyWithoutAcademicRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutAcademicRecordsInput!]
-}
-
-input RecordSetCreateManyWithoutAchievementRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutAchievementRecordsInput!]
-}
-
-input RecordSetCreateManyWithoutEducationRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutEducationRecordsInput!]
-}
-
-input RecordSetCreateManyWithoutLanguageRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutLanguageRecordsInput!]
-}
-
-input RecordSetCreateManyWithoutOwnerInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutOwnerInput!]
-}
-
-input RecordSetCreateManyWithoutProjectRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutProjectRecordsInput!]
-}
-
-input RecordSetCreateManyWithoutSkillRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutSkillRecordsInput!]
-}
-
-input RecordSetCreateManyWithoutWorkRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutWorkRecordsInput!]
-}
-
-input RecordSetCreateWithoutAcademicRecordsInput {
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutAchievementRecordsInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutEducationRecordsInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutLanguageRecordsInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutOwnerInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutProjectRecordsInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutSkillRecordsInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  title: String
-  vid: String!
-  workRecords: RecordWorkCreateManyWithoutRecordSetsInput
-}
-
-input RecordSetCreateWithoutWorkRecordsInput {
-  academicRecords: RecordAcademicCreateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementCreateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationCreateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageCreateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserCreateOneWithoutRecordSetsInput!
-  projectRecords: RecordProjectCreateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillCreateManyWithoutRecordSetsInput
-  title: String
-  vid: String!
-}
-
-input RecordSetFilter {
-  every: RecordSetWhereInput
-  none: RecordSetWhereInput
-  some: RecordSetWhereInput
-}
-
-input RecordSetScalarWhereInput {
-  academicRecords: RecordAcademicFilter
-  achievementRecords: RecordAchievementFilter
-  AND: [RecordSetScalarWhereInput!]
-  educationRecords: RecordEducationFilter
-  languageRecords: RecordLanguageFilter
-  mainSet: BooleanFilter
-  NOT: [RecordSetScalarWhereInput!]
-  OR: [RecordSetScalarWhereInput!]
+input RecordScalarWhereInput {
+  AND: [RecordScalarWhereInput!]
+  createdAt: DateTimeFilter
+  cvs: CVFilter
+  hidden: BooleanFilter
+  NOT: [RecordScalarWhereInput!]
+  OR: [RecordScalarWhereInput!]
   ownerVid: StringFilter
-  projectRecords: RecordProjectFilter
-  sectionOrder: NullableStringFilter
-  skillRecords: RecordSkillFilter
-  title: NullableStringFilter
+  RecordAcademic: RecordAcademicFilter
+  RecordAchievement: RecordAchievementFilter
+  RecordEducation: RecordEducationFilter
+  RecordLanguage: RecordLanguageFilter
+  RecordPersonal: RecordPersonalFilter
+  RecordProject: RecordProjectFilter
+  RecordSkill: RecordSkillFilter
+  RecordWork: RecordWorkFilter
+  updatedAt: DateTimeFilter
   vid: StringFilter
-  workRecords: RecordWorkFilter
-}
-
-input RecordSetUpdateInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateManyDataInput {
-  mainSet: Boolean
-  sectionOrder: String
-  title: String
-  vid: String
-}
-
-input RecordSetUpdateManyWithoutAcademicRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutAcademicRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutAcademicRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutAcademicRecordsInput!]
-}
-
-input RecordSetUpdateManyWithoutAchievementRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutAchievementRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutAchievementRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutAchievementRecordsInput!]
-}
-
-input RecordSetUpdateManyWithoutEducationRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutEducationRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutEducationRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutEducationRecordsInput!]
-}
-
-input RecordSetUpdateManyWithoutLanguageRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutLanguageRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutLanguageRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutLanguageRecordsInput!]
-}
-
-input RecordSetUpdateManyWithoutOwnerInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutOwnerInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutOwnerInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutOwnerInput!]
-}
-
-input RecordSetUpdateManyWithoutProjectRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutProjectRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutProjectRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutProjectRecordsInput!]
-}
-
-input RecordSetUpdateManyWithoutSkillRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutSkillRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutSkillRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutSkillRecordsInput!]
-}
-
-input RecordSetUpdateManyWithoutWorkRecordsInput {
-  connect: [RecordSetWhereUniqueInput!]
-  create: [RecordSetCreateWithoutWorkRecordsInput!]
-  delete: [RecordSetWhereUniqueInput!]
-  deleteMany: [RecordSetScalarWhereInput!]
-  disconnect: [RecordSetWhereUniqueInput!]
-  set: [RecordSetWhereUniqueInput!]
-  update: [RecordSetUpdateWithWhereUniqueWithoutWorkRecordsInput!]
-  updateMany: [RecordSetUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSetUpsertWithWhereUniqueWithoutWorkRecordsInput!]
-}
-
-input RecordSetUpdateManyWithWhereNestedInput {
-  data: RecordSetUpdateManyDataInput!
-  where: RecordSetScalarWhereInput!
-}
-
-input RecordSetUpdateWithoutAcademicRecordsDataInput {
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutAchievementRecordsDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutEducationRecordsDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutLanguageRecordsDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutOwnerDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutProjectRecordsDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutSkillRecordsDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  title: String
-  vid: String
-  workRecords: RecordWorkUpdateManyWithoutRecordSetsInput
-}
-
-input RecordSetUpdateWithoutWorkRecordsDataInput {
-  academicRecords: RecordAcademicUpdateManyWithoutRecordSetsInput
-  achievementRecords: RecordAchievementUpdateManyWithoutRecordSetsInput
-  educationRecords: RecordEducationUpdateManyWithoutRecordSetsInput
-  languageRecords: RecordLanguageUpdateManyWithoutRecordSetsInput
-  mainSet: Boolean
-  owner: UserUpdateOneRequiredWithoutRecordSetsInput
-  projectRecords: RecordProjectUpdateManyWithoutRecordSetsInput
-  sectionOrder: String
-  skillRecords: RecordSkillUpdateManyWithoutRecordSetsInput
-  title: String
-  vid: String
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutAcademicRecordsInput {
-  data: RecordSetUpdateWithoutAcademicRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutAchievementRecordsInput {
-  data: RecordSetUpdateWithoutAchievementRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutEducationRecordsInput {
-  data: RecordSetUpdateWithoutEducationRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutLanguageRecordsInput {
-  data: RecordSetUpdateWithoutLanguageRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutOwnerInput {
-  data: RecordSetUpdateWithoutOwnerDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutProjectRecordsInput {
-  data: RecordSetUpdateWithoutProjectRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutSkillRecordsInput {
-  data: RecordSetUpdateWithoutSkillRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpdateWithWhereUniqueWithoutWorkRecordsInput {
-  data: RecordSetUpdateWithoutWorkRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutAcademicRecordsInput {
-  create: RecordSetCreateWithoutAcademicRecordsInput!
-  update: RecordSetUpdateWithoutAcademicRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutAchievementRecordsInput {
-  create: RecordSetCreateWithoutAchievementRecordsInput!
-  update: RecordSetUpdateWithoutAchievementRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutEducationRecordsInput {
-  create: RecordSetCreateWithoutEducationRecordsInput!
-  update: RecordSetUpdateWithoutEducationRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutLanguageRecordsInput {
-  create: RecordSetCreateWithoutLanguageRecordsInput!
-  update: RecordSetUpdateWithoutLanguageRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutOwnerInput {
-  create: RecordSetCreateWithoutOwnerInput!
-  update: RecordSetUpdateWithoutOwnerDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutProjectRecordsInput {
-  create: RecordSetCreateWithoutProjectRecordsInput!
-  update: RecordSetUpdateWithoutProjectRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutSkillRecordsInput {
-  create: RecordSetCreateWithoutSkillRecordsInput!
-  update: RecordSetUpdateWithoutSkillRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetUpsertWithWhereUniqueWithoutWorkRecordsInput {
-  create: RecordSetCreateWithoutWorkRecordsInput!
-  update: RecordSetUpdateWithoutWorkRecordsDataInput!
-  where: RecordSetWhereUniqueInput!
-}
-
-input RecordSetWhereInput {
-  academicRecords: RecordAcademicFilter
-  achievementRecords: RecordAchievementFilter
-  AND: [RecordSetWhereInput!]
-  educationRecords: RecordEducationFilter
-  languageRecords: RecordLanguageFilter
-  mainSet: BooleanFilter
-  NOT: [RecordSetWhereInput!]
-  OR: [RecordSetWhereInput!]
-  owner: UserWhereInput
-  ownerVid: StringFilter
-  projectRecords: RecordProjectFilter
-  sectionOrder: NullableStringFilter
-  skillRecords: RecordSkillFilter
-  title: NullableStringFilter
-  vid: StringFilter
-  workRecords: RecordWorkFilter
-}
-
-input RecordSetWhereUniqueInput {
-  vid: String
 }
 
 type RecordSkill {
   level: String
   name: String!
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  record: Record!
   type: String!
-  vid: String!
 }
 
 input RecordSkillCreateInput {
   level: String
   name: String!
-  recordSets: RecordSetCreateManyWithoutSkillRecordsInput
+  record: RecordCreateOneWithoutRecordSkillInput!
   type: String!
-  vid: String!
 }
 
-input RecordSkillCreateManyWithoutRecordSetsInput {
+input RecordSkillCreateManyWithoutRecordInput {
   connect: [RecordSkillWhereUniqueInput!]
-  create: [RecordSkillCreateWithoutRecordSetsInput!]
+  create: [RecordSkillCreateWithoutRecordInput!]
 }
 
-input RecordSkillCreateWithoutRecordSetsInput {
+input RecordSkillCreateWithoutRecordInput {
   level: String
   name: String!
   type: String!
-  vid: String!
 }
 
 input RecordSkillFilter {
@@ -2421,36 +2456,33 @@ input RecordSkillScalarWhereInput {
   name: StringFilter
   NOT: [RecordSkillScalarWhereInput!]
   OR: [RecordSkillScalarWhereInput!]
-  recordSets: RecordSetFilter
+  recordVid: StringFilter
   type: StringFilter
-  vid: StringFilter
 }
 
 input RecordSkillUpdateInput {
   level: String
   name: String
-  recordSets: RecordSetUpdateManyWithoutSkillRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordSkillInput
   type: String
-  vid: String
 }
 
 input RecordSkillUpdateManyDataInput {
   level: String
   name: String
   type: String
-  vid: String
 }
 
-input RecordSkillUpdateManyWithoutRecordSetsInput {
+input RecordSkillUpdateManyWithoutRecordInput {
   connect: [RecordSkillWhereUniqueInput!]
-  create: [RecordSkillCreateWithoutRecordSetsInput!]
+  create: [RecordSkillCreateWithoutRecordInput!]
   delete: [RecordSkillWhereUniqueInput!]
   deleteMany: [RecordSkillScalarWhereInput!]
   disconnect: [RecordSkillWhereUniqueInput!]
   set: [RecordSkillWhereUniqueInput!]
-  update: [RecordSkillUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordSkillUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordSkillUpdateManyWithWhereNestedInput!]
-  upsert: [RecordSkillUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordSkillUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordSkillUpdateManyWithWhereNestedInput {
@@ -2458,21 +2490,20 @@ input RecordSkillUpdateManyWithWhereNestedInput {
   where: RecordSkillScalarWhereInput!
 }
 
-input RecordSkillUpdateWithoutRecordSetsDataInput {
+input RecordSkillUpdateWithoutRecordDataInput {
   level: String
   name: String
   type: String
-  vid: String
 }
 
-input RecordSkillUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordSkillUpdateWithoutRecordSetsDataInput!
+input RecordSkillUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordSkillUpdateWithoutRecordDataInput!
   where: RecordSkillWhereUniqueInput!
 }
 
-input RecordSkillUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordSkillCreateWithoutRecordSetsInput!
-  update: RecordSkillUpdateWithoutRecordSetsDataInput!
+input RecordSkillUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordSkillCreateWithoutRecordInput!
+  update: RecordSkillUpdateWithoutRecordDataInput!
   where: RecordSkillWhereUniqueInput!
 }
 
@@ -2482,12 +2513,351 @@ input RecordSkillWhereInput {
   name: StringFilter
   NOT: [RecordSkillWhereInput!]
   OR: [RecordSkillWhereInput!]
-  recordSets: RecordSetFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
   type: StringFilter
-  vid: StringFilter
 }
 
 input RecordSkillWhereUniqueInput {
+  recordVid: String
+}
+
+input RecordUpdateManyDataInput {
+  createdAt: DateTime
+  hidden: Boolean
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateManyWithoutCvsInput {
+  connect: [RecordWhereUniqueInput!]
+  create: [RecordCreateWithoutCvsInput!]
+  delete: [RecordWhereUniqueInput!]
+  deleteMany: [RecordScalarWhereInput!]
+  disconnect: [RecordWhereUniqueInput!]
+  set: [RecordWhereUniqueInput!]
+  update: [RecordUpdateWithWhereUniqueWithoutCvsInput!]
+  updateMany: [RecordUpdateManyWithWhereNestedInput!]
+  upsert: [RecordUpsertWithWhereUniqueWithoutCvsInput!]
+}
+
+input RecordUpdateManyWithoutOwnerInput {
+  connect: [RecordWhereUniqueInput!]
+  create: [RecordCreateWithoutOwnerInput!]
+  delete: [RecordWhereUniqueInput!]
+  deleteMany: [RecordScalarWhereInput!]
+  disconnect: [RecordWhereUniqueInput!]
+  set: [RecordWhereUniqueInput!]
+  update: [RecordUpdateWithWhereUniqueWithoutOwnerInput!]
+  updateMany: [RecordUpdateManyWithWhereNestedInput!]
+  upsert: [RecordUpsertWithWhereUniqueWithoutOwnerInput!]
+}
+
+input RecordUpdateManyWithWhereNestedInput {
+  data: RecordUpdateManyDataInput!
+  where: RecordScalarWhereInput!
+}
+
+input RecordUpdateOneRequiredWithoutRecordAcademicInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordAcademicInput
+  update: RecordUpdateWithoutRecordAcademicDataInput
+  upsert: RecordUpsertWithoutRecordAcademicInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordAchievementInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordAchievementInput
+  update: RecordUpdateWithoutRecordAchievementDataInput
+  upsert: RecordUpsertWithoutRecordAchievementInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordEducationInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordEducationInput
+  update: RecordUpdateWithoutRecordEducationDataInput
+  upsert: RecordUpsertWithoutRecordEducationInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordLanguageInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordLanguageInput
+  update: RecordUpdateWithoutRecordLanguageDataInput
+  upsert: RecordUpsertWithoutRecordLanguageInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordPersonalInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordPersonalInput
+  update: RecordUpdateWithoutRecordPersonalDataInput
+  upsert: RecordUpsertWithoutRecordPersonalInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordProjectInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordProjectInput
+  update: RecordUpdateWithoutRecordProjectDataInput
+  upsert: RecordUpsertWithoutRecordProjectInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordSkillInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordSkillInput
+  update: RecordUpdateWithoutRecordSkillDataInput
+  upsert: RecordUpsertWithoutRecordSkillInput
+}
+
+input RecordUpdateOneRequiredWithoutRecordWorkInput {
+  connect: RecordWhereUniqueInput
+  create: RecordCreateWithoutRecordWorkInput
+  update: RecordUpdateWithoutRecordWorkDataInput
+  upsert: RecordUpsertWithoutRecordWorkInput
+}
+
+input RecordUpdateWithoutCvsDataInput {
+  createdAt: DateTime
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutOwnerDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordAcademicDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordAchievementDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordEducationDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordLanguageDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordPersonalDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordProjectDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordSkillDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordWork: RecordWorkUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithoutRecordWorkDataInput {
+  createdAt: DateTime
+  cvs: CVUpdateManyWithoutRecordsInput
+  hidden: Boolean
+  owner: UserUpdateOneRequiredWithoutRecordsInput
+  RecordAcademic: RecordAcademicUpdateManyWithoutRecordInput
+  RecordAchievement: RecordAchievementUpdateManyWithoutRecordInput
+  RecordEducation: RecordEducationUpdateManyWithoutRecordInput
+  RecordLanguage: RecordLanguageUpdateManyWithoutRecordInput
+  RecordPersonal: RecordPersonalUpdateManyWithoutRecordInput
+  RecordProject: RecordProjectUpdateManyWithoutRecordInput
+  RecordSkill: RecordSkillUpdateManyWithoutRecordInput
+  updatedAt: DateTime
+  vid: String
+}
+
+input RecordUpdateWithWhereUniqueWithoutCvsInput {
+  data: RecordUpdateWithoutCvsDataInput!
+  where: RecordWhereUniqueInput!
+}
+
+input RecordUpdateWithWhereUniqueWithoutOwnerInput {
+  data: RecordUpdateWithoutOwnerDataInput!
+  where: RecordWhereUniqueInput!
+}
+
+input RecordUpsertWithoutRecordAcademicInput {
+  create: RecordCreateWithoutRecordAcademicInput!
+  update: RecordUpdateWithoutRecordAcademicDataInput!
+}
+
+input RecordUpsertWithoutRecordAchievementInput {
+  create: RecordCreateWithoutRecordAchievementInput!
+  update: RecordUpdateWithoutRecordAchievementDataInput!
+}
+
+input RecordUpsertWithoutRecordEducationInput {
+  create: RecordCreateWithoutRecordEducationInput!
+  update: RecordUpdateWithoutRecordEducationDataInput!
+}
+
+input RecordUpsertWithoutRecordLanguageInput {
+  create: RecordCreateWithoutRecordLanguageInput!
+  update: RecordUpdateWithoutRecordLanguageDataInput!
+}
+
+input RecordUpsertWithoutRecordPersonalInput {
+  create: RecordCreateWithoutRecordPersonalInput!
+  update: RecordUpdateWithoutRecordPersonalDataInput!
+}
+
+input RecordUpsertWithoutRecordProjectInput {
+  create: RecordCreateWithoutRecordProjectInput!
+  update: RecordUpdateWithoutRecordProjectDataInput!
+}
+
+input RecordUpsertWithoutRecordSkillInput {
+  create: RecordCreateWithoutRecordSkillInput!
+  update: RecordUpdateWithoutRecordSkillDataInput!
+}
+
+input RecordUpsertWithoutRecordWorkInput {
+  create: RecordCreateWithoutRecordWorkInput!
+  update: RecordUpdateWithoutRecordWorkDataInput!
+}
+
+input RecordUpsertWithWhereUniqueWithoutCvsInput {
+  create: RecordCreateWithoutCvsInput!
+  update: RecordUpdateWithoutCvsDataInput!
+  where: RecordWhereUniqueInput!
+}
+
+input RecordUpsertWithWhereUniqueWithoutOwnerInput {
+  create: RecordCreateWithoutOwnerInput!
+  update: RecordUpdateWithoutOwnerDataInput!
+  where: RecordWhereUniqueInput!
+}
+
+input RecordWhereInput {
+  AND: [RecordWhereInput!]
+  createdAt: DateTimeFilter
+  cvs: CVFilter
+  hidden: BooleanFilter
+  NOT: [RecordWhereInput!]
+  OR: [RecordWhereInput!]
+  owner: UserWhereInput
+  ownerVid: StringFilter
+  RecordAcademic: RecordAcademicFilter
+  RecordAchievement: RecordAchievementFilter
+  RecordEducation: RecordEducationFilter
+  RecordLanguage: RecordLanguageFilter
+  RecordPersonal: RecordPersonalFilter
+  RecordProject: RecordProjectFilter
+  RecordSkill: RecordSkillFilter
+  RecordWork: RecordWorkFilter
+  updatedAt: DateTimeFilter
+  vid: StringFilter
+}
+
+input RecordWhereUniqueInput {
   vid: String
 }
 
@@ -2496,10 +2866,9 @@ type RecordWork {
   endDate: DateTime
   institution: Institution
   location: Location
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  record: Record!
   role: String!
   startDate: DateTime!
-  vid: String!
 }
 
 input RecordWorkCreateInput {
@@ -2507,10 +2876,9 @@ input RecordWorkCreateInput {
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordWorkInput
   location: LocationCreateOneWithoutRecordWorkInput
-  recordSets: RecordSetCreateManyWithoutWorkRecordsInput
+  record: RecordCreateOneWithoutRecordWorkInput!
   role: String!
   startDate: DateTime!
-  vid: String!
 }
 
 input RecordWorkCreateManyWithoutInstitutionInput {
@@ -2523,39 +2891,36 @@ input RecordWorkCreateManyWithoutLocationInput {
   create: [RecordWorkCreateWithoutLocationInput!]
 }
 
-input RecordWorkCreateManyWithoutRecordSetsInput {
+input RecordWorkCreateManyWithoutRecordInput {
   connect: [RecordWorkWhereUniqueInput!]
-  create: [RecordWorkCreateWithoutRecordSetsInput!]
+  create: [RecordWorkCreateWithoutRecordInput!]
 }
 
 input RecordWorkCreateWithoutInstitutionInput {
   description: String
   endDate: DateTime
   location: LocationCreateOneWithoutRecordWorkInput
-  recordSets: RecordSetCreateManyWithoutWorkRecordsInput
+  record: RecordCreateOneWithoutRecordWorkInput!
   role: String!
   startDate: DateTime!
-  vid: String!
 }
 
 input RecordWorkCreateWithoutLocationInput {
   description: String
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordWorkInput
-  recordSets: RecordSetCreateManyWithoutWorkRecordsInput
+  record: RecordCreateOneWithoutRecordWorkInput!
   role: String!
   startDate: DateTime!
-  vid: String!
 }
 
-input RecordWorkCreateWithoutRecordSetsInput {
+input RecordWorkCreateWithoutRecordInput {
   description: String
   endDate: DateTime
   institution: InstitutionCreateOneWithoutRecordWorkInput
   location: LocationCreateOneWithoutRecordWorkInput
   role: String!
   startDate: DateTime!
-  vid: String!
 }
 
 input RecordWorkFilter {
@@ -2572,10 +2937,9 @@ input RecordWorkScalarWhereInput {
   locationVid: NullableStringFilter
   NOT: [RecordWorkScalarWhereInput!]
   OR: [RecordWorkScalarWhereInput!]
-  recordSets: RecordSetFilter
+  recordVid: StringFilter
   role: StringFilter
   startDate: DateTimeFilter
-  vid: StringFilter
 }
 
 input RecordWorkUpdateInput {
@@ -2583,10 +2947,9 @@ input RecordWorkUpdateInput {
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordWorkInput
   location: LocationUpdateOneWithoutRecordWorkInput
-  recordSets: RecordSetUpdateManyWithoutWorkRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordWorkInput
   role: String
   startDate: DateTime
-  vid: String
 }
 
 input RecordWorkUpdateManyDataInput {
@@ -2594,7 +2957,6 @@ input RecordWorkUpdateManyDataInput {
   endDate: DateTime
   role: String
   startDate: DateTime
-  vid: String
 }
 
 input RecordWorkUpdateManyWithoutInstitutionInput {
@@ -2621,16 +2983,16 @@ input RecordWorkUpdateManyWithoutLocationInput {
   upsert: [RecordWorkUpsertWithWhereUniqueWithoutLocationInput!]
 }
 
-input RecordWorkUpdateManyWithoutRecordSetsInput {
+input RecordWorkUpdateManyWithoutRecordInput {
   connect: [RecordWorkWhereUniqueInput!]
-  create: [RecordWorkCreateWithoutRecordSetsInput!]
+  create: [RecordWorkCreateWithoutRecordInput!]
   delete: [RecordWorkWhereUniqueInput!]
   deleteMany: [RecordWorkScalarWhereInput!]
   disconnect: [RecordWorkWhereUniqueInput!]
   set: [RecordWorkWhereUniqueInput!]
-  update: [RecordWorkUpdateWithWhereUniqueWithoutRecordSetsInput!]
+  update: [RecordWorkUpdateWithWhereUniqueWithoutRecordInput!]
   updateMany: [RecordWorkUpdateManyWithWhereNestedInput!]
-  upsert: [RecordWorkUpsertWithWhereUniqueWithoutRecordSetsInput!]
+  upsert: [RecordWorkUpsertWithWhereUniqueWithoutRecordInput!]
 }
 
 input RecordWorkUpdateManyWithWhereNestedInput {
@@ -2642,30 +3004,27 @@ input RecordWorkUpdateWithoutInstitutionDataInput {
   description: String
   endDate: DateTime
   location: LocationUpdateOneWithoutRecordWorkInput
-  recordSets: RecordSetUpdateManyWithoutWorkRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordWorkInput
   role: String
   startDate: DateTime
-  vid: String
 }
 
 input RecordWorkUpdateWithoutLocationDataInput {
   description: String
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordWorkInput
-  recordSets: RecordSetUpdateManyWithoutWorkRecordsInput
+  record: RecordUpdateOneRequiredWithoutRecordWorkInput
   role: String
   startDate: DateTime
-  vid: String
 }
 
-input RecordWorkUpdateWithoutRecordSetsDataInput {
+input RecordWorkUpdateWithoutRecordDataInput {
   description: String
   endDate: DateTime
   institution: InstitutionUpdateOneWithoutRecordWorkInput
   location: LocationUpdateOneWithoutRecordWorkInput
   role: String
   startDate: DateTime
-  vid: String
 }
 
 input RecordWorkUpdateWithWhereUniqueWithoutInstitutionInput {
@@ -2678,8 +3037,8 @@ input RecordWorkUpdateWithWhereUniqueWithoutLocationInput {
   where: RecordWorkWhereUniqueInput!
 }
 
-input RecordWorkUpdateWithWhereUniqueWithoutRecordSetsInput {
-  data: RecordWorkUpdateWithoutRecordSetsDataInput!
+input RecordWorkUpdateWithWhereUniqueWithoutRecordInput {
+  data: RecordWorkUpdateWithoutRecordDataInput!
   where: RecordWorkWhereUniqueInput!
 }
 
@@ -2695,9 +3054,9 @@ input RecordWorkUpsertWithWhereUniqueWithoutLocationInput {
   where: RecordWorkWhereUniqueInput!
 }
 
-input RecordWorkUpsertWithWhereUniqueWithoutRecordSetsInput {
-  create: RecordWorkCreateWithoutRecordSetsInput!
-  update: RecordWorkUpdateWithoutRecordSetsDataInput!
+input RecordWorkUpsertWithWhereUniqueWithoutRecordInput {
+  create: RecordWorkCreateWithoutRecordInput!
+  update: RecordWorkUpdateWithoutRecordDataInput!
   where: RecordWorkWhereUniqueInput!
 }
 
@@ -2711,14 +3070,14 @@ input RecordWorkWhereInput {
   locationVid: NullableStringFilter
   NOT: [RecordWorkWhereInput!]
   OR: [RecordWorkWhereInput!]
-  recordSets: RecordSetFilter
+  record: RecordWhereInput
+  recordVid: StringFilter
   role: StringFilter
   startDate: DateTimeFilter
-  vid: StringFilter
 }
 
 input RecordWorkWhereUniqueInput {
-  vid: String
+  recordVid: String
 }
 
 input StringFilter {
@@ -2758,9 +3117,11 @@ input TemplateParamWhereUniqueInput {
 
 type User {
   autosave: Boolean!
+  cvs(after: CVWhereUniqueInput, before: CVWhereUniqueInput, first: Int, last: Int): [CV!]!
   firebaseId: String!
   gatekeepers(after: GatekeeperWhereUniqueInput, before: GatekeeperWhereUniqueInput, first: Int, last: Int): [Gatekeeper!]!
-  recordSets(after: RecordSetWhereUniqueInput, before: RecordSetWhereUniqueInput, first: Int, last: Int): [RecordSet!]!
+  records(after: RecordWhereUniqueInput, before: RecordWhereUniqueInput, first: Int, last: Int): [Record!]!
+  sectionOrder: String
   vid: String!
 }
 
@@ -2779,18 +3140,25 @@ input UserCreateOneWithoutBugReportsInput {
   create: UserCreateWithoutBugReportsInput
 }
 
-input UserCreateOneWithoutRecordSetsInput {
+input UserCreateOneWithoutCvsInput {
   connect: UserWhereUniqueInput
-  create: UserCreateWithoutRecordSetsInput
+  create: UserCreateWithoutCvsInput
+}
+
+input UserCreateOneWithoutRecordsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutRecordsInput
 }
 
 input UserCreateWithoutAlertsInput {
   autosave: Boolean
   bugReports: BugReportCreateManyWithoutAuthorInput
   createdAt: DateTime
+  cvs: CVCreateManyWithoutOwnerInput
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
-  recordSets: RecordSetCreateManyWithoutOwnerInput
+  records: RecordCreateManyWithoutOwnerInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String!
 }
@@ -2799,9 +3167,24 @@ input UserCreateWithoutBugReportsInput {
   alerts: AlertCreateManyWithoutAuthorInput
   autosave: Boolean
   createdAt: DateTime
+  cvs: CVCreateManyWithoutOwnerInput
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
-  recordSets: RecordSetCreateManyWithoutOwnerInput
+  records: RecordCreateManyWithoutOwnerInput
+  sectionOrder: String
+  updatedAt: DateTime
+  vid: String!
+}
+
+input UserCreateWithoutCvsInput {
+  alerts: AlertCreateManyWithoutAuthorInput
+  autosave: Boolean
+  bugReports: BugReportCreateManyWithoutAuthorInput
+  createdAt: DateTime
+  firebaseId: String!
+  gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
+  records: RecordCreateManyWithoutOwnerInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String!
 }
@@ -2811,19 +3194,23 @@ input UserCreateWithoutGatekeepersInput {
   autosave: Boolean
   bugReports: BugReportCreateManyWithoutAuthorInput
   createdAt: DateTime
+  cvs: CVCreateManyWithoutOwnerInput
   firebaseId: String!
-  recordSets: RecordSetCreateManyWithoutOwnerInput
+  records: RecordCreateManyWithoutOwnerInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String!
 }
 
-input UserCreateWithoutRecordSetsInput {
+input UserCreateWithoutRecordsInput {
   alerts: AlertCreateManyWithoutAuthorInput
   autosave: Boolean
   bugReports: BugReportCreateManyWithoutAuthorInput
   createdAt: DateTime
+  cvs: CVCreateManyWithoutOwnerInput
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String!
 }
@@ -2840,11 +3227,13 @@ input UserScalarWhereInput {
   autosave: BooleanFilter
   bugReports: BugReportFilter
   createdAt: DateTimeFilter
+  cvs: CVFilter
   firebaseId: StringFilter
   gatekeepers: GatekeeperFilter
   NOT: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
-  recordSets: RecordSetFilter
+  records: RecordFilter
+  sectionOrder: NullableStringFilter
   updatedAt: DateTimeFilter
   vid: StringFilter
 }
@@ -2853,6 +3242,7 @@ input UserUpdateManyDataInput {
   autosave: Boolean
   createdAt: DateTime
   firebaseId: String
+  sectionOrder: String
   updatedAt: DateTime
   vid: String
 }
@@ -2881,20 +3271,42 @@ input UserUpdateOneRequiredWithoutAlertsInput {
   upsert: UserUpsertWithoutAlertsInput
 }
 
-input UserUpdateOneRequiredWithoutRecordSetsInput {
+input UserUpdateOneRequiredWithoutCvsInput {
   connect: UserWhereUniqueInput
-  create: UserCreateWithoutRecordSetsInput
-  update: UserUpdateWithoutRecordSetsDataInput
-  upsert: UserUpsertWithoutRecordSetsInput
+  create: UserCreateWithoutCvsInput
+  update: UserUpdateWithoutCvsDataInput
+  upsert: UserUpsertWithoutCvsInput
+}
+
+input UserUpdateOneRequiredWithoutRecordsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutRecordsInput
+  update: UserUpdateWithoutRecordsDataInput
+  upsert: UserUpsertWithoutRecordsInput
 }
 
 input UserUpdateWithoutAlertsDataInput {
   autosave: Boolean
   bugReports: BugReportUpdateManyWithoutAuthorInput
   createdAt: DateTime
+  cvs: CVUpdateManyWithoutOwnerInput
   firebaseId: String
   gatekeepers: GatekeeperUpdateManyWithoutAllowedUsersInput
-  recordSets: RecordSetUpdateManyWithoutOwnerInput
+  records: RecordUpdateManyWithoutOwnerInput
+  sectionOrder: String
+  updatedAt: DateTime
+  vid: String
+}
+
+input UserUpdateWithoutCvsDataInput {
+  alerts: AlertUpdateManyWithoutAuthorInput
+  autosave: Boolean
+  bugReports: BugReportUpdateManyWithoutAuthorInput
+  createdAt: DateTime
+  firebaseId: String
+  gatekeepers: GatekeeperUpdateManyWithoutAllowedUsersInput
+  records: RecordUpdateManyWithoutOwnerInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String
 }
@@ -2904,19 +3316,23 @@ input UserUpdateWithoutGatekeepersDataInput {
   autosave: Boolean
   bugReports: BugReportUpdateManyWithoutAuthorInput
   createdAt: DateTime
+  cvs: CVUpdateManyWithoutOwnerInput
   firebaseId: String
-  recordSets: RecordSetUpdateManyWithoutOwnerInput
+  records: RecordUpdateManyWithoutOwnerInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String
 }
 
-input UserUpdateWithoutRecordSetsDataInput {
+input UserUpdateWithoutRecordsDataInput {
   alerts: AlertUpdateManyWithoutAuthorInput
   autosave: Boolean
   bugReports: BugReportUpdateManyWithoutAuthorInput
   createdAt: DateTime
+  cvs: CVUpdateManyWithoutOwnerInput
   firebaseId: String
   gatekeepers: GatekeeperUpdateManyWithoutAllowedUsersInput
+  sectionOrder: String
   updatedAt: DateTime
   vid: String
 }
@@ -2931,9 +3347,14 @@ input UserUpsertWithoutAlertsInput {
   update: UserUpdateWithoutAlertsDataInput!
 }
 
-input UserUpsertWithoutRecordSetsInput {
-  create: UserCreateWithoutRecordSetsInput!
-  update: UserUpdateWithoutRecordSetsDataInput!
+input UserUpsertWithoutCvsInput {
+  create: UserCreateWithoutCvsInput!
+  update: UserUpdateWithoutCvsDataInput!
+}
+
+input UserUpsertWithoutRecordsInput {
+  create: UserCreateWithoutRecordsInput!
+  update: UserUpdateWithoutRecordsDataInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutGatekeepersInput {
@@ -2948,11 +3369,13 @@ input UserWhereInput {
   autosave: BooleanFilter
   bugReports: BugReportFilter
   createdAt: DateTimeFilter
+  cvs: CVFilter
   firebaseId: StringFilter
   gatekeepers: GatekeeperFilter
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
-  recordSets: RecordSetFilter
+  records: RecordFilter
+  sectionOrder: NullableStringFilter
   updatedAt: DateTimeFilter
   vid: StringFilter
 }
