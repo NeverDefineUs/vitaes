@@ -8,43 +8,103 @@ generator prisma_client {
 }
 
 model User {
-  vid         String        @id
-  firebaseId  String        @unique
-  autosave    Boolean       @default(false)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  vid           String        @id
+  firebaseId    String        @unique
+  autosave      Boolean       @default(false)
+  sectionOrder  String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  recordSets  RecordSet[]
-  gatekeepers Gatekeeper[]
-  alerts      Alert[]
-  bugReports  BugReport[]
+  records       Record[]
+  cvs           CV[]
+  gatekeepers   Gatekeeper[]
+  alerts        Alert[]
+  bugReports    BugReport[]
 }
 
-model RecordSet {
-  vid                 String              @id
-  mainSet             Boolean             @default(false)
-  title               String?
-  sectionOrder        String?
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+model CV {
+  vid           String    @id
+  title         String?
+  sectionOrder  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  personalInfo        PersonalInfo?       @relation(fields: [personalInfoVid], references: [vid])
-  personalInfoVid     String?
+  records       Record[]
 
-  academicRecords     RecordAcademic[]
-  achievementRecords  RecordAchievement[]
-  educationRecords    RecordEducation[]
-  languageRecords     RecordLanguage[]
-  projectRecords      RecordProject[]
-  skillRecords        RecordSkill[]
-  workRecords         RecordWork[]
-
-  owner               User                @relation(fields: [ownerVid], references: [vid])
-  ownerVid            String
+  owner         User      @relation(fields: [ownerVid], references: [vid])
+  ownerVid      String
 }
 
-model PersonalInfo {
+model Record {
   vid       String    @id
+  hidden    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  cvs       CV[]
+
+  owner     User      @relation(fields: [ownerVid], references: [vid])
+  ownerVid  String
+}
+
+model RecordAcademic {
+  title           String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+  articleLink     String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  record          Record        @relation(fields: [recordVid], references: [vid])
+  recordVid       String        @id
+}
+
+model RecordAchievement {
+  title           String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+  position        String?
+  certificateLink String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  record          Record        @relation(fields: [recordVid], references: [vid])
+  recordVid       String        @id
+}
+
+model RecordEducation {
+  course          String
+  startDate       DateTime
+  endDate         DateTime?
+  description     String?
+  teacher         String?
+
+  location        Location?     @relation(fields: [locationVid], references: [vid])
+  locationVid     String?
+  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
+  institutionVid  String?
+
+  record          Record        @relation(fields: [recordVid], references: [vid])
+  recordVid       String        @id
+}
+
+model RecordLanguage {
+  name      String
+  level     String
+
+  record    Record  @relation(fields: [recordVid], references: [vid])
+  recordVid String  @id
+}
+
+model RecordPersonal {
   name      String?
   email     String?
   homepage  String?
@@ -53,123 +113,48 @@ model PersonalInfo {
   linkedin  String?
   github    String?
   birthday  DateTime?
-}
 
-model RecordAcademic {
-  vid             String        @id
-  title           String
-  startDate       DateTime
-  endDate         DateTime?
-  description     String?
-  articleLink     String?
-  hidden          Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  location        Location?     @relation(fields: [locationVid], references: [vid])
-  locationVid     String?
-  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
-  institutionVid  String?
-
-  recordSets      RecordSet[]
-}
-
-model RecordAchievement {
-  vid             String        @id
-  title           String
-  startDate       DateTime
-  endDate         DateTime?
-  description     String?
-  position        String?
-  certificateLink String?
-  hidden          Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  location        Location?     @relation(fields: [locationVid], references: [vid])
-  locationVid     String?
-  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
-  institutionVid  String?
-
-  recordSets      RecordSet[]
-}
-
-model RecordEducation {
-  vid             String        @id
-  course          String
-  startDate       DateTime
-  endDate         DateTime?
-  description     String?
-  teacher         String?
-  hidden          Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  location        Location?     @relation(fields: [locationVid], references: [vid])
-  locationVid     String?
-  institution     Institution?  @relation(fields: [institutionVid], references: [vid])
-  institutionVid  String?
-
-  recordSets      RecordSet[]
-}
-
-model RecordLanguage {
-  vid         String      @id
-  name        String
-  level       String
-  hidden      Boolean     @default(false)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  recordSets  RecordSet[]
+  record    Record    @relation(fields: [recordVid], references: [vid])
+  recordVid String    @id
 }
 
 model RecordProject {
-  vid                 String      @id
   title               String
   startDate           DateTime
   endDate             DateTime?
   description         String?
   programmingLanguage String?
   repositoryLink      String?
-  hidden              Boolean     @default(false)
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
 
-  location            Location?   @relation(fields: [locationVid], references: [vid])
+  location            Location? @relation(fields: [locationVid], references: [vid])
   locationVid         String?
 
-  recordSets          RecordSet[]
+  record              Record    @relation(fields: [recordVid], references: [vid])
+  recordVid           String    @id
 }
 
 model RecordSkill {
-  vid         String      @id
-  name        String
-  type        String
-  level       String?
-  hidden      Boolean     @default(false)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  name      String
+  type      String
+  level     String?
 
-  recordSets  RecordSet[]
+  record    Record  @relation(fields: [recordVid], references: [vid])
+  recordVid String  @id
 }
 
 model RecordWork {
-  vid             String        @id
   role            String
   startDate       DateTime
   endDate         DateTime?
   description     String?
-  hidden          Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
 
   location        Location?     @relation(fields: [locationVid], references: [vid])
   locationVid     String?
   institution     Institution?  @relation(fields: [institutionVid], references: [vid])
   institutionVid  String?
 
-  recordSets      RecordSet[]
+  record          Record        @relation(fields: [recordVid], references: [vid])
+  recordVid       String        @id
 }
 
 model Institution {

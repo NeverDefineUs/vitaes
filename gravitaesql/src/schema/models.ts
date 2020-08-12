@@ -6,27 +6,34 @@ const User = objectType({
     t.model.vid()
     t.model.firebaseId()
     t.model.autosave()
+    t.model.sectionOrder()
 
-    t.model.recordSets()
+    t.model.records()
+    t.model.cvs()
     t.model.gatekeepers()
   },
 })
 
-const RecordSet = objectType({
-  name: 'RecordSet',
+const CV = objectType({
+  name: 'CV',
   definition(t) {
     t.model.vid()
-    t.model.mainSet()
     t.model.title()
     t.model.sectionOrder()
 
-    t.model.academicRecords()
-    t.model.achievementRecords()
-    t.model.educationRecords()
-    t.model.languageRecords()
-    t.model.projectRecords()
-    t.model.skillRecords()
-    t.model.workRecords()
+    t.model.records()
+
+    t.model.owner()
+  },
+})
+
+const Record = objectType({
+  name: 'Record',
+  definition(t) {
+    t.model.vid()
+    t.model.hidden()
+
+    t.model.cvs()
 
     t.model.owner()
   },
@@ -35,7 +42,6 @@ const RecordSet = objectType({
 const RecordAcademic = objectType({
   name: 'RecordAcademic',
   definition(t) {
-    t.model.vid()
     t.model.title()
     t.model.startDate()
     t.model.endDate()
@@ -45,14 +51,13 @@ const RecordAcademic = objectType({
     t.model.location()
     t.model.institution()
 
-    t.model.recordSets()
+    t.model.record()
   },
 })
 
 const RecordAchievement = objectType({
   name: 'RecordAchievement',
   definition(t) {
-    t.model.vid()
     t.model.title()
     t.model.startDate()
     t.model.endDate()
@@ -63,14 +68,13 @@ const RecordAchievement = objectType({
     t.model.location()
     t.model.institution()
 
-    t.model.recordSets()
+    t.model.record()
   },
 })
 
 const RecordEducation = objectType({
   name: 'RecordEducation',
   definition(t) {
-    t.model.vid()
     t.model.course()
     t.model.startDate()
     t.model.endDate()
@@ -80,25 +84,39 @@ const RecordEducation = objectType({
     t.model.location()
     t.model.institution()
 
-    t.model.recordSets()
+    t.model.record()
   },
 })
 
 const RecordLanguage = objectType({
   name: 'RecordLanguage',
   definition(t) {
-    t.model.vid()
     t.model.name()
     t.model.level()
 
-    t.model.recordSets()
+    t.model.record()
+  },
+})
+
+const RecordPersonal = objectType({
+  name: 'RecordPersonal',
+  definition(t) {
+    t.model.name()
+    t.model.email()
+    t.model.homepage()
+    t.model.phone()
+    t.model.address()
+    t.model.linkedin()
+    t.model.github()
+    t.model.birthday()
+
+    t.model.record()
   },
 })
 
 const RecordProject = objectType({
   name: 'RecordProject',
   definition(t) {
-    t.model.vid()
     t.model.title()
     t.model.startDate()
     t.model.endDate()
@@ -108,26 +126,24 @@ const RecordProject = objectType({
 
     t.model.location()
 
-    t.model.recordSets()
+    t.model.record()
   },
 })
 
 const RecordSkill = objectType({
   name: 'RecordSkill',
   definition(t) {
-    t.model.vid()
     t.model.name()
     t.model.type()
     t.model.level()
 
-    t.model.recordSets()
+    t.model.record()
   },
 })
 
 const RecordWork = objectType({
   name: 'RecordWork',
   definition(t) {
-    t.model.vid()
     t.model.role()
     t.model.startDate()
     t.model.endDate()
@@ -136,7 +152,7 @@ const RecordWork = objectType({
     t.model.location()
     t.model.institution()
 
-    t.model.recordSets()
+    t.model.record()
   },
 })
 
@@ -219,11 +235,13 @@ const TemplateParam = objectType({
 
 export default [
   User,
-  RecordSet,
+  CV,
+  Record,
   RecordAcademic,
   RecordAchievement,
   RecordEducation,
   RecordLanguage,
+  RecordPersonal,
   RecordProject,
   RecordSkill,
   RecordWork,
