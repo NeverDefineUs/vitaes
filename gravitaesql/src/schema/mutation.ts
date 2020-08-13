@@ -1,5 +1,7 @@
 import { mutationType, stringArg } from '@nexus/schema'
 
+import { defaultRecordsOrder, defaultSectionOrder } from '../utils/collectionRecords'
+
 export default mutationType({
   definition(t) {
     t.field('createUser', {
@@ -17,6 +19,8 @@ export default mutationType({
           data: {
             vid: args.vid,
             firebaseId: firebaseId,
+            recordsOrder: defaultRecordsOrder,
+            sectionOrder: defaultSectionOrder,
           },
         })
       }
