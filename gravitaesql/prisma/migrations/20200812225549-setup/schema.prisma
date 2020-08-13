@@ -11,7 +11,8 @@ model User {
   vid           String        @id
   firebaseId    String        @unique
   autosave      Boolean       @default(false)
-  sectionOrder  String?
+  sectionOrder  String
+  recordsOrder  String
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
@@ -25,7 +26,8 @@ model User {
 model CV {
   vid           String    @id
   title         String?
-  sectionOrder  String?
+  sectionOrder  String
+  recordsOrder  String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

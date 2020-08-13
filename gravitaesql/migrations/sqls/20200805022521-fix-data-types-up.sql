@@ -42,7 +42,8 @@ ALTER TABLE `BugReport`
 
 ALTER TABLE `CV`
   CHANGE `ownerVid` `ownerVid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  CHANGE `sectionOrder` `sectionOrder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  CHANGE `recordsOrder` `recordsOrder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  CHANGE `sectionOrder` `sectionOrder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   CHANGE `title` `title` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   CHANGE `vid` `vid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
@@ -143,7 +144,8 @@ ALTER TABLE `TemplateParam`
 
 ALTER TABLE `User`
   CHANGE `firebaseId` `firebaseId` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  CHANGE `sectionOrder` `sectionOrder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  CHANGE `recordsOrder` `recordsOrder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  CHANGE `sectionOrder` `sectionOrder` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   CHANGE `vid` `vid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
 ALTER TABLE `_CVToRecord`

@@ -23,7 +23,7 @@ export default queryType({
         return user
       },
     })
-    t.field('toLegacyJSON', {
+    t.field('legacyJSON', {
       type: 'String',
       args: {
         userVid: stringArg({ required: true })

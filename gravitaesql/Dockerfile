@@ -1,4 +1,4 @@
-FROM node:11.14-alpine
+FROM node:11.14
 ENV MYSQL_HOST="mysql"
 ENV DATABASE_URL="mysql://root:vitaes@mysql:3306/vitaes"
 WORKDIR /vitaes

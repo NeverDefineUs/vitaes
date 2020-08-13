@@ -255,7 +255,7 @@ input BugReportWhereUniqueInput {
 type CV {
   owner: User!
   records(after: RecordWhereUniqueInput, before: RecordWhereUniqueInput, first: Int, last: Int): [Record!]!
-  sectionOrder: String
+  sectionOrder: String!
   title: String
   vid: String!
 }
@@ -264,7 +264,8 @@ input CVCreateInput {
   createdAt: DateTime
   owner: UserCreateOneWithoutCvsInput!
   records: RecordCreateManyWithoutCvsInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   title: String
   updatedAt: DateTime
   vid: String!
@@ -283,7 +284,8 @@ input CVCreateManyWithoutRecordsInput {
 input CVCreateWithoutOwnerInput {
   createdAt: DateTime
   records: RecordCreateManyWithoutCvsInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   title: String
   updatedAt: DateTime
   vid: String!
@@ -292,7 +294,8 @@ input CVCreateWithoutOwnerInput {
 input CVCreateWithoutRecordsInput {
   createdAt: DateTime
   owner: UserCreateOneWithoutCvsInput!
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   title: String
   updatedAt: DateTime
   vid: String!
@@ -311,7 +314,8 @@ input CVScalarWhereInput {
   OR: [CVScalarWhereInput!]
   ownerVid: StringFilter
   records: RecordFilter
-  sectionOrder: NullableStringFilter
+  recordsOrder: StringFilter
+  sectionOrder: StringFilter
   title: NullableStringFilter
   updatedAt: DateTimeFilter
   vid: StringFilter
@@ -321,6 +325,7 @@ input CVUpdateInput {
   createdAt: DateTime
   owner: UserUpdateOneRequiredWithoutCvsInput
   records: RecordUpdateManyWithoutCvsInput
+  recordsOrder: String
   sectionOrder: String
   title: String
   updatedAt: DateTime
@@ -329,6 +334,7 @@ input CVUpdateInput {
 
 input CVUpdateManyDataInput {
   createdAt: DateTime
+  recordsOrder: String
   sectionOrder: String
   title: String
   updatedAt: DateTime
@@ -367,6 +373,7 @@ input CVUpdateManyWithWhereNestedInput {
 input CVUpdateWithoutOwnerDataInput {
   createdAt: DateTime
   records: RecordUpdateManyWithoutCvsInput
+  recordsOrder: String
   sectionOrder: String
   title: String
   updatedAt: DateTime
@@ -376,6 +383,7 @@ input CVUpdateWithoutOwnerDataInput {
 input CVUpdateWithoutRecordsDataInput {
   createdAt: DateTime
   owner: UserUpdateOneRequiredWithoutCvsInput
+  recordsOrder: String
   sectionOrder: String
   title: String
   updatedAt: DateTime
@@ -412,7 +420,8 @@ input CVWhereInput {
   owner: UserWhereInput
   ownerVid: StringFilter
   records: RecordFilter
-  sectionOrder: NullableStringFilter
+  recordsOrder: StringFilter
+  sectionOrder: StringFilter
   title: NullableStringFilter
   updatedAt: DateTimeFilter
   vid: StringFilter
@@ -1047,7 +1056,7 @@ input NullableStringFilter {
 
 type Query {
   currentUser: User!
-  toLegacyJSON(userVid: String!): String!
+  legacyJSON(userVid: String!): String!
 }
 
 type Record {
@@ -3121,7 +3130,7 @@ type User {
   firebaseId: String!
   gatekeepers(after: GatekeeperWhereUniqueInput, before: GatekeeperWhereUniqueInput, first: Int, last: Int): [Gatekeeper!]!
   records(after: RecordWhereUniqueInput, before: RecordWhereUniqueInput, first: Int, last: Int): [Record!]!
-  sectionOrder: String
+  sectionOrder: String!
   vid: String!
 }
 
@@ -3158,7 +3167,8 @@ input UserCreateWithoutAlertsInput {
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
   records: RecordCreateManyWithoutOwnerInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   updatedAt: DateTime
   vid: String!
 }
@@ -3171,7 +3181,8 @@ input UserCreateWithoutBugReportsInput {
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
   records: RecordCreateManyWithoutOwnerInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   updatedAt: DateTime
   vid: String!
 }
@@ -3184,7 +3195,8 @@ input UserCreateWithoutCvsInput {
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
   records: RecordCreateManyWithoutOwnerInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   updatedAt: DateTime
   vid: String!
 }
@@ -3197,7 +3209,8 @@ input UserCreateWithoutGatekeepersInput {
   cvs: CVCreateManyWithoutOwnerInput
   firebaseId: String!
   records: RecordCreateManyWithoutOwnerInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   updatedAt: DateTime
   vid: String!
 }
@@ -3210,7 +3223,8 @@ input UserCreateWithoutRecordsInput {
   cvs: CVCreateManyWithoutOwnerInput
   firebaseId: String!
   gatekeepers: GatekeeperCreateManyWithoutAllowedUsersInput
-  sectionOrder: String
+  recordsOrder: String!
+  sectionOrder: String!
   updatedAt: DateTime
   vid: String!
 }
@@ -3233,7 +3247,8 @@ input UserScalarWhereInput {
   NOT: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   records: RecordFilter
-  sectionOrder: NullableStringFilter
+  recordsOrder: StringFilter
+  sectionOrder: StringFilter
   updatedAt: DateTimeFilter
   vid: StringFilter
 }
@@ -3242,6 +3257,7 @@ input UserUpdateManyDataInput {
   autosave: Boolean
   createdAt: DateTime
   firebaseId: String
+  recordsOrder: String
   sectionOrder: String
   updatedAt: DateTime
   vid: String
@@ -3293,6 +3309,7 @@ input UserUpdateWithoutAlertsDataInput {
   firebaseId: String
   gatekeepers: GatekeeperUpdateManyWithoutAllowedUsersInput
   records: RecordUpdateManyWithoutOwnerInput
+  recordsOrder: String
   sectionOrder: String
   updatedAt: DateTime
   vid: String
@@ -3306,6 +3323,7 @@ input UserUpdateWithoutCvsDataInput {
   firebaseId: String
   gatekeepers: GatekeeperUpdateManyWithoutAllowedUsersInput
   records: RecordUpdateManyWithoutOwnerInput
+  recordsOrder: String
   sectionOrder: String
   updatedAt: DateTime
   vid: String
@@ -3319,6 +3337,7 @@ input UserUpdateWithoutGatekeepersDataInput {
   cvs: CVUpdateManyWithoutOwnerInput
   firebaseId: String
   records: RecordUpdateManyWithoutOwnerInput
+  recordsOrder: String
   sectionOrder: String
   updatedAt: DateTime
   vid: String
@@ -3332,6 +3351,7 @@ input UserUpdateWithoutRecordsDataInput {
   cvs: CVUpdateManyWithoutOwnerInput
   firebaseId: String
   gatekeepers: GatekeeperUpdateManyWithoutAllowedUsersInput
+  recordsOrder: String
   sectionOrder: String
   updatedAt: DateTime
   vid: String
@@ -3375,7 +3395,8 @@ input UserWhereInput {
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
   records: RecordFilter
-  sectionOrder: NullableStringFilter
+  recordsOrder: StringFilter
+  sectionOrder: StringFilter
   updatedAt: DateTimeFilter
   vid: StringFilter
 }

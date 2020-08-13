@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { exit } from 'process'
 import sortKeys from 'sort-keys'
-import { Md5 } from 'md5-typescript'
 
 import admin from '../firebase'
 import toLegacyJSON from '../utils/legacyJson'
@@ -74,31 +73,19 @@ function sortJson(json: any): void {
     }
 
     Object.keys(data.cv).filter(key => key !== 'header').forEach(kind => {
-      const arr = data.cv[kind]
+      Array.from<any>(data.cv[kind]).forEach(item => {
+        if (!item.disable) {
+          delete item.disable
+        }
 
-      let md5Map = Array.from<any>(arr)
-        .map(item => {
-          if (!item.disable) {
-            delete item.disable
+        Object.keys(item).forEach(field => {
+          if (field.endsWith('date')) {
+            item[field] =  item[field]
+              .replace('/', '-')
+              .replace('/', '-')
           }
-
-          Object.keys(item).forEach(field => {
-            if (field.endsWith('date')) {
-              item[field] =  item[field]
-                .replace('/', '-')
-                .replace('/', '-')
-            }
-          })
-
-          return item
         })
-        .reduce(
-          (acc, item) => (acc[Md5.init(JSON.stringify(item))] = item, acc),
-          {}
-        )
-      md5Map = sortKeys(md5Map)
-
-      data.cv[kind] = Object.values(md5Map)
+      })
     })
   })
 }

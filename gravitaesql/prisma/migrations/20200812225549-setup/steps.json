@@ -109,7 +109,14 @@
       "model": "User",
       "field": "sectionOrder",
       "type": "String",
-      "arity": "Optional"
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "recordsOrder",
+      "type": "String",
+      "arity": "Required"
     },
     {
       "tag": "CreateField",
@@ -230,7 +237,14 @@
       "model": "CV",
       "field": "sectionOrder",
       "type": "String",
-      "arity": "Optional"
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CV",
+      "field": "recordsOrder",
+      "type": "String",
+      "arity": "Required"
     },
     {
       "tag": "CreateField",

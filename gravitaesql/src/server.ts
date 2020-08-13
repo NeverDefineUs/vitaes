@@ -10,9 +10,9 @@ new ApolloServer({
   schema,
   context: async ({ req }) => await createContext(req),
 }).listen(
-  { port: 4000 },
+  { port: 6007 },
   () =>
     console.log(
-      `🚀 Server ready at: http://localhost:4000`,
+      `🚀 Server ready at: http://localhost:6007`,
     ),
 )

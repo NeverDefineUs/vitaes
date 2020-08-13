@@ -79,14 +79,22 @@ const migrateUsers = async (users: Object) => {
     const firebaseId = entry[0]
     const user = entry[1]
 
+    const records = parseRecords(user.cv)
+    const allRecords = Object.values(records).flat()
+    const orderedRecords = Array.from<string>(user.cv_order)
+      .map(kind =>
+        Array.from(records[kind]).map(record => record.vid)
+      )
+
     return await prisma.user.create({
       data: {
         vid: ulid(),
         firebaseId: firebaseId,
         autosave: user.autosave,
         sectionOrder: JSON.stringify(user.cv_order),
+        recordsOrder: JSON.stringify(orderedRecords),
         records: {
-          create: parseRecords(user.cv),
+          create: allRecords,
         }
       }
     })
@@ -95,25 +103,24 @@ const migrateUsers = async (users: Object) => {
   console.log("done with users")
 }
 
-const parseRecords = (cv: any): RecordCreateInput[] => {
-  const records: RecordCreateInput[] = []
+const pushRecords = (records: { [k: string]: RecordCreateInput[] }, kind: string, values: RecordCreateInput[]): void => {
+  if (!records[kind]) {
+    records[kind] = []
+  }
+  Array.from(values).forEach(value => records[kind].push(value))
+}
 
-  Array.from(parseAcademic(cv.academic))
-    .forEach(record => records.push(record));
-  Array.from(parseAchievement(cv.achievement))
-    .forEach(record => records.push(record));
-  Array.from(parseEducation(cv.education))
-    .forEach(record => records.push(record));
-  Array.from(parseLanguage(cv.language))
-    .forEach(record => records.push(record));
-  Array.from(parsePersonal(cv.header))
-    .forEach(record => records.push(record));
-  Array.from(parseProject(cv.project))
-    .forEach(record => records.push(record));
-  Array.from(parseSkill(cv.skill))
-    .forEach(record => records.push(record));
-  Array.from(parseWork(cv.work))
-    .forEach(record => records.push(record));
+const parseRecords = (cv: any): { [k: string]: RecordCreateInput[] } => {
+  const records: { [k: string]: RecordCreateInput[] } = {}
+
+  pushRecords(records, 'academic', Array.from(parseAcademic(cv.academic)))
+  pushRecords(records, 'achievement', Array.from(parseAchievement(cv.achievement)))
+  pushRecords(records, 'education', Array.from(parseEducation(cv.education)))
+  pushRecords(records, 'language', Array.from(parseLanguage(cv.language)))
+  pushRecords(records, 'header', Array.from(parsePersonal(cv.header)))
+  pushRecords(records, 'project', Array.from(parseProject(cv.project)))
+  pushRecords(records, 'skill', Array.from(parseSkill(cv.skill)))
+  pushRecords(records, 'work', Array.from(parseWork(cv.work)))
 
   return records
 }

@@ -49,7 +49,7 @@ function cleanEmpty(obj: any): any {
   const newObj: any = {}
   return Object.entries(obj)
     .map(([k, v]) => [k, v && typeof v === "object" ? cleanEmpty(v) : v])
-    .reduce((a, [k, v]) => (v == null ? a : (a[k] = v, a)), newObj)
+    .reduce((a, [k, v]) => (v == null || k === 'vid' ? a : (a[k] = v, a)), newObj)
 }
 
 function formatDate(date: Date | null): string | null {
@@ -73,8 +73,8 @@ function formatLocation(location: Location | null): any {
 }
 
 function pushRecord(cv: any, kind: string, data: any) {
-  cv[kind] = cv[kind] ?? []
-  cv[kind].push(cleanEmpty(data))
+  cv[kind] = cv[kind] ?? {}
+  cv[kind][data.vid] = cleanEmpty(data)
 }
 
 function processRecord(genericRecord: GenericRecord, cv: any): any {
@@ -83,6 +83,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordAcademic.length > 0) {
     const record = genericRecord.RecordAcademic[0]
     pushRecord(cv, 'academic', {
+      vid: record.recordVid,
       name: record.title,
       start_date: formatDate(record.startDate),
       end_date: formatDate(record.endDate),
@@ -97,6 +98,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordAchievement.length > 0) {
     const record = genericRecord.RecordAchievement[0]
     pushRecord(cv, 'achievement', {
+      vid: record.recordVid,
       name: record.title,
       start_date: formatDate(record.startDate),
       end_date: formatDate(record.endDate),
@@ -112,6 +114,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordEducation.length > 0) {
     const record = genericRecord.RecordEducation[0]
     pushRecord(cv, 'education', {
+      vid: record.recordVid,
       course: record.course,
       start_date: formatDate(record.startDate),
       end_date: formatDate(record.endDate),
@@ -126,6 +129,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordLanguage.length > 0) {
     const record = genericRecord.RecordLanguage[0]
     pushRecord(cv, 'language', {
+      vid: record.recordVid,
       language: record.name,
       level: record.level,
       disable: hidden,
@@ -149,6 +153,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordProject.length > 0) {
     const record = genericRecord.RecordProject[0]
     pushRecord(cv, 'project', {
+      vid: record.recordVid,
       name: record.title,
       start_date: formatDate(record.startDate),
       end_date: formatDate(record.endDate),
@@ -163,6 +168,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordSkill.length > 0) {
     const record = genericRecord.RecordSkill[0]
     pushRecord(cv, 'skill', {
+      vid: record.recordVid,
       skill_name: record.name,
       skill_level: record.level,
       skill_type: record.type,
@@ -173,6 +179,7 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   if (genericRecord.RecordWork.length > 0) {
     const record = genericRecord.RecordWork[0]
     pushRecord(cv, 'work', {
+      vid: record.recordVid,
       role: record.role,
       location: formatLocation(record.location),
       start_date: formatDate(record.startDate),
@@ -184,6 +191,18 @@ function processRecord(genericRecord: GenericRecord, cv: any): any {
   }
 }
 
+function sortRecords(cv: any, sectionOrder: any, recordsOrder: any[]): void {
+  Array.from<string>(sectionOrder)
+    .forEach((kind, idx) => {
+      cv[kind] = Array.from<string>(recordsOrder[idx]).map(recordVid => cv[kind][recordVid])
+    })
+  Object.keys(cv).forEach(kind => {
+    if (cv[kind].length == 0) {
+      delete cv[kind]
+    }
+  })
+}
+
 function toLegacyJSON(user: UserWithRecords): Object {
   let legacy: any = {}
 
@@ -192,8 +211,9 @@ function toLegacyJSON(user: UserWithRecords): Object {
     legacy['cv_order'] = JSON.parse(user.sectionOrder)
   }
 
-  const cv: any = {}
+  let cv: any = {}
   user.records.forEach(record => processRecord(record, cv))
+  sortRecords(cv, JSON.parse(user.sectionOrder), JSON.parse(user.recordsOrder))
   legacy['cv'] = cv
 
   legacy = sortKeys(legacy, { deep: true })
