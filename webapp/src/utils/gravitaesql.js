@@ -3,7 +3,7 @@ import fetch from 'fetch-retry';
 
 import { getGravitaesqlHostname } from 'utils/getHostname';
 
-async function gravitaesql(query) {
+async function gravitaesql(query, variables) {
   await firebase.auth().getRedirectResult()
   const user = firebase.auth().currentUser
   let headers = {
@@ -22,8 +22,13 @@ async function gravitaesql(query) {
     headers,
     body: JSON.stringify({
       query,
+      variables,
     })
-  }).then(res => res.json()).then(res => res.data)
+  }).then(res => res.json())
+    .then(res => {
+      // TODO log errors
+      return res.data
+    })
 }
 
 export default gravitaesql

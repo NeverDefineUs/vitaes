@@ -1,28 +1,52 @@
 import { mutationType, stringArg } from '@nexus/schema'
+import { ulid } from 'ntp-ulid'
 
 import { defaultRecordsOrder, defaultSectionOrder } from '../utils/collectionRecords'
+import { resolveLegacyJson } from '../utils/legacyJsonExport'
+import { updateUser } from '../utils/legacyJsonImport'
 
 export default mutationType({
   definition(t) {
     t.field('createUser', {
-      type: 'User',
+      type: 'String',
       args: {
-        vid: stringArg({ required: true })
+        vid: stringArg()
       },
-      resolve: (_root, args, ctx) => {
+      resolve: async (_root, args, ctx) => {
         const firebaseId = ctx.firebaseId
         if (!firebaseId) {
           throw new Error("User not authenticated")
         }
 
-        return ctx.prisma.user.create({
+        const vid = args.vid ?? ulid()
+        await ctx.prisma.user.create({
           data: {
-            vid: args.vid,
-            firebaseId: firebaseId,
+            vid,
+            firebaseId,
             recordsOrder: defaultRecordsOrder,
             sectionOrder: defaultSectionOrder,
           },
         })
+
+        return await resolveLegacyJson(ctx, {
+          vid: vid,
+        })
+      }
+    })
+    t.field('updateUser', {
+      type: 'Boolean',
+      args: {
+        legacyJson: stringArg({ required: true })
+      },
+      resolve: async (_root, args, ctx) => {
+        const firebaseId = ctx.firebaseId
+        if (!firebaseId) {
+          throw new Error("User not authenticated")
+        }
+
+        await updateUser(ctx, firebaseId, args.legacyJson)
+
+        return true
       }
     })
   

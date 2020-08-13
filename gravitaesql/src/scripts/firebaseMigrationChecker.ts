@@ -3,7 +3,7 @@ import { exit } from 'process'
 import sortKeys from 'sort-keys'
 
 import admin from '../firebase'
-import toLegacyJSON from '../utils/legacyJson'
+import { legacyJson } from '../utils/legacyJsonExport'
 
 const prisma = new PrismaClient()
 
@@ -51,7 +51,7 @@ async function fetchMysqlUsers() {
 
   let json: any = {}
   users.reduce((acc, user) => {
-    acc[user.firebaseId] = toLegacyJSON(user)
+    acc[user.firebaseId] = legacyJson(user)
     return acc
   }, json)
   json = sortKeys(json)

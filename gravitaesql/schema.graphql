@@ -1015,7 +1015,7 @@ type Mutation {
   createOneRecordProject(data: RecordProjectCreateInput!): RecordProject!
   createOneRecordSkill(data: RecordSkillCreateInput!): RecordSkill!
   createOneRecordWork(data: RecordWorkCreateInput!): RecordWork!
-  createUser(vid: String!): User!
+  createUser(vid: String): String!
   updateOneAlert(data: AlertUpdateInput!, where: AlertWhereUniqueInput!): Alert
   updateOneCV(data: CVUpdateInput!, where: CVWhereUniqueInput!): CV
   updateOneGatekeeper(data: GatekeeperUpdateInput!, where: GatekeeperWhereUniqueInput!): Gatekeeper
@@ -1027,6 +1027,7 @@ type Mutation {
   updateOneRecordProject(data: RecordProjectUpdateInput!, where: RecordProjectWhereUniqueInput!): RecordProject
   updateOneRecordSkill(data: RecordSkillUpdateInput!, where: RecordSkillWhereUniqueInput!): RecordSkill
   updateOneRecordWork(data: RecordWorkUpdateInput!, where: RecordWorkWhereUniqueInput!): RecordWork
+  updateUser(legacyJson: String!): Boolean!
 }
 
 input NullableDateTimeFilter {
@@ -1055,7 +1056,7 @@ input NullableStringFilter {
 }
 
 type Query {
-  currentUser: User!
+  currentUser: String!
   legacyJSON(userVid: String!): String!
 }
 

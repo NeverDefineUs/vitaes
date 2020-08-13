@@ -1,26 +1,20 @@
 import { queryType, stringArg } from '@nexus/schema'
 
-import toLegacyJSON from '../utils/legacyJson'
+import { resolveLegacyJson } from '../utils/legacyJsonExport'
 
 export default queryType({
   definition(t) {
     t.field('currentUser', {
-      type: 'User',
+      type: 'String',
       resolve: async (_root, _args, ctx) => {
         const firebaseId = ctx.firebaseId
         if (!firebaseId) {
           throw new Error("User not authenticated")
         }
-        
-        const user = await ctx.prisma.user.findOne({
-          where: {
-            firebaseId: firebaseId,
-          }
+
+        return await resolveLegacyJson(ctx, {
+          firebaseId,
         })
-        if (!user) {
-          throw new Error("User not found")
-        }
-        return user
       },
     })
     t.field('legacyJSON', {
@@ -29,54 +23,9 @@ export default queryType({
         userVid: stringArg({ required: true })
       },
       resolve: async (_root, args, ctx) => {
-        const user = await ctx.prisma.user.findOne({
-          where: {
-            vid: args.userVid,
-          },
-          include: {
-            records: {
-              include: {
-                RecordAcademic: {
-                  include: {
-                    institution: true,
-                    location: true,
-                  }
-                },
-                RecordAchievement: {
-                  include: {
-                    institution: true,
-                    location: true,
-                  }
-                },
-                RecordEducation: {
-                  include: {
-                    institution: true,
-                    location: true,
-                  }
-                },
-                RecordLanguage: true,
-                RecordPersonal: true,
-                RecordProject: {
-                  include: {
-                    location: true,
-                  }
-                },
-                RecordSkill: true,
-                RecordWork: {
-                  include: {
-                    institution: true,
-                    location: true,
-                  }
-                },
-              }
-            }
-          }
+        return await resolveLegacyJson(ctx, {
+          vid: args.userVid,
         })
-        if (!user) {
-          throw new Error("User not found")
-        }
-        
-        return JSON.stringify(toLegacyJSON(user), null, 2)
       },
     })
   },

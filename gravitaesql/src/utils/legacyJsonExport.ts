@@ -11,9 +11,12 @@ import {
   RecordWork,
   Institution,
   Location,
+  UserWhereUniqueInput,
 } from '@prisma/client'
 import moment from 'moment'
 import sortKeys from 'sort-keys'
+
+import { Context } from '../context'
 
 type GenericRecord = Record & {
   RecordAcademic: (RecordAcademic & {
@@ -203,7 +206,7 @@ function sortRecords(cv: any, sectionOrder: any, recordsOrder: any[]): void {
   })
 }
 
-function toLegacyJSON(user: UserWithRecords): Object {
+function legacyJson(user: UserWithRecords): Object {
   let legacy: any = {}
 
   legacy['autosave'] = user.autosave
@@ -216,8 +219,66 @@ function toLegacyJSON(user: UserWithRecords): Object {
   sortRecords(cv, JSON.parse(user.sectionOrder), JSON.parse(user.recordsOrder))
   legacy['cv'] = cv
 
+  if (!cv.header) {
+    cv.header = {
+      name: '',
+    }
+  }
+
   legacy = sortKeys(legacy, { deep: true })
   return legacy
 }
 
-export default toLegacyJSON
+async function resolveLegacyJson(ctx: Context, where: UserWhereUniqueInput): Promise<string> {
+  const user = await ctx.prisma.user.findOne({
+    where,
+    include: {
+      records: {
+        include: {
+          RecordAcademic: {
+            include: {
+              institution: true,
+              location: true,
+            }
+          },
+          RecordAchievement: {
+            include: {
+              institution: true,
+              location: true,
+            }
+          },
+          RecordEducation: {
+            include: {
+              institution: true,
+              location: true,
+            }
+          },
+          RecordLanguage: true,
+          RecordPersonal: true,
+          RecordProject: {
+            include: {
+              location: true,
+            }
+          },
+          RecordSkill: true,
+          RecordWork: {
+            include: {
+              institution: true,
+              location: true,
+            }
+          },
+        }
+      }
+    }
+  })
+  if (!user) {
+    throw new Error("User not found")
+  }
+  
+  return JSON.stringify(legacyJson(user), null, 2)
+}
+
+export {
+  legacyJson,
+  resolveLegacyJson,
+}

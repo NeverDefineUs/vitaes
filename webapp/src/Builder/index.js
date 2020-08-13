@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import { translate } from 'i18n/locale';
 import { getApiHostname } from 'utils/getHostname';
+import gravitaesql from 'utils/gravitaesql'
 
 import Builder from './Builder';
 
@@ -58,25 +59,37 @@ class BuilderContainer extends React.Component {
         if (user) {
           const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
 
-          const db = firebase
-            .database()
-            .ref('users')
-            .child(user.uid);
-
-          db.on(
-            'value',
-            (snapshot) => {
-              toast.dismiss(loadingToast);
-              const snap = snapshot.val();
-              if (snap === null) {
-                db.set(defaultUser);
-              } else {
-                this.setState({ userData: snap });
-              }
-            },
-            () => {
-            },
-          );
+          gravitaesql(`
+            query LegacyJSON {
+              currentUser
+            }
+          `).then(data => {
+            if (!data) {
+              gravitaesql(`
+                mutation CreateUser {
+                  createUser
+                }
+              `).then(mutationData => {
+                this.setState({
+                  userData: {
+                    ...JSON.parse(mutationData.createUser),
+                    user_cv_model: 'awesome',
+                    params: {},
+                  }
+                })
+                toast.dismiss(loadingToast)
+              })
+            } else {
+              this.setState({
+                userData: {
+                  ...JSON.parse(data.currentUser),
+                  user_cv_model: 'awesome',
+                  params: {},
+                }
+              })
+              toast.dismiss(loadingToast)
+            }
+          })
         }
       });
 
