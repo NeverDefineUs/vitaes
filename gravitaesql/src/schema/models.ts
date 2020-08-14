@@ -194,8 +194,6 @@ const Alert = objectType({
     t.model.vid()
     t.model.message()
     t.model.type()
-
-    t.model.author()
   },
 })
 

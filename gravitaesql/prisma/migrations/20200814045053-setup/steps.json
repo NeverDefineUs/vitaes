@@ -6,7 +6,7 @@
       "enum": "AlertType",
       "values": [
         "INFO",
-        "WARN",
+        "WARNING",
         "ERROR"
       ]
     },
@@ -187,13 +187,6 @@
       "model": "User",
       "field": "gatekeepers",
       "type": "Gatekeeper",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "User",
-      "field": "alerts",
-      "type": "Alert",
       "arity": "List"
     },
     {
@@ -2020,7 +2013,7 @@
       "model": "BugReport",
       "field": "title",
       "type": "String",
-      "arity": "Optional"
+      "arity": "Required"
     },
     {
       "tag": "CreateField",
@@ -2231,59 +2224,6 @@
         },
         "directive": "updatedAt"
       }
-    },
-    {
-      "tag": "CreateField",
-      "model": "Alert",
-      "field": "author",
-      "type": "User",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Alert",
-          "field": "author"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Alert",
-          "field": "author"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[authorVid]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Alert",
-          "field": "author"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[vid]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Alert",
-      "field": "authorVid",
-      "type": "String",
-      "arity": "Required"
     },
     {
       "tag": "CreateModel",

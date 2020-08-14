@@ -5,20 +5,46 @@ import admin from './firebase'
 const prisma = new PrismaClient()
 
 export interface Context {
-  firebaseId?: string, 
+  isAdmin: boolean,
+  firebaseId?: string,
   prisma: PrismaClient,
 }
 
 export async function createContext(req: express.Request): Promise<Context> {
-  const tokenWithBearer = (req.headers && req.headers.authorization) ? req.headers.authorization : null
+  const tokenWithBearer = 
+    (req.headers && req.headers.authorization) ?
+      req.headers.authorization :
+      null
   if (tokenWithBearer == null) {
-    return { prisma }
+    return {
+      isAdmin: false,
+      prisma,
+    }
   }
   const token = tokenWithBearer.replace('Bearer ', '')
-
   const decodedToken = await admin.auth().verifyIdToken(token)
+  const firebaseId = decodedToken.uid
+
+  const user = await prisma.user.findOne({
+    where: {
+      firebaseId: firebaseId,
+    },
+    select: {
+      gatekeepers: {
+        select: {
+          name: true,
+        }
+      }
+    }
+  })
+  const isAdmin =
+    !!user && user.gatekeepers.map(
+      gatekeeper => gatekeeper.name
+    ).includes('admin')
+
   return {
-    firebaseId: decodedToken.uid,
-    prisma
+    isAdmin: isAdmin,
+    firebaseId: firebaseId,
+    prisma,
   }
 }

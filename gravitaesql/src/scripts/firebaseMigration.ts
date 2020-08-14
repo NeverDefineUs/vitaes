@@ -14,9 +14,9 @@ async function migrateBugReports(bugs: Object) {
       const author = (await prisma.user.findMany({
         where: {
           records: {
-            every: {
+            some: {
               RecordPersonal: {
-                every: {
+                some: {
                   email: {
                     equals: bug.email
                   }
@@ -46,7 +46,6 @@ async function migrateBugReports(bugs: Object) {
     })
   })
   await Promise.all(promises)
-  console.log("done with bugs")
 }
 
 async function migrateUsers(users: Object) {
@@ -57,7 +56,32 @@ async function migrateUsers(users: Object) {
     return await createUserFromLegacyJson(prisma, firebaseId, user)
   })
   await Promise.all(promises)
-  console.log("done with users")
+}
+
+async function migratePermissions() {
+  await prisma.gatekeeper.create({
+    data: {
+      vid: ulid(),
+      name: 'admin',
+      description: 'allow access to admin functions',
+      allowedUsers: {
+        connect: [
+          { firebaseId: '8cLxsE1qpXhr4ostt2PCvhkyCou2' },
+          { firebaseId: '8jCzPcCU6cP5CgZ4MwNXhDiXag92' },
+        ]
+      }
+    }
+  })
+}
+
+async function migrateAlerts() {
+  await prisma.alert.create({
+    data: {
+      vid: ulid(),
+      message: 'Come help us on Github!',
+      type: 'INFO',
+    }
+  })
 }
 
 async function migrate() {
@@ -66,6 +90,8 @@ async function migrate() {
 
   await migrateUsers(db['users'])
   await migrateBugReports(db['bug'])
+  await migratePermissions()
+  await migrateAlerts()
 
   exit()
 }

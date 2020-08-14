@@ -320,6 +320,27 @@ async function updateUser(
   firebaseId: string,
   legacyJson: string
 ): Promise<void> {
+  const gatekeepers = await ctx.prisma.gatekeeper.findMany({
+    where: {
+      allowedUsers: {
+        some: {
+          firebaseId: {
+            equals: firebaseId,
+          }
+        }
+      }
+    }
+  })
+  const bugReports = await ctx.prisma.bugReport.findMany({
+    where: {
+      author: {
+        firebaseId: {
+          equals: firebaseId,
+        }
+      }
+    }
+  })
+
   const records = await ctx.prisma.record.findMany({
     where: {
       owner: {
@@ -344,6 +365,24 @@ async function updateUser(
   await ctx.prisma.user.delete({ where: { firebaseId }})
 
   await createUserFromLegacyJson(ctx.prisma, firebaseId, JSON.parse(legacyJson))
+
+  await ctx.prisma.user.update({
+    where: {
+      firebaseId
+    },
+    data: {
+      gatekeepers: {
+        connect: gatekeepers.map(gatekeeper => ({
+          vid: gatekeeper.vid,
+        }))
+      },
+      bugReports: {
+        connect: bugReports.map(bugReport => ({
+          vid: bugReport.vid,
+        }))
+      }
+    }
+  })
 }
 
 export {

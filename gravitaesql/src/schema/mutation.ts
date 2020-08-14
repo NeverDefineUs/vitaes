@@ -1,4 +1,4 @@
-import { mutationType, stringArg } from '@nexus/schema'
+import { mutationType, arg, stringArg } from '@nexus/schema'
 import { ulid } from 'ntp-ulid'
 
 import { defaultRecordsOrder, defaultSectionOrder } from '../utils/collectionRecords'
@@ -7,10 +7,9 @@ import { updateUser } from '../utils/legacyJsonImport'
 
 export default mutationType({
   definition(t) {
-    t.field('createUser', {
-      type: 'String',
+    t.string('createUser', {
       args: {
-        vid: stringArg()
+        vid: stringArg(),
       },
       resolve: async (_root, args, ctx) => {
         const firebaseId = ctx.firebaseId
@@ -33,10 +32,9 @@ export default mutationType({
         })
       }
     })
-    t.field('updateUser', {
-      type: 'Boolean',
+    t.boolean('updateUser', {
       args: {
-        legacyJson: stringArg({ required: true })
+        legacyJson: stringArg({ required: true }),
       },
       resolve: async (_root, args, ctx) => {
         const firebaseId = ctx.firebaseId
@@ -49,30 +47,75 @@ export default mutationType({
         return true
       }
     })
-  
-    t.crud.createOneCV()
-    t.crud.createOneRecordAcademic()
-    t.crud.createOneRecordAchievement()
-    t.crud.createOneRecordEducation()
-    t.crud.createOneRecordLanguage()
-    t.crud.createOneRecordPersonal()
-    t.crud.createOneRecordProject()
-    t.crud.createOneRecordSkill()
-    t.crud.createOneRecordWork()
-    t.crud.createOneBugReport()
-    t.crud.createOneAlert()
-    t.crud.createOneGatekeeper()
+    t.boolean('createAlert', {
+      args: {
+        message: stringArg({ required: true }),
+        type: arg({
+          type: 'AlertType',
+          required: true,
+        }),
+      },
+      resolve: async (_root, args, ctx) => {
+        const firebaseId = ctx.firebaseId
+        if (!firebaseId || !ctx.isAdmin) {
+          throw new Error("No permission")
+        }
 
-    t.crud.updateOneCV()
-    t.crud.updateOneRecordAcademic()
-    t.crud.updateOneRecordAchievement()
-    t.crud.updateOneRecordEducation()
-    t.crud.updateOneRecordLanguage()
-    t.crud.updateOneRecordPersonal()
-    t.crud.updateOneRecordProject()
-    t.crud.updateOneRecordSkill()
-    t.crud.updateOneRecordWork()
-    t.crud.updateOneAlert()
-    t.crud.updateOneGatekeeper()
+        await ctx.prisma.alert.create({
+          data: {
+            vid: ulid(),
+            message: args.message,
+            type: args.type,
+          }
+        })
+
+        return true
+      }
+    })
+    t.boolean('deleteAlert', {
+      args: {
+        message: stringArg({ required: true }),
+      },
+      resolve: async (_root, args, ctx) => {
+        const firebaseId = ctx.firebaseId
+        if (!firebaseId || !ctx.isAdmin) {
+          throw new Error("No permission")
+        }
+        
+        await ctx.prisma.alert.deleteMany({
+          where: {
+            message: args.message,
+          }
+        })
+
+        return true
+      }
+    })
+    t.boolean('createBugReport', {
+      args: {
+        title: stringArg({ required: true }),
+        email: stringArg(),
+        description: stringArg(),
+        data: stringArg(),
+      },
+      resolve: async (_root, args, ctx) => {
+        await ctx.prisma.bugReport.create({
+          data: {
+            vid: ulid(),
+            title: args.title,
+            email: args.email,
+            description: args.description,
+            data: args.data,
+            author: {
+              connect: {
+                firebaseId: ctx.firebaseId,
+              }
+            }
+          }
+        })
+
+        return true
+      }
+    })
   },
 })

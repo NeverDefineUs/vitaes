@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import {
   Button, Form, Modal, OverlayTrigger, Row, Tooltip,
 } from 'react-bootstrap';
-import firebase from 'firebase';
 import { toast } from 'react-toastify';
 
+import gravitaesql from 'utils/gravitaesql';
 import { translate } from 'i18n/locale';
 import { BugReporterField } from './BugReporterField';
 import { BugReporterCheckbox } from './BugReporterCheckbox';
@@ -70,18 +70,16 @@ export const BugReporter = (props) => {
                 toast.error(translate('missing_title'));
                 return;
               }
-              const bug = {};
-              bug.title = title;
-              bug.desc = desc;
-              bug.email = email;
-              if (sendState) {
-                bug.data = props.data;
-              }
-              const bugRef = firebase
-                .database()
-                .ref('bug')
-                .push();
-              bugRef.set(bug);
+              gravitaesql(email, `
+                mutation CreateBugReport($title: String!, $email: String, $desc: String, $data: String) {
+                  createBugReport(title: $title, email: $email, description: $desc, data: $data)
+                }
+              `, {
+                title,
+                email,
+                desc,
+                data: sendState ? JSON.stringify(props.data) : null,
+              })
               setTitle('');
               setDesc('');
               setEmail('');

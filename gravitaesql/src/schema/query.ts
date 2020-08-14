@@ -4,8 +4,7 @@ import { resolveLegacyJson } from '../utils/legacyJsonExport'
 
 export default queryType({
   definition(t) {
-    t.field('currentUser', {
-      type: 'String',
+    t.string('currentUser', {
       resolve: async (_root, _args, ctx) => {
         const firebaseId = ctx.firebaseId
         if (!firebaseId) {
@@ -17,16 +16,12 @@ export default queryType({
         })
       },
     })
-    t.field('legacyJSON', {
-      type: 'String',
-      args: {
-        userVid: stringArg({ required: true })
-      },
-      resolve: async (_root, args, ctx) => {
-        return await resolveLegacyJson(ctx, {
-          vid: args.userVid,
-        })
-      },
+    t.boolean('isAdmin', {
+      resolve: (_root, _args, ctx) => ctx.isAdmin,
+    })
+    t.list.field('alertList', {
+      type: 'Alert',
+      resolve: (_root, _args, ctx) => ctx.prisma.alert.findMany(),
     })
   },
 })

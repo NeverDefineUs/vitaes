@@ -23,12 +23,6 @@ LOCK TABLES
 SET FOREIGN_KEY_CHECKS = 0;
 
 ALTER TABLE `Alert`
-  CHANGE `authorVid` `authorVid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  CHANGE `message` `message` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  CHANGE `vid` `vid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
-
-ALTER TABLE `Alert`
-  CHANGE `authorVid` `authorVid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   CHANGE `message` `message` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   CHANGE `vid` `vid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
@@ -37,7 +31,7 @@ ALTER TABLE `BugReport`
   CHANGE `data` `data` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   CHANGE `description` `description` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   CHANGE `email` `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  CHANGE `title` `title` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  CHANGE `title` `title` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   CHANGE `vid` `vid` CHAR(26) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
 ALTER TABLE `CV`
