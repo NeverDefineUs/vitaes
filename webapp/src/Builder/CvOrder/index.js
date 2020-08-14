@@ -29,8 +29,8 @@ class CvOrder extends Component {
 }
 
 CvOrder.propTypes = {
-  cvOrder: PropTypes.element.isRequired,
-  setOrder: PropTypes.element.isRequired,
+  cvOrder: PropTypes.array.isRequired,
+  setOrder: PropTypes.func.isRequired,
 };
 
 export default CvOrder;
