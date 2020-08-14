@@ -232,7 +232,10 @@ class Builder extends Component {
           );
         }
         cvModelSuboptions.push(
-          <Form.Group as={Row}>
+          <Form.Group
+            key={cvSuboption.name}
+            as={Row}
+          >
             <Form.Label column sm="2">
               {cvSuboption.pretty_name}
               :
@@ -275,6 +278,7 @@ class Builder extends Component {
         <Form>
           {_.map(headerFields, field => (
             <CvHeaderField
+              key={field.id}
               stateChanger={this.handleChangeHeader}
               curriculum={this.props.userData.cv}
               label={field.label}
@@ -287,6 +291,7 @@ class Builder extends Component {
         </Form>
         {_.map(cvFormFields, form => (
           <CvItemForm
+            key={form.cvkey}
             chosenLabel={this.state.chosenLabel}
             label={form.label}
             cvkey={form.cvkey}
@@ -306,8 +311,7 @@ class Builder extends Component {
         <CvOrder
           setOrder={({ oldIndex, newIndex }) => this.updateUserData({
             cv_order: arrayMove(this.props.userData.cv_order, oldIndex, newIndex),
-          })
-          }
+          })}
           cvOrder={this.props.userData.cv_order}
         />
         <br />
@@ -344,6 +348,7 @@ class Builder extends Component {
         >
         {_.map(cvDownloadFormats, downloadFormat => (
           <Dropdown.Item 
+            key={downloadFormat.id}
             onClick={() => this.downloadCv(
               downloadFormat.id,
               downloadFormat.mimeContentType,

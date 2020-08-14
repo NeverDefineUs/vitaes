@@ -135,7 +135,7 @@ class CvItemForm extends Component {
 
   render() {
     const nodes = [
-      <hr />,
+      <hr key={-3}/>,
       <h3 key={-2}>
         {this.props.label}
         :
@@ -145,6 +145,7 @@ class CvItemForm extends Component {
     const comp = this;
     if (this.props.curriculum[this.props.cvkey] !== undefined) {
       nodes.push(<CvItemOrder
+        key={this.props.cvkey}
         onSortEnd={({ oldIndex, newIndex }) => {
           const items = arrayMove(this.props.curriculum[this.props.cvkey], oldIndex, newIndex);
           const cv = _.cloneDeep(this.props.curriculum);
