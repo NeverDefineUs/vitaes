@@ -1,9 +1,10 @@
 import firebase from 'firebase'
 import fetch from 'fetch-retry';
 
+import logger from 'utils/logger'
 import { getGravitaesqlHostname } from 'utils/getHostname';
 
-async function gravitaesql(query, variables) {
+async function gravitaesql(email, query, variables) {
   await firebase.auth().getRedirectResult()
   const user = firebase.auth().currentUser
   let headers = {
@@ -26,7 +27,9 @@ async function gravitaesql(query, variables) {
     })
   }).then(res => res.json())
     .then(res => {
-      // TODO log errors
+      if (res.error) {
+        logger(email, null, 'GRAPHQL_ERROR', res.error)
+      }
       return res.data
     })
 }

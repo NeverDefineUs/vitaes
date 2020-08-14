@@ -59,13 +59,13 @@ class BuilderContainer extends React.Component {
         if (user) {
           const loadingToast = toast.info(`${translate('loading')}...`, { autoClose: false });
 
-          gravitaesql(`
+          gravitaesql(user.email, `
             query LegacyJSON {
               currentUser
             }
           `).then(data => {
             if (!data) {
-              gravitaesql(`
+              gravitaesql(user.email, `
                 mutation CreateUser {
                   createUser
                 }
