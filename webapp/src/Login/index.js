@@ -25,7 +25,7 @@ class Login extends Component {
             variant="dark"
             className="Login-button"
             onClick={this.props.skipLogin}
-            size="sm"
+            size="small"
           >
             {translate('skip_login')}
           </Button>
@@ -36,7 +36,7 @@ class Login extends Component {
             }}
             className="Login-button"
             onClick={googleLogin}
-            size="sm"
+            size="small"
           >
             {translate('google_login')}
           </Button>
@@ -47,7 +47,7 @@ class Login extends Component {
             }}
             className="Login-button"
             onClick={facebookLogin}
-            size="sm"
+            size="small"
           >
             {translate('facebook_login')}
           </Button>

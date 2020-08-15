@@ -1,6 +1,6 @@
 FROM node:11.14-alpine
 WORKDIR /vitaes
-COPY package.json yarn.lock ./
+COPY package.json jsconfig.json yarn.lock ./
 RUN yarn
 COPY . .
 CMD yarn start
