@@ -25,7 +25,7 @@ export class AlertCreationForm extends Component {
       return;
     }
     gravitaesql(null, `
-      mutation CeleteAlert($message: String!, $type: AlertType!) {
+      mutation Createlert($message: String!, $type: AlertType!) {
         createAlert(message: $message, type: $type)
       }
     `, {
@@ -33,8 +33,8 @@ export class AlertCreationForm extends Component {
       type: message.type.toUpperCase(),
     }).then(_ => {
       this.setState({ message: defaultAlert() });
-      this.props.onSave()
-    })
+      this.props.onSave();
+    });
   }
 
   render() {

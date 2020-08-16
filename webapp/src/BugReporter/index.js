@@ -16,7 +16,7 @@ const styles = {
 
 export const BugReporter = (props) => {
   const [title, setTitle] = useState('');
-  const [desc, setDesc] = useState('');
+  const [description, setDescription] = useState('');
   const [email, setEmail] = useState('');
   const [sendState, setSendState] = useState(true);
 
@@ -43,9 +43,9 @@ export const BugReporter = (props) => {
           >
             <BugReporterField
               label={translate('description')}
-              value={desc}
+              value={description}
               long
-              setter={setDesc}
+              setter={setDescription}
             />
           </OverlayTrigger>
           <OverlayTrigger overlay={
@@ -71,17 +71,17 @@ export const BugReporter = (props) => {
                 return;
               }
               gravitaesql(email, `
-                mutation CreateBugReport($title: String!, $email: String, $desc: String, $data: String) {
-                  createBugReport(title: $title, email: $email, description: $desc, data: $data)
+                mutation CreateBugReport($title: String!, $email: String, $description: String, $data: String) {
+                  createBugReport(title: $title, email: $email, description: $description, data: $data)
                 }
               `, {
                 title,
                 email,
-                desc,
+                description,
                 data: sendState ? JSON.stringify(props.data) : null,
-              })
+              });
               setTitle('');
-              setDesc('');
+              setDescription('');
               setEmail('');
               props.onHide();
             }}

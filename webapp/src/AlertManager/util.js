@@ -3,10 +3,10 @@ import { toast } from 'react-toastify';
 import gravitaesql from 'utils/gravitaesql';
 
 let messages = [];
-let messageCallback = () => {};
+let messageCallback = () => { };
 
 export function setAlertCallback(callback) {
-  messageCallback = callback
+  messageCallback = callback;
   callback(messages);
 }
 
@@ -19,14 +19,14 @@ export function setupAlerts() {
       }
     }
   `).then(data => {
-    messages = []
+    messages = [];
     for (const i in data.alertList) {
-      const alert = data.alertList[i]
-      messages.push(alert.message)
-      toast(alert.message, { type: alert.type.toLowerCase() })
+      const alert = data.alertList[i];
+      messages.push(alert.message);
+      toast(alert.message, { type: alert.type.toLowerCase() });
     }
-    messageCallback(messages)
-  })
+    messageCallback(messages);
+  });
 }
 
 export default setupAlerts;

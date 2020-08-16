@@ -34,7 +34,7 @@ export class AlertManager extends Component {
               setAlerts={deleted => {
                 this.setState({
                   alerts: Array.from(this.state.alerts).filter(alert => alert !== deleted)
-                })
+                });
               }}
             />
           </ListGroup>

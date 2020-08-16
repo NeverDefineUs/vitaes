@@ -20,7 +20,7 @@ export function AlertList(props) {
             }
           `, {
             message: alertMsg,
-          }).then(_ => props.setAlerts(alertMsg))
+          }).then(_ => props.setAlerts(alertMsg));
         }}
       >
         {translate('delete')}

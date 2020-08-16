@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Segment, Button, Icon } from 'semantic-ui-react';
-import ReactPixel from 'react-facebook-pixel';
 
 import { translate } from 'i18n/locale';
+import ReactPixel from 'react-facebook-pixel';
 
 const imagesSrcs = {
   Arthurlpgc: 'https://avatars1.githubusercontent.com/u/11645779?s=400&v=4',
@@ -11,17 +11,10 @@ const imagesSrcs = {
 };
 
 class About extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      users: [],
-    };
-  }
 
   componentDidMount() {
     ReactPixel.init('898969540474999');
-    ReactPixel.pageView();
+    ReactPixel.pageView(); 
   }
 
   render() {

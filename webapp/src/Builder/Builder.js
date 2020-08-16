@@ -172,7 +172,7 @@ class Builder extends Component {
         toast.success(translate('saved'), {
           toastId: 'autosv',
         });
-      })
+      });
     }
   }
 

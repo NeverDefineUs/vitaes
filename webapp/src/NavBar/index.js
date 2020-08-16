@@ -35,7 +35,7 @@ class NavBar extends React.Component {
           }
         `).then(
           data => this.setState({ isAdmin: data.isAdmin })
-        )
+        );
       });
   }
 

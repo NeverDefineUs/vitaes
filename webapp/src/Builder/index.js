@@ -76,9 +76,9 @@ class BuilderContainer extends React.Component {
                     user_cv_model: 'awesome',
                     params: {},
                   }
-                })
-                toast.dismiss(loadingToast)
-              })
+                });
+                toast.dismiss(loadingToast);
+              });
             } else {
               this.setState({
                 userData: {
@@ -86,10 +86,10 @@ class BuilderContainer extends React.Component {
                   user_cv_model: 'awesome',
                   params: {},
                 }
-              })
-              toast.dismiss(loadingToast)
+              });
+              toast.dismiss(loadingToast);
             }
-          })
+          });
         }
       });
 
