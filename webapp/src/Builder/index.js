@@ -36,6 +36,12 @@ const defaultUser = {
   ],
 };
 
+const formatLegacyJson = stringyfiedJson => ({
+  ...JSON.parse(stringyfiedJson),
+  user_cv_model: 'awesome',
+  params: {},
+})
+
 class BuilderContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -71,21 +77,13 @@ class BuilderContainer extends React.Component {
                 }
               `).then(mutationData => {
                 this.setState({
-                  userData: {
-                    ...JSON.parse(mutationData.createUser),
-                    user_cv_model: 'awesome',
-                    params: {},
-                  }
+                  userData: formatLegacyJson(mutationData.createUser),
                 });
                 toast.dismiss(loadingToast);
               });
             } else {
               this.setState({
-                userData: {
-                  ...JSON.parse(data.currentUser),
-                  user_cv_model: 'awesome',
-                  params: {},
-                }
+                userData: formatLegacyJson(data.currentUser),
               });
               toast.dismiss(loadingToast);
             }

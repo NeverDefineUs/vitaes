@@ -74,16 +74,6 @@ async function migratePermissions() {
   })
 }
 
-async function migrateAlerts() {
-  await prisma.alert.create({
-    data: {
-      vid: ulid(),
-      message: 'Come help us on Github!',
-      type: 'INFO',
-    }
-  })
-}
-
 async function migrate() {
   const ref = admin.database().ref()
   const db = (await ref.once('value')).val()
@@ -91,7 +81,6 @@ async function migrate() {
   await migrateUsers(db['users'])
   await migrateBugReports(db['bug'])
   await migratePermissions()
-  await migrateAlerts()
 
   exit()
 }

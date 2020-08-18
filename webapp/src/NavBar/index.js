@@ -29,7 +29,7 @@ class NavBar extends React.Component {
       .then(() => {
         const user = firebase.auth().currentUser;
         this.setState({ user });
-        gravitaesql(user.email, `
+        gravitaesql(user?.email, `
           query IsAdmin {
             isAdmin
           }
