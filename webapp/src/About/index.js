@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Button, Card, Icon, Image, Loader } from 'semantic-ui-react';
 import gh from './github_service';
+import {Line} from 'react-chartjs-2';
 
 import { translate } from 'i18n/locale';
 import ReactPixel from 'react-facebook-pixel';
@@ -10,6 +11,9 @@ const imagesSrcs = {
   RamonSaboya: 'https://avatars0.githubusercontent.com/u/5997047?s=400&v=4',
   Magsouza: 'https://avatars1.githubusercontent.com/u/37961381?s=400&v=4',
 };
+
+
+var commitsUrl = 'https://github.com/NeverDefineUs/vitaes/commits?author='
 
 class About extends Component {
   constructor(props) {
@@ -39,14 +43,60 @@ class About extends Component {
     return stats;
   }
 
+  makeCommitsGraph = (stats) =>{
+    var weeks = []
+
+    stats[0].weeks.forEach(week =>{
+      var date = new Date(week.w * 1000)
+      weeks.push(date.getMonth() + '/' + date.getUTCFullYear())
+    })
+
+    var commits = []
+
+    for(var i = 0; i < stats.length; i++){
+      for(var j = 0; j < stats[i].weeks.length; j++){
+        if(i === 0){
+          commits.push(stats[i].weeks[j].c)
+        }else{
+          commits[j] += stats[i].weeks[j].c
+        }
+      }
+    }
+    
+    console.log(commits)
+
+    var d = {
+      labels : weeks,
+      datasets : [{
+        label : 'Commits',
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: 'rgba(75,192,192,1)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderWidth: 2,
+        spanGaps : false,
+        data : commits
+      }]
+    }
+
+    this.setState({commitGraph: <Line 
+      data={d}
+      width={100}
+      height={50}
+    />})
+  }
+
+
+
   makeMinorContributors = (stats) =>{
     function isMinor(value){
-      return value.login != "Arthurlpgc" && value.login != "ramonsaboya" && value.login != "magsouza"
+      return value.login !== "Arthurlpgc" && value.login !== "ramonsaboya" && value.login !== "magsouza"
     }
     let coll = [];
     let minorStats = stats.filter(isMinor);
     minorStats.sort((a, b) => a.additions + a.deletions < b.additions + b.deletions);
     console.log(minorStats)
+
     minorStats.forEach(stat => {
       coll.push(
         <Card>
@@ -59,9 +109,9 @@ class About extends Component {
           <Card.Header href={stat.author.html_url}>{stat.login}</Card.Header>
         </Card.Content>
         <Card.Content extra>
-              <span>{stat.total} commits </span>
+              <span> <a href={`${commitsUrl}${stat.login}`}>{stat.total} commits</a>  </span>
               <span style={{color : 'green'}}>{stat.additions}++ </span> 
-              <span style={{color : 'red'}}>{stat.deletions}-- </span> 
+              <span style={{color : 'red'}}>{stat.deletions}-- </span>            
         </Card.Content>
         </Card>
       )
@@ -71,10 +121,11 @@ class About extends Component {
 
   loadGithub = async () => {
     const collaborators = await gh.getCollaborators();
-    const stats = await gh.getContributorStats();
+    var stats = await gh.getContributorStats();
     this.setState({collaborators : collaborators});
     stats = this.dealStats(stats);
     this.makeMinorContributors(stats);
+    this.makeCommitsGraph(stats);
     this.setState({stats : stats});
     this.setState({loaded : true});
     
@@ -114,9 +165,9 @@ class About extends Component {
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <span>{this.state.stats.find(el => el.login == "Arthurlpgc").total} commits </span>
-                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login == "Arthurlpgc").additions}++ </span> 
-                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login == "Arthurlpgc").deletions}-- </span> 
+                <span> <a href={`${commitsUrl}Arthurlpgc`}> {this.state.stats.find(el => el.login === "Arthurlpgc").total}  commits </a>  </span>
+                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login === "Arthurlpgc").additions}++ </span> 
+                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login === "Arthurlpgc").deletions}-- </span> 
              </Card.Content>
           </Card>
 
@@ -133,9 +184,9 @@ class About extends Component {
             </Card.Content>
             <Card.Content extra>
           
-                <span>{this.state.stats.find(el => el.login == "ramonsaboya").total} commits </span>
-                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login == "ramonsaboya").additions}++ </span> 
-                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login == "ramonsaboya").deletions}-- </span> 
+                <span> <a href={`${commitsUrl}ramonsaboya`}>{this.state.stats.find(el => el.login === "ramonsaboya").total} commits </a> </span>
+                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login === "ramonsaboya").additions}++ </span> 
+                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login === "ramonsaboya").deletions}-- </span> 
               
              </Card.Content>
           </Card>
@@ -153,9 +204,9 @@ class About extends Component {
             </Card.Content>
             <Card.Content extra>
               
-                <span>{this.state.stats.find(el => el.login == "magsouza").total} commits </span>
-                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login == "magsouza").additions}++ </span> 
-                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login == "magsouza").deletions}-- </span>
+                <span> <a href={`${commitsUrl}magsouza`}> {this.state.stats.find(el => el.login === "magsouza").total} commits </a> </span>
+                <span style={{color : 'green'}}>{this.state.stats.find(el => el.login === "magsouza").additions}++ </span> 
+                <span style={{color : 'red'}}>{this.state.stats.find(el => el.login === "magsouza").deletions}-- </span>
              
              </Card.Content>
           </Card>
@@ -172,7 +223,12 @@ class About extends Component {
           {this.state.minors}
         </Card.Group>
 
-
+        <Card fluid>
+          <Card.Content>
+            {this.state.commitGraph}
+          </Card.Content>
+        </Card>
+        
         
         <br />
         <h2>
