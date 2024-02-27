@@ -1,7 +1,8 @@
 timestring
 cheetah3
-requests
+requests<=2.7.0
 pika
-babel
+babel<=2.3.2
+msgpack<1.0.0
 influxdb
 fieldy
